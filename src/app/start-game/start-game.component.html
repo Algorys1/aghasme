@@ -1,0 +1,39 @@
+<div class="start-game">
+  <h2>Nouvelle Partie</h2>
+
+  <h3>Créer votre personnage</h3>
+
+  <div class="form-group">
+    <label>Nom :</label>
+    <input [(ngModel)]="character.name" placeholder="Nom du héros" />
+  </div>
+
+  <div class="form-group">
+    <label>Strength :</label>
+    <input type="number" [(ngModel)]="character.strength" min="1" max="10" />
+  </div>
+
+  <div class="form-group">
+    <label>Essence :</label>
+    <input type="number" [(ngModel)]="character.essence" min="1" max="10" />
+  </div>
+
+  <div class="form-group">
+    <label>Mechanic (HP) :</label>
+    <input type="number" [(ngModel)]="character.mechanic" min="1" max="10" />
+  </div>
+
+  <div class="form-group">
+    <label>Spirit (MP) :</label>
+    <input type="number" [(ngModel)]="character.spirit" min="1" max="10" />
+  </div>
+
+  <h3>Choisir une carte</h3>
+  <div class="form-group">
+    <select [(ngModel)]="selectedMap">
+      <option *ngFor="let map of maps" [value]="map">{{ map }}</option>
+    </select>
+  </div>
+
+  <button class="start-button" (click)="startGame()">Démarrer l'aventure</button>
+</div>
