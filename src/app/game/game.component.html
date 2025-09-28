@@ -1,5 +1,4 @@
 <div class="game-container">
-  <!-- Panneau du haut -->
   <div class="top-panel">
     <div class="top-header">
       <h3>{{ character.name }}</h3>
@@ -7,24 +6,36 @@
     </div>
 
     <div class="stats-row">
-      <div
-        class="stat-circle"
-        *ngFor="let stat of stats"
-        [ngStyle]="{ 'background-color': stat.color }"
-      >
-        <lucide-icon [name]="stat.icon" class="stat-icon"></lucide-icon>
-        <span class="stat-value">{{ stat.value }}</span>
+      <!-- Exemples : on peut lier aux valeurs réelles -->
+      <div class="stat-circle" style="background:#8B0000">
+        <div class="stat-icon">STR</div>
+        <div class="stat-value">{{ character.strength }}</div>
+      </div>
+      <div class="stat-circle" style="background:#228B22">
+        <div class="stat-icon">ESS</div>
+        <div class="stat-value">{{ character.essence }}</div>
+      </div>
+      <div class="stat-circle" style="background:#000">
+        <div class="stat-icon">MEC</div>
+        <div class="stat-value">{{ character.mechanic }}</div>
+      </div>
+      <div class="stat-circle" style="background:#1E90FF">
+        <div class="stat-icon">SPR</div>
+        <div class="stat-value">{{ character.spirit }}</div>
       </div>
     </div>
   </div>
 
-  <!-- Zone de jeu avec Pixi.js -->
   <div class="map-container">
     <canvas id="myCanvas"></canvas>
   </div>
 
-  <!-- Panneau du bas -->
   <div class="bottom-panel">
-    WAIT
+    <ng-container [ngSwitch]="currentOverlay">
+      <button *ngSwitchCase="'city'" (click)="enterCity()">Entrer dans la ville</button>
+      <button *ngSwitchCase="'village'" (click)="enterVillage()">Entrer dans le village</button>
+      <button *ngSwitchCase="'event'" (click)="discoverEvent()">Découvrir l'événement</button>
+      <span *ngSwitchDefault>Déplacez-vous pour explorer...</span>
+    </ng-container>
   </div>
 </div>

@@ -7,170 +7,62 @@
   background-color: bisque;
 }
 
-/* ---------- PANNEAUX HAUT & BAS ---------- */
 .top-panel,
 .bottom-panel {
   height: 7rem;
-  margin: 2px;
-  background: url('/assets/ui/parchment-hd.png') no-repeat center;
-  background-size: cover; // garde la bonne proportion
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-position: center;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  margin: 6px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  align-items: center;
+  border-radius: 12px;
+  background: linear-gradient(#f3ead6, #e1d3b0);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-
-.top-panel h3,
-.bottom-panel h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #2b1d0e;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+.top-header {
+  width: 90%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-/* ---------- TOP PANEL : CONTENU ---------- */
-.top-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .top-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
-    margin-bottom: 10px;
-
-    h3 {
-      font-size: 1.5em;
-    }
-
-    .skills-button {
-      background: #6c8ebf;
-      padding: 5px 15px;
-      border-radius: 15px;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  }
-
-  .stats-row {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap; /* permet de passer sur plusieurs lignes si besoin */
-  }
-
-  .stat-circle {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-weight: bold;
-    position: relative;
-
-    .stat-icon {
-      width: 24px;
-      height: 24px;
-      margin-bottom: 4px;
-    }
-
-    .stat-value {
-      position: absolute;
-      bottom: 6px;
-      font-size: 14px;
-    }
-  }
+.stats-row {
+  display:flex;
+  gap:14px;
+  margin-top:8px;
+  flex-wrap:wrap;
 }
 
-/* ---------- MAP ---------- */
+.stat-circle {
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  position:relative;
+}
+
+.stat-value {
+  position:absolute;
+  bottom:6px;
+  font-weight:bold;
+  font-size:0.9rem;
+}
+
+/* Map */
 .map-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #111;
-
-  canvas {
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-  }
+  flex:1;
+  margin: 6px;
+  border-radius: 8px;
+  overflow: hidden;
+  background:#111;
 }
 
-/* ---------- RESPONSIVE ---------- */
-@media (max-width: 768px) {
-  .top-panel,
-  .bottom-panel {
-    height: 8rem;
-    margin: 2px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .top-panel h3 {
-    font-size: 1.2rem;
-  }
-
-  .top-panel .stats-row {
-    gap: 10px;
-  }
-
-  .stat-circle {
-    width: 50px;
-    height: 50px;
-
-    .stat-icon {
-      width: 20px;
-      height: 20px;
-    }
-
-    .stat-value {
-      font-size: 12px;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .top-panel,
-  .bottom-panel {
-    height: 7rem;
-    margin: 2px;
-  }
-
-  .top-panel .top-header {
-    gap: 5px;
-    text-align: center;
-  }
-
-  .top-panel .stats-row {
-    gap: 5px;
-  }
-
-  .stat-circle {
-    width: 40px;
-    height: 40px;
-
-    .stat-icon {
-      width: 18px;
-      height: 18px;
-    }
-
-    .stat-value {
-      font-size: 10px;
-    }
-  }
+canvas {
+  display:block;
+  width:100%;
+  height:100%;
 }
