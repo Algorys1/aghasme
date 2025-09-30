@@ -15,9 +15,6 @@ import { LucideAngularModule, Dumbbell, Leaf, Cog, Brain } from 'lucide-angular'
   styleUrls: ['./character-creation.component.scss']
 })
 export class CharacterCreationComponent {
-  // expose icons to template
-  icons = { Dumbbell, Leaf, Cog, Brain };
-
   name = '';
   archetype: Character['archetype'] = 'warrior';
 
@@ -28,6 +25,8 @@ export class CharacterCreationComponent {
 
   points = 9;
 
+  infoContent: { title: string, description: string } | null = null;
+
   constructor(
     private characterService: CharacterService,
     private playerService: PlayerService,
@@ -36,6 +35,33 @@ export class CharacterCreationComponent {
 
   get remainingPoints(): number {
     return this.points;
+  }
+
+  orbDescriptions: Record<string, { title: string, description: string }> = {
+    strength: {
+      title: 'Strength',
+      description: 'Increases physical power, melee damage and carrying capacity.'
+    },
+    essence: {
+      title: 'Essence',
+      description: 'Represents magical energy. More essence improves spell casting.'
+    },
+    mechanic: {
+      title: 'Mechanic',
+      description: 'Boosts your engineering skills and efficiency with machines.'
+    },
+    spirit: {
+      title: 'Spirit',
+      description: 'Reflects willpower and intuition. Useful for survival and perception.'
+    }
+  };
+
+  showInfo(kind: string) {
+    this.infoContent = this.orbDescriptions[kind];
+  }
+  
+  closeInfo() {
+    this.infoContent = null;
   }
 
   increase(stat: 'strength' | 'essence' | 'mechanic' | 'spirit') {
@@ -53,7 +79,7 @@ export class CharacterCreationComponent {
   }
 
   create() {
-    if (this.points > 0) {
+    if (this.points > 0 && !this.name) {
       alert('You must use all points before starting!');
       return;
     }

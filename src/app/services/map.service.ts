@@ -5,6 +5,7 @@ import { Application, Container, Sprite, Assets, Texture, Graphics } from 'pixi.
 import { createTile, Terrain } from '../factories/tile.factory';
 import { overlayActions } from '../models/overlay-actions';
 import { OverlayKind } from '../models/overlay-types';
+import { overlayPools } from '../models/overlay-pools';
 
 @Injectable({
   providedIn: 'root'
@@ -51,12 +52,6 @@ export class MapService {
     this.app.stage.addChild(this.mapContainer);
 
     this.buildMap(mapRadius);
-
-    // optionally create some special overlays (example)
-    // you can remove these lines if you generate overlays elsewhere
-    this.addOverlay(0, 0, OverlayKind.City);
-    this.addOverlay(1, 0, OverlayKind.Village);
-    this.addOverlay(0, 2, OverlayKind.Bandits);
 
     // create player sprite (uses player texture)
     this.player = new Sprite(this.textures['player']);
@@ -128,6 +123,18 @@ export class MapService {
   getActiveOverlay() {
     return this.activeOverlay;
   }
+
+  private pickOverlayForTerrain(terrain: Terrain): OverlayKind {
+    const pool = overlayPools[terrain] ?? [{ kind: OverlayKind.None, weight: 1 }];
+    const total = pool.reduce((sum, o) => sum + o.weight, 0);
+    let roll = Math.random() * total;
+    for (const o of pool) {
+      if (roll < o.weight) return o.kind;
+      roll -= o.weight;
+    }
+    return OverlayKind.None;
+  }
+  
   
   getActiveActions(): string[] {
     if (!this.activeOverlay) return [];
@@ -170,7 +177,6 @@ export class MapService {
         if (Math.abs(q) <= N && Math.abs(r) <= N && Math.abs(s) <= N) {
           const { x, y } = this.hexToPixel(q, r);
           const terrain = this.randomTerrain();
-
           const tile = createTile({
             x, y,
             size: this.size,
@@ -181,6 +187,11 @@ export class MapService {
           });
 
           this.tiles[`${q},${r}`] = { gfx: tile, terrain, discovered: false };
+
+          const overlay = this.pickOverlayForTerrain(terrain);
+          if (overlay !== OverlayKind.None) {
+            this.addOverlay(q, r, overlay);
+          }
         }
       }
     }

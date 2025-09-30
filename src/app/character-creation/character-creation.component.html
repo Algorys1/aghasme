@@ -1,74 +1,85 @@
 <div class="creation-container">
-    <h2>Create your character</h2>
-  
-    <label>
-      Name:
-      <input [(ngModel)]="name" placeholder="Hero name" />
-    </label>
-  
-    <label>
-      Class:
-      <select [(ngModel)]="archetype">
-        <option value="warrior">Warrior</option>
-        <option value="mage">Mage</option>
-        <option value="engineer">Engineer</option>
-        <option value="scout">Scout</option>
-      </select>
-    </label>
-  
-    <p class="points">Remaining points: {{ remainingPoints }}</p>
-  
-    <div class="stats">
-      <div class="stat strength">
-        <span class="label">Strength</span>
-        <div class="controls">
-          <button (click)="decrease('strength')">-</button>
-          <div class="orb">
-            <lucide-angular [img]="icons.Dumbbell" class="icon"></lucide-angular>
-            <span class="value">{{ strength }}</span>
-          </div>
-          <button (click)="increase('strength')">+</button>
-        </div>
-      </div>
-    
-      <div class="stat essence">
-        <span class="label">Essence</span>
-        <div class="controls">
-          <button (click)="decrease('essence')">-</button>
-          <div class="orb">
-            <lucide-angular [img]="icons.Leaf" class="icon"></lucide-angular>
-            <span class="value">{{ essence }}</span>
-          </div>
-          <button (click)="increase('essence')">+</button>
-        </div>
-      </div>
-    
-      <div class="stat mechanic">
-        <span class="label">Mechanic</span>
-        <div class="controls">
-          <button (click)="decrease('mechanic')">-</button>
-          <div class="orb">
-            <lucide-angular [img]="icons.Cog" class="icon"></lucide-angular>
-            <span class="value">{{ mechanic }}</span>
-          </div>
-          <button (click)="increase('mechanic')">+</button>
-        </div>
-      </div>
-    
-      <div class="stat spirit">
-        <span class="label">Spirit</span>
-        <div class="controls">
-          <button (click)="decrease('spirit')">-</button>
-          <div class="orb">
-            <lucide-angular [img]="icons.Brain" class="icon"></lucide-angular>
-            <span class="value">{{ spirit }}</span>
-          </div>
-          <button (click)="increase('spirit')">+</button>
-        </div>
+  <h2>Create your character</h2>
+
+  <label>
+    Name:
+    <input [(ngModel)]="name" placeholder="Hero name" />
+  </label>
+
+  <label>
+    Class:
+    <select [(ngModel)]="archetype">
+      <option value="warrior">Warrior</option>
+      <option value="mage">Mage</option>
+      <option value="engineer">Engineer</option>
+      <option value="scout">Scout</option>
+    </select>
+  </label>
+
+  <p class="points">Remaining points: {{ remainingPoints }}</p>
+
+  <!-- Cercle central -->
+  <div class="orb-circle">
+    <svg class="circle-bg" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="90" />
+    </svg>
+
+    <!-- Strength -->
+    <div class="orb-container strength">
+      <div class="orb">
+        <img src="assets/ui/orb-strength.png" alt="Strength" />
+        <span>{{ strength }}</span>
+
+        <button class="btn right" (click)="increase('strength')">+</button>
+        <button class="btn left" (click)="decrease('strength')">-</button>
+        <button class="btn top info" (click)="showInfo('strength')">i</button>
       </div>
     </div>
-    
 
-    <button class="start-btn" (click)="create()">Start adventure</button>
+    <!-- Essence -->
+    <div class="orb-container essence">
+      <div class="orb">
+        <img src="assets/ui/orb-essence.png" alt="Essence" />
+        <span>{{ essence }}</span>
+
+        <button class="btn top" (click)="increase('essence')">+</button>
+        <button class="btn bottom" (click)="decrease('essence')">-</button>
+        <button class="btn right info" (click)="showInfo('essence')">i</button>
+      </div>
+    </div>
+
+    <!-- Mechanic -->
+    <div class="orb-container mechanic">
+      <div class="orb">
+        <img src="assets/ui/orb-mechanic.png" alt="Mechanic" />
+        <span>{{ mechanic }}</span>
+
+        <button class="btn right" (click)="increase('mechanic')">+</button>
+        <button class="btn left" (click)="decrease('mechanic')">-</button>
+        <button class="btn bottom info" (click)="showInfo('mechanic')">i</button>
+      </div>
+    </div>
+
+    <!-- Spirit -->
+    <div class="orb-container spirit">
+      <div class="orb">
+        <img src="assets/ui/orb-spirit.png" alt="Spirit" />
+        <span>{{ spirit }}</span>
+
+        <button class="btn top" (click)="increase('spirit')">+</button>
+        <button class="btn bottom" (click)="decrease('spirit')">-</button>
+        <button class="btn left info" (click)="showInfo('spirit')">i</button>
+      </div>
+    </div>
   </div>
-  
+
+  <!-- Zone fixe d’explication -->
+  <div class="stat-info" *ngIf="infoContent">
+    <h4>{{ infoContent.title }}</h4>
+    <p>{{ infoContent.description }}</p>
+    <button class="close-btn" (click)="closeInfo()">Close</button>
+  </div>
+
+  <button class="start-btn" (click)="create()">Start adventure</button>
+
+</div>
