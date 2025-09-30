@@ -3,8 +3,8 @@ import { Subject } from 'rxjs';
 
 import { Application, Container, Sprite, Assets, Texture, Graphics } from 'pixi.js';
 import { createTile, Terrain } from '../factories/tile.factory';
-
-export type OverlayKind = 'city' | 'village' | 'hamlet' | 'event';
+import { overlayActions } from '../models/overlay-actions';
+import { OverlayKind } from '../models/overlay-types';
 
 @Injectable({
   providedIn: 'root'
@@ -54,9 +54,9 @@ export class MapService {
 
     // optionally create some special overlays (example)
     // you can remove these lines if you generate overlays elsewhere
-    this.addOverlay(0, 0, 'city');
-    this.addOverlay(1, 0, 'village');
-    this.addOverlay(0, 2, 'event');
+    this.addOverlay(0, 0, OverlayKind.City);
+    this.addOverlay(1, 0, OverlayKind.Village);
+    this.addOverlay(0, 2, OverlayKind.Bandits);
 
     // create player sprite (uses player texture)
     this.player = new Sprite(this.textures['player']);
@@ -85,15 +85,15 @@ export class MapService {
       mountain: await Assets.load('assets/tiles/mountain.png'),
       water: await Assets.load('assets/tiles/water.png'),
       fog: await Assets.load('assets/tiles/fog.png'),
-      player: await Assets.load('assets/tiles/hero.png') // assure-toi que ce fichier existe
+      player: await Assets.load('assets/player.png') // assure-toi que ce fichier existe
     };
   }
   
   private async loadIconTextures() {
     this.iconTextures = {
-      city: await Assets.load('assets/icons/city.png'),
-      village: await Assets.load('assets/icons/village.png'),
-      event: await Assets.load('assets/icons/event.png'),
+      city: await Assets.load('assets/overlays/city.png'),
+      village: await Assets.load('assets/overlays/village.png'),
+      bandits: await Assets.load('assets/overlays/bandits.png'),
     };
   }
 
@@ -123,6 +123,15 @@ export class MapService {
     // Et on garde aussi le type d’overlay
     if (!this.overlayTypes[key]) this.overlayTypes[key] = [];
     this.overlayTypes[key].push(kind);
+  }
+
+  getActiveOverlay() {
+    return this.activeOverlay;
+  }
+  
+  getActiveActions(): string[] {
+    if (!this.activeOverlay) return [];
+    return overlayActions[this.activeOverlay] ?? [];
   }
 
 
@@ -200,7 +209,7 @@ export class MapService {
 
         const key = `${q},${r}`;
         const overlays = this.overlayTypes[key] || [];
-        this.activeOverlay = overlays.length > 0 ? overlays[0] : null;
+        this.activeOverlay = overlays.length > 0 ? overlays[0] : OverlayKind.None;
         
         this.overlayChange.next(this.activeOverlay);
 
@@ -253,9 +262,4 @@ export class MapService {
   private hexDistance(a: { q: number, r: number }, b: { q: number, r: number }) {
     return (Math.abs(a.q - b.q) + Math.abs(a.q + a.r - b.q - b.r) + Math.abs(a.r - b.r)) / 2;
   }
-
-  getActiveOverlay() {
-    return this.activeOverlay;
-  }
-
 }

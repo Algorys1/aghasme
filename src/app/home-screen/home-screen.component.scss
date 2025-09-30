@@ -4,27 +4,36 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(#222, #444);
-  color: white;
   text-align: center;
+  background: radial-gradient(circle at center, #1e1e1e, #0a0a0a);
 
   h1 {
-    margin-bottom: 20px;
-    font-size: 2.5rem;
+    font-size: 3rem;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 2rem;
   }
 
   button {
-    padding: 12px 24px;
+    padding: 1rem 2rem;
     font-size: 1.2rem;
-    border: none;
     border-radius: 8px;
-    background: #ff9800;
-    color: white;
+    border: none;
     cursor: pointer;
-    transition: background 0.3s ease;
+    background: linear-gradient(145deg, #444, #222);
+    color: white;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+  }
 
-    &:hover {
-      background: #e68900;
-    }
+  button:hover {
+    background: linear-gradient(145deg, #555, #333);
+    transform: scale(1.05);
   }
 }

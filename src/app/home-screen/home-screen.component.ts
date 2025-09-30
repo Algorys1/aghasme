@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-screen',
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 export class HomeScreenComponent {
   constructor(private router: Router) {}
 
-startGame() {
-  this.router.navigate(['/start']);
-}
+  goToStart() {
+    this.router.navigate(['/start']);
+  }
 }

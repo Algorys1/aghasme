@@ -1,41 +1,20 @@
 <div class="game-container">
-  <div class="top-panel">
-    <div class="top-header">
-      <h3>{{ character.name }}</h3>
-      <div class="skills-button">Skills</div>
-    </div>
+  <!-- Game canvas for Pixi.js -->
+  <canvas id="myCanvas"></canvas>
 
-    <div class="stats-row">
-      <!-- Exemples : on peut lier aux valeurs réelles -->
-      <div class="stat-circle" style="background:#8B0000">
-        <div class="stat-icon">STR</div>
-        <div class="stat-value">{{ character.strength }}</div>
-      </div>
-      <div class="stat-circle" style="background:#228B22">
-        <div class="stat-icon">ESS</div>
-        <div class="stat-value">{{ character.essence }}</div>
-      </div>
-      <div class="stat-circle" style="background:#000">
-        <div class="stat-icon">MEC</div>
-        <div class="stat-value">{{ character.mechanic }}</div>
-      </div>
-      <div class="stat-circle" style="background:#1E90FF">
-        <div class="stat-icon">SPR</div>
-        <div class="stat-value">{{ character.spirit }}</div>
-      </div>
-    </div>
+  <!-- HUD overlay (top-left) -->
+  <div class="hud">
+    <h3>{{ character.name }} (Lv {{ character.level }})</h3>
+    <p>HP: {{ character.hp }}</p>
+    <p>XP: {{ character.xp }}</p>
+    <p *ngIf="currentOverlay">You discovered a {{ currentOverlay }}!</p>
   </div>
 
-  <div class="map-container">
-    <canvas id="myCanvas"></canvas>
+  <!-- Action panel (bottom center) -->
+  <div class="action-panel" *ngIf="actions.length > 0">
+    <button *ngFor="let action of actions" (click)="onAction(action)">
+      {{ action }}
+    </button>
   </div>
 
-  <div class="bottom-panel">
-    <ng-container [ngSwitch]="currentOverlay">
-      <button *ngSwitchCase="'city'" (click)="enterCity()">Entrer dans la ville</button>
-      <button *ngSwitchCase="'village'" (click)="enterVillage()">Entrer dans le village</button>
-      <button *ngSwitchCase="'event'" (click)="discoverEvent()">Découvrir l'événement</button>
-      <span *ngSwitchDefault>Déplacez-vous pour explorer...</span>
-    </ng-container>
-  </div>
 </div>

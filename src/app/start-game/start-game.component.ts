@@ -1,38 +1,52 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Character } from '../models/character.model';
+import { CharacterService } from '../services/character.service';
+import { PlayerService } from '../services/player.service';
 
 @Component({
   selector: 'app-start-game',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [CommonModule],
   templateUrl: './start-game.component.html',
   styleUrls: ['./start-game.component.scss']
 })
-export class StartGameComponent {
-  character: Character = {
-    name: '',
-    strength: 5,
-    spirit: 5,
-    essence: 5,
-    mechanic: 100,
-    skills: []
-  };
+export class StartGameComponent implements OnInit {
+  hasSave = false;
 
-  selectedMap = 'map1';
-  maps = ['map1', 'map2', 'map3'];
+  constructor(
+    private router: Router,
+    private characterService: CharacterService,
+    private playerService: PlayerService
+  ) {}
 
-  constructor(private router: Router) {}
+  ngOnInit(): void {
+    this.hasSave = !!this.characterService.loadFromStorage();
+  }
 
-  startGame() {
-    // On passe le perso et la carte choisie via state
-    this.router.navigate(['/game'], {
-      state: {
-        character: this.character,
-        map: this.selectedMap
-      }
-    });
+  continueGame() {
+    const saved = this.characterService.loadFromStorage();
+    if (saved) {
+      this.playerService.initPlayer(saved);
+      this.router.navigate(['/game'], {
+        state: { character: saved, map: 'Map1' }
+      });
+    }
+  }
+
+  newGame() {
+    this.router.navigate(['/create-character']);
+  }
+
+  loadGame() {
+    const saved = this.characterService.loadFromStorage();
+    if (saved) {
+      this.playerService.initPlayer(saved);
+      this.router.navigate(['/game'], {
+        state: { character: saved, map: 'Map1' }
+      });
+    } else {
+      alert('No saved game found');
+    }
   }
 }

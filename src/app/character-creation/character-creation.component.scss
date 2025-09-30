@@ -1,0 +1,206 @@
+.creation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;        /* prevent horizontal scroll */
+  overflow-y: auto;          /* allow vertical scroll */
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+
+  background: radial-gradient(circle at center, #1e1e1e, #0a0a0a);
+  color: #f0f0f0;
+
+  .content {
+    flex: 1;
+    width: 100%;
+    max-width: 350px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: clamp(1.2rem, 5vw, 1.5rem);
+    color: #ffd700;
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    color: #ddd;
+    width: 100%;
+    max-width: 350px;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid #444;
+    font-size: 1rem;
+    background: #1e1e1e;
+    color: #fff;
+    box-sizing: border-box;
+  }
+
+  .points {
+    text-align: center;
+    font-weight: bold;
+    color: #ffd700;
+  }
+
+  .stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    max-width: 350px;
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0;
+
+      > .label {
+        flex: 1;
+        font-weight: bold;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        button {
+          width: 2.2rem;
+          height: 2.2rem;
+          border-radius: 50%;
+          border: none;
+          background: #333;
+          color: #fff;
+          cursor: pointer;
+          font-size: 1.2rem;
+          font-weight: bold;
+          transition: transform 0.15s ease, background 0.2s;
+        }
+
+        button:hover {
+          background: #555;
+          transform: scale(1.1);
+        }
+
+        .orb {
+          position: relative;
+          width: 2.5rem;
+          height: 2.5rem;
+          border-radius: 50%;
+          display: grid;              /* grid overlay */
+          place-items: center;
+          font-weight: bold;
+          font-size: 1rem;
+          color: white;
+          animation: pulse 2s infinite alternate;
+          box-sizing: border-box;
+
+          .icon {
+            grid-area: 1 / 1;
+            width: 1.6rem;
+            height: 1.6rem;
+            opacity: 0.25;            /* faint watermark */
+          }
+
+          .value {
+            grid-area: 1 / 1;
+            z-index: 1;
+            font-size: 1rem;
+            line-height: 1;
+          }
+        }
+      }
+    }
+
+    /* reduced glow */
+    .strength .orb { background: #b22222; box-shadow: 0 0 6px #ff4d4d, 0 0 10px #ff1a1a; }
+    .essence .orb  { background: #228b22; box-shadow: 0 0 6px #4dff4d, 0 0 10px #1aff1a; }
+    .mechanic .orb { background: #000;    box-shadow: 0 0 6px #aaa,   0 0 10px #666; }
+    .spirit .orb   { background: #1e90ff; box-shadow: 0 0 6px #4da6ff, 0 0 10px #1a75ff; }
+  }
+
+  .start-btn {
+    position: sticky;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #228b22, #1a6b1a);
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    width: 100%;
+    max-width: 350px;
+    min-height: 3rem;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(34, 139, 34, 0.6);
+    box-sizing: border-box;
+  }
+
+  .start-btn:hover {
+    background: linear-gradient(145deg, #2aa22a, #1a6b1a);
+    transform: scale(1.03);
+    box-shadow: 0 0 15px rgba(34, 200, 34, 0.8);
+  }
+}
+
+@media (max-width: 600px) {
+  .creation-container {
+    .content {
+      padding: 0.5rem;
+      gap: 0.5rem;
+    }
+
+    .stats .stat {
+      font-size: 0.9rem;
+    }
+
+    .stats .orb {
+      width: 2rem;
+      height: 2rem;
+
+      .icon {
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+
+      .value {
+        font-size: 0.8rem;
+      }
+    }
+
+    .start-btn {
+      font-size: 1rem;
+      padding: 0.8rem;
+    }
+  }
+}
+
+@keyframes pulse {
+  from { transform: scale(1); opacity: 0.9; }
+  to   { transform: scale(1.1); opacity: 1; }
+}
