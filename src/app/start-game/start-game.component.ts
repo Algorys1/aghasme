@@ -49,4 +49,8 @@ export class StartGameComponent implements OnInit {
       alert('No saved game found');
     }
   }
+
+  back() {
+    this.router.navigate(['/home']);
+  }
 }

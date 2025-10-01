@@ -1,7 +1,11 @@
-<div class="menu-container">
-  <h2>Main Menu</h2>
+<div class="home-screen">
+  <div class="overlay"></div>
 
-  <button *ngIf="hasSave" (click)="continueGame()">Continue</button>
-  <button (click)="newGame()">New Game</button>
-  <button (click)="loadGame()">Load Game</button>
+  <div class="menu">
+    <h1 class="title">Aghasme</h1>
+
+    <button class="menu-btn" (click)="newGame()">Nouvelle partie</button>
+    <button class="menu-btn" (click)="loadGame()">Charger partie</button>
+    <button class="menu-btn" (click)="back()">Retour à l'accueil</button>
+  </div>
 </div>
