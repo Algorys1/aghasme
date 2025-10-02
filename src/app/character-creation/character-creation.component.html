@@ -1,85 +1,76 @@
 <div class="creation-container">
-  <h2>Create your character</h2>
+  <h2>Création de personnage</h2>
 
-  <label>
-    Name:
-    <input [(ngModel)]="name" placeholder="Hero name" />
-  </label>
+  <!-- Nom du personnage -->
+  <div class="name-input">
+    <label for="name">Nom</label>
+    <input id="name" type="text" [(ngModel)]="name" placeholder="Entrez le nom du héros" />
+  </div>
 
-  <label>
-    Class:
-    <select [(ngModel)]="archetype">
-      <option value="warrior">Warrior</option>
-      <option value="mage">Mage</option>
-      <option value="engineer">Engineer</option>
-      <option value="scout">Scout</option>
-    </select>
-  </label>
-
-  <p class="points">Remaining points: {{ remainingPoints }}</p>
-
-  <!-- Cercle central -->
-  <div class="orb-circle">
-    <svg class="circle-bg" viewBox="0 0 200 200">
-      <circle cx="100" cy="100" r="90" />
-    </svg>
-
-    <!-- Strength -->
-    <div class="orb-container strength">
-      <div class="orb">
-        <img src="assets/ui/orb-strength.png" alt="Strength" />
-        <span>{{ strength }}</span>
-
-        <button class="btn right" (click)="increase('strength')">+</button>
-        <button class="btn left" (click)="decrease('strength')">-</button>
-        <button class="btn top info" (click)="showInfo('strength')">i</button>
+  <!-- Sélection d'archetype -->
+  <h3>Choisissez un archétype</h3>
+  <div class="archetype-grid">
+    @for (type of archetypes; track type) {
+      <div
+        (click)="selectArchetype(type)"
+        [class.selected]="selectedArchetype === type"
+        class="archetype-card">
+        <img [src]="assetFor(type)" [alt]="type" />
+        <p>{{ type | titlecase }}</p>
       </div>
+    }
+  </div>
+
+  <!-- Attribution des stats -->
+  <h3>Répartissez vos points</h3>
+  <p class="remaining">Points restants : {{ remainingPoints }}</p>
+
+  <div class="stats">
+    <!-- Strength -->
+    <div class="stat">
+      <span class="label">
+        <img src="assets/ui/orb-strength.png" alt="Strength orb" />
+        Strength
+      </span>
+      <button (click)="decreaseStat('strength')">-</button>
+      <span class="value">{{ stats.strength }}</span>
+      <button (click)="increaseStat('strength')">+</button>
     </div>
 
     <!-- Essence -->
-    <div class="orb-container essence">
-      <div class="orb">
-        <img src="assets/ui/orb-essence.png" alt="Essence" />
-        <span>{{ essence }}</span>
-
-        <button class="btn top" (click)="increase('essence')">+</button>
-        <button class="btn bottom" (click)="decrease('essence')">-</button>
-        <button class="btn right info" (click)="showInfo('essence')">i</button>
-      </div>
+    <div class="stat">
+      <span class="label">
+        <img src="assets/ui/orb-essence.png" alt="Essence orb" />
+        Essence
+      </span>
+      <button (click)="decreaseStat('essence')">-</button>
+      <span class="value">{{ stats.essence }}</span>
+      <button (click)="increaseStat('essence')">+</button>
     </div>
 
     <!-- Mechanic -->
-    <div class="orb-container mechanic">
-      <div class="orb">
-        <img src="assets/ui/orb-mechanic.png" alt="Mechanic" />
-        <span>{{ mechanic }}</span>
-
-        <button class="btn right" (click)="increase('mechanic')">+</button>
-        <button class="btn left" (click)="decrease('mechanic')">-</button>
-        <button class="btn bottom info" (click)="showInfo('mechanic')">i</button>
-      </div>
+    <div class="stat">
+      <span class="label">
+        <img src="assets/ui/orb-mechanic.png" alt="Mechanic orb" />
+        Mechanic
+      </span>
+      <button (click)="decreaseStat('mechanic')">-</button>
+      <span class="value">{{ stats.mechanic }}</span>
+      <button (click)="increaseStat('mechanic')">+</button>
     </div>
 
     <!-- Spirit -->
-    <div class="orb-container spirit">
-      <div class="orb">
-        <img src="assets/ui/orb-spirit.png" alt="Spirit" />
-        <span>{{ spirit }}</span>
-
-        <button class="btn top" (click)="increase('spirit')">+</button>
-        <button class="btn bottom" (click)="decrease('spirit')">-</button>
-        <button class="btn left info" (click)="showInfo('spirit')">i</button>
-      </div>
+    <div class="stat">
+      <span class="label">
+        <img src="assets/ui/orb-spirit.png" alt="Spirit orb" />
+        Spirit
+      </span>
+      <button (click)="decreaseStat('spirit')">-</button>
+      <span class="value">{{ stats.spirit }}</span>
+      <button (click)="increaseStat('spirit')">+</button>
     </div>
   </div>
 
-  <!-- Zone fixe d’explication -->
-  <div class="stat-info" *ngIf="infoContent">
-    <h4>{{ infoContent.title }}</h4>
-    <p>{{ infoContent.description }}</p>
-    <button class="close-btn" (click)="closeInfo()">Close</button>
-  </div>
-
-  <button class="start-btn" (click)="create()">Start adventure</button>
-
+  <!-- Bouton de validation -->
+  <button class="create-btn" (click)="onCreateCharacter()">Commencer l'aventure</button>
 </div>

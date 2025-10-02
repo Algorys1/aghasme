@@ -1,104 +1,87 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CharacterService } from '../services/character.service';
-import { PlayerService } from '../services/player.service';
-import { Character } from '../models/character.model';
-import { LucideAngularModule, Dumbbell, Leaf, Cog, Brain } from 'lucide-angular';
+import { Archetype, NewCharacterInput } from '../models/character.model';
+import { CHARACTER_ASSETS } from '../models/characters-assets';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-character-creation',
-  standalone: true,
-  imports: [CommonModule, FormsModule, LucideAngularModule],
   templateUrl: './character-creation.component.html',
-  styleUrls: ['./character-creation.component.scss']
+  styleUrls: ['./character-creation.component.scss'],
+  imports: [FormsModule, CommonModule]
 })
 export class CharacterCreationComponent {
-  name = '';
-  archetype: Character['archetype'] = 'warrior';
+  archetypes = Object.keys(CHARACTER_ASSETS) as Archetype[];
+  CHARACTER_ASSETS = CHARACTER_ASSETS;
 
-  strength = 2;
-  essence = 2;
-  mechanic = 2;
-  spirit = 2;
+  name: string = '';
+  selectedArchetype: Archetype = 'beast';
 
-  points = 9;
+  // points à répartir
+  totalPoints: number = 20;
+  remainingPoints: number = this.totalPoints;
 
-  infoContent: { title: string, description: string } | null = null;
+  stats = {
+    strength: 2,
+    essence: 2,
+    mechanic: 2,
+    spirit: 2
+  }
+
+  statKeys: Array<'strength' | 'essence' | 'mechanic' | 'spirit'> = [
+    'strength',
+    'essence',
+    'mechanic',
+    'spirit'
+  ];
+  
 
   constructor(
     private characterService: CharacterService,
-    private playerService: PlayerService,
     private router: Router
   ) {}
 
-  get remainingPoints(): number {
-    return this.points;
+  selectArchetype(type: Archetype) {
+    this.selectedArchetype = type;
   }
 
-  orbDescriptions: Record<string, { title: string, description: string }> = {
-    strength: {
-      title: 'Strength',
-      description: 'Increases physical power, melee damage and carrying capacity.'
-    },
-    essence: {
-      title: 'Essence',
-      description: 'Represents magical energy. More essence improves spell casting.'
-    },
-    mechanic: {
-      title: 'Mechanic',
-      description: 'Boosts your engineering skills and efficiency with machines.'
-    },
-    spirit: {
-      title: 'Spirit',
-      description: 'Reflects willpower and intuition. Useful for survival and perception.'
-    }
-  };
-
-  showInfo(kind: string) {
-    this.infoContent = this.orbDescriptions[kind];
-  }
-  
-  closeInfo() {
-    this.infoContent = null;
+  assetFor(a: Archetype): string {
+    return this.CHARACTER_ASSETS[a];
   }
 
-  increase(stat: 'strength' | 'essence' | 'mechanic' | 'spirit') {
-    if (this.points > 0) {
-      this[stat]++;
-      this.points--;
+  increaseStat(stat: 'strength' | 'essence' | 'mechanic' | 'spirit') {
+    if (this.remainingPoints > 0) {
+      this.stats[stat]++;
+      this.remainingPoints--;
     }
   }
 
-  decrease(stat: 'strength' | 'essence' | 'mechanic' | 'spirit') {
-    if (this[stat] > 2) {
-      this[stat]--;
-      this.points++;
+  decreaseStat(stat: 'strength' | 'essence' | 'mechanic' | 'spirit') {
+    if (this.stats[stat] > 1) {
+      this.stats[stat]--;
+      this.remainingPoints++;
     }
   }
 
-  create() {
-    if (this.points > 0 && !this.name) {
-      alert('You must use all points before starting!');
+  onCreateCharacter() {
+    if (!this.name || this.remainingPoints > 0) {
+      alert('Donne un nom et utilise tous les points avant de continuer !');
       return;
     }
 
-    const character = this.characterService.createCharacter({
-      name: this.name || 'Hero',
-      archetype: this.archetype,
-      strength: this.strength,
-      essence: this.essence,
-      mechanic: this.mechanic,
-      spirit: this.spirit,
-      skills: []
-    });
+    const newChar: NewCharacterInput = {
+      name: this.name,
+      archetype: this.selectedArchetype,
+      strength: this.stats.strength,
+      essence: this.stats.essence,
+      mechanic: this.stats.mechanic,
+      spirit: this.stats.spirit
+    };
 
-    this.playerService.initPlayer(character);
+    this.characterService.createCharacter(newChar);
     this.characterService.saveToStorage();
-
-    this.router.navigate(['/game'], {
-      state: { character, map: 'Map1' }
-    });
+    this.router.navigate(['/game']);
   }
 }

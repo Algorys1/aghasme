@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { Application, Container, Sprite, Assets, Texture, Graphics } from 'pixi.js';
+import { Application, Container, Sprite, Assets, Texture, SCALE_MODES } from 'pixi.js';
 import { createTile, Terrain } from '../factories/tile.factory';
 import { overlayActions } from '../models/overlay-actions';
 import { OverlayKind } from '../models/overlay-types';
@@ -31,11 +31,9 @@ export class MapService {
 
   // === initMap ===
   async initMap(canvasId: string, mapRadius: number): Promise<void> {
-    // Find canvas element
     const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
     if (!canvas) throw new Error('Canvas introuvable !');
 
-    // create app and init (renderer exists after init)
     this.app = new Application();
     await this.app.init({
       resizeTo: canvas.parentElement!,
@@ -43,17 +41,15 @@ export class MapService {
       canvas
     });
 
-    // load textures (terrain + player)
+    // load textures (terrain + player + overlays)
     await this.loadTextures();
     await this.loadIconTextures();
 
-    // create map container and build the map
     this.mapContainer = new Container();
     this.app.stage.addChild(this.mapContainer);
 
     this.buildMap(mapRadius);
 
-    // create player sprite (uses player texture)
     this.player = new Sprite(this.textures['player']);
     this.player.anchor.set(0.5);
     this.player.width = this.size * 1.2;
@@ -61,29 +57,30 @@ export class MapService {
     this.mapContainer.addChild(this.player);
     this.updatePlayerPosition();
 
-    // center and visibility
     this.centerCamera(false);
     this.updateVisibility();
 
-    // on resize, recenter (mapContainer uses app.screen which is updated automatically)
     window.addEventListener('resize', () => {
       this.centerCamera(false);
     });
   }
 
-  // === textures loading ===
+  // === textures loading (tuiles depuis tiles.json) ===
   private async loadTextures() {
-    this.textures = {
-      plain: await Assets.load('assets/tiles/plain.png'),
-      forest: await Assets.load('assets/tiles/forest.png'),
-      desert: await Assets.load('assets/tiles/desert.png'),
-      mountain: await Assets.load('assets/tiles/mountain.png'),
-      water: await Assets.load('assets/tiles/water.png'),
-      fog: await Assets.load('assets/tiles/fog.png'),
-      player: await Assets.load('assets/player.png') // assure-toi que ce fichier existe
-    };
+    // Charger le manifest
+    const manifest = await fetch('assets/tiles/tiles.json').then(res => res.json());
+
+    const textures: Record<string, Texture> = {};
+    for (const [key, path] of Object.entries(manifest)) {
+      textures[key] = await Assets.load(path as string);
+    }
+
+    // Ajouter le player aussi
+    textures['player'] = await Assets.load('assets/player.png');
+
+    this.textures = textures;
   }
-  
+
   private async loadIconTextures() {
     this.iconTextures = {
       city: await Assets.load('assets/overlays/city.png'),
@@ -92,7 +89,7 @@ export class MapService {
     };
   }
 
-  // === overlay management (Pixi sprites) ===
+  // === overlay management ===
   addOverlay(q: number, r: number, kind: OverlayKind) {
     if (!this.mapContainer) return;
 
@@ -101,7 +98,6 @@ export class MapService {
     const tex = this.iconTextures[kind];
     if (!tex) return;
 
-    // On crée le sprite
     const s = new Sprite(tex);
     s.anchor.set(0.5);
     s.x = x;
@@ -111,11 +107,9 @@ export class MapService {
 
     this.mapContainer.addChild(s);
 
-    // On enregistre le sprite pour pouvoir le gérer plus tard
     if (!this.overlaySprites[key]) this.overlaySprites[key] = [];
     this.overlaySprites[key].push(s);
 
-    // Et on garde aussi le type d’overlay
     if (!this.overlayTypes[key]) this.overlayTypes[key] = [];
     this.overlayTypes[key].push(kind);
   }
@@ -134,15 +128,12 @@ export class MapService {
     }
     return OverlayKind.None;
   }
-  
-  
+
   getActiveActions(): string[] {
     if (!this.activeOverlay) return [];
     return overlayActions[this.activeOverlay] ?? [];
   }
 
-
-  // optional: remove overlays at tile
   removeOverlays(q: number, r: number) {
     const key = `${q},${r}`;
     const arr = this.overlaySprites[key];
@@ -168,7 +159,6 @@ export class MapService {
 
   private buildMap(mapRadius: number) {
     const N = mapRadius;
-    // clear previous tiles if any
     this.tiles = {};
 
     for (let q = -N; q <= N; q++) {
@@ -221,7 +211,7 @@ export class MapService {
         const key = `${q},${r}`;
         const overlays = this.overlayTypes[key] || [];
         this.activeOverlay = overlays.length > 0 ? overlays[0] : OverlayKind.None;
-        
+
         this.overlayChange.next(this.activeOverlay);
 
         return;

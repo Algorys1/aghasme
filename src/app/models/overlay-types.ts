@@ -1,5 +1,5 @@
 export enum OverlayKind {
-  None = 'none', // <-- default kind
+  None = 'None', // <-- default kind
 
   // Encounters
   Monster = 'monster',

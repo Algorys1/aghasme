@@ -1,0 +1,9 @@
+{
+    "plain": "assets/tiles/plain.png",
+    "desert": "assets/tiles/desert.png",
+    "forest": "assets/tiles/forest.png",
+    "water": "assets/tiles/water.png",
+    "mountain": "assets/tiles/mountain.png",
+    "fog": "assets/tiles/fog.png"
+  }
+  

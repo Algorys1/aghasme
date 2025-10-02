@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Character, NewCharacterInput } from '../models/character.model';
+import { Character, NewCharacterInput, Archetype } from '../models/character.model';
+import { CHARACTER_ASSETS } from '../models/characters-assets';
 
 @Injectable({ providedIn: 'root' })
 export class CharacterService {
@@ -8,7 +9,7 @@ export class CharacterService {
   createCharacter(data: NewCharacterInput): Character {
     this.character = {
       name: data.name,
-      archetype: data.archetype ?? 'warrior',
+      archetype: data.archetype ?? 'beast',
       level: data.level ?? 1,
       xp: data.xp ?? 0,
       hp: data.hp ?? 100,
@@ -45,5 +46,9 @@ export class CharacterService {
     const saved = localStorage.getItem('character');
     this.character = saved ? JSON.parse(saved) : null;
     return this.character;
+  }
+
+  getCharacterAsset(archetype: Archetype): string {
+    return CHARACTER_ASSETS[archetype];
   }
 }
