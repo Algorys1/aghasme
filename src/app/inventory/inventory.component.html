@@ -1,0 +1,47 @@
+<div class="inventory-container">
+  <h2>Inventory</h2>
+
+  <div
+    class="grid"
+    [style.grid-template-columns]="'repeat(' + cols + ', minmax(48px, 64px))'"
+    [style.grid-template-rows]="'repeat(' + rows + ', minmax(48px, 64px))'"
+  >
+    @for (slot of [].constructor(rows * cols); let i = $index; track i) {
+      <div
+        class="slot"
+        (mouseenter)="!isMobile && getItemAt(i) && showTooltip(getItemAt(i)!, $event)"
+        (click)="isMobile && getItemAt(i) && showTooltip(getItemAt(i)!, $event)"
+      >
+        @if (getItemAt(i)) {
+          <img [src]="getItemAt(i)!.icon" alt="{{ getItemAt(i)!.name }}" />
+          @if (getItemAt(i)!.count) {
+            <span class="count">x{{ getItemAt(i)!.count }}</span>
+          }
+        }
+      </div>
+    }
+  </div>
+
+  @if (tooltipVisible) {
+    <!-- Backdrop pour fermer en cliquant à l'extérieur -->
+    <div class="backdrop" (click)="hideTooltip()"></div>
+
+    <!-- Tooltip -->
+    <div
+      class="tooltip"
+      [class.mobile]="isMobile"
+      [style.top.px]="!isMobile ? tooltipY : null"
+      [style.left.px]="!isMobile ? tooltipX : null"
+    >
+      <strong>{{ tooltipItem?.name }}</strong>
+      <p>{{ tooltipItem?.description }}</p>
+
+      @if (tooltipItem?.type === 'Consumable' || tooltipItem?.type === 'Utility') {
+        <button (click)="use(tooltipItem!)">Use</button>
+      }
+      <button (click)="remove(tooltipItem!)">Remove</button>
+
+      <button class="close" (click)="hideTooltip()">Close</button>
+    </div>
+  }
+</div>

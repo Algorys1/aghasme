@@ -4,11 +4,13 @@ import { GameComponent } from './game/game.component';
 import { StartGameComponent } from './start-game/start-game.component';
 import { CharacterCreationComponent } from './character-creation/character-creation.component';
 import { CharacterGuard } from './guards/character.guard';
+import { InventoryComponent } from './inventory/inventory.component';
 
 export const routes: Routes = [
   { path: '', component: HomeScreenComponent },
   { path: 'start', component: StartGameComponent },
   { path: 'create-character', component: CharacterCreationComponent },
   { path: 'game', component: GameComponent, canActivate: [CharacterGuard] },
+  { path: 'inventory', component: InventoryComponent },
   { path: '**', redirectTo: '' } // fallback
 ];
