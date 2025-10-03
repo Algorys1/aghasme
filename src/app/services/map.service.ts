@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { createNoise2D } from 'simplex-noise'; // installe via npm install simplex-noise
+
 
 import { Application, Container, Sprite, Assets, Texture } from 'pixi.js';
 import { createTile, Terrain } from '../factories/tile.factory';
@@ -16,12 +18,17 @@ export class MapService {
   private mapContainer!: Container;
   private tiles: Record<string, { gfx: Container; terrain: Terrain; discovered: boolean }> = {};
   private size = 80;
+
+  private noiseAltitude = createNoise2D();
+  private noiseHumidity = createNoise2D();
+
+  private scaleAltitude = 0.05;
+  private scaleHumidity = 0.05;
+  
   private mapRadius: number = 4;
 
   private player!: Sprite;
   private playerPos = { q: 0, r: 0 };
-
-  private terrains: Terrain[] = ['plain', 'forest', 'desert', 'mountain', 'water'];
 
   private textures: Record<string, Texture> = {} as any;
   private overlaySprites: Record<string, Sprite[]> = {};
@@ -65,12 +72,13 @@ export class MapService {
     this.app.stage.addChild(this.mapContainer);
     this.mapRadius = mapRadius;
 
-    if (seed !== undefined) {
-      this.seed = seed;
-    } else {
-      this.seed = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-    }
-    this.randState = this.seed; // initialise le générateur pseudo-aléatoire
+    this.seed = seed !== undefined ? seed : Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+    this.randState = this.seed;
+    
+    // --- Link noise to seed ---
+    this.noiseAltitude = createNoise2D(() => this.nextRand());
+    this.noiseHumidity = createNoise2D(() => this.nextRand());
+    
     this.buildMap(mapRadius);
 
     this.player = new Sprite(this.textures['player']);
@@ -95,6 +103,23 @@ export class MapService {
     window.addEventListener('resize', () => {
       this.centerCamera(false);
     });
+  }
+
+  // --- noise -> terrain ---
+  private generateTerrain(q: number, r: number): Terrain {
+    const altRaw = this.noiseAltitude(q * this.scaleAltitude, r * this.scaleAltitude);
+    const humRaw = this.noiseHumidity(q * this.scaleHumidity, r * this.scaleHumidity);
+
+    const altitude = (altRaw + 1) / 2; // 0..1
+    const humidity = (humRaw + 1) / 2; // 0..1
+
+    if (altitude < 0.30) return 'water';
+    if (altitude > 0.75) return 'mountain';
+
+    if (humidity < 0.30) return 'desert';
+    if (humidity < 0.60) return 'plain';
+    if (humidity < 0.85) return 'forest';
+    return 'jungle';
   }
 
   // === textures loading ===
@@ -168,21 +193,19 @@ export class MapService {
     return { x, y };
   }
 
-  private randomTerrain(): Terrain {
-    const index = Math.floor(this.nextRand() * this.terrains.length);
-    return this.terrains[index];
-  }
-
   private buildMap(mapRadius: number) {
     const N = mapRadius;
     this.tiles = {};
-
+  
     for (let q = -N; q <= N; q++) {
       for (let r = -N; r <= N; r++) {
         const s = -q - r;
         if (Math.abs(q) <= N && Math.abs(r) <= N && Math.abs(s) <= N) {
           const { x, y } = this.hexToPixel(q, r);
-          const terrain = this.randomTerrain();
+          
+          // 🔄 on remplace randomTerrain() par generateTerrain()
+          const terrain = this.generateTerrain(q, r);
+  
           const tile = createTile({
             x, y,
             size: this.size,
@@ -191,9 +214,9 @@ export class MapService {
             textures: this.textures,
             onClick: () => this.movePlayer(q, r)
           });
-
+  
           this.tiles[`${q},${r}`] = { gfx: tile, terrain, discovered: false };
-
+  
           const overlay = this.pickOverlayForTerrain(terrain);
           if (overlay !== OverlayKind.None) {
             this.addOverlay(q, r, overlay);
@@ -201,7 +224,7 @@ export class MapService {
         }
       }
     }
-  }
+  }  
 
   // === player & camera ===
   private updatePlayerPosition() {
@@ -292,6 +315,7 @@ export class MapService {
       case 'forest': return 'A dense, yet warm forest. You could hear the animals slithering through the flora.';
       case 'desert': return 'You\'re dying of heat in this desert, but where\'s the next watering hole?';
       case 'mountain': return 'These mountains are endless! The wind whistling in your ears will drive you crazy...';
+      case 'jungle': return 'This jungle is impenetrable and your feet are soaking wet! It would be less of a pain without the mosquitoes.';
       case 'water': return 'Water, water as far as the eye can see. You\'re starting to miss land, can\'t wait for the next port.';
       default: return 'Unknown lands';
     }

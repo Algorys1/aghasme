@@ -4,6 +4,7 @@
     "forest": "assets/tiles/forest.png",
     "water": "assets/tiles/water.png",
     "mountain": "assets/tiles/mountain.png",
+    "jungle": "assets/tiles/jungle.png",
     "fog": "assets/tiles/fog.png"
   }
   

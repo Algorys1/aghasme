@@ -34,5 +34,11 @@ export const overlayPools: Record<Terrain, { kind: OverlayKind; weight: number }
     { kind: OverlayKind.None, weight: 80 },
     { kind: OverlayKind.Merchant, weight: 5 },
     { kind: OverlayKind.Treasure, weight: 2 }
+  ],
+  jungle: [
+    { kind: OverlayKind.None, weight: 50 },
+    { kind: OverlayKind.Treasure, weight: 4 },
+    { kind: OverlayKind.Monster, weight: 25 },
+    { kind: OverlayKind.Ruins, weight: 10 }
   ]
 };

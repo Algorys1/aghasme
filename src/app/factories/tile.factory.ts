@@ -1,6 +1,6 @@
 import { Container, Sprite, Texture } from 'pixi.js';
 
-export type Terrain = 'plain' | 'forest' | 'desert' | 'mountain' | 'water';
+export type Terrain = 'plain' | 'forest' | 'desert' | 'mountain' | 'water' | 'jungle';
 export type AllTerrains = Terrain | 'fog';
 
 export interface TileOptions {
