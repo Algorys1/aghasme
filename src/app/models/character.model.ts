@@ -27,10 +27,10 @@ export interface Character {
   orbs: Orbs;
 
   /** Champs legacy conservés pour compat (saves anciens) */
-  strength?: number; // ≈ natural (ancien)
-  essence?: number;  // ≈ elemental
-  mechanic?: number; // ≈ mechanic
-  spirit?: number;   // ≈ bestial
+  strength?: number;
+  essence?: number;
+  mechanic?: number;
+  spirit?: number;
 
   skills: string[];
   inventory: string[];

@@ -25,11 +25,11 @@ export class StartGameComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.hasSave = this.saveService.hasSave('last');
+    this.hasSave = this.saveService.hasSave('autosave');
   }
 
   continueGame() {
-    const state = this.saveService.loadGame('last');
+    const state = this.saveService.loadGame('autosave');
     if (!state) {
       alert('Aucune sauvegarde trouvée.');
       this.hasSave = false;

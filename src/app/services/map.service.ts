@@ -5,6 +5,8 @@ import { Application, Container, Sprite, Assets, Texture } from 'pixi.js';
 import { createTile, Terrain } from '../factories/tile.factory';
 import { OverlayKind } from '../models/overlay-types';
 import { overlayPools } from '../models/overlay-pools';
+import { CHARACTER_ASSETS } from '../models/characters-assets';
+import { CharacterService } from './character.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +36,9 @@ export class MapService {
 
   private seed: number = Date.now();
   private randState = 1;
+
+  constructor(private characterService: CharacterService) {}
+
   private nextRand(): number {
     // LCG (Linear Congruential Generator)
     this.randState = (this.randState * 48271) % 0x7fffffff;
@@ -54,6 +59,7 @@ export class MapService {
 
     await this.loadTextures();
     await this.loadIconTextures();
+    await this.loadPlayerTexture();
 
     this.mapContainer = new Container();
     this.app.stage.addChild(this.mapContainer);
@@ -98,8 +104,17 @@ export class MapService {
     for (const [key, path] of Object.entries(manifest)) {
       textures[key] = await Assets.load(path as string);
     }
-    textures['player'] = await Assets.load('assets/player.png');
     this.textures = textures;
+  }
+
+  private async loadPlayerTexture() {
+    const char = this.characterService.getCharacter();
+    if (!char) {
+      throw new Error("Aucun personnage disponible pour charger la texture du joueur");
+    }
+    const path = CHARACTER_ASSETS[char.archetype];
+    
+    this.textures['player'] = await Assets.load(path);
   }
 
   private async loadIconTextures() {
@@ -273,12 +288,12 @@ export class MapService {
 
   private describeTerrain(terrain: Terrain): string {
     switch (terrain) {
-      case 'plain': return 'Une vaste plaine ouverte.';
-      case 'forest': return 'Une forêt dense.';
-      case 'desert': return 'Un désert aride.';
-      case 'mountain': return 'De hautes montagnes.';
-      case 'water': return 'Un lac ou une mer calme.';
-      default: return 'Terrain inconnu.';
+      case 'plain': return 'A vast plain, punctuated here and there with stones and emerging trees';
+      case 'forest': return 'A dense, yet warm forest. You could hear the animals slithering through the flora.';
+      case 'desert': return 'You\'re dying of heat in this desert, but where\'s the next watering hole?';
+      case 'mountain': return 'These mountains are endless! The wind whistling in your ears will drive you crazy...';
+      case 'water': return 'Water, water as far as the eye can see. You\'re starting to miss land, can\'t wait for the next port.';
+      default: return 'Unknown lands';
     }
   }
 

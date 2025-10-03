@@ -20,14 +20,14 @@ export class CharacterCreationComponent {
   selectedArchetype: Archetype = 'beast';
 
   // points à répartir
-  totalPoints: number = 20;
+  totalPoints: number = 12;
   remainingPoints: number = this.totalPoints;
 
   stats = {
-    strength: 2,
-    essence: 2,
-    mechanic: 2,
-    spirit: 2
+    strength: 8,
+    essence: 8,
+    mechanic: 8,
+    spirit: 8
   }
 
   statKeys: Array<'strength' | 'essence' | 'mechanic' | 'spirit'> = [

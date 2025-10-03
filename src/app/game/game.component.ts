@@ -44,6 +44,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.character = this.player.getCharacter();
+    console.log('[Character OnInit]', this.character?.archetype);
+
     if (!this.character) {
       this.router.navigate(['/start']);
       return;
@@ -64,7 +66,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async ngAfterViewInit() {
-    const last = this.saveService.loadGame('last');
+    const last = this.saveService.loadGame('auto');
 
     if (last && last.map) {
       await this.mapService.loadMapState(last.map, 'myCanvas', 4);
@@ -117,7 +119,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   private autoSave() {
     const full = this.buildFullState();
     if (!full) return;
-    this.saveService.saveGame(full, 'last');
+    this.saveService.saveGame(full, 'autosave');
   }
 
   openPauseMenu() { this.pauseMenuOpen = true; }

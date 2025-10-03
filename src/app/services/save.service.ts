@@ -5,22 +5,19 @@ import { GameState } from '../models/game-state.model';
 export class SaveService {
   private storageKey = 'aghasme_saves';
 
-  /** Sauve le jeu dans un slot (par défaut: "last") */
-  saveGame(state: GameState, slot: string = 'last'): void {
+  saveGame(state: GameState, slot: string = 'autosave'): void {
     const saves = this.loadAllSaves();
     saves[slot] = state;
     localStorage.setItem(this.storageKey, JSON.stringify(saves));
     console.log(`[SaveService] saved to slot "${slot}"`, state);
   }
 
-  /** Charge un slot (par défaut: "last") */
-  loadGame(slot: string = 'last'): GameState | null {
+  loadGame(slot: string = 'autosave'): GameState | null {
     const saves = this.loadAllSaves();
     return saves[slot] ?? null;
   }
 
-  /** Indique si un slot existe (par défaut: "last") */
-  hasSave(slot: string = 'last'): boolean {
+  hasSave(slot: string = 'autosave'): boolean {
     return this.loadGame(slot) !== null;
   }
 

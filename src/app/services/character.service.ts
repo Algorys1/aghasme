@@ -11,6 +11,7 @@ export class CharacterService {
 
   /** Création (ou remplacement) du personnage */
   createCharacter(data: NewCharacterInput): Character {
+    console.log('[Creation input]', data);
     const level = data.level ?? 1;
     const baseMaxHp = data.maxHp ?? 100;
     const baseMaxMp = data.maxMp ?? 30;
@@ -44,6 +45,7 @@ export class CharacterService {
       skills: data.skills ?? [],
       inventory: data.inventory ?? [],
     };
+    console.log('[Character created]', this.character.archetype);
 
     this.saveToStorage();
     return this.character;
