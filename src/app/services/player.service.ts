@@ -1,32 +1,63 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Character } from '../models/character.model';
 import { CharacterService } from './character.service';
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
-  private character: Character | null = null;
-  actions = ['Attaquer', 'Explorer', 'Inventaire'];
+  private characterSub!: BehaviorSubject<Character | null>;
+  character$!: Observable<Character | null>;
 
   constructor(private characterService: CharacterService) {
-    this.character = this.characterService.getCharacter();
+    const initChar = this.characterService.getCharacter();
+    this.characterSub = new BehaviorSubject<Character | null>(initChar);
+    this.character$ = this.characterSub.asObservable();
   }
 
-  initPlayer(character: Character) { this.character = character; }
+  initPlayer(character: Character) {
+    this.characterService.setCharacter(character);
+    this.refresh();
+  }
+  
+  get character(): Character | null { return this.characterSub.getValue(); }
 
+  // Getters pratiques pour le template
   get hp() { return this.character?.hp ?? 0; }
+  get maxHp() { return this.character?.maxHp ?? 0; }
+  get mp() { return this.character?.mp ?? 0; }
+  get maxMp() { return this.character?.maxMp ?? 0; }
   get xp() { return this.character?.xp ?? 0; }
+  get gold() { return this.character?.gold ?? 0; }
+
+  setCharacter(c: Character) { 
+    this.characterService.setCharacter(c); this.refresh(); 
+  }
+  refresh() { 
+    this.characterSub.next(this.characterService.getCharacter()); 
+  }
 
   takeDamage(amount: number) {
-    if (!this.character) return;
-    this.character.hp = Math.max(0, this.character.hp - amount);
-    this.characterService.saveToStorage();
+    this.characterService.takeDamage(amount); this.refresh(); 
   }
-
+  heal(amount: number) {
+    this.characterService.heal(amount); this.refresh();
+  }
+  spendMP(amount: number) {
+    const ok = this.characterService.spendMP(amount); this.refresh(); 
+    return ok;
+  }
   gainXP(amount: number) {
-    if (!this.character) return;
-    this.characterService.addXP(amount);
-    this.characterService.saveToStorage();
+    this.characterService.addXP(amount); this.refresh(); 
+  }
+  gainGold(amount: number) {
+    this.characterService.gainGold(amount); this.refresh();
+  }
+  spendGold(amount: number) {
+    const ok = this.characterService.spendGold(amount); this.refresh(); 
+    return ok;
   }
 
-  getCharacter() { return this.character; }
+  getCharacter(): Character | null {
+    return this.characterService.getCharacter();
+  }
 }

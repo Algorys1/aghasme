@@ -25,7 +25,8 @@ export class MapService {
   private overlaySprites: Record<string, Sprite[]> = {};
   private overlayTypes: Record<string, OverlayKind[]> = {};
   private activeOverlay: OverlayKind | null = null;
-  overlayChange = new Subject<OverlayKind | null>();
+  overlayChange = new Subject<OverlayKind>();
+  tileChange = new Subject<{ type: string; description?: string }>();
 
   private iconTextures: Record<string, Texture> = {} as any;
 
@@ -56,6 +57,16 @@ export class MapService {
     this.player.height = this.size * 1.2;
     this.mapContainer.addChild(this.player);
     this.updatePlayerPosition();
+
+    const key = `${this.playerPos.q},${this.playerPos.r}`;
+    const tileData = this.tiles[key];
+    if (tileData) {
+      // notifier la tuile de départ
+      this.tileChange.next({
+        type: tileData.terrain,
+        description: this.describeTerrain(tileData.terrain)
+      });
+    }
 
     this.centerCamera(false);
     this.updateVisibility();
@@ -214,6 +225,14 @@ export class MapService {
 
         this.overlayChange.next(this.activeOverlay);
 
+        const tileData = this.tiles[`${q},${r}`];
+        if (tileData) {
+          this.tileChange.next({
+            type: tileData.terrain,
+            description: this.describeTerrain(tileData.terrain)
+          });
+        }
+
         return;
       }
     }
@@ -262,5 +281,16 @@ export class MapService {
 
   private hexDistance(a: { q: number, r: number }, b: { q: number, r: number }) {
     return (Math.abs(a.q - b.q) + Math.abs(a.q + a.r - b.q - b.r) + Math.abs(a.r - b.r)) / 2;
+  }
+
+  private describeTerrain(terrain: Terrain): string {
+    switch (terrain) {
+      case 'plain': return 'Une vaste plaine ouverte.';
+      case 'forest': return 'Une forêt dense.';
+      case 'desert': return 'Un désert aride.';
+      case 'mountain': return 'De hautes montagnes.';
+      case 'water': return 'Un lac ou une mer calme.';
+      default: return 'Terrain inconnu.';
+    }
   }
 }

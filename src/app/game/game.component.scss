@@ -1,67 +1,178 @@
 .game-container {
-  position: relative;
+  position: fixed; inset: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 
   canvas {
     width: 100%;
     height: 100%;
     display: block;
-  }
-
-  .hud {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
-    padding: 0.5rem 1rem;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    border-radius: 8px;
-    font-size: 0.9rem;
+    top: 0;
+    left: 0;
+    z-index: 0; // canvas toujours au fond
+  }
 
-    h3 {
-      margin: 0 0 0.3rem;
-      font-size: 1rem;
-      color: #ffd700;
-    }
-
-    p {
-      margin: 0.2rem 0;
-    }
+  // ne garde absolute QUE pour le bloc global top et bottom
+  .hud-top,
+  .hud-bottom {
+    position: absolute;
+    z-index: 10;
   }
 }
 
-.action-panel {
+.hud-top {
   position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  z-index: 10;
+}
 
-  display: flex;
-  gap: 1rem;
+/* TOP LEFT: character summary */
+.hud-top-left {
+  background: rgba(8, 10, 14, 0.6);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 8px;
 
-  button {
-    padding: 0.8rem 1.2rem;
+  h3 {
+    margin: 0 0 6px 0;
     font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    background: #333;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
-    transition: background 0.2s, transform 0.2s;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+
+    .lvl { font-size: .85rem; opacity: .85; font-weight: 600; }
   }
 
-  button:hover {
-    background: #555;
-    transform: scale(1.05);
-  }
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 2px 0;
 
-  /* Mobile-friendly: ensure touch size */
-  button {
-    min-width: 80px;
-    min-height: 48px;
+    img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 2px rgba(0,0,0,.5));
+    }
   }
 }
 
+/* TOP RIGHT: orbs + quick buttons */
+.hud-top-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+
+  .orbs {
+    display: flex;
+    gap: 8px;
+
+    .orb {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+      font-weight: 600;
+      text-shadow: 0 1px 1px rgba(0,0,0,.5);
+
+      img { width: 32px; height: 32px; }
+    }
+  }
+
+  .hud-buttons {
+    display: flex;
+    gap: 8px;
+
+    .icon-btn {
+      background: rgba(8, 10, 14, 0.6);
+      border: none;
+      border-radius: 8px;
+      padding: 6px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+
+      &:hover { background: rgba(8,10,14,.75); }
+      img { width: 28px; height: 28px; }
+    }
+  }
+}
+
+/* BOTTOM HUD: info line + actions row */
+.hud-bottom {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  pointer-events: none; /* les clics passent à travers, sauf sur les boutons */
+
+  .hud-bottom-info {
+    width: min(980px, 92%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: rgba(8, 10, 14, 0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    pointer-events: auto;
+
+    .tile-info { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .overlay-info {
+      display: flex; align-items: center; gap: 8px;
+      .overlay-icon { width: 20px; height: 20px; }
+      .overlay-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .muted { opacity: .8; }
+    }
+
+    .muted { opacity: .8; }
+  }
+
+  .hud-bottom-actions {
+    width: min(980px, 92%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    pointer-events: auto;
+
+    .action {
+      background: rgba(8, 10, 14, 0.8);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.15);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .06s ease, background .2s ease;
+
+      &:active { transform: translateY(1px) scale(.98); }
+      &:hover { background: rgba(8,10,14,.9); }
+    }
+  }
+}
+
+/* Mobile tweaks */
+@media (max-width: 600px) {
+  .hud-top-left, .hud-top-right { font-size: .9rem; }
+  .hud-top-left { min-width: 170px; }
+
+  .hud-bottom .hud-bottom-info {
+    padding: 6px 8px;
+    .overlay-text { display: none; } // ultra-compact sur petits écrans
+  }
+}

@@ -1,20 +1,82 @@
 <div class="game-container">
-  <!-- Game canvas for Pixi.js -->
+  <!-- Game canvas -->
   <canvas id="myCanvas"></canvas>
 
-  <!-- HUD overlay (top-left) -->
-  <div class="hud">
-    <h3>{{ character.name }} (Lv {{ character.level }})</h3>
-    <p>HP: {{ character.hp }}</p>
-    <p>XP: {{ character.xp }}</p>
-    <p *ngIf="currentOverlay">You discovered a {{ currentOverlay }}!</p>
+  <div class="hud-top">
+    <!-- HUD Top Left -->
+    <div class="hud-top-left">
+      <h3>{{ character?.name }} <span class="lvl" >Lv {{ character?.level }}</span></h3>
+      <div class="stat"><img src="assets/ui/hp.png" alt="HP" /> <span>{{ character?.hp }} / {{ character?.maxHp }}</span></div>
+      <div class="stat"><img src="assets/ui/mana.png" alt="MP" /> <span>{{ character?.mp }} / {{ character?.maxMp }}</span></div>
+      <div class="stat"><img src="assets/ui/xp.png" alt="XP" /> 
+        <span>{{ character?.xp }}</span>
+      </div>
+      <div class="stat"><img src="assets/ui/gold.png" alt="Gold" /> <span>{{ character?.gold }}</span></div>
+    </div>
+  
+    <!-- HUD Top Right -->
+    <div class="hud-top-right">
+      <!-- Orbs row -->
+      <div class="orbs">
+        @for (orb of orbs; track orb.name) {
+          <div class="orb">
+            <img [src]="orb.icon" [alt]="orb.name" />
+            <span>{{ orb.value }}</span>
+          </div>
+        }
+        
+      </div>
+      <!-- Buttons row -->
+      <div class="hud-buttons">
+        <button class="icon-btn" (click)="openMap()" title="Map">
+          <img src="assets/ui/map.png" alt="Map" />
+        </button>
+        <button class="icon-btn" (click)="openBackpack()" title="Backpack">
+          <img src="assets/ui/backpack.png" alt="Backpack" />
+        </button>
+        <button class="icon-btn" (click)="openQuests()" title="Quests">
+          <img src="assets/ui/quests.png" alt="Quests" />
+        </button>
+        <button class="icon-btn" (click)="openSkills()" title="Skills">
+          <img src="assets/ui/skills.png" alt="Skills" />
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- Action panel (bottom center) -->
-  <div class="action-panel" *ngIf="actions.length > 0">
-    <button *ngFor="let action of actions" (click)="onAction(action)">
-      {{ action }}
-    </button>
-  </div>
 
+  <!-- HUD Bottom -->
+  <div class="hud-bottom">
+    <!-- First row: tile + overlay -->
+    <div class="hud-bottom-info">
+      <div class="tile-info">
+        <strong>{{ currentTile?.type || 'Unknown' }}</strong>
+        <span class="muted">— {{ currentTile?.description || '...' }}</span>
+      </div>
+
+      @if (currentOverlay && currentOverlay.icon) {
+        <div class="overlay-info">
+          <img class="overlay-icon" [src]="currentOverlay.icon" [alt]="currentOverlay.name" />
+          <div class="overlay-text">
+            <strong>{{ currentOverlay.name }}</strong>
+            @if (currentOverlay.description) {
+              <span class="muted">— {{ currentOverlay.description }}</span>
+            }
+          </div>
+        </div>
+      }
+
+    </div>
+
+    <!-- Second row: actions -->
+    @if (actions.length > 0) {
+      <div class="hud-bottom-actions">
+        @for (action of actions; track $index) {
+          <button class="action" (click)="onAction(action)">
+            {{ action }}
+          </button>
+        }
+      </div>
+    }    
+  </div>
 </div>
