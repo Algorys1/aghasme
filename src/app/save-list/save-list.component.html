@@ -1,0 +1,27 @@
+<div class="save-list">
+  <h1>Charger une partie</h1>
+
+  @if (saves.length === 0) {
+    <div class="no-save">
+      <p>No save available</p>
+    </div>
+  }
+
+  <ul>
+    @for (s of saves; track s.slot) {
+      <li>
+        <div class="slot-info">
+          <span class="slot-name">{{ s.slot }}</span>
+          <span class="slot-date">{{ s.state.timestamp | date:'short' }}</span>
+        </div>
+        <div class="slot-actions">
+          <button (click)="load(s.slot)">Load</button>
+          <button (click)="delete(s.slot)">Delete</button>
+        </div>
+      </li>
+    }
+  </ul>
+
+
+  <button class="back-btn" (click)="back()">Retour</button>
+</div>

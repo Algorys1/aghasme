@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { Application, Container, Sprite, Assets, Texture, SCALE_MODES } from 'pixi.js';
+import { Application, Container, Sprite, Assets, Texture } from 'pixi.js';
 import { createTile, Terrain } from '../factories/tile.factory';
-import { overlayActions } from '../models/overlay-actions';
 import { OverlayKind } from '../models/overlay-types';
 import { overlayPools } from '../models/overlay-pools';
 
@@ -15,6 +14,7 @@ export class MapService {
   private mapContainer!: Container;
   private tiles: Record<string, { gfx: Container; terrain: Terrain; discovered: boolean }> = {};
   private size = 80;
+  private mapRadius: number = 4;
 
   private player!: Sprite;
   private playerPos = { q: 0, r: 0 };
@@ -28,10 +28,20 @@ export class MapService {
   overlayChange = new Subject<OverlayKind>();
   tileChange = new Subject<{ type: string; description?: string }>();
 
+  playerMoved = new Subject<{ q: number; r: number }>();
+
   private iconTextures: Record<string, Texture> = {} as any;
 
+  private seed: number = Date.now();
+  private randState = 1;
+  private nextRand(): number {
+    // LCG (Linear Congruential Generator)
+    this.randState = (this.randState * 48271) % 0x7fffffff;
+    return this.randState / 0x7fffffff;
+  }
+
   // === initMap ===
-  async initMap(canvasId: string, mapRadius: number): Promise<void> {
+  async initMap(canvasId: string, mapRadius: number, seed?: number): Promise<void> {
     const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
     if (!canvas) throw new Error('Canvas introuvable !');
 
@@ -42,13 +52,19 @@ export class MapService {
       canvas
     });
 
-    // load textures (terrain + player + overlays)
     await this.loadTextures();
     await this.loadIconTextures();
 
     this.mapContainer = new Container();
     this.app.stage.addChild(this.mapContainer);
+    this.mapRadius = mapRadius;
 
+    if (seed !== undefined) {
+      this.seed = seed;
+    } else {
+      this.seed = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+    }
+    this.randState = this.seed; // initialise le générateur pseudo-aléatoire
     this.buildMap(mapRadius);
 
     this.player = new Sprite(this.textures['player']);
@@ -61,7 +77,6 @@ export class MapService {
     const key = `${this.playerPos.q},${this.playerPos.r}`;
     const tileData = this.tiles[key];
     if (tileData) {
-      // notifier la tuile de départ
       this.tileChange.next({
         type: tileData.terrain,
         description: this.describeTerrain(tileData.terrain)
@@ -76,19 +91,14 @@ export class MapService {
     });
   }
 
-  // === textures loading (tuiles depuis tiles.json) ===
+  // === textures loading ===
   private async loadTextures() {
-    // Charger le manifest
     const manifest = await fetch('assets/tiles/tiles.json').then(res => res.json());
-
     const textures: Record<string, Texture> = {};
     for (const [key, path] of Object.entries(manifest)) {
       textures[key] = await Assets.load(path as string);
     }
-
-    // Ajouter le player aussi
     textures['player'] = await Assets.load('assets/player.png');
-
     this.textures = textures;
   }
 
@@ -125,35 +135,15 @@ export class MapService {
     this.overlayTypes[key].push(kind);
   }
 
-  getActiveOverlay() {
-    return this.activeOverlay;
-  }
-
   private pickOverlayForTerrain(terrain: Terrain): OverlayKind {
     const pool = overlayPools[terrain] ?? [{ kind: OverlayKind.None, weight: 1 }];
     const total = pool.reduce((sum, o) => sum + o.weight, 0);
-    let roll = Math.random() * total;
+    let roll = this.nextRand() * total;
     for (const o of pool) {
       if (roll < o.weight) return o.kind;
       roll -= o.weight;
     }
     return OverlayKind.None;
-  }
-
-  getActiveActions(): string[] {
-    if (!this.activeOverlay) return [];
-    return overlayActions[this.activeOverlay] ?? [];
-  }
-
-  removeOverlays(q: number, r: number) {
-    const key = `${q},${r}`;
-    const arr = this.overlaySprites[key];
-    if (!arr) return;
-    for (const s of arr) {
-      if (s.parent) s.parent.removeChild(s);
-      s.destroy();
-    }
-    delete this.overlaySprites[key];
   }
 
   // === map building ===
@@ -164,7 +154,7 @@ export class MapService {
   }
 
   private randomTerrain(): Terrain {
-    const index = Math.floor(Math.random() * this.terrains.length);
+    const index = Math.floor(this.nextRand() * this.terrains.length);
     return this.terrains[index];
   }
 
@@ -215,6 +205,7 @@ export class MapService {
     for (const [dq, dr] of neighbors) {
       if (this.playerPos.q + dq === q && this.playerPos.r + dr === r) {
         this.playerPos = { q, r };
+        this.playerMoved.next(this.playerPos);
         this.updatePlayerPosition();
         this.centerCamera();
         this.updateVisibility();
@@ -222,7 +213,6 @@ export class MapService {
         const key = `${q},${r}`;
         const overlays = this.overlayTypes[key] || [];
         this.activeOverlay = overlays.length > 0 ? overlays[0] : OverlayKind.None;
-
         this.overlayChange.next(this.activeOverlay);
 
         const tileData = this.tiles[`${q},${r}`];
@@ -232,7 +222,6 @@ export class MapService {
             description: this.describeTerrain(tileData.terrain)
           });
         }
-
         return;
       }
     }
@@ -248,7 +237,6 @@ export class MapService {
       this.mapContainer.y = targetY;
       return;
     }
-
     const startX = this.mapContainer.x;
     const startY = this.mapContainer.y;
     const duration = 300;
@@ -291,6 +279,68 @@ export class MapService {
       case 'mountain': return 'De hautes montagnes.';
       case 'water': return 'Un lac ou une mer calme.';
       default: return 'Terrain inconnu.';
+    }
+  }
+
+  public setPlayerHex(q: number, r: number): void {
+    this.playerPos.q = q;
+    this.playerPos.r = r;
+    this.updatePlayerPosition();
+  }
+
+  public getMapState(): {
+    seed: number,
+    radius: number,
+    player: { q: number; r: number },
+    overlays: { q: number; r: number; kind: OverlayKind }[],
+    discovered: { q: number; r: number }[]
+  } {
+    const overlays: { q: number; r: number; kind: OverlayKind }[] = [];
+    for (const key in this.overlayTypes) {
+      const [q, r] = key.split(',').map(Number);
+      for (const kind of this.overlayTypes[key]) {
+        overlays.push({ q, r, kind });
+      }
+    }
+
+    const discovered = Object.entries(this.tiles)
+      .filter(([_, t]) => t.discovered)
+      .map(([key]) => {
+        const [q, r] = key.split(',').map(Number);
+        return { q, r };
+      });
+
+    return {
+      seed: this.seed,
+      radius: this.mapRadius, // récupéré depuis la propriété interne
+      player: { ...this.playerPos },
+      overlays,
+      discovered
+    };
+  }
+
+  // 🆕 Restauration de la map depuis une sauvegarde
+  public async loadMapState(state: {
+    seed: number,
+    player: { q: number; r: number },
+    overlays: { q: number; r: number; kind: OverlayKind }[],
+    discovered: { q: number; r: number }[]
+  }, canvasId: string, mapRadius: number) {
+    await this.initMap(canvasId, mapRadius, state.seed);
+
+    this.setPlayerHex(state.player.q, state.player.r);
+
+    for (const o of state.overlays) {
+      this.addOverlay(o.q, o.r, o.kind);
+    }
+
+    for (const d of state.discovered) {
+      const key = `${d.q},${d.r}`;
+      if (this.tiles[key]) {
+        this.tiles[key].discovered = true;
+        const tile = this.tiles[key].gfx as any;
+        if (tile && tile.fog) tile.fog.visible = false;
+      }
     }
   }
 }

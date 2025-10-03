@@ -4,8 +4,11 @@
   <div class="menu">
     <h1 class="title">Aghasme</h1>
 
-    <button class="menu-btn" (click)="newGame()">Nouvelle partie</button>
-    <button class="menu-btn" (click)="loadGame()">Charger partie</button>
-    <button class="menu-btn" (click)="back()">Retour à l'accueil</button>
+    <button class="menu-btn" (click)="newGame()">New Game</button>
+    @if (hasSave) {
+      <button class="menu-btn" (click)="continueGame()">Continue</button>
+    }
+    <button class="menu-btn" (click)="loadGame()">Load game</button>
+    <button class="menu-btn" (click)="back()">Back to home</button>
   </div>
 </div>

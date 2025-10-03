@@ -1,14 +1,12 @@
 <div class="creation-container">
-  <h2>Création de personnage</h2>
+  <h2>Create a character</h2>
 
-  <!-- Nom du personnage -->
   <div class="name-input">
-    <label for="name">Nom</label>
-    <input id="name" type="text" [(ngModel)]="name" placeholder="Entrez le nom du héros" />
+    <label for="name">Name</label>
+    <input id="name" type="text" [(ngModel)]="name" placeholder="Enter your character's name" />
   </div>
 
-  <!-- Sélection d'archetype -->
-  <h3>Choisissez un archétype</h3>
+  <h3>Choose an archetype</h3>
   <div class="archetype-grid">
     @for (type of archetypes; track type) {
       <div
@@ -22,8 +20,8 @@
   </div>
 
   <!-- Attribution des stats -->
-  <h3>Répartissez vos points</h3>
-  <p class="remaining">Points restants : {{ remainingPoints }}</p>
+  <h3>Distribute your points</h3>
+  <p class="remaining">Remaining points: {{ remainingPoints }}</p>
 
   <div class="stats">
     <!-- Strength -->
@@ -72,5 +70,5 @@
   </div>
 
   <!-- Bouton de validation -->
-  <button class="create-btn" (click)="onCreateCharacter()">Commencer l'aventure</button>
+  <button class="create-btn" (click)="onCreateCharacter()">Start the adventure</button>
 </div>

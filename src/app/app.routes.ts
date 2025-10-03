@@ -5,6 +5,7 @@ import { StartGameComponent } from './start-game/start-game.component';
 import { CharacterCreationComponent } from './character-creation/character-creation.component';
 import { CharacterGuard } from './guards/character.guard';
 import { InventoryComponent } from './inventory/inventory.component';
+import {SaveListComponent} from './save-list/save-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeScreenComponent },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'create-character', component: CharacterCreationComponent },
   { path: 'game', component: GameComponent, canActivate: [CharacterGuard] },
   { path: 'inventory', component: InventoryComponent },
+  { path: 'saves', component: SaveListComponent },
   { path: '**', redirectTo: '' } // fallback
 ];
