@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CharacterService } from '../services/character.service';
-import { Archetype, NewCharacterInput } from '../models/character.model';
+import { Archetype, NewCharacterInput, OrbKey, ORB_DEFINITIONS } from '../models/character.model';
 import { CHARACTER_ASSETS } from '../models/characters-assets';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -23,20 +23,18 @@ export class CharacterCreationComponent {
   totalPoints: number = 12;
   remainingPoints: number = this.totalPoints;
 
-  stats = {
-    strength: 8,
-    essence: 8,
-    mechanic: 8,
-    spirit: 8
-  }
+  readonly MAX_ORB_VALUE = 16;
 
-  statKeys: Array<'strength' | 'essence' | 'mechanic' | 'spirit'> = [
-    'strength',
-    'essence',
-    'mechanic',
-    'spirit'
-  ];
-  
+  // On utilise directement les orbes
+  orbs: Record<OrbKey, number> = {
+    bestial: 8,
+    elemental: 8,
+    natural: 8,
+    mechanic: 8,
+  };
+
+  readonly ORB_DEFS = ORB_DEFINITIONS;
+  orbKeys: OrbKey[] = ['bestial', 'elemental', 'natural', 'mechanic'];
 
   constructor(
     private characterService: CharacterService,
@@ -51,37 +49,33 @@ export class CharacterCreationComponent {
     return this.CHARACTER_ASSETS[a];
   }
 
-  increaseStat(stat: 'strength' | 'essence' | 'mechanic' | 'spirit') {
-    if (this.remainingPoints > 0) {
-      this.stats[stat]++;
+  increaseOrb(key: OrbKey) {
+    if (this.remainingPoints > 0 && this.orbs[key] < this.MAX_ORB_VALUE) {
+      this.orbs[key]++;
       this.remainingPoints--;
     }
   }
 
-  decreaseStat(stat: 'strength' | 'essence' | 'mechanic' | 'spirit') {
-    if (this.stats[stat] > 1) {
-      this.stats[stat]--;
+  decreaseOrb(key: OrbKey) {
+    if (this.orbs[key] > 0) {
+      this.orbs[key]--;
       this.remainingPoints++;
     }
   }
 
   onCreateCharacter() {
     if (!this.name || this.remainingPoints > 0) {
-      alert('Donne un nom et utilise tous les points avant de continuer !');
+      alert('Give a name and distribute all points before !');
       return;
     }
 
     const newChar: NewCharacterInput = {
       name: this.name,
       archetype: this.selectedArchetype,
-      strength: this.stats.strength,
-      essence: this.stats.essence,
-      mechanic: this.stats.mechanic,
-      spirit: this.stats.spirit
+      orbs: { ...this.orbs },
     };
 
     this.characterService.createCharacter(newChar);
-    this.characterService.saveToStorage();
     this.router.navigate(['/game']);
   }
 }

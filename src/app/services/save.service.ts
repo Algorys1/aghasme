@@ -9,7 +9,6 @@ export class SaveService {
     const saves = this.loadAllSaves();
     saves[slot] = state;
     localStorage.setItem(this.storageKey, JSON.stringify(saves));
-    console.log(`[SaveService] saved to slot "${slot}"`, state);
   }
 
   loadGame(slot: string = 'autosave'): GameState | null {

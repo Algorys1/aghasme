@@ -26,9 +26,9 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   private subs: Subscription[] = [];
 
   private ORB_ICONS: Record<OrbKey, string> = {
-    bestial: 'assets/ui/orb-strength.png',
-    elemental: 'assets/ui/orb-essence.png',
-    natural: 'assets/ui/orb-spirit.png',
+    bestial: 'assets/ui/orb-bestial.png',
+    elemental: 'assets/ui/orb-elemental.png',
+    natural: 'assets/ui/orb-natural.png',
     mechanic: 'assets/ui/orb-mechanic.png',
   };
 
@@ -44,7 +44,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.character = this.player.getCharacter();
-    console.log('[Character OnInit]', this.character?.archetype);
 
     if (!this.character) {
       this.router.navigate(['/start']);

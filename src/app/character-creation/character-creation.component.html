@@ -19,56 +19,33 @@
     }
   </div>
 
-  <!-- Attribution des stats -->
   <h3>Distribute your points</h3>
   <p class="remaining">Remaining points: {{ remainingPoints }}</p>
 
   <div class="stats">
-    <!-- Strength -->
-    <div class="stat">
-      <span class="label">
-        <img src="assets/ui/orb-strength.png" alt="Strength orb" />
-        Strength
-      </span>
-      <button (click)="decreaseStat('strength')">-</button>
-      <span class="value">{{ stats.strength }}</span>
-      <button (click)="increaseStat('strength')">+</button>
-    </div>
+    @for (orb of orbKeys; track orb) {
+      <div class="stat" [ngClass]="orb">
+        <span class="label">
+          <img [src]="ORB_DEFS[orb].icon" [alt]="ORB_DEFS[orb].label + ' orb'" />
+          {{ ORB_DEFS[orb].label }}
+        </span>
+  
+        <!-- Contrôles en ligne -->
+        <div class="controls">
+          <button (click)="decreaseOrb(orb)" [disabled]="orbs[orb] <= 0">-</button>
+          <span class="value">{{ orbs[orb] }}</span>
+          <button 
+            (click)="increaseOrb(orb)" 
+            [disabled]="orbs[orb] >= MAX_ORB_VALUE || remainingPoints <= 0">
+            +
+          </button>
+        </div>
+  
+        <!-- Description -->
+        <p class="orb-desc">{{ ORB_DEFS[orb].description }}</p>
+      </div>
+    }
+  </div>   
 
-    <!-- Essence -->
-    <div class="stat">
-      <span class="label">
-        <img src="assets/ui/orb-essence.png" alt="Essence orb" />
-        Essence
-      </span>
-      <button (click)="decreaseStat('essence')">-</button>
-      <span class="value">{{ stats.essence }}</span>
-      <button (click)="increaseStat('essence')">+</button>
-    </div>
-
-    <!-- Mechanic -->
-    <div class="stat">
-      <span class="label">
-        <img src="assets/ui/orb-mechanic.png" alt="Mechanic orb" />
-        Mechanic
-      </span>
-      <button (click)="decreaseStat('mechanic')">-</button>
-      <span class="value">{{ stats.mechanic }}</span>
-      <button (click)="increaseStat('mechanic')">+</button>
-    </div>
-
-    <!-- Spirit -->
-    <div class="stat">
-      <span class="label">
-        <img src="assets/ui/orb-spirit.png" alt="Spirit orb" />
-        Spirit
-      </span>
-      <button (click)="decreaseStat('spirit')">-</button>
-      <span class="value">{{ stats.spirit }}</span>
-      <button (click)="increaseStat('spirit')">+</button>
-    </div>
-  </div>
-
-  <!-- Bouton de validation -->
   <button class="create-btn" (click)="onCreateCharacter()">Start the adventure</button>
 </div>

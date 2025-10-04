@@ -1,20 +1,17 @@
-// src/app/services/inventory.service.ts
-
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Item, ItemType } from '../models/items';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InventoryService {
-  private items: (Item & { count?: number })[] = [];
+  private items: (Item & { count: number })[] = [];
 
-  // Taille inventaire (par défaut 2 lignes x 4 colonnes = 8 slots)
   private rows = 2;
   private cols = 4;
 
-  private itemsSubject = new BehaviorSubject<(Item & { count?: number })[]>([]);
+  private itemsSubject = new BehaviorSubject<(Item & { count: number })[]>([]);
   public items$ = this.itemsSubject.asObservable();
 
   private sizeSubject = new BehaviorSubject<{ rows: number; cols: number }>({
@@ -23,61 +20,73 @@ export class InventoryService {
   });
   public size$ = this.sizeSubject.asObservable();
 
+  private errorSubject = new Subject<string>();
+  public errors$ = this.errorSubject.asObservable();
+
   constructor() {}
 
   /** Retourne les items actuels */
-  getItems(): (Item & { count?: number })[] {
-    console.log('[Inventory] getItems =>', this.items);
+  getItems(): (Item & { count: number })[] {
     return [...this.items];
   }
 
-  /** Ajoute un item (gère stackables) */
-  addItem(newItem: Item): void {
-    console.log('[Inventory] addItem', newItem);
+  private get maxSlots(): number {
+    return this.rows * this.cols;
+  }
 
-    // Inventaire plein si pas stackable
-    if (this.items.length >= this.rows * this.cols && !newItem.stackable) {
-      console.warn('[Inventory] Inventory full!');
-      return;
-    }
+  get usedSlots(): number {
+    return this.items.length;
+  }
 
+  addItem(newItem: Item): boolean {
     if (newItem.stackable) {
       const existing = this.items.find((i) => i.id === newItem.id);
       if (existing) {
-        existing.count = (existing.count || 1) + 1;
+        existing.count += 1;
+        this.itemsSubject.next(this.getItems());
+        return true;
       } else {
+        if (this.usedSlots >= this.maxSlots) {
+          this.errorSubject.next('Inventaire plein');
+          return false;
+        }
         this.items.push({ ...newItem, count: 1 });
+        this.itemsSubject.next(this.getItems());
+        return true;
       }
+    }
+
+    if (this.usedSlots >= this.maxSlots) {
+      this.errorSubject.next('Inventaire plein');
+      return false;
+    }
+
+    this.items.push({ ...newItem, count: 1 });
+    this.itemsSubject.next(this.getItems());
+    return true;
+  }
+
+  removeItem(itemId: string): boolean {
+    const index = this.items.findIndex((i) => i.id === itemId);
+    if (index === -1) {
+      return false;
+    }
+
+    const item = this.items[index];
+    if (item.stackable && item.count > 1) {
+      item.count -= 1;
     } else {
-      this.items.push({ ...newItem });
+      this.items.splice(index, 1);
     }
 
     this.itemsSubject.next(this.getItems());
+    return true;
   }
 
-  /** Retire un item (gère stackables) */
-  removeItem(itemId: string): void {
-    console.log('[Inventory] removeItem', itemId);
-
-    const index = this.items.findIndex((i) => i.id === itemId);
-    if (index !== -1) {
-      const item = this.items[index];
-      if (item.stackable && item.count && item.count > 1) {
-        item.count -= 1;
-      } else {
-        this.items.splice(index, 1);
-      }
-      this.itemsSubject.next(this.getItems());
-    }
-  }
-
-  /** Utilise un item (consommables, utilitaires...) */
   useItem(itemId: string): string | null {
-    console.log('[Inventory] useItem', itemId);
-
     const item = this.items.find((i) => i.id === itemId);
     if (!item) {
-      console.warn('[Inventory] Item not found:', itemId);
+      this.errorSubject.next('Cannot find item'); 
       return null;
     }
 
@@ -87,23 +96,25 @@ export class InventoryService {
       effectMessage = item.effect || `${item.name} used.`;
       this.removeItem(itemId);
     } else {
-      console.log('[Inventory] Item not usable:', item.name);
+      this.errorSubject.next(`Item non utilisable: ${item.name}`);
     }
 
     return effectMessage;
   }
 
-  /** Vide l'inventaire */
   clear(): void {
-    console.log('[Inventory] clear');
     this.items = [];
     this.itemsSubject.next([]);
   }
 
-  /** Augmente la taille de l’inventaire (ajoute une ligne) */
   expandInventory(): void {
     this.rows += 1;
-    console.log('[Inventory] expandInventory =>', this.rows, 'rows');
+    this.sizeSubject.next({ rows: this.rows, cols: this.cols });
+  }
+
+  setGridSize(rows: number, cols: number): void {
+    this.rows = rows;
+    this.cols = cols;
     this.sizeSubject.next({ rows: this.rows, cols: this.cols });
   }
 }

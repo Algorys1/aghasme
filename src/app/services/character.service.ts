@@ -11,41 +11,30 @@ export class CharacterService {
 
   /** Création (ou remplacement) du personnage */
   createCharacter(data: NewCharacterInput): Character {
-    console.log('[Creation input]', data);
     const level = data.level ?? 1;
-    const baseMaxHp = data.maxHp ?? 100;
-    const baseMaxMp = data.maxMp ?? 30;
 
-    // Migration depuis anciens champs si fournis
     const orbs: Orbs = {
       ...DEFAULT_ORBS,
-      ...(data.orbs ?? {} as Orbs),
-      bestial: data.orbs?.bestial ?? (data.spirit ?? 0),
-      elemental: data.orbs?.elemental ?? (data.essence ?? 0),
-      natural:  data.orbs?.natural  ?? (data.strength ?? 0),
-      mechanic: data.orbs?.mechanic ?? (data.mechanic ?? 0),
+      ...(data.orbs ?? {}),
     };
+
+    const baseMaxHp = Math.floor((orbs.natural + orbs.mechanic) / 2);
+    const baseMaxMp = Math.floor((orbs.elemental + orbs.bestial) / 2);
 
     this.character = {
       name: data.name,
       archetype: data.archetype ?? 'beast',
       level,
       xp: data.xp ?? 0,
-      hp: Math.min(data.hp ?? baseMaxHp, baseMaxHp),
+      hp: baseMaxHp,
       maxHp: baseMaxHp,
-      mp: Math.min(data.mp ?? baseMaxMp, baseMaxMp),
+      mp: baseMaxMp,
       maxMp: baseMaxMp,
       gold: data.gold ?? 0,
       orbs,
-      // Legacy gardés grossièrement en phase
-      strength: data.strength ?? orbs.natural,
-      essence:  data.essence  ?? orbs.elemental,
-      mechanic: data.mechanic ?? orbs.mechanic,
-      spirit:   data.spirit   ?? orbs.bestial,
       skills: data.skills ?? [],
       inventory: data.inventory ?? [],
     };
-    console.log('[Character created]', this.character.archetype);
 
     this.saveToStorage();
     return this.character;
@@ -75,6 +64,7 @@ export class CharacterService {
   private levelUp() {
     if (!this.character) return;
     this.character.level += 1;
+    // Ici tu peux garder du fixe ou recalculer selon les orbes
     this.character.maxHp += 10;
     this.character.maxMp += 5;
     this.character.hp = this.character.maxHp;
@@ -121,7 +111,6 @@ export class CharacterService {
     this.saveToStorage();
   }
 
-  /** Persistance */
   saveToStorage() {
     if (this.character) localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.character));
   }
@@ -130,37 +119,18 @@ export class CharacterService {
     const saved = localStorage.getItem(this.STORAGE_KEY);
     if (!saved) return null;
     try {
-      const parsed = JSON.parse(saved) as Character;
-  
-      this.character = {
-        ...parsed,
-  
-        skills: parsed.skills ?? [],
-        inventory: parsed.inventory ?? [],
-        gold: parsed.gold ?? 0,
-  
-        maxHp: parsed.maxHp ?? parsed.hp ?? 100,
-        maxMp: parsed.maxMp ?? 30,
-        mp: Math.min(parsed.mp ?? 0, parsed.maxMp ?? 30),
-  
-        orbs: parsed.orbs ?? {
-          bestial:  (parsed as any).spirit   ?? 0,
-          elemental:(parsed as any).essence  ?? 0,
-          natural:  (parsed as any).strength ?? 0,
-          mechanic: (parsed as any).mechanic ?? 0,
-        },
-  
-        hp: Math.min(parsed.hp ?? 100, parsed.maxHp ?? parsed.hp ?? 100),
-      };
-  
+      this.character = JSON.parse(saved) as Character;
       return this.character;
     } catch {
       return null;
     }
   }
-  
 
-  getCharacterAsset(archetype: Archetype): string { return CHARACTER_ASSETS[archetype]; }
+  getCharacterAsset(archetype: Archetype): string {
+    return CHARACTER_ASSETS[archetype];
+  }
 
-  private xpToNextLevel(level: number) { return 100 + (level - 1) * 50; }
+  private xpToNextLevel(level: number) {
+    return 100 + (level - 1) * 50;
+  }
 }

@@ -44,4 +44,11 @@
       <button class="close" (click)="hideTooltip()">Close</button>
     </div>
   }
+
+  @if(errorMessage) {
+    <div class="error">⚠️ {{ errorMessage }}</div>
+  }
+  
+  <button (click)="expand()" disabled>Expand</button>
+
 </div>

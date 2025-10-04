@@ -25,9 +25,13 @@ export class InventoryComponent {
   tooltipY = 0;
   isMobile = false;
 
+  private subErrors!: Subscription;
+  errorMessage: string | null = null;
+
   constructor(private inventory: InventoryService) {}
 
   ngOnInit(): void {
+    this.inventory.setGridSize(this.rows, this.cols);
     this.subItems = this.inventory.items$.subscribe((items) => {
       this.items = items;
     });
@@ -39,15 +43,23 @@ export class InventoryComponent {
 
     this.isMobile = window.innerWidth < 768;
 
+    // TODO in test
     this.inventory.addItem(BASE_ITEMS[0]);
     this.inventory.addItem(BASE_ITEMS[3]);
     this.inventory.addItem(BASE_ITEMS[3]);
     this.inventory.addItem(BASE_ITEMS[4]);
+
+    this.subErrors = this.inventory.errors$.subscribe(msg => {
+      this.errorMessage = msg;
+      setTimeout(() => this.errorMessage = null, 2000);
+    });
+    
   }
 
   ngOnDestroy(): void {
     this.subItems.unsubscribe();
     this.subSize.unsubscribe();
+    this.subErrors?.unsubscribe();
   }
 
   showTooltip(item: Item, event: MouseEvent): void {
@@ -84,4 +96,9 @@ export class InventoryComponent {
     this.inventory.removeItem(item.id);
     this.hideTooltip();
   }
+
+  expand() {
+    this.inventory.expandInventory();
+  }
+  
 }
