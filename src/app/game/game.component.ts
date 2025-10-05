@@ -51,7 +51,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.subs.push(
       this.mapService.playerMoved.subscribe(() => {
-        // this.autoSave();
+        this.autoSave();
       }),
       this.mapService.tileChange.subscribe(tile => {
         this.currentTile = tile;
@@ -65,17 +65,30 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async ngAfterViewInit() {
-    const last = this.saveService.loadGame('auto');
-
+    // Attendre que le canvas soit présent dans le DOM
+    await new Promise<void>(resolve => {
+      const check = () => {
+        if (document.getElementById('myCanvas')) resolve();
+        else requestAnimationFrame(check);
+      };
+      check();
+    });
+  
+    const slot = history.state?.slot ?? 'auto';
+    const last = this.saveService.loadGame(slot);
+  
     if (last && last.map) {
-      await this.mapService.loadMapState(last.map, 'myCanvas', 4);
+      console.log(`🎮 Chargement de la sauvegarde : ${slot}`);
+      await this.mapService.loadFromSnapshot(last.map);
       this.characterService.setCharacter(last.character);
       this.character = last.character;
       this.refreshOrbs();
     } else {
+      console.log('🌍 Nouvelle partie (aucune sauvegarde trouvée)');
       await this.mapService.initMap('myCanvas', 4);
     }
   }
+  
 
   private refreshOrbs() {
     if (!this.character) {
@@ -107,7 +120,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     const char = this.characterService.getCharacter();
     if (!char) return null;
 
-    const mapState = this.mapService.getMapState();
+    const mapState = this.mapService.serializeMap();
     return {
       character: char,
       map: mapState,
@@ -115,11 +128,11 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  // private autoSave() {
-  //   const full = this.buildFullState();
-  //   if (!full) return;
-  //   this.saveService.saveGame(full, 'autosave');
-  // }
+  private autoSave() {
+    const full = this.buildFullState();
+    if (!full) return;
+    this.saveService.saveGame(full, 'auto');
+  }
 
   openPauseMenu() { this.pauseMenuOpen = true; }
   closePauseMenu() { this.pauseMenuOpen = false; }
@@ -127,28 +140,16 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   saveGameManual() {
     const name = prompt("Nom de la sauvegarde :");
     if (!name) return;
-
+  
     const full = this.buildFullState();
     if (!full) return;
-
+  
     this.saveService.saveGame(full, name);
-    alert(`Sauvegarde "${name}" créée !`);
-  }
+    alert(`💾 Sauvegarde "${name}" enregistrée !`);
+  }  
 
   goHome() { this.router.navigate(['/home']); }
   quitGame() { this.router.navigate(['/home']); }
-
-  saveMap() {
-    this.saveService.exportMapToFile();
-  }
-
-  onLoadMapFile(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) return;
-    this.saveService.importMapFromFile(file)
-      .catch(err => console.error('Load map error:', err));
-  }
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());

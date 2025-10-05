@@ -26,7 +26,7 @@ export class SaveListComponent implements OnInit {
   load(slot: string) {
     const state = this.saveService.loadGame(slot);
     if (state) {
-      this.router.navigate(['/game']);
+      this.router.navigate(['/game'], { state: { slot } });
     }
   }
 
