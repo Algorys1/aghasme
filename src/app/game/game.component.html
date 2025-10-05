@@ -61,6 +61,14 @@
     </div>
   </div>
 
+  <div class="test-save-controls" style="position:absolute; top:12px; left:12px; z-index:9999;">
+    <button (click)="saveMap()">Save map JSON</button>
+    <label style="cursor:pointer;">
+      Load map JSON
+      <input type="file" accept="application/json" (change)="onLoadMapFile($event)" style="display:none;">
+    </label>
+  </div>
+
   <!-- HUD BOTTOM -->
   <div class="hud-bottom">
     <div class="tile-info">
@@ -79,10 +87,10 @@
     <div class="pause-overlay">
       <div class="pause-menu">
         <h2>Pause</h2>
-        <button (click)="closePauseMenu()">Continue</button>
-        <button (click)="saveGameManual()">Save</button>
+        <!-- <button (click)="closePauseMenu()">Continue</button>
+        <button (click)="saveGameManual()">Save</button> -->
         <button (click)="goHome()">Back to home</button>
-        <button (click)="quitGame()">Quit</button>
+        <!-- <button (click)="quitGame()">Quit</button> -->
       </div>
     </div>
   }

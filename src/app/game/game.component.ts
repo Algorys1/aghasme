@@ -51,7 +51,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.subs.push(
       this.mapService.playerMoved.subscribe(() => {
-        this.autoSave();
+        // this.autoSave();
       }),
       this.mapService.tileChange.subscribe(tile => {
         this.currentTile = tile;
@@ -115,11 +115,11 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  private autoSave() {
-    const full = this.buildFullState();
-    if (!full) return;
-    this.saveService.saveGame(full, 'autosave');
-  }
+  // private autoSave() {
+  //   const full = this.buildFullState();
+  //   if (!full) return;
+  //   this.saveService.saveGame(full, 'autosave');
+  // }
 
   openPauseMenu() { this.pauseMenuOpen = true; }
   closePauseMenu() { this.pauseMenuOpen = false; }
@@ -137,6 +137,18 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goHome() { this.router.navigate(['/home']); }
   quitGame() { this.router.navigate(['/home']); }
+
+  saveMap() {
+    this.saveService.exportMapToFile();
+  }
+
+  onLoadMapFile(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    this.saveService.importMapFromFile(file)
+      .catch(err => console.error('Load map error:', err));
+  }
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());

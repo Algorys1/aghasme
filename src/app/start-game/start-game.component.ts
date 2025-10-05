@@ -25,23 +25,23 @@ export class StartGameComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.hasSave = this.saveService.hasSave('autosave');
+    // this.hasSave = this.saveService.hasSave('autosave');
   }
 
   continueGame() {
-    const state = this.saveService.loadGame('autosave');
-    if (!state) {
-      alert('Aucune sauvegarde trouvée.');
-      this.hasSave = false;
-      return;
-    }
+    // const state = this.saveService.loadGame('autosave');
+    // if (!state) {
+    //   alert('Aucune sauvegarde trouvée.');
+    //   this.hasSave = false;
+    //   return;
+    // }
 
-    this.characterService.setCharacter(state.character);
-    this.playerService['refresh']?.();
+    // this.characterService.setCharacter(state.character);
+    // this.playerService['refresh']?.();
 
-    if (state.map?.player) {
-      this.mapService.setPlayerHex(state.map.player.q, state.map.player.r);
-    }
+    // if (state.map?.player) {
+    //   this.mapService.setPlayerHex(state.map.player.q, state.map.player.r);
+    // }
 
     this.router.navigate(['/game']);
   }

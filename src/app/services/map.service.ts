@@ -10,6 +10,24 @@ import { overlayPools } from '../models/overlay-pools';
 import { CHARACTER_ASSETS } from '../models/characters-assets';
 import { CharacterService } from './character.service';
 
+export interface MapTileSnapshot {
+  key: string;             // même clé que ton Record<string, ...> actuel
+  q: number;               // coord axial si tu l’as (sinon laisse 0)
+  r: number;
+  terrain: Terrain;        // type de terrain tel que stocké dans tiles
+  discovered: boolean;
+  overlay?: OverlayKind | null; // si tu gères des overlays par tuile
+  // Ajoute ici toute donnée de tuile qui doit être parfaitement restaurée
+}
+
+export interface MapSnapshot {
+  version: 1;
+  size: number;            // taille/param utile à la reconstruction (rayon, etc.)
+  tiles: MapTileSnapshot[];
+  player: {},
+  seed: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -45,6 +63,13 @@ export class MapService {
   private randState = 1;
 
   constructor(private characterService: CharacterService) {}
+
+  private axialToPixel(q: number, r: number, size: number) {
+    // Axial -> pixel (hex “pointy-top” standard)
+    const x = size * 1.5 * q;
+    const y = size * Math.sqrt(3) * (r + q / 2);
+    return { x, y };
+  }
 
   private nextRand(): number {
     // LCG (Linear Congruential Generator)
@@ -382,4 +407,164 @@ export class MapService {
       }
     }
   }
+
+  public clearMap(): void {
+    if (this.mapContainer) {
+      this.mapContainer.removeChildren();
+    }
+    this.tiles = {};
+  }
+  
+  /** Sérialise toute la carte en un snapshot JSON-ifiable. */
+  public serializeMap(): MapSnapshot {
+    // Si tu as un rayon/size spécifique, conserve-le ici
+    const tiles: MapTileSnapshot[] = [];
+  
+    for (const [key, entry] of Object.entries(this.tiles)) {
+      // Si tu encodes q,r dans la key ("q:r"), tu peux les parser ici
+      let q = 0, r = 0;
+      if (key.includes(',')) {
+        const [qs, rs] = key.split(',');
+        q = Number(qs) || 0;
+        r = Number(rs) || 0;
+      }
+  
+      const overlay: OverlayKind | null = (entry as any).overlay ?? null;
+  
+      tiles.push({
+        key,
+        q,
+        r,
+        terrain: entry.terrain,
+        discovered: entry.discovered,
+        overlay
+      });
+    }
+
+    if (tiles.length === 0) {
+      console.warn('⚠️ serializeMap: aucune tuile trouvée !');
+    } else {
+      console.log('🧱 serializeMap: première tuile', tiles[0]);
+    }
+
+    const overlays: { q: number; r: number; kind: OverlayKind }[] = [];
+    for (const key in this.overlayTypes) {
+      const [q, r] = key.split(',').map(Number);
+      for (const kind of this.overlayTypes[key]) {
+        overlays.push({ q, r, kind });
+      }
+    }
+
+    return {
+      version: 1 as const,
+      size: this.mapRadius,
+      seed: this.seed,
+      player: { ...this.playerPos },
+      overlays,
+      tiles
+    } as any;
+  }
+  
+  /**
+   * Reconstruit la carte à partir d’un snapshot, SANS génération procédurale.
+   * Détruit la carte en cours, reconstruit chaque tuile via tes factories.
+   */
+  public async loadFromSnapshot(snapshot: MapSnapshot): Promise<void> {
+    console.log('🧩 Chargement snapshot...', snapshot.tiles.length, 'tuiles');
+  
+    // 🟢 Étape 1 : initialiser le canvas et les textures comme initMap()
+    const canvas = document.getElementById('myCanvas') as HTMLCanvasElement | null;
+    if (!canvas) throw new Error('Canvas introuvable !');
+  
+    if (!this.app) {
+      this.app = new Application();
+      await this.app.init({
+        resizeTo: canvas.parentElement!,
+        backgroundColor: 0x111111,
+        canvas
+      });
+    }
+  
+    await this.loadTextures();
+    await this.loadIconTextures();
+    await this.loadPlayerTexture();
+  
+    // 🟢 Étape 2 : reset et création du conteneur
+    if (this.mapContainer) {
+      this.mapContainer.removeChildren();
+    } else {
+      this.mapContainer = new Container();
+      this.app.stage.addChild(this.mapContainer);
+    }
+
+    this.seed = (snapshot as any).seed ?? Date.now();
+    this.randState = this.seed;
+    this.noiseAltitude = createNoise2D(() => this.nextRand());
+    this.noiseHumidity = createNoise2D(() => this.nextRand());
+  
+    this.tiles = {};
+  
+    // 🟢 Étape 3 : recréer les tuiles depuis le snapshot
+    const hexSize = this.size;
+    for (const tile of snapshot.tiles) {
+      const { x, y } = this.hexToPixel(tile.q, tile.r);
+      const terrainValue = tile.terrain ?? 'plain';
+  
+      const tileContainer = createTile({
+        x,
+        y,
+        size: hexSize,
+        terrain: terrainValue,
+        container: this.mapContainer,
+        textures: this.textures,
+        onClick: () => this.movePlayer(tile.q, tile.r)
+      });
+  
+      this.tiles[tile.key] = {
+        gfx: tileContainer,
+        terrain: terrainValue,
+        discovered: tile.discovered
+      };
+  
+      if (tile.overlay && tile.overlay !== 'None') {
+        const [q, r] = tile.key.split(',').map(Number);
+        this.addOverlay(q, r, tile.overlay);
+      }
+  
+      // appliquer visibilité
+      const tileGfx = tileContainer as any;
+      if (tileGfx.fog) {
+        tileGfx.fog.visible = !tile.discovered;
+      }
+    }
+
+    // 🏙️ Restaure les overlays sauvegardés
+    const savedOverlays = (snapshot as any).overlays ?? [];
+    for (const o of savedOverlays) {
+      if (typeof o.q === 'number' && typeof o.r === 'number' && o.kind) {
+        this.addOverlay(o.q, o.r, o.kind);
+      }
+    }
+    console.log(`🏙️ Overlays restaurés : ${savedOverlays.length}`);
+
+    this.player = new Sprite(this.textures['player']);
+    this.player.anchor.set(0.5);
+    this.player.width = this.size * 1.2;
+    this.player.height = this.size * 1.2;
+    this.mapContainer.addChild(this.player);
+  
+    const savedPlayer = (snapshot as any).player;
+    if (savedPlayer && typeof savedPlayer.q === 'number' && typeof savedPlayer.r === 'number') {
+      this.playerPos = { q: savedPlayer.q, r: savedPlayer.r };
+      console.log('👣 Position joueur restaurée :', this.playerPos);
+    } else {
+      this.playerPos = { q: 0, r: 0 };
+    }
+
+    this.updatePlayerPosition();
+    this.centerCamera(false);
+  
+    console.log(`✅ Carte restaurée (${snapshot.tiles.length} tuiles, ${snapshot.tiles.filter(t => t.discovered).length} découvertes).`);
+  }
+  
 }
