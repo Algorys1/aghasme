@@ -7,7 +7,7 @@ export const overlayActions: Record<OverlayKind, string[]> = {
   [OverlayKind.Monster]: ['Attack', 'Flee', 'Negotiate'],
   [OverlayKind.Beast]: ['Attack', 'Flee', 'Capture'],
   [OverlayKind.Spirit]: ['Attack', 'Flee', 'Exorcise'],
-  [OverlayKind.Bandits]: ['Attack', 'Flee', 'Bribe'],
+  [OverlayKind.Encounter]: ['Attack', 'Flee', 'Bribe'],
 
   // Civilization
   [OverlayKind.Village]: ['Explore', 'Trade', 'Talk', 'Find quest', 'Rest'],

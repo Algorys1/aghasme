@@ -1,3 +1,4 @@
+// save-list.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -24,17 +25,20 @@ export class SaveListComponent implements OnInit {
   }
 
   load(slot: string) {
-    const state = this.saveService.loadGame(slot);
-    if (state) {
-      this.router.navigate(['/game'], { state: { slot } });
-    }
+    // ⚠️ NE PAS précharger ici ; on passe juste le slot au GameComponent
+    this.router.navigateByUrl('/game', { state: { slot } });
   }
 
   delete(slot: string) {
     if (confirm(`Supprimer la sauvegarde "${slot}" ?`)) {
       this.saveService.deleteSave(slot);
-      this.saves = this.saveService.getSaveSlots(); // refresh
+      this.saves = this.saveService.getSaveSlots();
     }
+  }
+
+  newGame() {
+    // Démarre une partie neuve (AUCUN auto-load)
+    this.router.navigateByUrl('/game', { state: { newGame: true } });
   }
 
   back() {

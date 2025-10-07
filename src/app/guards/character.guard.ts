@@ -16,7 +16,7 @@ export class CharacterGuard implements CanActivate {
 
     // try loading from localStorage if not already in memory
     if (!character) {
-      character = this.characterService.loadFromStorage();
+      // character = this.characterService.loadFromStorage();
     }
 
     if (character) {

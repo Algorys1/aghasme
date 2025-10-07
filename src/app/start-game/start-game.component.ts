@@ -29,6 +29,7 @@ export class StartGameComponent implements OnInit {
   }
 
   continueGame() {
+    // TODO à restaurer plus tard 
     // const state = this.saveService.loadGame('autosave');
     // if (!state) {
     //   alert('Aucune sauvegarde trouvée.');
@@ -47,6 +48,7 @@ export class StartGameComponent implements OnInit {
   }
 
   newGame() {
+    this.characterService.clearCharacter();
     this.router.navigate(['/create-character']);
   }
 

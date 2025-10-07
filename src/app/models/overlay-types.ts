@@ -5,7 +5,7 @@ export enum OverlayKind {
   Monster = 'monster',
   Beast = 'beast',
   Spirit = 'spirit',
-  Bandits = 'bandits',
+  Encounter = 'encounter',
 
   // Civilization
   Village = 'village',
@@ -65,8 +65,8 @@ export const overlayManifest: Record<OverlayKind, OverlayInfo> = {
     description: 'Une entité mystérieuse se manifeste.',
     actions: ['Parler', 'Combattre', 'Fuir'],
   },
-  [OverlayKind.Bandits]: {
-    name: 'Bandits',
+  [OverlayKind.Encounter]: {
+    name: 'Encounter',
     icon: 'assets/overlays/bandits.png',
     description: 'Un groupe de bandits bloque le passage.',
     actions: ['Combattre', 'Négocier', 'Fuir'],
@@ -105,7 +105,7 @@ export const overlayManifest: Record<OverlayKind, OverlayInfo> = {
   [OverlayKind.Ruins]: {
     name: 'Ruines',
     icon: 'assets/overlays/ruins.png',
-    description: 'Vestiges d’un passé oublié.',
+    description: 'Vestiges d\'un passé oublié.',
     actions: ['Explorer', 'Fouiller'],
   },
 

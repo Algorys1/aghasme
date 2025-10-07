@@ -1,4 +1,5 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+// game.component.ts
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef, ChangeDetectorRef} from '@angular/core';
 import {Router} from '@angular/router';
 import {PlayerService} from '../services/player.service';
 import {Character, OrbKey} from '../models/character.model';
@@ -16,6 +17,8 @@ import {GameState} from '../models/game-state.model';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
+
   character: Character | null = null;
   orbs: { key: OrbKey; name: string; icon: string; value: number }[] = [];
 
@@ -39,16 +42,13 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private mapService: MapService,
     private saveService: SaveService,
-    private characterService: CharacterService
+    private characterService: CharacterService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.character = this.player.getCharacter();
 
-    if (!this.character) {
-      this.router.navigate(['/start']);
-      return;
-    }
     this.subs.push(
       this.mapService.playerMoved.subscribe(() => {
         this.autoSave();
@@ -65,36 +65,71 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async ngAfterViewInit() {
-    // Attendre que le canvas soit présent dans le DOM
-    await new Promise<void>(resolve => {
+    const canvas = await this.waitForCanvas();
+    if (!canvas) {
+      console.error('❌ Impossible de trouver le canvas');
+      return;
+    }
+  
+    // 🔥 On supprime l’ancienne clé globale "character" (héritage)
+    this.characterService.clearLegacyStorage();
+  
+    const nav = history.state ?? {};
+    const chosenSlot: string | undefined = nav.slot;
+    const isNewGame: boolean = !!nav.newGame;
+  
+    if (isNewGame) {
+      console.log('🎲 Nouvelle partie demandée → reset complet');
+      this.mapService.clearAll();
+      this.mapService.generateNewSeed();
+      await this.mapService.initMapWithCanvas(canvas, 10);
+      return;
+    }
+  
+    if (chosenSlot) {
+      const save = this.saveService.loadGame(chosenSlot);
+      if (save?.map && save?.character) {
+        this.characterService.setCharacter(save.character);
+        this.character = save.character;
+        await this.mapService.loadFromSnapshotWithCanvas(save.map, canvas);
+        this.refreshOrbs();
+        return;
+      }
+      await this.mapService.initMapWithCanvas(canvas, 10);
+      return;
+    }
+  
+    const auto = this.saveService.loadGame('auto');
+    if (auto?.map && auto?.character) {
+      this.characterService.setCharacter(auto.character);
+      this.character = auto.character;
+      await this.mapService.loadFromSnapshotWithCanvas(auto.map, canvas);
+      this.refreshOrbs();
+    } else {
+      await this.mapService.initMapWithCanvas(canvas, 10);
+    }
+
+    if (!this.character) {
+      console.warn('⚠️ Aucun personnage chargé, retour au menu');
+      this.router.navigate(['/start']);
+      return;
+    }    
+  }
+
+  private waitForCanvas(): Promise<HTMLCanvasElement | null> {
+    return new Promise(resolve => {
       const check = () => {
-        if (document.getElementById('myCanvas')) resolve();
+        const canvas = this.canvasRef?.nativeElement;
+        if (canvas) resolve(canvas);
         else requestAnimationFrame(check);
       };
       check();
     });
-  
-    const slot = history.state?.slot ?? 'auto';
-    const last = this.saveService.loadGame(slot);
-  
-    if (last && last.map) {
-      console.log(`🎮 Chargement de la sauvegarde : ${slot}`);
-      await this.mapService.loadFromSnapshot(last.map);
-      this.characterService.setCharacter(last.character);
-      this.character = last.character;
-      this.refreshOrbs();
-    } else {
-      console.log('🌍 Nouvelle partie (aucune sauvegarde trouvée)');
-      await this.mapService.initMap('myCanvas', 4);
-    }
-  }
+  }  
   
 
   private refreshOrbs() {
-    if (!this.character) {
-      this.orbs = [];
-      return;
-    }
+    if (!this.character) { this.orbs = []; return; }
     const o = this.character.orbs;
     this.orbs = [
       { key: 'bestial', name: 'Bestial', icon: this.ORB_ICONS.bestial, value: o.bestial },
@@ -105,10 +140,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // --- HUD Actions ---
-  onAction(action: string) {
-    console.log('[Action]', action, 'on', this.currentOverlay?.name);
-    // TODO : logiques overlay ici
-  }
+  onAction(action: string) { console.log('[Action]', action, 'on', this.currentOverlay?.name); }
 
   // --- HUD buttons ---
   openMap() { console.log('Open Map'); }
@@ -121,11 +153,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!char) return null;
 
     const mapState = this.mapService.serializeMap();
-    return {
-      character: char,
-      map: mapState,
-      timestamp: Date.now()
-    };
+    const charState = structuredClone(char);
+    return { character: charState, map: mapState, timestamp: Date.now() };
   }
 
   private autoSave() {
@@ -140,13 +169,11 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   saveGameManual() {
     const name = prompt("Nom de la sauvegarde :");
     if (!name) return;
-  
     const full = this.buildFullState();
     if (!full) return;
-  
     this.saveService.saveGame(full, name);
     alert(`💾 Sauvegarde "${name}" enregistrée !`);
-  }  
+  }
 
   goHome() { this.router.navigate(['/home']); }
   quitGame() { this.router.navigate(['/home']); }

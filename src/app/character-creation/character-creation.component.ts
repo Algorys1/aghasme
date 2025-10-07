@@ -76,6 +76,6 @@ export class CharacterCreationComponent {
     };
 
     this.characterService.createCharacter(newChar);
-    this.router.navigate(['/game']);
+    this.router.navigate(['/game'], { state: { newGame: true } });
   }
 }

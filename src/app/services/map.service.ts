@@ -56,13 +56,24 @@ export class MapService {
   private iconTextures: Record<string, Texture> = {} as any;
 
   // --- State / Events ---
-  private mapRadius = 4;
+  private mapRadius = 10;
   private activeOverlay: OverlayKind | null = null;
   overlayChange = new Subject<OverlayKind>();
   tileChange = new Subject<{ type: string; description?: string }>();
   playerMoved = new Subject<{ q: number; r: number }>();
 
   constructor(private characterService: CharacterService) {}
+
+  public getSeed(): number {
+    return this.seed;
+  }
+  
+  public setSeed(seed: number): void {
+    this.seed = seed;
+    this.randState = seed;
+    this.noiseAltitude = createNoise2D(() => this.nextRand());
+    this.noiseHumidity = createNoise2D(() => this.nextRand());
+  }
 
   // === INIT / GENERATION ==========================================================
   async initMap(canvasId: string, mapRadius: number, seed?: number): Promise<void> {
@@ -90,7 +101,8 @@ export class MapService {
     this.app.stage.addChild(this.mapContainer);
     this.mapRadius = mapRadius;
 
-    this.seed = seed ?? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+    this.seed = seed !== undefined ? seed : Math.floor(Math.random() * Date.now());
+
     this.randState = this.seed;
     this.noiseAltitude = createNoise2D(() => this.nextRand());
     this.noiseHumidity = createNoise2D(() => this.nextRand());
@@ -121,11 +133,13 @@ export class MapService {
     const humidity = (humRaw + 1) / 2;
 
     if (altitude < 0.3) return 'water';
-    if (altitude > 0.75) return 'mountain';
+    if (altitude > 0.7) return 'mountain';
+    if (altitude > 0.8) return 'volcano';
     if (humidity < 0.3) return 'desert';
-    if (humidity < 0.6) return 'plain';
-    if (humidity < 0.85) return 'forest';
-    return 'jungle';
+    if (humidity < 0.5) return 'plain';
+    if (humidity < 0.6) return 'forest';
+    if (humidity < 0.7) return 'jungle';
+    return 'swamp';
   }
 
   private hexToPixel(q: number, r: number) {
@@ -178,21 +192,53 @@ export class MapService {
     if (Object.keys(this.iconTextures).length > 0) return; // déjà chargé
 
     this.iconTextures = {
+      beast: await Assets.load('assets/overlays/beast.png'),
+      blizzard: await Assets.load('assets/overlays/blizzard.png'),
+      caravan: await Assets.load('assets/overlays/caravan.png'),
       city: await Assets.load('assets/overlays/city.png'),
+      encounter: await Assets.load('assets/overlays/encounter.png'),
+      farm: await Assets.load('assets/overlays/farm.png'),
+      forest: await Assets.load('assets/overlays/forest.png'),
+      mine: await Assets.load('assets/overlays/mine.png'),
+      monster: await Assets.load('assets/overlays/monster.png'),
+      oasis: await Assets.load('assets/overlays/oasis.png'),
+      obelisk: await Assets.load('assets/overlays/obelisk.png'),
+      ritual: await Assets.load('assets/overlays/ritual.png'),
+      ruins: await Assets.load('assets/overlays/ruins.png'),
+      shrine: await Assets.load('assets/overlays/shrine.png'),
+      spirit: await Assets.load('assets/overlays/spirit.png'),
+      tower: await Assets.load('assets/overlays/tower.png'),
+      treasure: await Assets.load('assets/overlays/treasure.png'),
       village: await Assets.load('assets/overlays/village.png'),
-      bandits: await Assets.load('assets/overlays/bandits.png')
+      wanderer: await Assets.load('assets/overlays/wanderer.png'),
     };
   }
 
   private async loadPlayerTexture() {
     const char = this.characterService.getCharacter();
     if (!char) throw new Error('Aucun personnage disponible pour charger la texture du joueur');
-
+  
     const path = CHARACTER_ASSETS[char.archetype];
-    if (!this.textures['player']) {
-      this.textures['player'] = await Assets.load(path);
+
+    if (Assets.cache.has(path)) {
+      console.log('♻️ Déchargement texture précédente du joueur:', path);
+      await Assets.unload(path);
     }
-  }
+  
+    // ⚡ Décharge toute ancienne texture 'player'
+    if (this.textures['player']) {
+      try {
+        this.textures['player'].destroy(true);
+        delete this.textures['player'];
+      } catch (e) {
+        console.warn('⚠️ Erreur nettoyage texture joueur', e);
+      }
+    }
+  
+    // ⚡ Recharge la nouvelle texture
+    this.textures['player'] = await Assets.load(path);
+    console.log(`🎨 Texture joueur mise à jour → ${char.archetype}`);
+  }  
 
   private createPlayer() {
     this.player = new Sprite(this.textures['player']);
@@ -398,6 +444,9 @@ export class MapService {
     this.updatePlayerPosition();
     this.centerCamera(false);
 
+    await this.loadPlayerTexture();
+    this.player.texture = this.textures['player'];
+
     console.log(`✅ Carte restaurée (${snapshot.tiles.length} tuiles, ${snapshot.tiles.filter(t => t.discovered).length} découvertes).`);
   }
 
@@ -408,9 +457,143 @@ export class MapService {
       case 'forest': return 'A dense, yet warm forest. You can hear animals slithering through the flora.';
       case 'desert': return "You're dying of heat in this desert, but where's the next watering hole?";
       case 'mountain': return 'These mountains are endless! The wind whistling in your ears will drive you crazy...';
+      case 'volcano': return 'The heat keeps rising, rising, and rising... In the distance you hear the mountain rumbling. Better not hang around here!';
       case 'jungle': return 'This jungle is impenetrable and your feet are soaking wet! The mosquitoes don’t help either.';
+      case 'swamp': return "These swamps make you feel nauseous... All you want to do is take a nice bath! The worst part is, there are creatures living here...";
       case 'water': return "Water, water as far as the eye can see. You're starting to miss land.";
       default: return 'Unknown lands';
     }
   }
+
+  /** 🔄 Réinitialise complètement la carte et le moteur Pixi. */
+  public clearAll(): void {
+    try {
+      if (this.app) {
+        console.log('🧹 Réinitialisation complète de la carte');
+  
+        // 🧽 Avant de détruire Pixi, on décharge les textures gérées
+        for (const key of Object.keys(this.textures)) {
+          const tex = this.textures[key];
+          if (tex && tex.label) {
+            // Supprime la ressource de Pixi Assets si elle y est
+            Assets.unload(tex.label).catch(() => {});
+          }
+        }
+  
+        this.app.destroy(true, { children: true, texture: false, context: true });
+      }
+    } catch (err) {
+      console.warn('⚠️ Erreur lors de la destruction Pixi:', err);
+    }
+
+    this.app = undefined as any;
+    this.mapContainer = undefined as any;
+    this.tiles = {};
+    this.overlaySprites = {};
+    this.overlayTypes = {};
+    this.player = undefined as any;
+    this.playerPos = { q: 0, r: 0 };
+    this.seed = Date.now();
+    this.randState = 1;
+  }
+
+  public generateNewSeed(): number {
+    this.seed = Math.floor(Math.random() * Date.now());
+    this.randState = this.seed;
+    this.noiseAltitude = createNoise2D(() => this.nextRand());
+    this.noiseHumidity = createNoise2D(() => this.nextRand());
+    return this.seed;
+  }
+
+  /** 🧱 Initialise Pixi proprement sur un canvas existant (au lieu de getElementById). */
+  private async bootPixi(canvas: HTMLCanvasElement) {
+    if (this.app) {
+      console.log('♻️ Reboot Pixi instance');
+      this.app.destroy(true, { children: true, texture: false, context: true });
+    }
+    this.app = new Application();
+    await this.app.init({
+      resizeTo: canvas.parentElement!,
+      backgroundColor: 0x111111,
+      canvas
+    });
+    this.mapContainer = new Container();
+    this.app.stage.addChild(this.mapContainer);
+  }
+  
+  /** 🌍 Variante de initMap qui prend directement un canvas */
+  async initMapWithCanvas(canvas: HTMLCanvasElement, mapRadius: number, seed?: number): Promise<void> {
+    await this.bootPixi(canvas);
+    await this.loadTextures();
+    await this.loadIconTextures();
+    await this.loadPlayerTexture();
+  
+    this.mapRadius = mapRadius;
+    this.seed = seed ?? Math.floor(Math.random() * Date.now());
+    this.randState = this.seed;
+    this.noiseAltitude = createNoise2D(() => this.nextRand());
+    this.noiseHumidity = createNoise2D(() => this.nextRand());
+  
+    this.overlaySprites = {};
+    this.overlayTypes = {};
+    this.tiles = {};
+  
+    this.buildMap(mapRadius);
+    this.createPlayer();
+    this.centerCamera(false);
+    this.updateVisibility();
+    window.addEventListener('resize', () => this.centerCamera(false));
+  }
+  
+  /** ♻️ Variante de loadFromSnapshot avec canvas fourni */
+  async loadFromSnapshotWithCanvas(snapshot: MapSnapshot, canvas: HTMLCanvasElement): Promise<void> {
+    console.log('🧩 Chargement snapshot (canvas direct)...', snapshot.tiles.length, 'tuiles');
+  
+    await this.bootPixi(canvas);
+    await this.loadTextures();
+    await this.loadIconTextures();
+    await this.loadPlayerTexture(); // dépend du perso courant
+  
+    this.seed = snapshot.seed ?? Date.now();
+    this.randState = this.seed;
+    this.noiseAltitude = createNoise2D(() => this.nextRand());
+    this.noiseHumidity = createNoise2D(() => this.nextRand());
+  
+    this.overlaySprites = {};
+    this.overlayTypes = {};
+    this.tiles = {};
+  
+    for (const tile of snapshot.tiles) {
+      const { x, y } = this.hexToPixel(tile.q, tile.r);
+      const tileContainer = createTile({
+        x, y,
+        size: this.size,
+        terrain: tile.terrain ?? 'plain',
+        container: this.mapContainer,
+        textures: this.textures,
+        onClick: () => this.movePlayer(tile.q, tile.r)
+      });
+      this.tiles[tile.key] = {
+        gfx: tileContainer,
+        terrain: tile.terrain,
+        discovered: tile.discovered
+      };
+      const tileGfx = tileContainer as any;
+      if (tileGfx.fog) tileGfx.fog.visible = !tile.discovered;
+    }
+  
+    for (const o of snapshot.overlays ?? []) this.addOverlay(o.q, o.r, o.kind);
+  
+    // ⚡ Charge la texture du joueur selon le personnage courant AVANT création du sprite
+    await this.loadPlayerTexture();
+    
+    // === Joueur ===
+    this.createPlayer();
+    this.playerPos = snapshot.player ?? { q: 0, r: 0 };
+    this.updatePlayerPosition();
+    this.centerCamera(false);
+    
+    console.log(`✅ Carte restaurée (${snapshot.tiles.length} tuiles).`);    
+  }
+    
 }

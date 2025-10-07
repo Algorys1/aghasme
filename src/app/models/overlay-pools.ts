@@ -3,42 +3,55 @@ import { Terrain } from '../factories/tile.factory';
 
 export const overlayPools: Record<Terrain, { kind: OverlayKind; weight: number }[]> = {
   plain: [
-    { kind: OverlayKind.None, weight: 60 },
+    { kind: OverlayKind.None, weight: 30 },
     { kind: OverlayKind.Village, weight: 10 },
-    { kind: OverlayKind.Farm, weight: 10 },
-    { kind: OverlayKind.Forest, weight: 5 },
-    { kind: OverlayKind.Bandits, weight: 5 }
+    { kind: OverlayKind.Farm, weight: 30 },
+    { kind: OverlayKind.Encounter, weight: 15 },
+    { kind: OverlayKind.Beast, weight: 20 },
   ],
   forest: [
-    { kind: OverlayKind.None, weight: 50 },
-    { kind: OverlayKind.Forest, weight: 10 },
-    { kind: OverlayKind.Beast, weight: 10 },
-    { kind: OverlayKind.Spirit, weight: 5 },
-    { kind: OverlayKind.Ritual, weight: 2 }
+    { kind: OverlayKind.None, weight: 10 },
+    { kind: OverlayKind.Forest, weight: 40 },
+    { kind: OverlayKind.Beast, weight: 20 },
+    { kind: OverlayKind.Spirit, weight: 25 },
+    { kind: OverlayKind.Ritual, weight: 10 }
   ],
   desert: [
-    { kind: OverlayKind.None, weight: 50 },
-    { kind: OverlayKind.Caravan, weight: 10 },
-    { kind: OverlayKind.Oasis, weight: 5 },
-    { kind: OverlayKind.Bandits, weight: 5 },
-    { kind: OverlayKind.Ruins, weight: 3 }
+    { kind: OverlayKind.None, weight: 60 },
+    { kind: OverlayKind.Caravan, weight: 15 },
+    { kind: OverlayKind.Oasis, weight: 15 },
+    { kind: OverlayKind.Encounter, weight: 35 },
+    { kind: OverlayKind.Ruins, weight: 20 }
   ],
   mountain: [
-    { kind: OverlayKind.None, weight: 50 },
-    { kind: OverlayKind.Mine, weight: 10 },
+    { kind: OverlayKind.None, weight: 40 },
+    { kind: OverlayKind.Mine, weight: 20 },
+    { kind: OverlayKind.Fortress, weight: 10 },
+    { kind: OverlayKind.Ruins, weight: 10 },
+    { kind: OverlayKind.Monster, weight: 20 }
+  ],
+  volcano: [
+    { kind: OverlayKind.None, weight: 60 },
+    { kind: OverlayKind.Mine, weight: 20 },
     { kind: OverlayKind.Fortress, weight: 5 },
-    { kind: OverlayKind.Ruins, weight: 5 },
+    { kind: OverlayKind.Ruins, weight: 25 },
     { kind: OverlayKind.Monster, weight: 5 }
   ],
   water: [
     { kind: OverlayKind.None, weight: 80 },
-    { kind: OverlayKind.Merchant, weight: 5 },
-    { kind: OverlayKind.Treasure, weight: 2 }
+    { kind: OverlayKind.Merchant, weight: 15 },
+    { kind: OverlayKind.Treasure, weight: 20 }
   ],
   jungle: [
     { kind: OverlayKind.None, weight: 50 },
-    { kind: OverlayKind.Treasure, weight: 4 },
-    { kind: OverlayKind.Monster, weight: 25 },
-    { kind: OverlayKind.Ruins, weight: 10 }
+    { kind: OverlayKind.Treasure, weight: 15 },
+    { kind: OverlayKind.Monster, weight: 40 },
+    { kind: OverlayKind.Ruins, weight: 20 }
+  ],
+  swamp: [
+    { kind: OverlayKind.None, weight: 50 },
+    { kind: OverlayKind.Treasure, weight: 15 },
+    { kind: OverlayKind.Monster, weight: 40 },
+    { kind: OverlayKind.Ruins, weight: 20 }
   ]
 };

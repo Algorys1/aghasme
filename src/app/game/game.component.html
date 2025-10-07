@@ -1,6 +1,8 @@
+<!-- @if (character) { -->
+
 <div class="game-container">
   <!-- Game canvas -->
-  <canvas id="myCanvas"></canvas>
+  <canvas #gameCanvas id="myCanvas"></canvas>
 
   <!-- HUD TOP -->
   <div class="hud-top">
@@ -10,7 +12,7 @@
       </div>
 
       <div class="hud-buttons">
-        <div class="hud-button" (click)="openMap()">
+        <!-- <div class="hud-button" (click)="openMap()">
           <img src="assets/ui/map.png" alt="Map" />
         </div>
         <div class="hud-button" (click)="openBackpack()">
@@ -21,7 +23,7 @@
         </div>
         <div class="hud-button" (click)="openSkills()">
           <img src="assets/ui/skills.png" alt="Skills" />
-        </div>
+        </div> -->
         <div class="hud-button" (click)="openPauseMenu()">
           <img src="assets/ui/settings.png" alt="Settings" />
         </div>
@@ -69,7 +71,7 @@
 
     <div class="overlay-actions">
       @for (action of actions; track action) {
-        <button class="overlay-action" (click)="onAction(action)">{{ action }}</button>
+        <!-- <button class="overlay-action" (click)="onAction(action)">{{ action }}</button> -->
       }
     </div>
   </div>
@@ -82,8 +84,9 @@
         <button (click)="closePauseMenu()">Continue</button>
         <button (click)="saveGameManual()">Save Game</button>
         <button (click)="goHome()">Back to home</button>
-        <button (click)="quitGame()">Quit Game</button>
+        <!-- <button (click)="quitGame()">Quit Game</button> -->
       </div>
     </div>
   }
 </div>
+<!-- } -->
