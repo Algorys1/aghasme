@@ -64,62 +64,6 @@ export class MapService {
 
   constructor(private characterService: CharacterService) {}
 
-  public getSeed(): number {
-    return this.seed;
-  }
-  
-  public setSeed(seed: number): void {
-    this.seed = seed;
-    this.randState = seed;
-    this.noiseAltitude = createNoise2D(() => this.nextRand());
-    this.noiseHumidity = createNoise2D(() => this.nextRand());
-  }
-
-  // === INIT / GENERATION ==========================================================
-  async initMap(canvasId: string, mapRadius: number, seed?: number): Promise<void> {
-    if (this.app) {
-      console.log('🧹 Destruction ancienne instance Pixi');
-      this.app.destroy(true, { children: true, texture: false, context: true });
-      this.app = undefined as any;
-    }
-
-    const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
-    if (!canvas) throw new Error('Canvas introuvable !');
-
-    this.app = new Application();
-    await this.app.init({
-      resizeTo: canvas.parentElement!,
-      backgroundColor: 0x111111,
-      canvas
-    });
-
-    await this.loadTextures();
-    await this.loadIconTextures();
-    await this.loadPlayerTexture();
-
-    this.mapContainer = new Container();
-    this.app.stage.addChild(this.mapContainer);
-    this.mapRadius = mapRadius;
-
-    this.seed = seed !== undefined ? seed : Math.floor(Math.random() * Date.now());
-
-    this.randState = this.seed;
-    this.noiseAltitude = createNoise2D(() => this.nextRand());
-    this.noiseHumidity = createNoise2D(() => this.nextRand());
-
-    this.overlaySprites = {};
-    this.overlayTypes = {};
-    this.tiles = {};
-
-    this.buildMap(mapRadius);
-    this.createPlayer();
-
-    this.centerCamera(false);
-    this.updateVisibility();
-
-    window.addEventListener('resize', () => this.centerCamera(false));
-  }
-
   private nextRand(): number {
     this.randState = (this.randState * 48271) % 0x7fffffff;
     return this.randState / 0x7fffffff;
@@ -189,20 +133,22 @@ export class MapService {
   }
 
   private async loadIconTextures() {
-    if (Object.keys(this.iconTextures).length > 0) return; // déjà chargé
+    if (Object.keys(this.iconTextures).length > 0) return; // already loaded
 
     this.iconTextures = {
+      anomaly: await Assets.load('assets/overlays/anomaly.png'),
       beast: await Assets.load('assets/overlays/beast.png'),
-      blizzard: await Assets.load('assets/overlays/blizzard.png'),
       caravan: await Assets.load('assets/overlays/caravan.png'),
       city: await Assets.load('assets/overlays/city.png'),
       encounter: await Assets.load('assets/overlays/encounter.png'),
       farm: await Assets.load('assets/overlays/farm.png'),
       forest: await Assets.load('assets/overlays/forest.png'),
+      merchant: await Assets.load('assets/overlays/merchant.png'),
       mine: await Assets.load('assets/overlays/mine.png'),
       monster: await Assets.load('assets/overlays/monster.png'),
       oasis: await Assets.load('assets/overlays/oasis.png'),
       obelisk: await Assets.load('assets/overlays/obelisk.png'),
+      portal: await Assets.load('assets/overlays/portal.png'),
       ritual: await Assets.load('assets/overlays/ritual.png'),
       ruins: await Assets.load('assets/overlays/ruins.png'),
       shrine: await Assets.load('assets/overlays/shrine.png'),
@@ -217,15 +163,15 @@ export class MapService {
   private async loadPlayerTexture() {
     const char = this.characterService.getCharacter();
     if (!char) throw new Error('Aucun personnage disponible pour charger la texture du joueur');
-  
+
     const path = CHARACTER_ASSETS[char.archetype];
 
     if (Assets.cache.has(path)) {
       console.log('♻️ Déchargement texture précédente du joueur:', path);
       await Assets.unload(path);
     }
-  
-    // ⚡ Décharge toute ancienne texture 'player'
+
+    // Remove old player texture if exists
     if (this.textures['player']) {
       try {
         this.textures['player'].destroy(true);
@@ -234,11 +180,11 @@ export class MapService {
         console.warn('⚠️ Erreur nettoyage texture joueur', e);
       }
     }
-  
-    // ⚡ Recharge la nouvelle texture
+
+    // Load new player texture
     this.textures['player'] = await Assets.load(path);
     console.log(`🎨 Texture joueur mise à jour → ${char.archetype}`);
-  }  
+  }
 
   private createPlayer() {
     this.player = new Sprite(this.textures['player']);
@@ -285,7 +231,7 @@ export class MapService {
     }
   }
 
-  private centerCamera(animated = false) {
+  private centerCamera() {
     if (!this.mapContainer || !this.app) return;
 
     const { x, y } = this.hexToPixel(this.playerPos.q, this.playerPos.r);
@@ -378,78 +324,6 @@ export class MapService {
     };
   }
 
-  public async loadFromSnapshot(snapshot: MapSnapshot): Promise<void> {
-    console.log('🧩 Chargement snapshot...', snapshot.tiles.length, 'tuiles');
-
-    // 🧹 Si une instance Pixi existe déjà, la détruire
-    if (this.app) {
-      console.log('🧹 Destruction ancienne instance Pixi avant rechargement');
-      this.app.destroy(true, { children: true, texture: true, context: true });
-      this.app = undefined as any;
-    }
-
-    // --- Recréation de l’app
-    const canvas = document.getElementById('myCanvas') as HTMLCanvasElement | null;
-    if (!canvas) throw new Error('Canvas introuvable !');
-
-    this.app = new Application();
-    await this.app.init({
-      resizeTo: canvas.parentElement!,
-      backgroundColor: 0x111111,
-      canvas
-    });
-
-    // --- Recréation du container et reset complet
-    this.mapContainer = new Container();
-    this.app.stage.addChild(this.mapContainer);
-    this.overlaySprites = {};
-    this.overlayTypes = {};
-
-    await this.loadTextures();
-    await this.loadIconTextures();
-    await this.loadPlayerTexture();
-
-    this.seed = snapshot.seed ?? Date.now();
-    this.randState = this.seed;
-    this.noiseAltitude = createNoise2D(() => this.nextRand());
-    this.noiseHumidity = createNoise2D(() => this.nextRand());
-    this.tiles = {};
-
-    for (const tile of snapshot.tiles) {
-      const { x, y } = this.hexToPixel(tile.q, tile.r);
-      const tileContainer = createTile({
-        x,
-        y,
-        size: this.size,
-        terrain: tile.terrain ?? 'plain',
-        container: this.mapContainer,
-        textures: this.textures,
-        onClick: () => this.movePlayer(tile.q, tile.r)
-      });
-
-      this.tiles[tile.key] = {
-        gfx: tileContainer,
-        terrain: tile.terrain,
-        discovered: tile.discovered
-      };
-
-      const tileGfx = tileContainer as any;
-      if (tileGfx.fog) tileGfx.fog.visible = !tile.discovered;
-    }
-
-    for (const o of snapshot.overlays ?? []) this.addOverlay(o.q, o.r, o.kind);
-
-    this.createPlayer();
-    this.playerPos = snapshot.player ?? { q: 0, r: 0 };
-    this.updatePlayerPosition();
-    this.centerCamera(false);
-
-    await this.loadPlayerTexture();
-    this.player.texture = this.textures['player'];
-
-    console.log(`✅ Carte restaurée (${snapshot.tiles.length} tuiles, ${snapshot.tiles.filter(t => t.discovered).length} découvertes).`);
-  }
-
   // === TERRAIN DESCRIPTIONS ==========================================================
   private describeTerrain(terrain: Terrain): string {
     switch (terrain) {
@@ -465,12 +339,12 @@ export class MapService {
     }
   }
 
-  /** 🔄 Réinitialise complètement la carte et le moteur Pixi. */
+  /** 🔄 Init all map and Pixi */
   public clearAll(): void {
     try {
       if (this.app) {
-        console.log('🧹 Réinitialisation complète de la carte');
-  
+        console.log('🧹 Réinitialize all the map');
+
         // 🧽 Avant de détruire Pixi, on décharge les textures gérées
         for (const key of Object.keys(this.textures)) {
           const tex = this.textures[key];
@@ -479,11 +353,11 @@ export class MapService {
             Assets.unload(tex.label).catch(() => {});
           }
         }
-  
+
         this.app.destroy(true, { children: true, texture: false, context: true });
       }
     } catch (err) {
-      console.warn('⚠️ Erreur lors de la destruction Pixi:', err);
+      console.warn('⚠️ Error when destroy Pixi:', err);
     }
 
     this.app = undefined as any;
@@ -505,7 +379,6 @@ export class MapService {
     return this.seed;
   }
 
-  /** 🧱 Initialise Pixi proprement sur un canvas existant (au lieu de getElementById). */
   private async bootPixi(canvas: HTMLCanvasElement) {
     if (this.app) {
       console.log('♻️ Reboot Pixi instance');
@@ -520,49 +393,48 @@ export class MapService {
     this.mapContainer = new Container();
     this.app.stage.addChild(this.mapContainer);
   }
-  
-  /** 🌍 Variante de initMap qui prend directement un canvas */
+
   async initMapWithCanvas(canvas: HTMLCanvasElement, mapRadius: number, seed?: number): Promise<void> {
     await this.bootPixi(canvas);
     await this.loadTextures();
     await this.loadIconTextures();
     await this.loadPlayerTexture();
-  
+
     this.mapRadius = mapRadius;
     this.seed = seed ?? Math.floor(Math.random() * Date.now());
     this.randState = this.seed;
     this.noiseAltitude = createNoise2D(() => this.nextRand());
     this.noiseHumidity = createNoise2D(() => this.nextRand());
-  
+
     this.overlaySprites = {};
     this.overlayTypes = {};
     this.tiles = {};
-  
+
     this.buildMap(mapRadius);
     this.createPlayer();
-    this.centerCamera(false);
+    this.centerCamera();
     this.updateVisibility();
-    window.addEventListener('resize', () => this.centerCamera(false));
+    window.addEventListener('resize', () => this.centerCamera());
   }
-  
+
   /** ♻️ Variante de loadFromSnapshot avec canvas fourni */
   async loadFromSnapshotWithCanvas(snapshot: MapSnapshot, canvas: HTMLCanvasElement): Promise<void> {
     console.log('🧩 Chargement snapshot (canvas direct)...', snapshot.tiles.length, 'tuiles');
-  
+
     await this.bootPixi(canvas);
     await this.loadTextures();
     await this.loadIconTextures();
     await this.loadPlayerTexture(); // dépend du perso courant
-  
+
     this.seed = snapshot.seed ?? Date.now();
     this.randState = this.seed;
     this.noiseAltitude = createNoise2D(() => this.nextRand());
     this.noiseHumidity = createNoise2D(() => this.nextRand());
-  
+
     this.overlaySprites = {};
     this.overlayTypes = {};
     this.tiles = {};
-  
+
     for (const tile of snapshot.tiles) {
       const { x, y } = this.hexToPixel(tile.q, tile.r);
       const tileContainer = createTile({
@@ -581,19 +453,19 @@ export class MapService {
       const tileGfx = tileContainer as any;
       if (tileGfx.fog) tileGfx.fog.visible = !tile.discovered;
     }
-  
+
     for (const o of snapshot.overlays ?? []) this.addOverlay(o.q, o.r, o.kind);
-  
+
     // ⚡ Charge la texture du joueur selon le personnage courant AVANT création du sprite
     await this.loadPlayerTexture();
-    
+
     // === Joueur ===
     this.createPlayer();
     this.playerPos = snapshot.player ?? { q: 0, r: 0 };
     this.updatePlayerPosition();
-    this.centerCamera(false);
-    
-    console.log(`✅ Carte restaurée (${snapshot.tiles.length} tuiles).`);    
+    this.centerCamera();
+
+    console.log(`✅ Map restored (${snapshot.tiles.length} tiles).`);
   }
-    
+
 }

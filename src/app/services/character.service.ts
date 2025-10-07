@@ -1,7 +1,6 @@
 // character.service.ts
 import { Injectable } from '@angular/core';
-import { Character, NewCharacterInput, Archetype, Orbs } from '../models/character.model';
-import { CHARACTER_ASSETS } from '../models/characters-assets';
+import { Character, NewCharacterInput, Orbs } from '../models/character.model';
 
 const DEFAULT_ORBS: Orbs = { bestial: 0, elemental: 0, natural: 0, mechanic: 0 };
 
@@ -81,14 +80,6 @@ export class CharacterService {
     if (!this.character || this.character.gold < amount) return false;
     this.character.gold -= amount;
     return true;
-  }
-  setOrb(key: keyof Orbs, value: number) {
-    if (!this.character) return;
-    this.character.orbs[key] = Math.max(0, value);
-  }
-
-  getCharacterAsset(archetype: Archetype): string {
-    return CHARACTER_ASSETS[archetype];
   }
 
   private xpToNextLevel(level: number) {

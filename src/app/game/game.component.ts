@@ -1,5 +1,5 @@
 // game.component.ts
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef, ChangeDetectorRef} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {Router} from '@angular/router';
 import {PlayerService} from '../services/player.service';
 import {Character, OrbKey} from '../models/character.model';
@@ -43,7 +43,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private mapService: MapService,
     private saveService: SaveService,
     private characterService: CharacterService,
-    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -70,14 +69,14 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       console.error('❌ Impossible de trouver le canvas');
       return;
     }
-  
+
     // 🔥 On supprime l’ancienne clé globale "character" (héritage)
     this.characterService.clearLegacyStorage();
-  
+
     const nav = history.state ?? {};
     const chosenSlot: string | undefined = nav.slot;
     const isNewGame: boolean = !!nav.newGame;
-  
+
     if (isNewGame) {
       console.log('🎲 Nouvelle partie demandée → reset complet');
       this.mapService.clearAll();
@@ -85,7 +84,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       await this.mapService.initMapWithCanvas(canvas, 10);
       return;
     }
-  
+
     if (chosenSlot) {
       const save = this.saveService.loadGame(chosenSlot);
       if (save?.map && save?.character) {
@@ -98,7 +97,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       await this.mapService.initMapWithCanvas(canvas, 10);
       return;
     }
-  
+
     const auto = this.saveService.loadGame('auto');
     if (auto?.map && auto?.character) {
       this.characterService.setCharacter(auto.character);
@@ -110,10 +109,10 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (!this.character) {
-      console.warn('⚠️ Aucun personnage chargé, retour au menu');
-      this.router.navigate(['/start']);
+      console.warn('⚠️ No character found, back to menu');
+      await this.router.navigate(['/start']);
       return;
-    }    
+    }
   }
 
   private waitForCanvas(): Promise<HTMLCanvasElement | null> {
@@ -125,8 +124,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       };
       check();
     });
-  }  
-  
+  }
+
 
   private refreshOrbs() {
     if (!this.character) { this.orbs = []; return; }
@@ -139,10 +138,10 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     ];
   }
 
-  // --- HUD Actions ---
+  // --- TODO HUD Actions ---
   onAction(action: string) { console.log('[Action]', action, 'on', this.currentOverlay?.name); }
 
-  // --- HUD buttons ---
+  // --- TODO HUD buttons ---
   openMap() { console.log('Open Map'); }
   openBackpack() { console.log('Open Backpack'); }
   openQuests() { console.log('Open Quests'); }
@@ -176,7 +175,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goHome() { this.router.navigate(['/home']); }
-  quitGame() { this.router.navigate(['/home']); }
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());

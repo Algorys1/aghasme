@@ -18,6 +18,7 @@ export const overlayPools: Record<Terrain, { kind: OverlayKind; weight: number }
   ],
   desert: [
     { kind: OverlayKind.None, weight: 60 },
+    { kind: OverlayKind.Anomaly, weight: 5 },
     { kind: OverlayKind.Caravan, weight: 15 },
     { kind: OverlayKind.Oasis, weight: 15 },
     { kind: OverlayKind.Encounter, weight: 35 },
@@ -26,14 +27,14 @@ export const overlayPools: Record<Terrain, { kind: OverlayKind; weight: number }
   mountain: [
     { kind: OverlayKind.None, weight: 40 },
     { kind: OverlayKind.Mine, weight: 20 },
-    { kind: OverlayKind.Fortress, weight: 10 },
+    { kind: OverlayKind.Tower, weight: 10 },
     { kind: OverlayKind.Ruins, weight: 10 },
     { kind: OverlayKind.Monster, weight: 20 }
   ],
   volcano: [
     { kind: OverlayKind.None, weight: 60 },
     { kind: OverlayKind.Mine, weight: 20 },
-    { kind: OverlayKind.Fortress, weight: 5 },
+    { kind: OverlayKind.Anomaly, weight: 5 },
     { kind: OverlayKind.Ruins, weight: 25 },
     { kind: OverlayKind.Monster, weight: 5 }
   ],

@@ -34,11 +34,6 @@ export class SaveService {
     localStorage.setItem(this.storageKey, JSON.stringify(saves));
   }
 
-  /** Efface tout (debug/dev) */
-  public clearAll(): void {
-    localStorage.removeItem(this.storageKey);
-  }
-
   /** Lecture interne */
   private loadAllSaves(): Record<string, GameState> {
     try {

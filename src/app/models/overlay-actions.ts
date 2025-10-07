@@ -4,6 +4,7 @@ export const overlayActions: Record<OverlayKind, string[]> = {
   [OverlayKind.None]: [],
 
   // Encounters
+  [OverlayKind.Anomaly]: ['Investigate', 'Avoid'],
   [OverlayKind.Monster]: ['Attack', 'Flee', 'Negotiate'],
   [OverlayKind.Beast]: ['Attack', 'Flee', 'Capture'],
   [OverlayKind.Spirit]: ['Attack', 'Flee', 'Exorcise'],
@@ -14,11 +15,9 @@ export const overlayActions: Record<OverlayKind, string[]> = {
   [OverlayKind.City]: ['Explore', 'Trade', 'Talk', 'Find quest', 'Rest'],
   [OverlayKind.Farm]: ['Trade', 'Rest', 'Talk'],
   [OverlayKind.Tower]: ['Explore', 'Talk', 'Quest'],
-  [OverlayKind.Fortress]: ['Explore', 'Talk', 'Quest'],
   [OverlayKind.Ruins]: ['Explore', 'Search treasure'],
 
   // Events
-  [OverlayKind.Blizzard]: ['Seek shelter', 'Push forward'],
   [OverlayKind.Caravan]: ['Trade', 'Talk'],
   [OverlayKind.Merchant]: ['Trade', 'Buy', 'Sell'],
   [OverlayKind.Wanderer]: ['Talk', 'Help', 'Ignore'],

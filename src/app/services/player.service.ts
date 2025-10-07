@@ -14,21 +14,9 @@ export class PlayerService {
     this.character$ = this.characterSub.asObservable();
   }
 
-  /** Initialise un nouveau joueur à partir d’un personnage */
-  initPlayer(character: Character) {
-    this.characterService.setCharacter(character);
-    this.refresh();
-  }
-
   /** Récupère le personnage actuel */
   get character(): Character | null {
     return this.characterSub.getValue();
-  }
-
-  /** Met à jour le personnage courant */
-  setCharacter(c: Character) {
-    this.characterService.setCharacter(c);
-    this.refresh();
   }
 
   /** Rafraîchit les observables */
@@ -42,7 +30,7 @@ export class PlayerService {
     this.characterSub.next(null);
   }
 
-  // --- Getters pratiques pour le template ---
+  // --- TODO Getters ---
   get hp() { return this.character?.hp ?? 0; }
   get maxHp() { return this.character?.maxHp ?? 0; }
   get mp() { return this.character?.mp ?? 0; }
@@ -50,7 +38,7 @@ export class PlayerService {
   get xp() { return this.character?.xp ?? 0; }
   get gold() { return this.character?.gold ?? 0; }
 
-  // --- Délégation vers CharacterService ---
+  // --- TODO Delegate on CharacterService ---
   takeDamage(amount: number) { this.characterService.takeDamage(amount); this.refresh(); }
   heal(amount: number) { this.characterService.heal(amount); this.refresh(); }
   spendMP(amount: number) { const ok = this.characterService.spendMP(amount); this.refresh(); return ok; }
@@ -58,7 +46,6 @@ export class PlayerService {
   gainGold(amount: number) { this.characterService.gainGold(amount); this.refresh(); }
   spendGold(amount: number) { const ok = this.characterService.spendGold(amount); this.refresh(); return ok; }
 
-  /** Récupère le personnage actuel depuis CharacterService */
   getCharacter(): Character | null {
     return this.characterService.getCharacter();
   }
