@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { createNoise2D } from 'simplex-noise';
-import { Application, Container, Sprite, Assets, Texture } from 'pixi.js';
 
 import { createTile, Terrain } from '../factories/tile.factory';
-import { OverlayKind, OVERLAY_MANIFEST, OVERLAY_POOLS } from '../models/overlays';
-import { CHARACTER_ASSETS } from '../models/character.model';
+import { OverlayKind, OVERLAY_POOLS } from '../models/overlays';
 import { CharacterService } from './character.service';
+import { RendererService } from './renderer.service'; 
+import { Container, Sprite } from 'pixi.js';
 
 export interface MapTileSnapshot {
   key: string;
@@ -29,8 +29,6 @@ export interface MapSnapshot {
 @Injectable({ providedIn: 'root' })
 export class MapService {
   // --- PIXI Core ---
-  private app!: Application;
-  private mapContainer!: Container;
   private size = 80;
 
   // --- Map Data ---
@@ -51,8 +49,8 @@ export class MapService {
   private playerPos = { q: 0, r: 0 };
 
   // --- Assets ---
-  private textures: Record<string, Texture> = {} as any;
-  private iconTextures: Record<string, Texture> = {} as any;
+  // private textures: Record<string, Texture> = {} as any;
+  // private iconTextures: Record<string, Texture> = {} as any;
 
   // --- State / Events ---
   private mapRadius = 10;
@@ -61,7 +59,10 @@ export class MapService {
   tileChange = new Subject<{ type: string; description?: string }>();
   playerMoved = new Subject<{ q: number; r: number }>();
 
-  constructor(private characterService: CharacterService) {}
+  constructor(
+    private characterService: CharacterService,
+    private renderer: RendererService
+  ) {}
 
   private nextRand(): number {
     this.randState = (this.randState * 48271) % 0x7fffffff;
@@ -105,8 +106,8 @@ export class MapService {
             y,
             size: this.size,
             terrain,
-            container: this.mapContainer,
-            textures: this.textures,
+            container: this.renderer.container,
+            textures: this.renderer.textures,            
             onClick: () => this.movePlayer(q, r)
           });
 
@@ -119,72 +120,9 @@ export class MapService {
     }
   }
 
-  // === TEXTURES & PLAYER ==========================================================
-  private async loadTextures() {
-    if (Object.keys(this.textures).length > 0) return; // déjà chargé
-
-    const manifest = await fetch('assets/tiles/tiles.json').then(res => res.json());
-    const textures: Record<string, Texture> = {};
-    for (const [key, path] of Object.entries(manifest)) {
-      textures[key] = await Assets.load(path as string);
-    }
-    this.textures = textures;
-  }
-
-  private async loadIconTextures() {
-    if (Object.keys(this.iconTextures).length > 0) return; // already loaded
-  
-    // Charge toutes les icônes déclarées dans le manifest unifié
-    for (const [key, info] of Object.entries(OVERLAY_MANIFEST)) {
-      if (!info.icon) continue;              // skip OverlayKind.None
-      try {
-        this.iconTextures[key] = await Assets.load(info.icon);
-      } catch (e) {
-        // Fallback si une icône du manifest n'existe pas : assets/overlays/<key>.png
-        const fallback = `assets/overlays/${key}.png`;
-        try {
-          this.iconTextures[key] = await Assets.load(fallback);
-          console.warn(`⚠️ Missing ${info.icon}, used fallback ${fallback}`);
-        } catch {
-          console.warn(`⚠️ Could not load icon for overlay "${key}" (${info.icon})`);
-        }
-      }
-    }
-  }  
-
-  private async loadPlayerTexture() {
-    const char = this.characterService.getCharacter();
-    if (!char) throw new Error('Aucun personnage disponible pour charger la texture du joueur');
-
-    const path = CHARACTER_ASSETS[char.archetype];
-
-    if (Assets.cache.has(path)) {
-      console.log('♻️ Déchargement texture précédente du joueur:', path);
-      await Assets.unload(path);
-    }
-
-    // Remove old player texture if exists
-    if (this.textures['player']) {
-      try {
-        this.textures['player'].destroy(true);
-        delete this.textures['player'];
-      } catch (e) {
-        console.warn('⚠️ Erreur nettoyage texture joueur', e);
-      }
-    }
-
-    // Load new player texture
-    this.textures['player'] = await Assets.load(path);
-    console.log(`🎨 Texture joueur mise à jour → ${char.archetype}`);
-  }
-
   private createPlayer() {
-    this.player = new Sprite(this.textures['player']);
-    this.player.anchor.set(0.5);
-    this.player.width = this.size * 1.2;
-    this.player.height = this.size * 1.2;
-    this.mapContainer.addChild(this.player);
-    this.updatePlayerPosition();
+    this.player = this.renderer.createPlayerSprite(this.size);
+    this.updatePlayerPosition();    
   }
 
   // === PLAYER MOVEMENT / CAMERA ====================================================
@@ -204,7 +142,7 @@ export class MapService {
         this.playerPos = { q, r };
         this.playerMoved.next(this.playerPos);
         this.updatePlayerPosition();
-        this.centerCamera();
+        this.renderer.centerCamera(this.playerPos.q, this.playerPos.r, this.size);
         this.updateVisibility();
 
         const key = `${q},${r}`;
@@ -221,16 +159,6 @@ export class MapService {
         }
       }
     }
-  }
-
-  private centerCamera() {
-    if (!this.mapContainer || !this.app) return;
-
-    const { x, y } = this.hexToPixel(this.playerPos.q, this.playerPos.r);
-    const targetX = this.app.screen.width / 2 - x;
-    const targetY = this.app.screen.height / 2 - y;
-    this.mapContainer.x = targetX;
-    this.mapContainer.y = targetY;
   }
 
   private updateVisibility() {
@@ -256,23 +184,14 @@ export class MapService {
 
   // === OVERLAYS ===================================================================
   addOverlay(q: number, r: number, kind: OverlayKind) {
-    if (!this.mapContainer) return;
-    const key = `${q},${r}`;
     const { x, y } = this.hexToPixel(q, r);
-    const tex = this.iconTextures[kind];
-    if (!tex) return;
-
-    const s = new Sprite(tex);
-    s.anchor.set(0.5);
-    s.x = x;
-    s.y = y;
-    s.width = this.size * 0.8;
-    s.height = this.size * 0.8;
-
-    this.mapContainer.addChild(s);
-    (this.overlaySprites[key] ||= []).push(s);
+    const sprite = this.renderer.createOverlaySprite(kind, x, y, this.size);
+    if (!sprite) return;
+  
+    const key = `${q},${r}`;
+    (this.overlaySprites[key] ||= []).push(sprite);
     (this.overlayTypes[key] ||= []).push(kind);
-  }
+  }  
 
   private pickOverlayForTerrain(terrain: Terrain): OverlayKind {
     const poolObj = OVERLAY_POOLS[terrain];
@@ -339,37 +258,16 @@ export class MapService {
     }
   }
 
-  /** 🔄 Init all map and Pixi */
   public clearAll(): void {
-    try {
-      if (this.app) {
-        console.log('🧹 Réinitialize all the map');
-
-        // 🧽 Avant de détruire Pixi, on décharge les textures gérées
-        for (const key of Object.keys(this.textures)) {
-          const tex = this.textures[key];
-          if (tex && tex.label) {
-            // Supprime la ressource de Pixi Assets si elle y est
-            Assets.unload(tex.label).catch(() => {});
-          }
-        }
-
-        this.app.destroy(true, { children: true, texture: false, context: true });
-      }
-    } catch (err) {
-      console.warn('⚠️ Error when destroy Pixi:', err);
-    }
-
-    this.app = undefined as any;
-    this.mapContainer = undefined as any;
+    this.renderer.clear();
     this.tiles = {};
     this.overlaySprites = {};
     this.overlayTypes = {};
-    this.player = undefined as any;
     this.playerPos = { q: 0, r: 0 };
     this.seed = Date.now();
     this.randState = 1;
   }
+  
 
   public generateNewSeed(): number {
     this.seed = Math.floor(Math.random() * Date.now());
@@ -380,25 +278,12 @@ export class MapService {
   }
 
   private async bootPixi(canvas: HTMLCanvasElement) {
-    if (this.app) {
-      console.log('♻️ Reboot Pixi instance');
-      this.app.destroy(true, { children: true, texture: false, context: true });
-    }
-    this.app = new Application();
-    await this.app.init({
-      resizeTo: canvas.parentElement!,
-      backgroundColor: 0x111111,
-      canvas
-    });
-    this.mapContainer = new Container();
-    this.app.stage.addChild(this.mapContainer);
-  }
+    await this.renderer.init(canvas);
+  }  
 
   async initMapWithCanvas(canvas: HTMLCanvasElement, mapRadius: number, seed?: number): Promise<void> {
     await this.bootPixi(canvas);
-    await this.loadTextures();
-    await this.loadIconTextures();
-    await this.loadPlayerTexture();
+    await this.prepareRenderer();
 
     this.mapRadius = mapRadius;
     this.seed = seed ?? Math.floor(Math.random() * Date.now());
@@ -412,9 +297,18 @@ export class MapService {
 
     this.buildMap(mapRadius);
     this.createPlayer();
-    this.centerCamera();
+    this.renderer.centerCamera(this.playerPos.q, this.playerPos.r, this.size);
     this.updateVisibility();
-    window.addEventListener('resize', () => this.centerCamera());
+    window.addEventListener('resize', () => this.renderer.centerCamera());
+  }
+
+  private async prepareRenderer() {
+    await this.renderer.loadTileTextures();
+    await this.renderer.loadOverlayTextures();
+  
+    const char = this.characterService.getCharacter();
+    if (!char) throw new Error('No character found to load player texture');
+    await this.renderer.loadPlayerTexture(char.archetype);
   }
 
   /** ♻️ Variante de loadFromSnapshot avec canvas fourni */
@@ -422,18 +316,14 @@ export class MapService {
     console.log('🧩 Chargement snapshot (canvas direct)...', snapshot.tiles.length, 'tuiles');
 
     await this.bootPixi(canvas);
-    await this.loadTextures();
-    await this.loadIconTextures();
-    await this.loadPlayerTexture(); // dépend du perso courant
+    await this.prepareRenderer();
 
     this.seed = snapshot.seed ?? Date.now();
     this.randState = this.seed;
     this.noiseAltitude = createNoise2D(() => this.nextRand());
     this.noiseHumidity = createNoise2D(() => this.nextRand());
 
-    this.overlaySprites = {};
     this.overlayTypes = {};
-    this.tiles = {};
 
     for (const tile of snapshot.tiles) {
       const { x, y } = this.hexToPixel(tile.q, tile.r);
@@ -441,8 +331,8 @@ export class MapService {
         x, y,
         size: this.size,
         terrain: tile.terrain ?? 'plain',
-        container: this.mapContainer,
-        textures: this.textures,
+        container: this.renderer.container,
+        textures: this.renderer.textures,
         onClick: () => this.movePlayer(tile.q, tile.r)
       });
       this.tiles[tile.key] = {
@@ -456,14 +346,9 @@ export class MapService {
 
     for (const o of snapshot.overlays ?? []) this.addOverlay(o.q, o.r, o.kind);
 
-    // ⚡ Charge la texture du joueur selon le personnage courant AVANT création du sprite
-    await this.loadPlayerTexture();
-
     // === Joueur ===
     this.createPlayer();
-    this.playerPos = snapshot.player ?? { q: 0, r: 0 };
-    this.updatePlayerPosition();
-    this.centerCamera();
+    this.renderer.centerCamera(this.playerPos.q, this.playerPos.r, this.size);    
 
     console.log(`✅ Map restored (${snapshot.tiles.length} tiles).`);
   }
