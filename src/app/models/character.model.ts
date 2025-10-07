@@ -1,6 +1,11 @@
-// src/app/models/character.model.ts
-
 export type Archetype = 'beast' | 'elemental' | 'ant' | 'engineer';
+
+export const CHARACTER_ASSETS: Record<Archetype, string> = {
+  beast: 'assets/characters/beast.png',
+  elemental: 'assets/characters/elemental.png',
+  ant: 'assets/characters/ant.png',
+  engineer: 'assets/characters/engineer.png'
+};
 
 export type OrbKey = 'bestial' | 'elemental' | 'natural' | 'mechanic';
 
@@ -55,21 +60,21 @@ export const ORB_DEFINITIONS: Record<OrbKey, { label: string; icon: string; desc
   bestial: {
     label: 'Bestial',
     icon: 'assets/ui/orb-bestial.png',
-    description: 'Puissance brute et instincts primaires. Augmente la vitalité et la survie.',
+    description: 'Raw power and primal instincts. Increases vitality and your chances of survival.',
   },
   elemental: {
     label: 'Elemental',
     icon: 'assets/ui/orb-elemental.png',
-    description: 'Connexion aux forces de la nature et de la magie. Détermine l’énergie mystique.',
+    description: 'Connection to the elements that make up the world. Determines mystical energy.',
   },
   natural: {
     label: 'Natural',
     icon: 'assets/ui/orb-natural.png',
-    description: 'Résilience, harmonie et croissance. Représente l’endurance et l’adaptation.',
+    description: 'Resilience, harmony, and growth. Represents endurance, adaptation, and your connection to nature.',
   },
   mechanic: {
     label: 'Mechanic',
     icon: 'assets/ui/orb-mechanic.png',
-    description: 'Ingénierie, technologie et invention. Confère précision et outils avancés.',
+    description: 'Engineering, technology, and invention. Provides precision and mastery of advanced tools.',
   },
 };

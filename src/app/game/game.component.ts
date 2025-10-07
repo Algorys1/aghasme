@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {PlayerService} from '../services/player.service';
 import {Character, OrbKey} from '../models/character.model';
 import {MapService} from '../services/map.service';
-import {OverlayInfo, overlayManifest} from '../models/overlay-types';
+import { OVERLAY_MANIFEST, OverlayInfo } from '../models/overlays';
 import {Subscription} from 'rxjs';
 import {CharacterService} from '../services/character.service';
 import {SaveService} from '../services/save.service';
@@ -56,7 +56,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentTile = tile;
       }),
       this.mapService.overlayChange.subscribe(kind => {
-        this.currentOverlay = overlayManifest[kind];
+        this.currentOverlay = OVERLAY_MANIFEST[kind];
         this.actions = this.currentOverlay?.actions ?? [];
       })
     );
@@ -70,7 +70,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    // 🔥 On supprime l’ancienne clé globale "character" (héritage)
     this.characterService.clearLegacyStorage();
 
     const nav = history.state ?? {};

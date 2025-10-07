@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CharacterService } from '../services/character.service';
 import { Archetype, NewCharacterInput, OrbKey, ORB_DEFINITIONS } from '../models/character.model';
-import { CHARACTER_ASSETS } from '../models/characters-assets';
+import { CHARACTER_ASSETS } from '../models/character.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 

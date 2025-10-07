@@ -4,9 +4,8 @@ import { createNoise2D } from 'simplex-noise';
 import { Application, Container, Sprite, Assets, Texture } from 'pixi.js';
 
 import { createTile, Terrain } from '../factories/tile.factory';
-import { OverlayKind } from '../models/overlay-types';
-import { overlayPools } from '../models/overlay-pools';
-import { CHARACTER_ASSETS } from '../models/characters-assets';
+import { OverlayKind, OVERLAY_MANIFEST, OVERLAY_POOLS } from '../models/overlays';
+import { CHARACTER_ASSETS } from '../models/character.model';
 import { CharacterService } from './character.service';
 
 export interface MapTileSnapshot {
@@ -134,31 +133,24 @@ export class MapService {
 
   private async loadIconTextures() {
     if (Object.keys(this.iconTextures).length > 0) return; // already loaded
-
-    this.iconTextures = {
-      anomaly: await Assets.load('assets/overlays/anomaly.png'),
-      beast: await Assets.load('assets/overlays/beast.png'),
-      caravan: await Assets.load('assets/overlays/caravan.png'),
-      city: await Assets.load('assets/overlays/city.png'),
-      encounter: await Assets.load('assets/overlays/encounter.png'),
-      farm: await Assets.load('assets/overlays/farm.png'),
-      forest: await Assets.load('assets/overlays/forest.png'),
-      merchant: await Assets.load('assets/overlays/merchant.png'),
-      mine: await Assets.load('assets/overlays/mine.png'),
-      monster: await Assets.load('assets/overlays/monster.png'),
-      oasis: await Assets.load('assets/overlays/oasis.png'),
-      obelisk: await Assets.load('assets/overlays/obelisk.png'),
-      portal: await Assets.load('assets/overlays/portal.png'),
-      ritual: await Assets.load('assets/overlays/ritual.png'),
-      ruins: await Assets.load('assets/overlays/ruins.png'),
-      shrine: await Assets.load('assets/overlays/shrine.png'),
-      spirit: await Assets.load('assets/overlays/spirit.png'),
-      tower: await Assets.load('assets/overlays/tower.png'),
-      treasure: await Assets.load('assets/overlays/treasure.png'),
-      village: await Assets.load('assets/overlays/village.png'),
-      wanderer: await Assets.load('assets/overlays/wanderer.png'),
-    };
-  }
+  
+    // Charge toutes les icônes déclarées dans le manifest unifié
+    for (const [key, info] of Object.entries(OVERLAY_MANIFEST)) {
+      if (!info.icon) continue;              // skip OverlayKind.None
+      try {
+        this.iconTextures[key] = await Assets.load(info.icon);
+      } catch (e) {
+        // Fallback si une icône du manifest n'existe pas : assets/overlays/<key>.png
+        const fallback = `assets/overlays/${key}.png`;
+        try {
+          this.iconTextures[key] = await Assets.load(fallback);
+          console.warn(`⚠️ Missing ${info.icon}, used fallback ${fallback}`);
+        } catch {
+          console.warn(`⚠️ Could not load icon for overlay "${key}" (${info.icon})`);
+        }
+      }
+    }
+  }  
 
   private async loadPlayerTexture() {
     const char = this.characterService.getCharacter();
@@ -283,7 +275,14 @@ export class MapService {
   }
 
   private pickOverlayForTerrain(terrain: Terrain): OverlayKind {
-    const pool = overlayPools[terrain] ?? [{ kind: OverlayKind.None, weight: 1 }];
+    const poolObj = OVERLAY_POOLS[terrain];
+    if (!poolObj) return OverlayKind.None;
+  
+    const pool = Object.entries(poolObj).map(([kind, weight]) => ({
+      kind: kind as OverlayKind,
+      weight: weight as number,
+    }));
+  
     const total = pool.reduce((sum, o) => sum + o.weight, 0);
     let roll = this.nextRand() * total;
     for (const o of pool) {
@@ -292,6 +291,7 @@ export class MapService {
     }
     return OverlayKind.None;
   }
+  
 
   // === SAVE / LOAD ================================================================
   public serializeMap(): MapSnapshot {
