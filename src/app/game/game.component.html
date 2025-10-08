@@ -12,7 +12,7 @@
       </div>
 
       <div class="hud-buttons">
-        <!-- <div class="hud-button" (click)="openMap()">
+        <div class="hud-button" (click)="openMap()">
           <img src="assets/ui/map.png" alt="Map" />
         </div>
         <div class="hud-button" (click)="openBackpack()">
@@ -23,12 +23,12 @@
         </div>
         <div class="hud-button" (click)="openSkills()">
           <img src="assets/ui/skills.png" alt="Skills" />
-        </div> -->
+        </div>
         <div class="hud-button" (click)="openPauseMenu()">
           <img src="assets/ui/settings.png" alt="Settings" />
         </div>
       </div>
-    </div>
+    </div>  
 
     <div class="hud-row hud-bottom-row">
       <!-- Stats -->
@@ -71,11 +71,31 @@
 
     <div class="overlay-actions">
       @for (action of actions; track action) {
-        <!-- <button class="overlay-action" (click)="onAction(action)">{{ action }}</button> -->
+        <button class="overlay-action" (click)="onAction(action)">{{ action }}</button>
       }
     </div>
   </div>
 
+  <!-- Map Menu Overlay -->
+  @if (showMap) {
+    <div class="map-overlay">
+      <div class="map-parchment">
+        <div class="map-header">
+          <h2>World Map</h2>
+          <button class="close-btn" (click)="showMap = false">✕</button>
+        </div>
+  
+        <div class="map-body">
+          <app-minimap [size]="900" [hexSize]="8"></app-minimap>
+        </div>
+  
+        <div class="map-footer">
+          <p>Move across the world to discover new lands and mysteries...</p>
+        </div>
+      </div>
+    </div>
+  }
+  
   <!-- Pause Menu Overlay -->
   @if (pauseMenuOpen) {
     <div class="pause-overlay">
@@ -88,5 +108,5 @@
       </div>
     </div>
   }
+
 </div>
-<!-- } -->

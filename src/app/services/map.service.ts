@@ -48,10 +48,6 @@ export class MapService {
   private player!: Sprite;
   private playerPos = { q: 0, r: 0 };
 
-  // --- Assets ---
-  // private textures: Record<string, Texture> = {} as any;
-  // private iconTextures: Record<string, Texture> = {} as any;
-
   // --- State / Events ---
   private mapRadius = 10;
   private activeOverlay: OverlayKind | null = null;
@@ -63,6 +59,10 @@ export class MapService {
     private characterService: CharacterService,
     private renderer: RendererService
   ) {}
+
+  get overlays() {
+    return this.overlayTypes;
+  }
 
   private nextRand(): number {
     this.randState = (this.randState * 48271) % 0x7fffffff;

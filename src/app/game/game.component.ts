@@ -9,12 +9,14 @@ import {Subscription} from 'rxjs';
 import {CharacterService} from '../services/character.service';
 import {SaveService} from '../services/save.service';
 import {GameState} from '../models/game-state.model';
+import { MinimapComponent } from "../minimap/minimap.component";
 
 @Component({
   selector: 'app-game',
   standalone: true,
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  styleUrls: ['./game.component.scss'],
+  imports: [MinimapComponent]
 })
 export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -36,6 +38,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   pauseMenuOpen = false;
+  showMap = false;
 
   constructor(
     private player: PlayerService,
@@ -125,7 +128,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-
   private refreshOrbs() {
     if (!this.character) { this.orbs = []; return; }
     const o = this.character.orbs;
@@ -136,15 +138,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       { key: 'mechanic', name: 'Mécanique', icon: this.ORB_ICONS.mechanic, value: o.mechanic },
     ];
   }
-
-  // --- TODO HUD Actions ---
-  onAction(action: string) { console.log('[Action]', action, 'on', this.currentOverlay?.name); }
-
-  // --- TODO HUD buttons ---
-  openMap() { console.log('Open Map'); }
-  openBackpack() { console.log('Open Backpack'); }
-  openQuests() { console.log('Open Quests'); }
-  openSkills() { console.log('Open Skills'); }
 
   private buildFullState(): GameState | null {
     const char = this.characterService.getCharacter();
@@ -161,9 +154,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     this.saveService.saveGame(full, 'auto');
   }
 
-  openPauseMenu() { this.pauseMenuOpen = true; }
-  closePauseMenu() { this.pauseMenuOpen = false; }
-
   saveGameManual() {
     const name = prompt("Nom de la sauvegarde :");
     if (!name) return;
@@ -173,7 +163,23 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     alert(`💾 Sauvegarde "${name}" enregistrée !`);
   }
 
+  // --- TODO HUD buttons ---
+  openMap() {
+    console.log('Click on map')
+    this.showMap = !this.showMap;
+  }
+
+  openBackpack() { console.log('Open Backpack'); }
+  openQuests() { console.log('Open Quests'); }
+  openSkills() { console.log('Open Skills'); }
+
+  // --- TODO HUD Actions ---
+  onAction(action: string) { console.log('[Action]', action, 'on', this.currentOverlay?.name); }
+
   goHome() { this.router.navigate(['/home']); }
+
+  openPauseMenu() { this.pauseMenuOpen = true; }
+  closePauseMenu() { this.pauseMenuOpen = false; }
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());
