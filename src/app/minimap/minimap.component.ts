@@ -148,7 +148,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       ctx.lineWidth = Math.max(0.3, 0.5 * scale);
       ctx.strokeStyle = '#000000';
       ctx.stroke();
-    }    
+    }
 
     // overlays
     const overlays = this.mapService.overlays;
