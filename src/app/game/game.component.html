@@ -68,12 +68,6 @@
     <div class="tile-info">
       {{ currentTile?.description }}
     </div>
-
-    <div class="overlay-actions">
-      @for (action of actions; track action) {
-        <button class="overlay-action" (click)="onAction(action)">{{ action }}</button>
-      }
-    </div>
   </div>
 
   <!-- Map Menu Overlay -->
@@ -108,5 +102,14 @@
       </div>
     </div>
   }
+
+  @if (activeOverlayData && activeOverlayKind) {
+    <app-overlay-window
+      [kind]="activeOverlayKind"
+      [data]="activeOverlayData"
+      (close)="activeOverlayKind = null"
+      (actionSelected)="onOverlayAction($event)">
+    </app-overlay-window>
+  }  
 
 </div>
