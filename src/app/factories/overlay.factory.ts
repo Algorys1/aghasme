@@ -1,10 +1,12 @@
 import { OverlayKind, OverlayInfo, OVERLAY_MANIFEST } from '../models/overlays';
+import { ActionType } from '../models/actions';
 
 export interface OverlayInstance extends OverlayInfo {
   id: string;
+  kind: OverlayKind;
   level?: number;
   nextEvent?: string;
-  kind: OverlayKind;
+  actions: ActionType[];
 }
 
 export class OverlayFactory {
@@ -56,7 +58,7 @@ export class OverlayFactory {
       case OverlayKind.Wanderer:
         return this.createWanderer(base, id, kind);
       default:
-        return { ...base, id, kind };
+        return { ...base, id, kind, actions: []};
     }
   }
 
@@ -77,7 +79,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/anomaly.png',
-      actions: ['Investigate', 'Avoid', 'Collect Samples'],
+      actions: [ActionType.Inspect, ActionType.Avoid, ActionType.Harvest],
     };
   }
 
@@ -98,7 +100,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/caravan.png',
-      actions: ['Trade', 'Join', 'Observe'],
+      actions: [ActionType.Trade, ActionType.Observe],
     };
   }
 
@@ -128,7 +130,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/merchant.png',
-      actions: ['Trade', 'Talk', 'Ignore'],
+      actions: [ActionType.Trade, ActionType.Talk],
     };
   }
 
@@ -151,7 +153,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/farm.png',
-      actions: ['Harvest', 'Trade', 'Rest'],
+      actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     };
   }
 
@@ -172,7 +174,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/forest.png',
-      actions: ['Explore', 'Gather Herbs', 'Rest'],
+      actions: [ActionType.Explore, ActionType.Harvest, ActionType.Rest],
     };
   }
 
@@ -193,7 +195,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/mine.png',
-      actions: ['Explore', 'Gather Resources', 'Rest'],
+      actions: [ActionType.Explore, ActionType.Harvest, ActionType.Rest],
     };
   }
 
@@ -215,8 +217,8 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: choice.icon,
-      actions: ['Fight', 'Flee', 'Observe'],
-      level: Math.ceil(Math.random() * 3),
+      actions: [ActionType.Fight, ActionType.Flee],
+      level: Math.ceil(Math.random() * 3), // TODO create a factory for level based on beast type
     };
   }
 
@@ -244,8 +246,8 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: choice.icon,
-      actions: ['Fight', 'Negotiate', 'Flee'],
-      level: Math.ceil(Math.random() * 5),
+      actions: [ActionType.Fight, ActionType.Flee],
+      level: Math.ceil(Math.random() * 5),  // TODO create a factory for level based on monster type
     };
   }
 
@@ -259,7 +261,7 @@ export class OverlayFactory {
       kind,
       name,
       description: `You arrive at the gates of ${name}. The streets bustle with life and opportunity.`,
-      actions: ['Visit', 'Trade', 'Rest', 'Quests'],
+      actions: [ActionType.Explore, ActionType.Trade, ActionType.Rest, ActionType.Quests],
     };
   }
 
@@ -273,7 +275,7 @@ export class OverlayFactory {
       kind,
       name,
       description: `You reach the quaint village of ${name}. The villagers greet you warmly, offering food and shelter.`,
-      actions: ['Visit', 'Trade', 'Rest'],
+      actions: [ActionType.Explore, ActionType.Trade, ActionType.Rest],
     };
   }
 
@@ -287,7 +289,7 @@ export class OverlayFactory {
       kind,
       name,
       description: `You stand before the imposing ${name}. Mystical energies crackle around its peak.`,
-      actions: ['Visit', 'Rest', 'Meditate'],
+      actions: [ActionType.Explore, ActionType.Rest],
     };
   }
 
@@ -308,7 +310,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/ruins.png',
-      actions: ['Explore', 'Search for Artifacts', 'Rest'],
+      actions: [ActionType.Explore, ActionType.Rest],
     };
   }
 
@@ -329,7 +331,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/obelisk.png',
-      actions: ['Investigate', 'Meditate', 'Avoid'],
+      actions: [ActionType.Explore, ActionType.Pray, ActionType.Avoid],
     };
   }
 
@@ -350,7 +352,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/oasis.png',
-      actions: ['Rest', 'Gather Water', 'Explore'],
+      actions: [ActionType.Rest, ActionType.Harvest, ActionType.Explore],
     };
   }
 
@@ -371,7 +373,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/portal.png',
-      actions: ['Enter', 'Study', 'Avoid'],
+      actions: [ActionType.Explore, ActionType.Inspect, ActionType.Avoid],
     };
   }
 
@@ -392,7 +394,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/ritual.png',
-      actions: ['Observe', 'Join', 'Avoid'],
+      actions: [ActionType.Avoid, ActionType.Talk],
     };
   }
 
@@ -413,7 +415,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/shrine.png',
-      actions: ['Pray', 'Offer', 'Avoid'],
+      actions: [ActionType.Pray, ActionType.Avoid],
     };
   }
 
@@ -434,8 +436,8 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: choice.icon,
-      actions: ['Communicate', 'Fight', 'Avoid'],
-      level: Math.ceil(Math.random() * 4),
+      actions: [ActionType.Talk, ActionType.Fight, ActionType.Avoid],
+      level: Math.ceil(Math.random() * 4),  // TODO create a factory for level based on monster type (only subtype spirit)
     };
   }
 
@@ -456,7 +458,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/treasure.png',
-      actions: ['Open', 'Inspect', 'Leave'],
+      actions: [ActionType.Open, ActionType.Explore, ActionType.Avoid],
     };
   }
 
@@ -477,14 +479,7 @@ export class OverlayFactory {
       name: choice.name,
       description: choice.desc,
       icon: 'assets/overlays/wanderer.png',
-      actions: ['Talk', 'Trade', 'Ignore'],
+      actions: [ActionType.Talk, ActionType.Trade, ActionType.Avoid],
     };
   }
-
-  // ----------------------------------------------------------
-  // 🏰 (TODO)
-  // ----------------------------------------------------------
-  // private static createTower(...) { ... }
-  // private static createVillage(...) { ... }
-  // private static createEvent(...) { ... }
 }

@@ -28,7 +28,7 @@
           <img src="assets/ui/settings.png" alt="Settings" />
         </div>
       </div>
-    </div>  
+    </div>
 
     <div class="hud-row hud-bottom-row">
       <!-- Stats -->
@@ -78,18 +78,18 @@
           <h2>World Map</h2>
           <button class="close-btn" (click)="showMap = false">✕</button>
         </div>
-  
+
         <div class="map-body">
           <app-minimap [size]="900" [hexSize]="8"></app-minimap>
         </div>
-  
+
         <div class="map-footer">
           <p>Move across the world to discover new lands and mysteries...</p>
         </div>
       </div>
     </div>
   }
-  
+
   <!-- Pause Menu Overlay -->
   @if (pauseMenuOpen) {
     <div class="pause-overlay">
@@ -98,7 +98,6 @@
         <button (click)="closePauseMenu()">Continue</button>
         <button (click)="saveGameManual()">Save Game</button>
         <button (click)="goHome()">Back to home</button>
-        <!-- <button (click)="quitGame()">Quit Game</button> -->
       </div>
     </div>
   }
@@ -111,6 +110,6 @@
       (actionSelected)="onOverlayAction($event)">
     </app-overlay-window>
   }
-   
+
 
 </div>

@@ -11,6 +11,8 @@ import { OverlayKind } from '../models/overlays';
 import { OverlayFactory, OverlayInstance } from '../factories/overlay.factory';
 import { MinimapComponent } from "../minimap/minimap.component";
 import { OverlayWindowComponent } from '../overlay-window/overlay-window.component';
+import {ActionType} from '../models/actions';
+import {ActionService} from '../services/action.service';
 
 @Component({
   selector: 'app-game',
@@ -27,7 +29,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   currentTile: { type: string; description?: string } | null = null;
 
-  /** Instance concrète de l’overlay actuellement rencontré */
   activeOverlay: OverlayInstance | null = null;
 
   private subs: Subscription[] = [];
@@ -48,6 +49,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private mapService: MapService,
     private saveService: SaveService,
     private characterService: CharacterService,
+    private actionService: ActionService
   ) {}
 
   ngOnInit(): void {
@@ -178,15 +180,9 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   closePauseMenu() { this.pauseMenuOpen = false; }
 
   // === Overlay window actions ===
-  onOverlayAction(action: string) {
-    console.log('Overlay action:', action, 'on', this.activeOverlay?.name);
-
-    if (action === 'Fight') {
-      // 🔹 Exemple : futur enchaînement vers écran de combat
-      console.log('TODO: start combat for', this.activeOverlay?.name);
-    }
-
-    // Ferme la fenêtre une fois l’action résolue
+  onOverlayAction(action: ActionType) {
+    if (!this.activeOverlay) return;
+    this.actionService.executeAction(action, this.activeOverlay);
     this.activeOverlay = null;
   }
 
