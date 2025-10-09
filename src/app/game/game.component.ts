@@ -1,14 +1,14 @@
-// game.component.ts
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef} from '@angular/core';
-import {Router} from '@angular/router';
-import {PlayerService} from '../services/player.service';
-import {Character, OrbKey} from '../models/character.model';
-import {MapService} from '../services/map.service';
-import { OVERLAY_MANIFEST, OverlayInfo, OverlayKind } from '../models/overlays';
-import {Subscription} from 'rxjs';
-import {CharacterService} from '../services/character.service';
-import {SaveService} from '../services/save.service';
-import {GameState} from '../models/game-state.model';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { PlayerService } from '../services/player.service';
+import { Character, OrbKey } from '../models/character.model';
+import { MapService } from '../services/map.service';
+import { CharacterService } from '../services/character.service';
+import { SaveService } from '../services/save.service';
+import { GameState } from '../models/game-state.model';
+import { OverlayKind } from '../models/overlays';
+import { OverlayFactory, OverlayInstance } from '../factories/overlay.factory';
 import { MinimapComponent } from "../minimap/minimap.component";
 import { OverlayWindowComponent } from '../overlay-window/overlay-window.component';
 
@@ -20,16 +20,15 @@ import { OverlayWindowComponent } from '../overlay-window/overlay-window.compone
   imports: [MinimapComponent, OverlayWindowComponent]
 })
 export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
-[x: string]: any;
   @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
   character: Character | null = null;
   orbs: { key: OrbKey; name: string; icon: string; value: number }[] = [];
 
   currentTile: { type: string; description?: string } | null = null;
-  currentOverlay: OverlayInfo | null = null;
-  activeOverlayKind: OverlayKind | null = null;
-  actions: string[] = [];
+
+  /** Instance concrète de l’overlay actuellement rencontré */
+  activeOverlay: OverlayInstance | null = null;
 
   private subs: Subscription[] = [];
 
@@ -51,28 +50,25 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private characterService: CharacterService,
   ) {}
 
-  get activeOverlayData(): OverlayInfo | null {
-    return this.activeOverlayKind ? OVERLAY_MANIFEST[this.activeOverlayKind] : null;
-  }
-
   ngOnInit(): void {
     this.character = this.player.getCharacter();
 
+    // Abonnements aux événements de la carte
     this.subs.push(
-      this.mapService.playerMoved.subscribe(() => {
-        this.autoSave();
-      }),
+      this.mapService.playerMoved.subscribe(() => this.autoSave()),
       this.mapService.tileChange.subscribe(tile => {
         this.currentTile = tile;
       }),
       this.mapService.overlayChange.subscribe(kind => {
-        this.currentOverlay = OVERLAY_MANIFEST[kind];
-        this.actions = this.currentOverlay?.actions ?? [];      
+        // Si l’overlay n’est pas vide → on génère une instance unique
         if (kind && kind !== OverlayKind.None) {
-          this.onTileEnter({ overlayKind: kind });
+          this.activeOverlay = OverlayFactory.create(kind);
+        } else {
+          this.activeOverlay = null;
         }
-      })      
+      })
     );
+
     this.refreshOrbs();
   }
 
@@ -123,7 +119,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.character) {
       console.warn('⚠️ No character found, back to menu');
       await this.router.navigate(['/start']);
-      return;
     }
   }
 
@@ -152,7 +147,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   private buildFullState(): GameState | null {
     const char = this.characterService.getCharacter();
     if (!char) return null;
-
     const mapState = this.mapService.serializeMap();
     const charState = structuredClone(char);
     return { character: charState, map: mapState, timestamp: Date.now() };
@@ -160,8 +154,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private autoSave() {
     const full = this.buildFullState();
-    if (!full) return;
-    this.saveService.saveGame(full, 'auto');
+    if (full) this.saveService.saveGame(full, 'auto');
   }
 
   saveGameManual() {
@@ -173,40 +166,29 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     alert(`💾 Sauvegarde "${name}" enregistrée !`);
   }
 
-  // --- TODO HUD buttons ---
-  openMap() {
-    this.showMap = !this.showMap;
-  }
-
+  // === HUD buttons ===
+  openMap() { this.showMap = !this.showMap; }
   openBackpack() { console.log('Open Backpack'); }
   openQuests() { console.log('Open Quests'); }
   openSkills() { console.log('Open Skills'); }
-
-  // --- TODO HUD Actions ---
-  onAction(action: string) { console.log('[Action]', action, 'on', this.currentOverlay?.name); }
 
   goHome() { this.router.navigate(['/home']); }
 
   openPauseMenu() { this.pauseMenuOpen = true; }
   closePauseMenu() { this.pauseMenuOpen = false; }
 
-  onTileEnter(tile: any) {
-    if (tile.overlayKind && tile.overlayKind !== OverlayKind.None) {
-      this.activeOverlayKind = tile.overlayKind;
-    }
-  }
-  
+  // === Overlay window actions ===
   onOverlayAction(action: string) {
-    console.log('Overlay action:', action);
-  
-    // Exemple : enchaînement vers combat, exploration, etc.
+    console.log('Overlay action:', action, 'on', this.activeOverlay?.name);
+
     if (action === 'Fight') {
-      // this.startCombat(this.activeOverlayKind!);
+      // 🔹 Exemple : futur enchaînement vers écran de combat
+      console.log('TODO: start combat for', this.activeOverlay?.name);
     }
-  
-    this.activeOverlayKind = null;
+
+    // Ferme la fenêtre une fois l’action résolue
+    this.activeOverlay = null;
   }
-  
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OverlayKind, OverlayInfo } from '../models/overlays';
+import { OverlayInstance } from '../factories/overlay.factory';
 
 @Component({
   selector: 'app-overlay-window',
@@ -8,7 +9,7 @@ import { OverlayKind, OverlayInfo } from '../models/overlays';
 })
 export class OverlayWindowComponent {
   @Input() kind!: OverlayKind;
-  @Input() data!: OverlayInfo;
+  @Input() data!: OverlayInstance;
 
   @Output() close = new EventEmitter<void>();
   @Output() actionSelected = new EventEmitter<string>();

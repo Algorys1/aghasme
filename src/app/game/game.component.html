@@ -103,13 +103,14 @@
     </div>
   }
 
-  @if (activeOverlayData && activeOverlayKind) {
+  @if (activeOverlay) {
     <app-overlay-window
-      [kind]="activeOverlayKind"
-      [data]="activeOverlayData"
-      (close)="activeOverlayKind = null"
+      [kind]="activeOverlay.kind"
+      [data]="activeOverlay"
+      (close)="activeOverlay = null"
       (actionSelected)="onOverlayAction($event)">
     </app-overlay-window>
-  }  
+  }
+   
 
 </div>
