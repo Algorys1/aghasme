@@ -185,9 +185,16 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   // === Overlay window actions ===
   onOverlayAction(action: ActionType) {
     if (!this.activeOverlay) return;
-    this.actionService.executeAction(action, this.activeOverlay);
-    this.activeOverlay = null;
+  
+    const overlay = this.activeOverlay;
+    this.actionService.executeAction(action, overlay);
+  
+    const hasNext = overlay.nextEvent && overlay.eventChain?.[overlay.nextEvent];
+    if (!hasNext) {
+      this.activeOverlay = null;
+    }
   }
+  
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());

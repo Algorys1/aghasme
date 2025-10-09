@@ -155,26 +155,24 @@ export class ActionService {
   // -----------------------------------------------------------------
   private triggerNextEvent(overlay: OverlayInstance) {
     if (!overlay.nextEvent || !overlay.eventChain) return;
-
+  
     const phase = overlay.eventChain[overlay.nextEvent];
     if (!phase) return;
-
+  
     console.log(`➡️ Triggering next event: ${overlay.nextEvent}`);
-
-    // Simulation des probabilités
+  
     if (phase.combatChance && Math.random() < phase.combatChance) {
       console.log('⚔️ A hidden enemy appears!');
-      // TODO: this.startCombat(fakeEnemy)
+      // TODO: combat to be handled later
       return;
     }
-
+  
     if (phase.lootChance && Math.random() < phase.lootChance) {
       const gold = Math.floor(Math.random() * 20) + 5;
       console.log(`💰 You find ${gold} gold!`);
       // TODO: add gold to player inventory
     }
-
-    // Création d’un "mini-overlay" dynamique pour cette phase
+  
     const nextOverlay: OverlayInstance = {
       ...overlay,
       id: overlay.id + '-' + overlay.nextEvent,
@@ -182,9 +180,12 @@ export class ActionService {
       description: phase.description,
       actions: phase.actions,
       nextEvent: phase.next,
+      eventChain: overlay.eventChain
     };
-
+  
+    // 🔹 Et on notifie les abonnés (GameComponent)
     this.nextOverlay$.next(nextOverlay);
   }
+  
 
 }
