@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CharacterService } from '../services/character.service';
-import { PlayerService } from '../services/player.service';
 import {SaveService} from '../services/save.service';
-import {MapService} from '../services/map.service';
 
 @Component({
   selector: 'app-start-game',
@@ -19,44 +17,27 @@ export class StartGameComponent implements OnInit {
   constructor(
     private router: Router,
     private characterService: CharacterService,
-    private playerService: PlayerService,
-    private saveService: SaveService,
-    private mapService: MapService
+    private saveService: SaveService
   ) {}
 
-  ngOnInit(): void {
-    // this.hasSave = this.saveService.hasSave('autosave');
+  ngOnInit() {
+    this.hasSave = this.saveService.hasAutoSave();
   }
 
   continueGame() {
-    // TODO à restaurer plus tard 
-    // const state = this.saveService.loadGame('autosave');
-    // if (!state) {
-    //   alert('Aucune sauvegarde trouvée.');
-    //   this.hasSave = false;
-    //   return;
-    // }
-
-    // this.characterService.setCharacter(state.character);
-    // this.playerService['refresh']?.();
-
-    // if (state.map?.player) {
-    //   this.mapService.setPlayerHex(state.map.player.q, state.map.player.r);
-    // }
-
-    this.router.navigate(['/game']);
+    this.router.navigate(['/game'], { state: { slot: 'auto' } }).then();
   }
 
   newGame() {
     this.characterService.clearCharacter();
-    this.router.navigate(['/create-character']);
+    this.router.navigate(['/create-character']).then();
   }
 
   loadGame() {
-    this.router.navigate(['/saves']);
+    this.router.navigate(['/saves']).then();
   }
 
   back() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/home']).then();
   }
 }

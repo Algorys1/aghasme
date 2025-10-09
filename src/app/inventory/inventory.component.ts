@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InventoryService } from '../services/inventory.service';
 import { BASE_ITEMS, Item } from '../models/items';
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './inventory.component.html',
   styleUrls: ['./inventory.component.scss']
 })
-export class InventoryComponent {
+export class InventoryComponent implements OnInit, OnDestroy {
   items: (Item & { count?: number })[] = [];
   rows = 2;
   cols = 4;
@@ -53,7 +53,7 @@ export class InventoryComponent {
       this.errorMessage = msg;
       setTimeout(() => this.errorMessage = null, 2000);
     });
-    
+
   }
 
   ngOnDestroy(): void {
@@ -65,12 +65,12 @@ export class InventoryComponent {
   showTooltip(item: Item, event: MouseEvent): void {
     this.tooltipItem = item;
     this.tooltipVisible = true;
-  
+
     if (!this.isMobile) {
       this.tooltipX = event.clientX + 10;
       this.tooltipY = event.clientY + 10;
     }
-  }  
+  }
 
   hideTooltip(): void {
     this.tooltipVisible = false;
@@ -100,5 +100,5 @@ export class InventoryComponent {
   expand() {
     this.inventory.expandInventory();
   }
-  
+
 }

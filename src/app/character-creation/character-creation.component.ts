@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-character-creation',
   templateUrl: './character-creation.component.html',
   styleUrls: ['./character-creation.component.scss'],
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, FormsModule]
 })
 export class CharacterCreationComponent {
   archetypes = Object.keys(CHARACTER_ASSETS) as Archetype[];

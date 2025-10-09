@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { OverlayKind, OverlayInfo } from '../models/overlays';
+import { OverlayKind } from '../models/overlays';
 import { OverlayInstance } from '../factories/overlay.factory';
 
 @Component({
@@ -30,5 +30,5 @@ export class OverlayWindowComponent {
       case 'rest': return 'Recover HP and MP.';
       default: return 'Take this action.';
     }
-  }  
+  }
 }

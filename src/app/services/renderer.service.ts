@@ -88,19 +88,14 @@ export class RendererService {
   async loadPlayerTexture(archetype: Archetype): Promise<Texture> {
     const path = CHARACTER_ASSETS[archetype]; // ✅ maintenant reconnu comme une clé valide
     if (!path) throw new Error(`No asset for archetype "${archetype}"`);
-  
+
     if (Assets.cache.has(path)) {
       console.log('♻️ Unload previous player texture:', path);
       await Assets.unload(path);
     }
-  
+
     this.playerTexture = await Assets.load(path);
     return this.playerTexture;
-  }  
-
-  /** Create a tile sprite (used by createTile) */
-  getTileTexture(key: string): Texture {
-    return this.tileTextures[key];
   }
 
   /** Create an overlay sprite */

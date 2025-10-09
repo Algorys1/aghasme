@@ -25,8 +25,7 @@ export class SaveListComponent implements OnInit {
   }
 
   load(slot: string) {
-    // ⚠️ NE PAS précharger ici ; on passe juste le slot au GameComponent
-    this.router.navigateByUrl('/game', { state: { slot } });
+    this.router.navigateByUrl('/game', { state: { slot } }).then();
   }
 
   delete(slot: string) {
@@ -37,11 +36,10 @@ export class SaveListComponent implements OnInit {
   }
 
   newGame() {
-    // Démarre une partie neuve (AUCUN auto-load)
-    this.router.navigateByUrl('/game', { state: { newGame: true } });
+    this.router.navigateByUrl('/game', { state: { newGame: true } }).then();
   }
 
   back() {
-    this.router.navigate(['/start']);
+    this.router.navigate(['/start']).then();
   }
 }

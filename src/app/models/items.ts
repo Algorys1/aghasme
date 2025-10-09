@@ -1,9 +1,7 @@
-// src/app/models/items.ts
-
 export enum ItemType {
   Weapon = 'Weapon',
   Armor = 'Armor',
-  Accessory = 'Accessory',
+  Jewels = 'Jewels',
   Consumable = 'Consumable',
   Resource = 'Resource',
   Quest = 'Quest',

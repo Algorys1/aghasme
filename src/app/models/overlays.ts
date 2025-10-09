@@ -238,13 +238,3 @@ export const OVERLAY_POOLS: Record<string, Partial<Record<OverlayKind, number>>>
         [OverlayKind.Wanderer]: 1,
     },
 };
-  
-
-// -----------------------------------------------------------------
-// Overlay action mapping (optional advanced gameplay)
-// -----------------------------------------------------------------
-export const OVERLAY_ACTIONS: Record<OverlayKind, string[]> = Object.entries(OVERLAY_MANIFEST)
-  .reduce((acc, [key, val]) => {
-    acc[key as OverlayKind] = val.actions;
-    return acc;
-  }, {} as Record<OverlayKind, string[]>);

@@ -13,6 +13,11 @@ export class SaveService {
     console.log(`💾 Sauvegarde '${slot}' enregistrée (${new Date(state.timestamp).toLocaleString()})`);
   }
 
+  public hasAutoSave(): boolean {
+    const saves = this.loadAllSaves();
+    return !!saves['auto'];
+  }
+
   /** Charge la sauvegarde d’un slot donné */
   public loadGame(slot: string): GameState | null {
     const saves = this.loadAllSaves();
