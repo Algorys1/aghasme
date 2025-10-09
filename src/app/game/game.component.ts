@@ -68,6 +68,9 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.activeOverlay = null;
         }
+      }),
+      this.actionService.nextOverlay$.subscribe(o => {
+        this.activeOverlay = o;
       })
     );
 

@@ -5,11 +5,13 @@ import { OverlayInstance } from '../factories/overlay.factory';
 import { OverlayKind } from '../models/overlays';
 import { CharacterService } from './character.service';
 import { MapService } from './map.service';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActionService {
+  public nextOverlay$ = new Subject<OverlayInstance>();
 
   constructor(
     private router: Router,
@@ -91,8 +93,18 @@ export class ActionService {
 
   private exploreLocation(overlay: OverlayInstance) {
     console.log(`🧭 Exploring ${overlay.name}...`);
-    // TODO: handle exploration success/failure
-    this.triggerNextEvent(overlay);
+    if (overlay.nextEvent) {
+      this.triggerNextEvent(overlay);
+      return;
+    }
+
+    if (Math.random() < 0.3) {
+      console.log('💰 You find a few coins on the ground.');
+    } else if (Math.random() < 0.2) {
+      console.log('⚔️ A wild creature attacks!');
+    } else {
+      console.log('Nothing of interest here.');
+    }
   }
 
   private openTrade(overlay: OverlayInstance) {
@@ -139,14 +151,40 @@ export class ActionService {
   }
 
   // -----------------------------------------------------------------
-  // 🔄 Système de nextEvent
+  // 🔄 NextEvent system for multi-phase overlays
   // -----------------------------------------------------------------
   private triggerNextEvent(overlay: OverlayInstance) {
-    if (!overlay.nextEvent) return;
+    if (!overlay.nextEvent || !overlay.eventChain) return;
+
+    const phase = overlay.eventChain[overlay.nextEvent];
+    if (!phase) return;
 
     console.log(`➡️ Triggering next event: ${overlay.nextEvent}`);
-    // Ici, tu pourras faire quelque chose comme :
-    // this.mapService.spawnNextOverlay(overlay.nextEvent);
-    // ou this.router.navigate(['/event', overlay.nextEvent]);
+
+    // Simulation des probabilités
+    if (phase.combatChance && Math.random() < phase.combatChance) {
+      console.log('⚔️ A hidden enemy appears!');
+      // TODO: this.startCombat(fakeEnemy)
+      return;
+    }
+
+    if (phase.lootChance && Math.random() < phase.lootChance) {
+      const gold = Math.floor(Math.random() * 20) + 5;
+      console.log(`💰 You find ${gold} gold!`);
+      // TODO: add gold to player inventory
+    }
+
+    // Création d’un "mini-overlay" dynamique pour cette phase
+    const nextOverlay: OverlayInstance = {
+      ...overlay,
+      id: overlay.id + '-' + overlay.nextEvent,
+      name: phase.title,
+      description: phase.description,
+      actions: phase.actions,
+      nextEvent: phase.next,
+    };
+
+    this.nextOverlay$.next(nextOverlay);
   }
+
 }

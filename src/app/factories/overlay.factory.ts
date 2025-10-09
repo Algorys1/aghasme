@@ -1,12 +1,22 @@
 import { OverlayKind, OverlayInfo, OVERLAY_MANIFEST } from '../models/overlays';
 import { ActionType } from '../models/actions';
 
+export interface OverlayPhase {
+  title: string;
+  description: string;
+  actions: ActionType[];
+  next?: string;
+  combatChance?: number;
+  lootChance?: number;
+}
+
 export interface OverlayInstance extends OverlayInfo {
   id: string;
   kind: OverlayKind;
   level?: number;
   nextEvent?: string;
   actions: ActionType[];
+  eventChain?: Record<string, OverlayPhase>;
 }
 
 export class OverlayFactory {
@@ -311,6 +321,24 @@ export class OverlayFactory {
       description: choice.desc,
       icon: 'assets/overlays/ruins.png',
       actions: [ActionType.Explore, ActionType.Rest],
+      nextEvent: 'floor_1',
+      eventChain: {
+        floor_1: {
+          title: 'Ruins - Lower Halls',
+          description: 'The air is damp and you can hear faint echoes deeper inside.',
+          actions: [ActionType.Explore, ActionType.Rest],
+          next: 'floor_2',
+          combatChance: 0.3,
+          lootChance: 0.5
+        },
+        floor_2: {
+          title: 'Ruins - Forgotten Chamber',
+          description: 'You find a cracked altar covered with dust. Something valuable might be hidden here.',
+          actions: [ActionType.Explore, ActionType.Open, ActionType.Avoid],
+          combatChance: 0.4,
+          lootChance: 0.8
+        }
+      }
     };
   }
 
