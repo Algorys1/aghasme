@@ -30,6 +30,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   currentTile: { type: string; description?: string } | null = null;
 
   activeOverlay: OverlayInstance | null = null;
+  isTransitioning = false;
 
   private subs: Subscription[] = [];
 
@@ -69,8 +70,17 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
           this.activeOverlay = null;
         }
       }),
-      this.actionService.nextOverlay$.subscribe(o => {
-        this.activeOverlay = o;
+      this.actionService.nextOverlay$.subscribe(nextOverlay => {
+        console.log('🌀 Transitioning to next overlay:', nextOverlay.name);
+    
+        // Déclenche la sortie visuelle
+        this.isTransitioning = true;
+    
+        // Petit délai pour le fade-out
+        setTimeout(() => {
+          this.activeOverlay = nextOverlay;
+          this.isTransitioning = false;
+        }, 350);
       })
     );
 

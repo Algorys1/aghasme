@@ -19,10 +19,6 @@ export class OverlayWindowComponent {
     this.actionSelected.emit(action);
   }
 
-  onClose() {
-    this.close.emit();
-  }
-
   getConsequence(action: string): string {
     switch (action.toLowerCase()) {
       case 'fight': return 'Engage in combat.';
