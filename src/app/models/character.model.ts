@@ -29,11 +29,13 @@ export interface Character {
 
   gold: number;
 
-  /** Orbes canoniques utilisés par le HUD et la logique */
   orbs: Orbs;
 
   skills: string[];
-  inventory: string[]; // -> pourra être remplacé plus tard par un type Item[]
+  inventory: string[];
+
+  defense: number;
+  attack: number;
 }
 
 export interface NewCharacterInput {

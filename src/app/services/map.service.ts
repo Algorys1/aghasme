@@ -210,7 +210,6 @@ export class MapService {
     }
     return OverlayKind.None;
   }
-  
 
   // === SAVE / LOAD ================================================================
   public serializeMap(): MapSnapshot {
@@ -311,7 +310,6 @@ export class MapService {
     await this.renderer.loadPlayerTexture(char.archetype);
   }
 
-  /** ♻️ Variante de loadFromSnapshot avec canvas fourni */
   async loadFromSnapshotWithCanvas(snapshot: MapSnapshot, canvas: HTMLCanvasElement): Promise<void> {
     console.log('🧩 Chargement snapshot (canvas direct)...', snapshot.tiles.length, 'tuiles');
 
@@ -346,11 +344,22 @@ export class MapService {
 
     for (const o of snapshot.overlays ?? []) this.addOverlay(o.q, o.r, o.kind);
 
-    // === Joueur ===
     this.createPlayer();
     this.renderer.centerCamera(this.playerPos.q, this.playerPos.r, this.size);    
 
     console.log(`✅ Map restored (${snapshot.tiles.length} tiles).`);
+  }
+
+  public getCurrentTile(): { q: number; r: number; terrain: Terrain } | null {
+    const key = `${this.playerPos.q},${this.playerPos.r}`;
+    const tileData = this.tiles[key];
+    if (!tileData) return null;
+
+    return {
+      q: this.playerPos.q,
+      r: this.playerPos.r,
+      terrain: tileData.terrain,
+    };
   }
 
 }

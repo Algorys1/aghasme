@@ -18,7 +18,7 @@ export class EnemyFactory {
    */
   static generate(params: { playerLevel: number; terrain: Terrain; category?: 'beast' | 'monster' }): Enemy {
     const { playerLevel, terrain, category } = params;
-
+    console.log('generate on ', terrain)
     const biomeEnemies = EnemyTables[terrain] ?? [];
 
     // 1️⃣ Filtrage selon la catégorie et le niveau
@@ -62,4 +62,23 @@ export class EnemyFactory {
   static generateMonster(playerLevel: number, terrain: Terrain): Enemy {
     return this.generate({ playerLevel, terrain, category: 'monster' });
   }
+
+  static createByName(name: string, level: number): Enemy {
+    const all = Object.values(EnemyTables).flat();
+    const tpl = all.find(e => e.name.toLowerCase() === name.toLowerCase());
+    if (!tpl) throw new Error(`[EnemyFactory] Unknown enemy: ${name}`);
+
+    const finalLevel = Math.max(tpl.minLevel, Math.min(tpl.maxLevel, level));
+
+    return new Enemy({
+      name: tpl.name,
+      desc: tpl.desc,
+      icon: tpl.icon,
+      category: tpl.category,
+      level: finalLevel,
+      hp: 20 + finalLevel * 6,
+      attack: 4 + finalLevel * 2,
+      defense: 2 + finalLevel,
+    });
+  }  
 }

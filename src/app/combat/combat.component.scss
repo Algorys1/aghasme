@@ -1,0 +1,20 @@
+.combat-overlay {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    background: rgba(0,0,0,.45); z-index: 999;
+  }
+  .combat-card {
+    width: min(560px, 92vw);
+    background: #f8e4b5;
+    border: 3px solid #6e4a20; border-radius: 16px; padding: 16px;
+    box-shadow: 0 6px 24px rgba(0,0,0,.3);
+    display: grid; gap: 12px;
+  }
+  .header { display:flex; justify-content:space-between; align-items:center; }
+  .close { background: none; border: none; font-size: 20px; cursor: pointer; }
+  .stats { display:flex; justify-content:space-between; gap: 12px; }
+  .side { display:flex; gap: 10px; align-items:center; }
+  .side img { width: 64px; height: 64px; object-fit: contain; }
+  .actions { display:flex; gap: 8px; }
+  .log { background: #f6edd6; border: 1px solid #6e4a20; padding: 8px; min-height: 80px; max-height: 160px; overflow:auto; }
+  .footer { display:flex; justify-content:flex-end; }
+  

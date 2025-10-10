@@ -1,0 +1,49 @@
+<div class="combat-overlay">
+    <div class="combat-card">
+      <div class="header">
+        <h2>⚔️ Combat</h2>
+        <button class="close" (click)="close()">✕</button>
+      </div>
+  
+      @if(enemy && player) {
+        <div class="stats">
+          <div class="side">
+            <img [src]="playerImage" alt="Player" />
+            <div>
+              <div>{{ player.name }}</div>
+              <div>HP: {{ player.hp }}</div>
+            </div>
+          </div>
+    
+          <div class="side">
+            <img [src]="enemy.icon" [alt]="enemy.name" />
+            <div>
+              <div>{{ enemy.name }} (Lv {{ enemy.level }})</div>
+              <div>HP: {{ enemy.hp }}</div>
+            </div>
+          </div>
+        </div>
+      }
+  
+      @if(inCombat) {
+        <div class="actions">
+          <button (click)="playerAttack()">Attack</button>
+          <button (click)="enemyAttack()">End Turn</button>
+        </div>
+      }
+  
+      <div class="log">
+        @for(l of log; track l.id) {
+          <div>{{ l.msg }}</div>
+        } 
+      </div>
+  
+      @if(!inCombat) {
+        <div class="footer">
+          <button (click)="close()">Continue</button>
+        </div>
+      }
+
+    </div>
+  </div>
+  

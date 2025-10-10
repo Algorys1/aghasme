@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Character } from '../models/character.model';
 import { CharacterService } from './character.service';
+import { CHARACTER_ASSETS } from '../models/character.model';
+
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
@@ -19,6 +21,12 @@ export class PlayerService {
     return this.characterSub.getValue();
   }
 
+  get portrait(): string {
+    const char = this.getCharacter();
+    if (!char) return 'assets/characters/default.png';
+    return CHARACTER_ASSETS[char.archetype];
+  }
+
   /** Rafraîchit les observables */
   refresh() {
     this.characterSub.next(this.characterService.getCharacter());
@@ -31,6 +39,8 @@ export class PlayerService {
   }
 
   // --- TODO Getters ---
+  get attack() { return this.character?.attack ?? 0; }
+  get defense() { return this.character?.defense ?? 0; }
   get hp() { return this.character?.hp ?? 0; }
   get maxHp() { return this.character?.maxHp ?? 0; }
   get mp() { return this.character?.mp ?? 0; }

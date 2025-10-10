@@ -13,7 +13,9 @@ export class CharacterService {
     const level = data.level ?? 1;
     const orbs: Orbs = { ...DEFAULT_ORBS, ...(data.orbs ?? {}) };
     const baseMaxHp = Math.floor((orbs.natural + orbs.mechanic) / 2);
-    const baseMaxMp = Math.floor((orbs.elemental + orbs.bestial) / 2);
+    const baseMaxMp = Math.floor((orbs.elemental + orbs.natural) / 2);
+    const baseAttack = 5 + Math.floor((orbs.bestial + orbs.elemental) / 2) + level;
+    const baseDefense = 3 + Math.floor((orbs.mechanic + orbs.natural) / 2) + Math.floor(level / 2);  
 
     this.character = {
       name: data.name,
@@ -28,7 +30,10 @@ export class CharacterService {
       orbs,
       skills: data.skills ?? [],
       inventory: data.inventory ?? [],
+      attack: baseAttack,
+      defense: baseDefense,
     };
+
     return this.character;
   }
 
@@ -52,13 +57,17 @@ export class CharacterService {
     }
   }
   private levelUp() {
+    // TODO to improve before release
     if (!this.character) return;
     this.character.level += 1;
     this.character.maxHp += 10;
     this.character.maxMp += 5;
     this.character.hp = this.character.maxHp;
     this.character.mp = this.character.maxMp;
+    this.character.attack = (this.character.attack ?? 5) + 2;
+    this.character.defense = (this.character.defense ?? 3) + 1;
   }
+  
   spendMP(amount: number): boolean {
     if (!this.character || this.character.mp < amount) return false;
     this.character.mp -= amount;

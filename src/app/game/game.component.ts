@@ -13,13 +13,15 @@ import { MinimapComponent } from "../minimap/minimap.component";
 import { OverlayWindowComponent } from '../overlay-window/overlay-window.component';
 import {ActionType} from '../models/actions';
 import {ActionService} from '../services/action.service';
+import { CombatService } from '../services/combat.service';
+import { CombatComponent } from '../combat/combat.component';
 
 @Component({
   selector: 'app-game',
   standalone: true,
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
-  imports: [MinimapComponent, OverlayWindowComponent]
+  imports: [MinimapComponent, OverlayWindowComponent, CombatComponent]
 })
 export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -30,6 +32,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   currentTile: { type: string; description?: string } | null = null;
 
   activeOverlay: OverlayInstance | null = null;
+  showCombat = false;
   isTransitioning = false;
 
   private subs: Subscription[] = [];
@@ -50,7 +53,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private mapService: MapService,
     private saveService: SaveService,
     private characterService: CharacterService,
-    private actionService: ActionService
+    private actionService: ActionService,
+    private combatService: CombatService,
   ) {}
 
   ngOnInit(): void {
@@ -73,14 +77,16 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       this.actionService.nextOverlay$.subscribe(nextOverlay => {
         console.log('🌀 Transitioning to next overlay:', nextOverlay.name);
     
-        // Déclenche la sortie visuelle
         this.isTransitioning = true;
     
-        // Petit délai pour le fade-out
         setTimeout(() => {
           this.activeOverlay = nextOverlay;
           this.isTransitioning = false;
         }, 350);
+      }),
+      this.actionService.startCombat$.subscribe(enemy => {
+        console.log(`🎯 Launching combat UI vs ${enemy.name}`);
+        this.showCombat = true;
       })
     );
 
@@ -204,7 +210,12 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       this.activeOverlay = null;
     }
   }
-  
+
+  onCombatClosed() {
+    console.log('✅ Combat ended, returning to map');
+    this.showCombat = false;
+    this.activeOverlay = null; // Le combat “consomme” l’overlay
+  }  
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());

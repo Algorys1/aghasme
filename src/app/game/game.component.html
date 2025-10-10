@@ -114,5 +114,9 @@
       </app-overlay-window>
     </div>
   }
+
+  @if (showCombat) {
+    <app-combat (closed)="onCombatClosed()"></app-combat>
+  }  
   
 </div>

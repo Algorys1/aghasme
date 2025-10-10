@@ -5,6 +5,9 @@ import { OverlayInstance } from '../factories/overlay.factory';
 import { OverlayKind } from '../models/overlays';
 import { CharacterService } from './character.service';
 import { MapService } from './map.service';
+import { CombatService } from './combat.service';
+import { EnemyFactory } from '../factories/enemy.factory';
+import { Enemy } from '../models/enemy.model';
 import {Subject} from 'rxjs';
 
 @Injectable({
@@ -12,11 +15,13 @@ import {Subject} from 'rxjs';
 })
 export class ActionService {
   public nextOverlay$ = new Subject<OverlayInstance>();
+  public startCombat$ = new Subject<Enemy>();
 
   constructor(
     private router: Router,
     private characterService: CharacterService,
-    private mapService: MapService
+    private mapService: MapService,
+    private combatService: CombatService
   ) {}
 
   /**
@@ -77,13 +82,27 @@ export class ActionService {
   }
 
   // -----------------------------------------------------------------
-  // 🧩 Logiques gameplay de base (à enrichir progressivement)
+  // 🧩 Gameplay Logic (TODO)
   // -----------------------------------------------------------------
 
   private startCombat(overlay: OverlayInstance) {
-    console.log(`⚔️ Combat begins with ${overlay.name}!`);
-    // TODO: navigate to combat component or open combat modal
-    // this.router.navigate(['/combat'], { state: { enemy: overlay } });
+    const player = this.characterService.getCharacter();
+    if (!player) return;
+  
+    const tile = this.mapService.getCurrentTile?.();
+    const terrain = tile?.terrain ?? 'plain';
+    const level = overlay.level ?? player.level;
+  
+    // Génère l'ennemi exact de l'overlay
+    const enemy = EnemyFactory.createByName(overlay.name, level);
+  
+    console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
+  
+    // Démarre le combat dans le CombatService
+    this.combatService.startCombat(enemy);
+  
+    // Notifie le GameComponent pour afficher l'interface de combat
+    this.startCombat$.next(enemy);
   }
 
   private fleeEncounter(overlay: OverlayInstance) {
