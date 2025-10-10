@@ -1,5 +1,12 @@
 import { OverlayKind, OverlayInfo, OVERLAY_MANIFEST } from '../models/overlays';
 import { ActionType } from '../models/actions';
+import { EnemyFactory } from './enemy.factory';
+import { Terrain } from './tile.factory';
+
+export interface OverlayContext {
+  playerLevel?: number;
+  terrain?: Terrain;
+}
 
 export interface OverlayPhase {
   title: string;
@@ -20,15 +27,17 @@ export interface OverlayInstance extends OverlayInfo {
 }
 
 export class OverlayFactory {
-  static create(kind: OverlayKind): OverlayInstance {
+  static create(kind: OverlayKind, context?: OverlayContext): OverlayInstance {
     const base = { ...OVERLAY_MANIFEST[kind] };
     const id = `${kind}-${crypto.randomUUID().slice(0, 8)}`;
+    const playerLevel = context?.playerLevel ?? 1;
+    const terrain = context?.terrain ?? 'plain';
 
     switch (kind) {
       case OverlayKind.Beast:
-        return this.createBeast(base, id, kind);
+        return this.createBeast(base, id, kind, playerLevel, terrain);
       case OverlayKind.Monster:
-        return this.createMonster(base, id, kind);
+        return this.createMonster(base, id, kind, playerLevel, terrain);
       case OverlayKind.City:
         return this.createCity(base, id, kind);
       case OverlayKind.Village:
@@ -40,7 +49,7 @@ export class OverlayFactory {
       case OverlayKind.Caravan:
         return this.createCaravan(base, id, kind);
       case OverlayKind.Encounter:
-        return this.createEncounter(base, id, kind);
+        return this.createEncounter(base, id, kind, playerLevel, terrain);
       case OverlayKind.Farm:
         return this.createFarm(base, id, kind);
       case OverlayKind.Forest:
@@ -114,13 +123,13 @@ export class OverlayFactory {
     };
   }
 
-  private static createEncounter(base: OverlayInfo, id: string, kind: OverlayKind): OverlayInstance {
+  private static createEncounter(base: OverlayInfo, id: string, kind: OverlayKind, playerLevel: number, terrain: Terrain): OverlayInstance {
     const encounters = [
       this.createBeast, this.createMonster, this.createMerchant, this.createSpirit, this.createWanderer
     ];
     const choice = encounters[Math.floor(Math.random() * encounters.length)];
 
-    return choice.call(this, base, id, kind);
+    return choice.call(this, base, id, kind, playerLevel, terrain);
   }
 
   private static createMerchant(base: OverlayInfo, id: string, kind: OverlayKind): OverlayInstance {
@@ -209,57 +218,36 @@ export class OverlayFactory {
     };
   }
 
-  private static createBeast(base: OverlayInfo, id: string, kind: OverlayKind): OverlayInstance {
-    const beasts = [
-      { name: 'Wolf', desc: 'A lone wolf growls nearby.', icon: 'assets/monsters/wolf.png' },
-      { name: 'Wild Boar', desc: 'A furious wild boar charges at you!', icon: 'assets/monsters/wild-boar.png' },
-      { name: 'Rats', desc: 'A massive rat prowls in the darkness.', icon: 'assets/monsters/rats.png' },
-      { name: 'Bear', desc: 'A large bear blocks your way.', icon: 'assets/monsters/bear.png' },
-      { name: 'Spider', desc: 'A monstrous spider is heading towards you at high speed.', icon: 'assets/monsters/spider.png' },
-      { name: 'Snake', desc: 'A huge snake stands before you, its mouth open, ready to bite.', icon: 'assets/monsters/snake.png' },
-    ];
-    const choice = beasts[Math.floor(Math.random() * beasts.length)];
+  private static createBeast(base: OverlayInfo, id: string, kind: OverlayKind, playerLevel: number, terrain: Terrain): OverlayInstance {
+    const beast = EnemyFactory.generateBeast(playerLevel, terrain);
 
     return {
       ...base,
       id,
       kind,
-      name: choice.name,
-      description: choice.desc,
-      icon: choice.icon,
+      name: beast.name || 'error',
+      description: beast.desc || 'error',
+      icon: beast.icon || 'error',
       actions: [ActionType.Fight, ActionType.Flee],
-      level: Math.ceil(Math.random() * 3), // TODO create a factory for level based on beast type
+      level: beast.level,
     };
   }
-
-  private static createMonster(base: OverlayInfo, id: string, kind: OverlayKind): OverlayInstance {
-    const monsters = [
-      { name: 'Bandit', desc: 'These roads aren\'t safe, you knew that. You\'re face to face with a highwayman.', icon: 'assets/monsters/bandit.png' },
-      { name: 'Disciple', desc: 'A dark disciple mutters forbidden incantations.', icon: 'assets/monsters/disciple.png' },
-      { name: 'Ghost', desc: 'A vaporous mass forms in front of you, it\'s definitely a creature from the beyond: a ghost!', icon: 'assets/monsters/goblin-warrior.png' },
-      { name: 'Goblin Archer', desc: 'Perched on a rock, a goblin stares at you, ready to fire his arrow.', icon: 'assets/monsters/goblin-archer.png' },
-      { name: 'Goblin Shaman', desc: 'A goblin shaman is looking at you maliciously, probably preparing to cast a dark spell...', icon: 'assets/monsters/goblin-shaman.png' },
-      { name: 'Goblin Warrior', desc: 'A sneaky goblin jumps right in front of you and challenges you', icon: 'assets/monsters/goblin-warrior.png' },
-      { name: 'Mechaninic Orb', desc: 'What you thought was a pile of inert scrap metal suddenly finds itself flying around you. That glowing eye doesn\'t bode well for you...', icon: 'assets/monsters/orb-mechanic.png' },
-      { name: 'Priest', desc: 'This hooded person is chanting incomprehensible words... Better to shut him up before he\'s finished.', icon: 'assets/monsters/priest.png' },
-      { name: 'Skeleton', desc: 'A previously inert skeleton rises up and attacks you!', icon: 'assets/monsters/skeleton.png' },
-      { name: 'Mechanic Spider', desc: 'This monstrosity from a forgotten era is going to give you a hard time. You\'re going to have to hit hard!', icon: 'assets/monsters/spider-mechanic.png' },
-      { name: 'Robot on Wheels', desc: 'Although it may seem wobbly, this creature seems to have retained all its danger. Beware!', icon: 'assets/monsters/wheel-mechanic.png' },
-      { name: 'Zombie', desc: 'The undead rise, a dark age is fast approaching! If you kill him, that will always be one less!', icon: 'assets/monsters/zombie.png' },
-    ];
-    const choice = monsters[Math.floor(Math.random() * monsters.length)];
+  
+  private static createMonster(base: OverlayInfo, id: string, kind: OverlayKind, playerLevel: number, terrain: Terrain): OverlayInstance {
+    const monster = EnemyFactory.generateMonster(playerLevel, terrain);
 
     return {
       ...base,
       id,
       kind,
-      name: choice.name,
-      description: choice.desc,
-      icon: choice.icon,
+      name: monster.name || 'error',
+      description: monster.desc || 'error',
+      icon: monster.icon || 'error',
       actions: [ActionType.Fight, ActionType.Flee],
-      level: Math.ceil(Math.random() * 5),  // TODO create a factory for level based on monster type
+      level: monster.level,
     };
   }
+  
 
   private static createCity(base: OverlayInfo, id: string, kind: OverlayKind): OverlayInstance {
     const names = ['Rivertown', 'Eldergate', 'Stormhold', 'Ironvale', 'Highwall'];
