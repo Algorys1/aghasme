@@ -25,31 +25,12 @@
       </div>
     }
 
-    <!-- 🧩 ICI on intègre le plateau de combat -->
+    <!-- Plateau de combat -->
     @if (enemy) {
       <app-combat-board 
-        [enemy]="enemy" 
+        [enemy]="enemy"
         (combatEnded)="onCombatEnded($event)">
       </app-combat-board>
-    }
-
-    @if (inCombat) {
-      <div class="actions">
-        <button (click)="playerAttack()">Attack</button>
-        <button (click)="enemyAttack()">End Turn</button>
-      </div>
-    }
-
-    <div class="log">
-      @for (l of log; track l.id) {
-        <div>{{ l.msg }}</div>
-      }
-    </div>
-
-    @if (!inCombat) {
-      <div class="footer">
-        <button (click)="close()">Continue</button>
-      </div>
     }
   </div>
 </div>

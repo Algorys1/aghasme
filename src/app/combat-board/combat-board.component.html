@@ -1,3 +1,9 @@
+@if (turnOverlay) {
+  <div class="turn-overlay">
+    {{ turnOverlay }}
+  </div>
+}
+
 <div class="board">
   @for (row of grid; track row) {
     <div class="row">
@@ -17,4 +23,50 @@
     </div>
   }
 </div>
+<div class="log-box">
+  <h3>📜 Combat Log</h3>
+  <div class="entries">
+    @for (entry of log; track entry.id) {
+      <div>{{ entry.msg }}</div>
+    }
+  </div>
+</div>
+
+@if (showResultOverlay && combatResult) {
+  <div class="result-overlay">
+    <div class="result-card">
+      <button class="close" (click)="closeResultOverlay()">✕</button>
+
+      @if (combatResult.winner === 'player') {
+        <h2 class="victory">🏆 Victory!</h2>
+      } @else {
+        <h2 class="defeat">💀 Defeat...</h2>
+      }
+
+      <div class="fighters">
+        <div class="fighter">
+          <img [src]="playerService.portrait" alt="Player" />
+          <div>{{ player?.name }}</div>
+          <div>❤️ {{ player?.hp }} / {{ player?.maxHp }}</div>
+        </div>
+
+        <div class="versus">VS</div>
+
+        <div class="fighter">
+          <img [src]="enemy.icon" [alt]="enemy.name" />
+          <div>{{ enemy.name }}</div>
+          <div>❤️ {{ enemy.hp }}</div>
+        </div>
+      </div>
+
+      @if (combatResult.winner === 'player') {
+        <div class="rewards">
+          <div>✨ XP Gained: <strong>{{ combatResult.xp }}</strong></div>
+          <div>💰 Gold Earned: <strong>{{ combatResult.gold }}</strong></div>
+        </div>
+      }
+    </div>
+  </div>
+}
+
   

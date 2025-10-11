@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CombatService } from '../services/combat.service';
 import { Enemy } from '../models/enemy.model';
 import { PlayerService } from '../services/player.service';
@@ -15,13 +16,20 @@ interface Cell {
   selected?: boolean;
 }
 
+interface CombatLogEntry {
+  id: string;
+  msg: string;
+  type: 'info' | 'player' | 'enemy' | 'action';
+}
+
 @Component({
   selector: 'app-combat-board',
   templateUrl: './combat-board.component.html',
   styleUrls: ['./combat-board.component.scss']
 })
-export class CombatBoardComponent implements OnInit {
+export class CombatBoardComponent implements OnInit, OnDestroy {
   @Input() enemy!: Enemy;
+  private subs: Subscription[] = [];
 
   gridSize = 7;
   grid: Cell[][] = [];
@@ -31,23 +39,30 @@ export class CombatBoardComponent implements OnInit {
   enemyPos = { x: this.gridSize - 2, y: Math.floor(this.gridSize / 2) };
 
   currentTurn: 'player' | 'enemy' = 'player';
+  turnOverlay: string | null = null;
   actionsRemaining = 2;
+  showResultOverlay = false;
+  combatResult: { winner: 'player' | 'enemy'; xp: number; gold: number } | null = null;  
+
+  log: CombatLogEntry[] = [];
 
   @Output() combatEnded = new EventEmitter<'player' | 'enemy'>();
 
   constructor(
-    private characterService: PlayerService,
+    public playerService: PlayerService,
     private combatService: CombatService
   ) {}
 
   ngOnInit(): void {
-    this.player = this.characterService.getCharacter();
+    this.player = this.playerService.getCharacter();
     this.generateBoard();
+    if (this.enemy) this.addLog(`A ${this.enemy.name} appears!`, 'info');
+    this.showTurnOverlay('Your Turn');
 
-    this.combatService.combatEnded$.subscribe(winner => {
-      console.log(`🏁 Combat terminé (${winner} wins)`);
-      this.handleCombatEnd(winner);
-    });
+    this.subs.push(
+      this.combatService.combatEnded$.subscribe(winner => this.handleCombatEnd(winner))
+    );
+    
   }
 
   // === BOARD GENERATION ============================================
@@ -88,6 +103,7 @@ export class CombatBoardComponent implements OnInit {
     if (cell.walkable && !cell.hasEnemy) {
       this.movePlayer(cell);
       this.consumeAction();
+      this.addLog(`🧝 You move to (${cell.x}, ${cell.y}).`);
       return;
     }
 
@@ -95,7 +111,7 @@ export class CombatBoardComponent implements OnInit {
     const dist = Math.abs(cell.x - this.playerPos.x) + Math.abs(cell.y - this.playerPos.y);
     if (cell.hasEnemy && dist === 1) {
       const dmg = this.combatService.playerAttack();
-      console.log(`⚔️ You hit ${this.enemy.name} for ${dmg} damage!`);
+      this.addLog(`⚔️ You hit ${this.enemy.name} for ${dmg} damage!`);
       this.consumeAction();
       return;
     }
@@ -126,6 +142,7 @@ export class CombatBoardComponent implements OnInit {
 
   // === TURN MANAGMENT ================================================
   private consumeAction(): void {
+    if (this.actionsRemaining <= 0) return;
     this.actionsRemaining--;
     if (this.actionsRemaining <= 0) {
       this.endTurn();
@@ -135,15 +152,20 @@ export class CombatBoardComponent implements OnInit {
   }
 
   private endTurn(): void {
+    // séparation visuelle dans le log
+    this.addLog('──────────────────────────────', 'info');
+  
     if (this.currentTurn === 'player') {
       this.currentTurn = 'enemy';
       this.actionsRemaining = 2;
-      console.log('👹 Enemy turn begins');
+      this.addLog('👹 Enemy turn begins...', 'enemy');
+      this.showTurnOverlay('Enemy Turn');
       this.enemyTurn();
     } else {
       this.currentTurn = 'player';
       this.actionsRemaining = 2;
-      console.log('🧝 Player turn begins');
+      this.addLog('🧝 Your turn begins.', 'player');
+      this.showTurnOverlay('Your Turn');
       this.updateWalkableCells();
     }
   }
@@ -154,11 +176,12 @@ export class CombatBoardComponent implements OnInit {
 
       if (dist === 1) {
         const dmg = this.combatService.enemyAttack();
-        console.log(`💢 ${this.enemy.name} hits you for ${dmg} damage!`);
+        this.addLog(`💢 ${this.enemy.name} hits you for ${dmg} damage!`);
         this.actionsRemaining--;
       } else {
         this.moveEnemyTowardPlayer();
         this.actionsRemaining--;
+        this.addLog(`👣 ${this.enemy.name} moves closer.`);
       }
 
       await this.delay(500);
@@ -166,6 +189,32 @@ export class CombatBoardComponent implements OnInit {
 
     this.endTurn();
   }
+
+  private showTurnOverlay(text: string) {
+    this.turnOverlay = text;
+    setTimeout(() => (this.turnOverlay = null), 1200);
+  }
+
+  private handleCombatEnd(winner: 'player' | 'enemy'): void {
+    const result = this.combatService.getLastResult();
+    this.combatResult = result
+      ? { winner: result.winner, xp: result.xpGained, gold: result.goldGained }
+      : { winner, xp: 0, gold: 0 };
+  
+    this.showResultOverlay = true;
+    this.showTurnOverlay("");
+  
+    const msg =
+      winner === 'player'
+        ? `🏁 Victory! You defeated ${this.enemy.name}.`
+        : `💀 Defeat... ${this.enemy.name} was too strong.`;
+    this.addLog(msg, 'info');
+  }
+
+  closeResultOverlay(): void {
+    this.showResultOverlay = false;
+    this.combatEnded.emit(this.combatResult?.winner ?? 'player');
+  }  
 
   // === TOOLS ======================================================
   private isWalkable(cell: Cell): boolean {
@@ -185,13 +234,19 @@ export class CombatBoardComponent implements OnInit {
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-
-  private handleCombatEnd(winner: 'player' | 'enemy'): void {
-    if (winner === 'player') {
-      console.log('🎉 Vous avez gagné !');
-    } else {
-      console.log('💀 Vous avez perdu...');
-    }
-    this.combatEnded.emit(winner);
+  
+  private addLog(msg: string, type: 'info' | 'player' | 'enemy' | 'action' = 'info'): void {
+    const entry: CombatLogEntry = { id: crypto.randomUUID(), msg, type };
+    this.log.unshift(entry); // affichage inversé (nouveaux en haut)
+    setTimeout(() => this.scrollLogToTop(), 50);
   }
+  
+  private scrollLogToTop(): void {
+    const container = document.querySelector('.log-box .entries');
+    if (container) container.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  ngOnDestroy(): void {
+    this.subs.forEach(s => s.unsubscribe());
+  }  
 }
