@@ -54,5 +54,10 @@ export class CombatComponent implements OnInit {
 
   get inCombat() { return this.combat.isInCombat(); }
 
+  onCombatEnded(winner: 'player' | 'enemy') {
+    console.log('End of Fight → back to map');
+    this.close();
+  }
+
   close() { this.closed.emit(); }
 }

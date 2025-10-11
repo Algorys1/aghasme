@@ -1,7 +1,6 @@
 .board {
     display: grid;
     place-items: center;
-    padding: 12px;
   }
   
   .row {
@@ -9,8 +8,8 @@
   }
   
   .cell {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border: 1px solid #5a3c1c;
     display: flex;
     align-items: center;
@@ -33,4 +32,13 @@
       filter: brightness(1.1);
     }
   }
+
+  .cell.walkable {
+    background: #c0f2c0;
+    cursor: pointer;
+  }
+  .cell.walkable:hover {
+    filter: brightness(1.15);
+  }
+  
   

@@ -3,19 +3,16 @@
     <div class="row">
       @for(cell of row; track cell) {
         <div
-        class="cell"
-        [class.block]="cell.type === 'block'"
-        [class.player]="cell.hasPlayer"
-        [class.enemy]="cell.hasEnemy"
-        (click)="onCellClick(cell)"
-      >
-      @if(cell.hasPlayer) {
-        <ng-container>🧝</ng-container>
-      }
-      @if (cell.hasEnemy) {
-        <ng-container>👹</ng-container>
-      }  
-      </div>
+          class="cell"
+          [class.block]="cell.type === 'block'"
+          [class.player]="cell.hasPlayer"
+          [class.enemy]="cell.hasEnemy"
+          [class.walkable]="cell.walkable"
+          (click)="onCellClick(cell)"
+        >
+          @if (cell.hasPlayer) { 🧝 }
+          @if (cell.hasEnemy) { 👹 }
+        </div>
       }
     </div>
   }

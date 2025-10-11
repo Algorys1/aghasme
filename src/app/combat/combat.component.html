@@ -27,7 +27,10 @@
 
     <!-- 🧩 ICI on intègre le plateau de combat -->
     @if (enemy) {
-      <app-combat-board [enemy]="enemy"></app-combat-board>
+      <app-combat-board 
+        [enemy]="enemy" 
+        (combatEnded)="onCombatEnded($event)">
+      </app-combat-board>
     }
 
     @if (inCombat) {
