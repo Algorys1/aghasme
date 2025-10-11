@@ -76,7 +76,7 @@ export class EnemyFactory {
       icon: tpl.icon,
       category: tpl.category,
       level: finalLevel,
-      hp: 20 + finalLevel * 6,
+      hp: 1 + finalLevel * 6,
       attack: 4 + finalLevel * 2,
       defense: 2 + finalLevel,
     });

@@ -1,0 +1,36 @@
+.board {
+    display: grid;
+    place-items: center;
+    padding: 12px;
+  }
+  
+  .row {
+    display: flex;
+  }
+  
+  .cell {
+    width: 48px;
+    height: 48px;
+    border: 1px solid #5a3c1c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7e3b0;
+    cursor: pointer;
+    transition: background 0.2s;
+  
+    &.block {
+      background: #7b5d3f;
+    }
+    &.player {
+      background: #c4f7c0;
+    }
+    &.enemy {
+      background: #f7b0b0;
+    }
+  
+    &:hover {
+      filter: brightness(1.1);
+    }
+  }
+  

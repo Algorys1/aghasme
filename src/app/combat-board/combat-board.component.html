@@ -1,0 +1,23 @@
+<div class="board">
+  @for (row of grid; track row) {
+    <div class="row">
+      @for(cell of row; track cell) {
+        <div
+        class="cell"
+        [class.block]="cell.type === 'block'"
+        [class.player]="cell.hasPlayer"
+        [class.enemy]="cell.hasEnemy"
+        (click)="onCellClick(cell)"
+      >
+      @if(cell.hasPlayer) {
+        <ng-container>🧝</ng-container>
+      }
+      @if (cell.hasEnemy) {
+        <ng-container>👹</ng-container>
+      }  
+      </div>
+      }
+    </div>
+  }
+</div>
+  

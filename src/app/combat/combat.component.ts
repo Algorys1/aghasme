@@ -3,11 +3,13 @@ import { CombatService } from '../services/combat.service';
 import { PlayerService } from '../services/player.service';
 import { Enemy } from '../models/enemy.model';
 import { Character } from '../models/character.model';
+import { CombatBoardComponent } from "../combat-board/combat-board.component";
 
 @Component({
   selector: 'app-combat',
   templateUrl: './combat.component.html',
   styleUrls: ['./combat.component.scss'],
+  imports: [CombatBoardComponent],
 })
 export class CombatComponent implements OnInit {
   enemy: Enemy | null = null;
