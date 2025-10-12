@@ -5,6 +5,7 @@ export interface EnemyData {
   category: 'beast' | 'monster';
   level: number;
   hp: number;
+  mp: number;
   attack: number;
   defense: number;
 }
@@ -16,6 +17,7 @@ export class Enemy implements EnemyData {
   category: 'beast' | 'monster';
   level: number;
   hp: number;
+  mp: number;
   attack: number;
   defense: number;
 
@@ -26,6 +28,7 @@ export class Enemy implements EnemyData {
     this.category = data.category;
     this.level = data.level;
     this.hp = data.hp;
+    this.mp = data.mp;
     this.attack = data.attack;
     this.defense = data.defense;
   }

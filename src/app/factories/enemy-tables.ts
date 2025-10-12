@@ -73,12 +73,12 @@ export const EnemyTables: Record<Terrain, EnemyTemplate[]> = {
     { name: 'Mechanic Golem', desc: 'The slowly rising metal mass looks like it came straight out of a foundry of evil. It\'s not going to be the easiest of opponents...', icon: 'assets/monsters/golem-mechanic.png', category: 'monster', terrains: ['volcano'], minLevel: 10, maxLevel: 20 },
   ],
 
-  water: [
-    { name: 'Rats', desc: 'A massive rat prowls in the darkness.', icon: 'assets/monsters/rats.png', category: 'beast', terrains: ['water'], minLevel: 1, maxLevel: 4 },
-    { name: 'Ghost', desc: 'A vaporous mass forms in front of you, it\'s definitely a creature from the beyond: a ghost!', icon: 'assets/monsters/goblin-warrior.png', category: 'monster', terrains: ['water'], minLevel: 4, maxLevel: 8 },
-    { name: 'Harpy', desc: 'The scream that creature just made deafened you, a little more and you would have fallen. You will have to defend yourself.', icon: 'assets/monsters/harpy.png', category: 'beast', terrains: ['water'], minLevel: 5, maxLevel: 15 },
-    { name: 'Young Griffin', desc: 'What you thought was a large eagle is actually a young griffin. The problem is, this young griffin is coming at you at full speed!', icon: 'assets/monsters/griffin-young.png', category: 'beast', terrains: ['water'], minLevel: 4, maxLevel: 8 },
-    { name: 'Young Kraken', desc: 'Your ship was sailing peacefully when suddenly a shock was felt beneath the hull. Numerous tentacles assaulted the deck.', icon: 'assets/monsters/kraken-young.png', category: 'beast', terrains: ['water'], minLevel: 10, maxLevel: 20 },
-    { name: 'Snake Water', desc: 'You see the water begin to simmer and bubble. What is this creature that is bothering you?', icon: 'assets/monsters/snake-water.png', category: 'beast', terrains: ['water'], minLevel: 1, maxLevel: 8 },
+  sea: [
+    { name: 'Rats', desc: 'A massive rat prowls in the darkness.', icon: 'assets/monsters/rats.png', category: 'beast', terrains: ['sea'], minLevel: 1, maxLevel: 4 },
+    { name: 'Ghost', desc: 'A vaporous mass forms in front of you, it\'s definitely a creature from the beyond: a ghost!', icon: 'assets/monsters/goblin-warrior.png', category: 'monster', terrains: ['sea'], minLevel: 4, maxLevel: 8 },
+    { name: 'Harpy', desc: 'The scream that creature just made deafened you, a little more and you would have fallen. You will have to defend yourself.', icon: 'assets/monsters/harpy.png', category: 'beast', terrains: ['sea'], minLevel: 5, maxLevel: 15 },
+    { name: 'Young Griffin', desc: 'What you thought was a large eagle is actually a young griffin. The problem is, this young griffin is coming at you at full speed!', icon: 'assets/monsters/griffin-young.png', category: 'beast', terrains: ['sea'], minLevel: 4, maxLevel: 8 },
+    { name: 'Young Kraken', desc: 'Your ship was sailing peacefully when suddenly a shock was felt beneath the hull. Numerous tentacles assaulted the deck.', icon: 'assets/monsters/kraken-young.png', category: 'beast', terrains: ['sea'], minLevel: 10, maxLevel: 20 },
+    { name: 'Snake Water', desc: 'You see the water begin to simmer and bubble. What is this creature that is bothering you?', icon: 'assets/monsters/snake-water.png', category: 'beast', terrains: ['sea'], minLevel: 1, maxLevel: 8 },
   ],
 };

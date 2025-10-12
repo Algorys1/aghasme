@@ -185,7 +185,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'volcano': return '#993333';
       case 'swamp': return '#446655';
       case 'jungle': return '#337755';
-      case 'water': return '#3a6ea5';
+      case 'sea': return '#3a6ea5';
       default: return '#555555';
     }
   }

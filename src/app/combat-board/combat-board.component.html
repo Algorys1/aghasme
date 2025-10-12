@@ -1,3 +1,15 @@
+<div class="turn-controls">
+  <div class="actions-left">
+    ⚙️ Actions: <strong>{{ actionsRemaining }}</strong> / 2
+  </div>
+
+  @if (currentTurn === 'player') {
+    <button class="end-turn-btn" (click)="endTurn()">End Turn</button>
+  } @else {
+    <div class="enemy-turn">👹 Enemy Turn...</div>
+  }
+</div>
+
 @if (turnOverlay) {
   <div class="turn-overlay">
     {{ turnOverlay }}
@@ -7,7 +19,7 @@
 <div class="board">
   @for (row of grid; track row) {
     <div class="row">
-      @for(cell of row; track cell) {
+      @for (cell of row; track cell) {
         <div
           class="cell"
           [class.block]="cell.type === 'block'"
@@ -23,11 +35,12 @@
     </div>
   }
 </div>
+
 <div class="log-box">
   <h3>📜 Combat Log</h3>
   <div class="entries">
     @for (entry of log; track entry.id) {
-      <div>{{ entry.msg }}</div>
+      <div class="log-entry" [ngClass]="entry.type">{{ entry.msg }}</div>
     }
   </div>
 </div>
@@ -48,6 +61,8 @@
           <img [src]="playerService.portrait" alt="Player" />
           <div>{{ player?.name }}</div>
           <div>❤️ {{ player?.hp }} / {{ player?.maxHp }}</div>
+          <div>🗡️ {{ player?.attack ?? 0 }}</div>
+          <div>🛡️ {{ player?.defense ?? 0 }}</div>
         </div>
 
         <div class="versus">VS</div>
@@ -56,6 +71,8 @@
           <img [src]="enemy.icon" [alt]="enemy.name" />
           <div>{{ enemy.name }}</div>
           <div>❤️ {{ enemy.hp }}</div>
+          <div>🗡️ {{ enemy.attack }}</div>
+          <div>🛡️ {{ enemy.defense }}</div>
         </div>
       </div>
 
@@ -68,5 +85,3 @@
     </div>
   </div>
 }
-
-  

@@ -43,9 +43,10 @@ export class EnemyFactory {
       icon: pick.icon,
       category: pick.category,
       level,
-      hp: 20 + level * 6,
-      attack: 4 + level * 2,
-      defense: 2 + level,
+      hp: 1 + level * 5,
+      mp: 1 + level * 5,
+      attack: 1 + level * 2,
+      defense: 1 + level,
     });
   }
 
@@ -76,7 +77,8 @@ export class EnemyFactory {
       icon: tpl.icon,
       category: tpl.category,
       level: finalLevel,
-      hp: 1 + finalLevel * 6,
+      hp: 1 + finalLevel * 5,
+      mp: 1 + finalLevel * 5,
       attack: 1 + finalLevel * 2,
       defense: 1 + finalLevel,
     });

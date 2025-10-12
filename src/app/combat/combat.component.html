@@ -7,23 +7,31 @@
 
     @if (enemy && player) {
       <div class="stats">
-        <div class="side">
+        <!-- 🧝 Joueur -->
+        <div class="side player-side">
           <img [src]="playerImage" alt="Player" />
-          <div>
-            <div>{{ player.name }}</div>
-            <div>HP: {{ player.hp }}</div>
+          <div class="info">
+            <div class="name">{{ player.name }}</div>
+            <div class="stat">❤️ HP: {{ player.hp }} / {{ player.maxHp }}</div>
+            <div class="stat">🔷 MP: {{ player.mp }} / {{ player.maxMp }}</div>
+            <div class="stat">🗡️ ATK: {{ player.attack }}</div>
+            <div class="stat">🛡️ DEF: {{ player.defense }}</div>
           </div>
         </div>
-
-        <div class="side">
+    
+        <!-- 👹 Ennemi -->
+        <div class="side enemy-side">
           <img [src]="enemy.icon" [alt]="enemy.name" />
-          <div>
-            <div>{{ enemy.name }} (Lv {{ enemy.level }})</div>
-            <div>HP: {{ enemy.hp }}</div>
+          <div class="info">
+            <div class="name">{{ enemy.name }} (Lv {{ enemy.level }})</div>
+            <div class="stat">❤️ HP: {{ enemy.hp }}</div>
+            <div class="stat">🔷 MP: {{ enemy.mp }}</div>
+            <div class="stat">🗡️ ATK: {{ enemy.attack }}</div>
+            <div class="stat">🛡️ DEF: {{ enemy.defense }}</div>
           </div>
         </div>
       </div>
-    }
+    }    
 
     <!-- Plateau de combat -->
     @if (enemy) {

@@ -1,20 +1,101 @@
 .combat-overlay {
-    position: absolute; inset: 0; display: grid; place-items: center;
-    background: rgba(0,0,0,.45); z-index: 999;
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: rgba(0,0,0,.45); z-index: 999;
+}
+.combat-card {
+  width: min(560px, 92vw);
+  background: #f8e4b5;
+  border: 3px solid #6e4a20; border-radius: 16px; padding: 16px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.3);
+  display: grid; gap: 12px;
+}
+.header { display:flex; justify-content:space-between; align-items:center; }
+.close { background: none; border: none; font-size: 20px; cursor: pointer; }
+.stats { display:flex; justify-content:space-between; gap: 12px; }
+.side { display:flex; gap: 10px; align-items:center; }
+.side img { width: 64px; height: 64px; object-fit: contain; }
+.actions { display:flex; gap: 8px; }
+.log { background: #f6edd6; border: 1px solid #6e4a20; padding: 8px; min-height: 80px; max-height: 160px; overflow:auto; }
+.footer { display:flex; justify-content:flex-end; }
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 2px solid #6e4a20;
+  margin-bottom: 10px;
+
+  .side {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    img {
+      width: 64px;
+      height: 64px;
+      border: 2px solid #6e4a20;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .name {
+        font-weight: bold;
+        font-size: 16px;
+        color: #2b1b0f;
+      }
+
+      .stat {
+        font-size: 13px;
+        color: #3a2410;
+      }
+    }
   }
-  .combat-card {
-    width: min(560px, 92vw);
-    background: #f8e4b5;
-    border: 3px solid #6e4a20; border-radius: 16px; padding: 16px;
-    box-shadow: 0 6px 24px rgba(0,0,0,.3);
-    display: grid; gap: 12px;
+
+  .player-side .name { color: #1e6b14; }
+  .enemy-side .name { color: #8b0000; }
+}
+
+.combat-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  margin: 0 auto;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Bandeau des stats */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+
+  @media (max-width: 600px) {
+    align-items: center;
+    text-align: center;
   }
-  .header { display:flex; justify-content:space-between; align-items:center; }
-  .close { background: none; border: none; font-size: 20px; cursor: pointer; }
-  .stats { display:flex; justify-content:space-between; gap: 12px; }
-  .side { display:flex; gap: 10px; align-items:center; }
-  .side img { width: 64px; height: 64px; object-fit: contain; }
-  .actions { display:flex; gap: 8px; }
-  .log { background: #f6edd6; border: 1px solid #6e4a20; padding: 8px; min-height: 80px; max-height: 160px; overflow:auto; }
-  .footer { display:flex; justify-content:flex-end; }
-  
+}
+
+/* La grille */
+app-combat-board {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Le log */
+.log {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+

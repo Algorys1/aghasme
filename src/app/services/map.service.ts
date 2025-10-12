@@ -76,7 +76,7 @@ export class MapService {
     const altitude = (altRaw + 1) / 2;
     const humidity = (humRaw + 1) / 2;
 
-    if (altitude < 0.3) return 'water';
+    if (altitude < 0.3) return 'sea';
     if (altitude > 0.7) return 'mountain';
     if (altitude > 0.8) return 'volcano';
     if (humidity < 0.3) return 'desert';
@@ -252,7 +252,7 @@ export class MapService {
       case 'volcano': return 'The heat keeps rising, rising, and rising... In the distance you hear the mountain rumbling. Better not hang around here!';
       case 'jungle': return 'This jungle is impenetrable and your feet are soaking wet! The mosquitoes don’t help either.';
       case 'swamp': return "These swamps make you feel nauseous... All you want to do is take a nice bath! The worst part is, there are creatures living here...";
-      case 'water': return "Water, water as far as the eye can see. You're starting to miss land.";
+      case 'sea': return "Water, water as far as the eye can see. You're starting to miss land.";
       default: return 'Unknown lands';
     }
   }

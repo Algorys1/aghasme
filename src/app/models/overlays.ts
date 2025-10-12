@@ -232,7 +232,7 @@ export const OVERLAY_POOLS: Record<string, Partial<Record<OverlayKind, number>>>
         [OverlayKind.Ritual]: 1,
         [OverlayKind.Anomaly]: 1,
     },
-    water: {
+    sea: {
         [OverlayKind.None]: 80,
         [OverlayKind.Caravan]: 1,
         [OverlayKind.Wanderer]: 1,
