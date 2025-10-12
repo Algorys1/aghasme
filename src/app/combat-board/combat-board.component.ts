@@ -4,6 +4,7 @@ import { CombatService } from '../services/combat.service';
 import { Enemy } from '../models/enemy.model';
 import { PlayerService } from '../services/player.service';
 import { Character } from '../models/character.model';
+import { CommonModule } from '@angular/common';
 
 interface Cell {
   x: number;
@@ -25,7 +26,8 @@ interface CombatLogEntry {
 @Component({
   selector: 'app-combat-board',
   templateUrl: './combat-board.component.html',
-  styleUrls: ['./combat-board.component.scss']
+  styleUrls: ['./combat-board.component.scss'],
+  imports: [CommonModule]
 })
 export class CombatBoardComponent implements OnInit, OnDestroy {
   @Input() enemy!: Enemy;
@@ -190,7 +192,7 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
     }
   }
 
-  private endTurn(): void {
+  public endTurn(): void {
     // séparation visuelle dans le log
     this.addLog('──────────────────────────────', 'info');
   
