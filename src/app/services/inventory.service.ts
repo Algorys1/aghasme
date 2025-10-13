@@ -93,7 +93,7 @@ export class InventoryService {
     let effectMessage: string | null = null;
 
     if (item.type === ItemType.Consumable || item.type === ItemType.Utility) {
-      effectMessage = item.effect || `${item.name} used.`;
+      effectMessage = `${item.effects}` || `${item.name} used.`;
       this.removeItem(itemId);
     } else {
       this.errorSubject.next(`Item non utilisable: ${item.name}`);

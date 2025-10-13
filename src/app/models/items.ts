@@ -14,13 +14,13 @@ export enum RarityType {
   Rare = 'Rare',
   Legendary = 'Legendary',
   Epic = 'Epic',
-  Artefact = 'Artefat'
+  Artefact = 'Artefact'
 }
 
 export enum EquipSlot {
   Accessory1 = 'Accessory1',
   Accessory2 = 'Accessory2',
-  Feet = 'Foot',
+  Feet = 'Feet',
   Head = 'Head',
   Hand1 = 'Hand1',
   Hand2 = 'Hand2',
@@ -34,16 +34,30 @@ export interface Item {
   name: string;
   description: string;
   type: ItemType;
-  value: number;           // base gold value... To see if we don't use "value" for the chances of finding it and if we don't calculate the price of the object via the effects and its rarity?
-  icon: string;            // path to the asset
-  rarity: RarityType;      // defines the rarity of an item and the chances of finding it   
-  stackable?: boolean;     // true if multiple can stack
-  count?: number;          // count of items
-  effect?: string;         // optional text effect (heal, +stats…)
-  equipSlot?: EquipSlot[]; // optional for equipment
+  icon: string;
+  rarity: RarityType;
+
+  baseValue: number;          // valeur économique de base
+  computedValue?: number;     // valeur recalculée via rareté + effets
+  stackable?: boolean;        // peut être empilé
+  subtype?: ItemSubtype;      // ex: "sword", "shield", "potion"
+  equipSlot?: EquipSlot[];    // slots occupés
+  twoHanded?: boolean;        // indique si l’objet bloque les deux mains
+  effects?: ItemEffect[];     // effets chiffrés et lisibles (atk, hp, etc.)
 }
 
-// Base items for testing
+export interface ItemEffect {
+  stat: string;     // ex: "atk", "hp", "mp", "def", "tool", "light"
+  value: number;    // ex: +10 ou -5
+}
+
+export type ItemSubtype =
+  | 'sword' | 'axe' | 'dagger' | 'hammer' | 'staff' | 'spear' | 'bow'
+  | 'helmet' | 'robe' | 'armor' | 'boots' | 'shield' | 'ring' | 'amulet'
+  | 'book' | 'key' | 'torch' | 'resource' | 'potion' | 'food'
+  | 'generic';
+
+// Base items
 export const BASE_ITEMS: Item[] = [
   // ACCESSORIES
   {
@@ -52,9 +66,22 @@ export const BASE_ITEMS: Item[] = [
     description: 'This ancient amulet has already saved several lives...',
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/amulet-epic.png',
-    value: 500,
+    baseValue: 500,
     equipSlot: [EquipSlot.Accessory1],
-    rarity: RarityType.Epic
+    rarity: RarityType.Epic,
+    subtype: 'amulet'
+  },
+  {
+    id: 'charm-wild',
+    name: 'Charm of the Wild',
+    description: 'Smells faintly of moss and rain. Grants a deep calm.',
+    type: ItemType.Accessory,
+    icon: 'assets/items/accessories/charm-wild.png',
+    baseValue: 130,
+    rarity: RarityType.Rare,
+    subtype: 'amulet',
+    equipSlot: [EquipSlot.Accessory1],
+    effects: [{ stat: 'hp', value: 10 }, { stat: 'resist', value: 1 }],
   },
   {
     id: 'magic-tome',
@@ -62,9 +89,10 @@ export const BASE_ITEMS: Item[] = [
     description: 'A tome of magic, certainly some spells to learn in there.',
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/magic-tome.png',
-    value: 100,
+    baseValue: 100,
     equipSlot: [EquipSlot.Accessory1],
-    rarity: RarityType.Rare
+    rarity: RarityType.Rare,
+    subtype: 'book'
   },
   {
     id: 'magic-tome-epic',
@@ -72,9 +100,10 @@ export const BASE_ITEMS: Item[] = [
     description: 'A grimoire not to be put in everyone\'s hands. Luckily, it\'s in yours.',
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/magic-tome-epic.png',
-    value: 500,
+    baseValue: 500,
     equipSlot: [EquipSlot.Accessory1],
-    rarity: RarityType.Epic
+    rarity: RarityType.Epic,
+    subtype: 'book'
   },
   {
     id: 'orb-epic',
@@ -82,21 +111,23 @@ export const BASE_ITEMS: Item[] = [
     description: 'A glowing shard from the Bestial Orb.',
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/orb-epic.png',
-    value: 500,
+    baseValue: 500,
     equipSlot: [EquipSlot.Accessory1],
-    effect: '1:bestial',
-    rarity: RarityType.Epic
+    effects: [{ stat: 'bestial', value: 1 }],
+    rarity: RarityType.Epic,
+    subtype: 'amulet'
   },
   {
     id: 'pendant-epic',
-    name: 'A pen',
+    name: 'Ancient Pendant',
     description: 'An antique pendant... the pieces seem to want to stay together despite their condition.',
     type: ItemType.Accessory,
-    icon: 'assets/items/accessories/orb-epic.png',
-    value: 500,
+    icon: 'assets/items/accessories/pendant-epic.png', // corrected icon
+    baseValue: 500,
     equipSlot: [EquipSlot.Accessory1],
-    effect: '1:elemental',
-    rarity: RarityType.Epic
+    effects: [{ stat: 'elemental', value: 1 }],
+    rarity: RarityType.Epic,
+    subtype: 'amulet'
   },
   {
     id: 'ring-red',
@@ -104,7 +135,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'A beautiful ring set with a glowing stone.',
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/ring-red.png',
-    value: 100,
+    baseValue: 100,
     equipSlot: [EquipSlot.Accessory1],
     rarity: RarityType.Normal
   },
@@ -114,9 +145,21 @@ export const BASE_ITEMS: Item[] = [
     description: 'The blue stone set in this ring gives a beautiful effect.',
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/ring-blue.png',
-    value: 100,
+    baseValue: 100,
     equipSlot: [EquipSlot.Accessory1],
     rarity: RarityType.Normal
+  },
+  {
+    id: 'ring-sparks',
+    name: 'Ring of Sparks',
+    description: 'A faint spark dances within the gem.',
+    type: ItemType.Accessory,
+    icon: 'assets/items/accessories/ring-sparks.png',
+    baseValue: 120,
+    rarity: RarityType.Rare,
+    subtype: 'ring',
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
+    effects: [{ stat: 'mp', value: 5 }, { stat: 'atk', value: 1 }],
   },
   {
     id: 'tab-epic',
@@ -124,7 +167,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'A tablet from ancient times. It certainly served a deity at one time...',
     type: ItemType.Accessory,
     icon: 'assets/items/weapons-melee/dagger-damaged.png',
-    value: 500,
+    baseValue: 500,
     equipSlot: [EquipSlot.Accessory1],
     rarity: RarityType.Epic
   },
@@ -135,7 +178,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'Light armor, offers minimal protection but keeps mobility.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/armor-leather.png',
-    value: 120,
+    baseValue: 120,
     equipSlot: [EquipSlot.Torso],
     rarity: RarityType.Normal
   },
@@ -145,7 +188,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'Iron armor, heavy certainly, but perfect for protecting yourself against bad blows!',
     type: ItemType.Armor,
     icon: 'assets/items/armors/armor-iron.png',
-    value: 250,
+    baseValue: 250,
     equipSlot: [EquipSlot.Torso],
     rarity: RarityType.Normal
   },
@@ -155,7 +198,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'Good walking boots can make all the difference.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/boots-travel.png',
-    value: 40,
+    baseValue: 40,
     equipSlot: [EquipSlot.Feet],
     rarity: RarityType.Normal
   },
@@ -165,9 +208,21 @@ export const BASE_ITEMS: Item[] = [
     description: 'Well-made leather gloves. A little too big, but they\'re still comfortable.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/gloves-leather.png',
-    value: 60,
+    baseValue: 60,
     equipSlot: [EquipSlot.Hand1],
     rarity: RarityType.Normal
+  },
+  {
+    id: 'helmet-echo',
+    name: 'Helm of Echoes',
+    description: 'When worn, faint voices murmur warnings before danger strikes.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/helmet-echo.png',
+    baseValue: 140,
+    rarity: RarityType.Rare,
+    subtype: 'helmet',
+    equipSlot: [EquipSlot.Head],
+    effects: [{ stat: 'perception', value: 1 }],
   },
   {
     id: 'helmet-epic',
@@ -175,7 +230,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'A dragon helmet, straight from the ancient forges. It\'s an honor to be able to wear it.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/helmet-epic.png',
-    value: 500,
+    baseValue: 500,
     equipSlot: [EquipSlot.Head],
     rarity: RarityType.Epic
   },
@@ -185,7 +240,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'A finely fitted leather helmet. It doesn\'t obstruct your vision and provides minimal protection.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/helmet-leather.png',
-    value: 70,
+    baseValue: 70,
     equipSlot: [EquipSlot.Head],
     rarity: RarityType.Normal
   },
@@ -195,7 +250,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'A crooked hat, allowing you to avoid being dazzled by the sun when casting a spell.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/hat-magician.png',
-    value: 60,
+    baseValue: 60,
     equipSlot: [EquipSlot.Head],
     rarity: RarityType.Normal
   },
@@ -205,9 +260,33 @@ export const BASE_ITEMS: Item[] = [
     description: 'A simple traveler\'s hat. At least your head won\'t get cold!',
     type: ItemType.Armor,
     icon: 'assets/items/armors/hat-travel.png',
-    value: 30,
+    baseValue: 30,
     equipSlot: [EquipSlot.Head],
     rarity: RarityType.Normal
+  },
+  {
+    id: 'mantle-travel',
+    name: 'Traveler\'s Mantle',
+    description: 'A cloak that always seems clean, no matter the mud.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/mantle-travel.png',
+    baseValue: 150,
+    rarity: RarityType.Rare,
+    subtype: 'robe',
+    equipSlot: [EquipSlot.Torso],
+    effects: [{ stat: 'def', value: 2 }, { stat: 'stamina', value: 5 }],
+  },
+  {
+    id: 'shield-mirror',
+    name: 'Mirror Shield',
+    description: 'Its surface reflects not only faces… but intentions.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/shield-mirror.png',
+    baseValue: 220,
+    rarity: RarityType.Legendary,
+    subtype: 'shield',
+    equipSlot: [EquipSlot.Weapon2],
+    effects: [{ stat: 'def', value: 4 }, { stat: 'reflect', value: 1 }],
   },
   {
     id: 'outfit-common',
@@ -215,7 +294,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'A common everyday tunic.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/outfit-travel.png',
-    value: 20,
+    baseValue: 20,
     equipSlot: [EquipSlot.Torso],
     rarity: RarityType.Normal
   },
@@ -225,7 +304,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'Simple yet comfortable, this outfit can last for years.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/outfit-travel.png',
-    value: 60,
+    baseValue: 60,
     equipSlot: [EquipSlot.Torso],
     rarity: RarityType.Normal
   },
@@ -235,7 +314,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'Long robe and hood, nothing like it to keep your precious ingredients and parchments safe.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/outfit-magician.png',
-    value: 100,
+    baseValue: 100,
     equipSlot: [EquipSlot.Torso],
     rarity: RarityType.Rare
   },
@@ -245,7 +324,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'A priest\'s robe like those seen in churches. Let\'s pray that it brings you luck.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/outfit-priest.png',
-    value: 100,
+    baseValue: 100,
     equipSlot: [EquipSlot.Torso],
     rarity: RarityType.Normal
   },
@@ -255,7 +334,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'A shield of spirits, certainly linked to an element, but we still need to understand what is written there...',
     type: ItemType.Armor,
     icon: 'assets/items/armors/shield-spirit.png',
-    value: 250,
+    baseValue: 250,
     equipSlot: [EquipSlot.Weapon2],
     rarity: RarityType.Rare
   },
@@ -265,7 +344,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'An iron shield, incredibly strong. With this in your hands, no one can touch you!',
     type: ItemType.Armor,
     icon: 'assets/items/armors/shield-epic.png',
-    value: 500,
+    baseValue: 500,
     equipSlot: [EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
@@ -275,7 +354,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'A long, somewhat bulky shield. However, it is very effective against archers or anything else that comes your way.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/shield-epic.png',
-    value: 500,
+    baseValue: 500,
     equipSlot: [EquipSlot.Weapon2],
     rarity: RarityType.Rare
   },
@@ -285,7 +364,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'The decorations engraved on this shield are simply magnificent and incredibly precise.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/shield-runic.png',
-    value: 500,
+    baseValue: 500,
     equipSlot: [EquipSlot.Weapon2],
     rarity: RarityType.Epic
   },
@@ -295,7 +374,7 @@ export const BASE_ITEMS: Item[] = [
     description: 'A small, round shield, light and handy. It can still last for years if taken care of.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/shield-small.png',
-    value: 90,
+    baseValue: 90,
     equipSlot: [EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
@@ -307,7 +386,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Consumable,
     icon: 'assets/items/consumables/ammo-arrows.png',
     stackable: true,
-    value: 2,
+    baseValue: 2,
     rarity: RarityType.Normal
   },
   {
@@ -317,7 +396,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Consumable,
     icon: 'assets/items/consumables/ammo-bolts.png',
     stackable: true,
-    value: 2,
+    baseValue: 2,
     rarity: RarityType.Normal
   },
   {
@@ -327,7 +406,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Consumable,
     icon: 'assets/items/consumables/gold.png',
     stackable: true,
-    value: 1,
+    baseValue: 1,
     rarity: RarityType.Normal
   },
   {
@@ -337,8 +416,8 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Consumable,
     icon: 'assets/items/consumables/potion-heal-small.png',
     stackable: true,
-    value: 20,
-    effect: 'hp:10',
+    baseValue: 20,
+    effects: [{stat: 'hp', value: 10}],
     rarity: RarityType.Normal
   },
   {
@@ -348,8 +427,8 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Consumable,
     icon: 'assets/items/consumables/potion-mana-small.png',
     stackable: true,
-    value: 30,
-    effect: 'mp:10',
+    baseValue: 30,
+    effects: [{stat: 'mp', value: 10}],
     rarity: RarityType.Normal
   },
   {
@@ -358,8 +437,8 @@ export const BASE_ITEMS: Item[] = [
     description: 'A rudimentary invention, still dangerous.',
     type: ItemType.Consumable,
     icon: 'assets/items/consumables/trap-mechanic.png',
-    value: 20,
-    effect: 'dmg:10',
+    baseValue: 20,
+    effects: [{stat: 'dmg', value: 10}],
     rarity: RarityType.Normal
   },
   {
@@ -369,8 +448,8 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Consumable,
     icon: 'assets/items/consumables/travel-ration.png',
     stackable: true,
-    value: 5,
-    effect: 'hp:5',
+    baseValue: 5,
+    effects: [{stat: 'hp', value: 5}],
     rarity: RarityType.Normal
   },
   // RESOURCES
@@ -381,7 +460,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/bones.png',
     stackable: true,
-    value: 10,
+    baseValue: 10,
     rarity: RarityType.Normal
   },
   {
@@ -391,7 +470,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/coal.png',
     stackable: true,
-    value: 10,
+    baseValue: 10,
     rarity: RarityType.Normal
   },
   {
@@ -401,7 +480,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/fibers.png',
     stackable: true,
-    value: 10,
+    baseValue: 10,
     rarity: RarityType.Normal
   },
   {
@@ -411,7 +490,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/herbs.png',
     stackable: true,
-    value: 10,
+    baseValue: 10,
     rarity: RarityType.Normal
   },
   {
@@ -421,7 +500,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/iron.png',
     stackable: true,
-    value: 15,
+    baseValue: 15,
     rarity: RarityType.Normal
   },
   {
@@ -431,7 +510,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/leather.png',
     stackable: true,
-    value: 15,
+    baseValue: 15,
     rarity: RarityType.Normal
   },
   {
@@ -441,7 +520,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/leather.png',
     stackable: true,
-    value: 15,
+    baseValue: 15,
     rarity: RarityType.Normal
   },
   {
@@ -451,7 +530,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/sand.png',
     stackable: true,
-    value: 10,
+    baseValue: 10,
     rarity: RarityType.Normal
   },
   {
@@ -461,7 +540,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/stone.png',
     stackable: true,
-    value: 10,
+    baseValue: 10,
     rarity: RarityType.Normal
   },
   {
@@ -471,7 +550,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/water.png',
     stackable: true,
-    value: 5,
+    baseValue: 5,
     rarity: RarityType.Normal
   },
   {
@@ -481,7 +560,7 @@ export const BASE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/wood.png',
     stackable: true,
-    value: 10,
+    baseValue: 10,
     rarity: RarityType.Normal
   },
   // UTILITY
@@ -491,9 +570,21 @@ export const BASE_ITEMS: Item[] = [
     description: 'A simple iron key, which must certainly open something... but what?',
     type: ItemType.Utility,
     icon: 'assets/items/utility/key-iron.png',
-    value: 10,
-    effect: 'open:simple',
+    baseValue: 10,
+    effects: [{stat: 'open', value: 1}],
     rarity: RarityType.Normal
+  },
+  {
+    id: 'scroll-fading',
+    name: 'Scroll of Fading Light',
+    description: 'Once opened, the letters vanish — but something inside you changes.',
+    type: ItemType.Consumable,
+    icon: 'assets/items/consumables/scroll-fading.png',
+    baseValue: 90,
+    rarity: RarityType.Rare,
+    subtype: 'potion',
+    stackable: false,
+    effects: [{ stat: 'mp', value: 10 }, { stat: 'xp', value: 25 }],
   },
   {
     id: 'tools',
@@ -501,8 +592,8 @@ export const BASE_ITEMS: Item[] = [
     description: 'You should always have some tools on hand. Even in cell, the\'re useful.',
     type: ItemType.Utility,
     icon: 'assets/items/utility/tools.png',
-    effect: 'tool',
-    value: 20,
+    effects: [{stat: 'tool', value: 1}],
+    baseValue: 20,
     rarity: RarityType.Normal
   },
   {
@@ -511,20 +602,33 @@ export const BASE_ITEMS: Item[] = [
     description: 'Provides light in dark areas. And there are dark areas everywhere!',
     type: ItemType.Utility,
     icon: 'assets/items/utility/torch.png',
-    value: 5,
-    effect: 'light',
+    baseValue: 5,
+    effects: [{stat: 'light', value: 1}],
     rarity: RarityType.Normal
   },
   // WEAPON MELEE
+  {
+    id: 'axe-wanderer',
+    name: 'Axe of the Wanderer',
+    description: 'Its edge bears runes of distant tribes — it hums softly when swung.',
+    type: ItemType.WeaponMelee,
+    icon: 'assets/items/weapons-melee/axe-wanderer.png',
+    baseValue: 160,
+    rarity: RarityType.Rare,
+    subtype: 'axe',
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    effects: [{ stat: 'atk', value: 6 }],
+  },
   {
     id: 'axe',
     name: 'Axe',
     description: 'A good axe can always cut something. A discussion or a head.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/axe.png',
-    value: 50,
-    equipSlot: [EquipSlot.Weapon1],
-    effect: 'atk:5',
+    baseValue: 50,
+    subtype: 'axe',
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    effects: [{stat: 'atk', value: 5}],
     rarity: RarityType.Normal
   },
   {
@@ -533,8 +637,8 @@ export const BASE_ITEMS: Item[] = [
     description: 'An ordinary club. Well, it\'s made for hitting, quite simply.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/club.png',
-    value: 30,
-    effect: 'atk:10',
+    baseValue: 30,
+    effects: [{stat: 'atk', value: 3}],
     equipSlot: [EquipSlot.Weapon1],
     rarity: RarityType.Rare
   },
@@ -544,8 +648,8 @@ export const BASE_ITEMS: Item[] = [
     description: 'This ceremonial dagger is way too clean. It\'s suspicious.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/dagger-ceremonial.png',
-    value: 60,
-    effect: 'atk:10',
+    baseValue: 60,
+    effects: [{stat: 'atk', value: 8}],
     equipSlot: [EquipSlot.Weapon1],
     rarity: RarityType.Rare
   },
@@ -555,8 +659,8 @@ export const BASE_ITEMS: Item[] = [
     description: 'An old, dented dagger, but still sharp enough.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/dagger-damaged.png',
-    value: 10,
-    effect: 'atk:1',
+    baseValue: 10,
+    effects: [{stat: 'atk', value: 1}],
     equipSlot: [EquipSlot.Weapon1],
     rarity: RarityType.Normal
   },
@@ -566,8 +670,8 @@ export const BASE_ITEMS: Item[] = [
     description: 'The very presence of this dagger is enough to frighten. In the dark, it would only be seen too late.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/dagger-epic.png',
-    value: 300,
-    effect: 'atk:10',
+    baseValue: 300,
+    effects: [{stat: 'atk', value: 10}],
     equipSlot: [EquipSlot.Weapon1],
     rarity: RarityType.Epic
   },
@@ -577,9 +681,10 @@ export const BASE_ITEMS: Item[] = [
     description: 'A big, heavy hammer. As long as you don\'t hit your fingers with it, everything\'s fine.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/hammer.png',
-    value: 300,
-    effect: 'atk:1',
-    equipSlot: [EquipSlot.Weapon1],
+    baseValue: 300,
+    effects: [{stat: 'atk', value: 8}],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    twoHanded: true,
     rarity: RarityType.Normal
   },
   {
@@ -588,10 +693,24 @@ export const BASE_ITEMS: Item[] = [
     description: 'This hammer looks so imposing and yet it\'s so light. You just have to let yourself be guided.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/hammer-epic.png',
-    value: 300,
-    effect: 'atk:1',
-    equipSlot: [EquipSlot.Weapon1],
+    baseValue: 500,
+    effects: [{stat: 'atk', value: 15}],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    twoHanded: true,
     rarity: RarityType.Epic
+  },
+  {
+    id: 'hammer-soul',
+    name: 'Smith’s Soul Hammer',
+    description: 'It vibrates faintly, as if remembering the blows that forged it.',
+    type: ItemType.WeaponMelee,
+    icon: 'assets/items/weapons-melee/hammer-soul.png',
+    baseValue: 190,
+    rarity: RarityType.Rare,
+    subtype: 'hammer',
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    twoHanded: true,
+    effects: [{ stat: 'atk', value: 10 }, { stat: 'tool', value: 1 }],
   },
   {
     id: 'sword-long',
@@ -599,9 +718,9 @@ export const BASE_ITEMS: Item[] = [
     description: 'This sword requires some training. But once mastered, it wreaks havoc.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/sword-long.png',
-    value: 70,
-    effect: 'atk:5',
-    equipSlot: [EquipSlot.Weapon1],
+    baseValue: 70,
+    effects: [{stat: 'atk', value: 6}],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
   {
@@ -610,10 +729,22 @@ export const BASE_ITEMS: Item[] = [
     description: 'A short sword at your side can always be useful.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/sword-short.png',
-    value: 50,
-    effect: 'atk:3',
-    equipSlot: [EquipSlot.Weapon1],
+    baseValue: 50,
+    effects: [{stat: 'atk', value: 3}],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
+  },
+  {
+    id: 'sword-embers',
+    name: 'Sword of Embers',
+    description: 'A faint orange glow dances along the blade — warm to the touch.',
+    type: ItemType.WeaponMelee,
+    icon: 'assets/items/weapons-melee/sword-embers.png',
+    baseValue: 180,
+    rarity: RarityType.Rare,
+    subtype: 'sword',
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    effects: [{ stat: 'atk', value: 7 }, { stat: 'burn', value: 1 }],
   },
   {
     id: 'saber',
@@ -621,9 +752,9 @@ export const BASE_ITEMS: Item[] = [
     description: 'This is a very sharp saber, we will have to test it to verify that.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/saber.png',
-    value: 40,
-    effect: 'atk:3',
-    equipSlot: [EquipSlot.Weapon1],
+    baseValue: 40,
+    effects: [{ stat: 'atk', value: 3 }],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
   {
@@ -632,9 +763,10 @@ export const BASE_ITEMS: Item[] = [
     description: 'It\'s always a pleasure to be able to impale an enemy. It\'s messy, sure, but enjoyable.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/spear.png',
-    value: 70,
-    effect: 'atk:7',
+    baseValue: 70,
+    effects: [{ stat: 'atk', value: 7 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    twoHanded: true,
     rarity: RarityType.Normal
   },
   {
@@ -643,9 +775,10 @@ export const BASE_ITEMS: Item[] = [
     description: 'Those who know how to handle batons can knock you out faster than you think.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/staff-fighting.png',
-    value: 50,
-    effect: 'atk:5',
+    baseValue: 50,
+    effects: [{ stat: 'atk', value: 5 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    twoHanded: true,
     rarity: RarityType.Normal
   },
   {
@@ -654,9 +787,9 @@ export const BASE_ITEMS: Item[] = [
     description: 'Once the magic is released from this sword, the fight is no longer the same.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/sword-epic.png',
-    value: 50,
-    effect: 'atk:15',
-    equipSlot: [EquipSlot.Weapon1],
+    baseValue: 50,
+    effects: [{ stat: 'atk', value: 15 }],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Epic
   },
   {
@@ -665,9 +798,9 @@ export const BASE_ITEMS: Item[] = [
     description: 'The advantage of these keys is that they are just as useful for beating monsters as they are for repairing things.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/sword-epic.png',
-    value: 50,
-    effect: 'atk:15|tool',
-    equipSlot: [EquipSlot.Weapon1],
+    baseValue: 50,
+    effects: [{ stat: 'atk', value: 15 }, { stat: 'tool', value: 2}],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
   // WEAPON RANGE
@@ -677,9 +810,22 @@ export const BASE_ITEMS: Item[] = [
     description: 'A short bow. Simple but effective for those who know how to handle it.',
     type: ItemType.WeaponRange,
     icon: 'assets/items/weapons-range/bow-short.png',
-    value: 50,
+    baseValue: 50,
+    subtype: 'bow',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
-  
+  {
+    id: 'bow-whisper',
+    name: 'Bow of Whispering Winds',
+    description: 'The bowstring sings with the sound of wind when drawn.',
+    type: ItemType.WeaponRange,
+    icon: 'assets/items/weapons-range/bow-whisper.png',
+    baseValue: 200,
+    rarity: RarityType.Rare,
+    subtype: 'bow',
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    twoHanded: true,
+    effects: [{ stat: 'atk', value: 4 }, { stat: 'crit', value: 5 }],
+  },
 ];
