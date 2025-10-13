@@ -1,0 +1,52 @@
+<div class="inventory-panel">
+  <!-- === INVENTAIRE JOUEUR === -->
+  <section class="inventory-section">
+    <div class="section-header">
+      <h2>🎒 Your Inventory</h2>
+      <button class="expand-btn" (click)="expandInventory()">+ Expand</button>
+    </div>
+
+    <div class="inventory-grid">
+      @for (index of slotIndexes; track trackByIndex(index, $index)) {
+        <div class="slot" [class.filled]="getItemAt(index)">
+          @if (getItemAt(index)) {
+            <img
+              [src]="getItemAt(index)!.icon"
+              [alt]="getItemAt(index)!.name"
+            />
+            <div class="slot-actions">
+              <button (click)="useItem(getItemAt(index)!)">Use</button>
+              <button (click)="dropItem(getItemAt(index)!)">Drop</button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- === OBJETS AU SOL === -->
+  <section class="loot-section">
+    <div class="section-header">
+      <h2>🪙 Items on the Ground</h2>
+    </div>
+
+    @if (groundItems.length > 0) {
+      <div class="loot-grid">
+        @for (g of groundItems; track g.id) {
+          <div class="loot-item">
+            <img [src]="g.item.icon" [alt]="g.item.name" />
+            <div class="loot-info">
+              <div>{{ g.item.name }}</div>
+              <div class="loot-source">from {{ g.source }}</div>
+              <button (click)="takeItem(g)">Take</button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="empty">Nothing on the ground here.</p>
+    }
+  </section>
+  
+</div>
+  

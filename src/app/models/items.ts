@@ -38,6 +38,7 @@ export interface Item {
   icon: string;            // path to the asset
   rarity: RarityType;      // defines the rarity of an item and the chances of finding it   
   stackable?: boolean;     // true if multiple can stack
+  count?: number;          // count of items
   effect?: string;         // optional text effect (heal, +stats…)
   equipSlot?: EquipSlot[]; // optional for equipment
 }
@@ -299,6 +300,26 @@ export const BASE_ITEMS: Item[] = [
     rarity: RarityType.Normal
   },
   // CONSUMABLES
+  {
+    id: 'ammo-arrows',
+    name: 'Arrows',
+    description: 'Having a bow is good! With arrows it\'s even better.',
+    type: ItemType.Consumable,
+    icon: 'assets/items/consumables/ammo-arrows.png',
+    stackable: true,
+    value: 2,
+    rarity: RarityType.Normal
+  },
+  {
+    id: 'ammo-bolts',
+    name: 'Bolts',
+    description: 'These crossbow bolts whistle when fired.',
+    type: ItemType.Consumable,
+    icon: 'assets/items/consumables/ammo-bolts.png',
+    stackable: true,
+    value: 2,
+    rarity: RarityType.Normal
+  },
   {
     id: 'gold',
     name: 'Gold',
@@ -660,4 +681,5 @@ export const BASE_ITEMS: Item[] = [
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
+  
 ];

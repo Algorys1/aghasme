@@ -15,13 +15,14 @@ import {ActionType} from '../models/actions';
 import {ActionService} from '../services/action.service';
 import { CombatService } from '../services/combat.service';
 import { CombatComponent } from '../combat/combat.component';
+import { InventoryPanelComponent } from '../inventory-panel.component/inventory-panel.component';
 
 @Component({
   selector: 'app-game',
   standalone: true,
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
-  imports: [MinimapComponent, OverlayWindowComponent, CombatComponent]
+  imports: [MinimapComponent, OverlayWindowComponent, CombatComponent, InventoryPanelComponent]
 })
 export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -33,6 +34,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   activeOverlay: OverlayInstance | null = null;
   showCombat = false;
+  showInventoryPanel = false;
   isTransitioning = false;
 
   private subs: Subscription[] = [];
@@ -189,7 +191,15 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // === HUD buttons ===
   openMap() { this.showMap = !this.showMap; }
-  openBackpack() { console.log('Open Backpack'); }
+  openBackpack() {
+    this.showInventoryPanel = true;
+  }
+  
+  closeInventoryPanel() {
+    console.log('❌ Closing inventory panel');
+    this.showInventoryPanel = false;
+  }
+  
   openQuests() { console.log('Open Quests'); }
   openSkills() { console.log('Open Skills'); }
 

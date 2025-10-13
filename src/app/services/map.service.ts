@@ -362,4 +362,7 @@ export class MapService {
     };
   }
 
+  public getPlayerPosition(): {q:number, r:number} {
+    return this.playerPos;
+  }
 }

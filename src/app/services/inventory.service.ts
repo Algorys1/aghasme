@@ -117,4 +117,8 @@ export class InventoryService {
     this.cols = cols;
     this.sizeSubject.next({ rows: this.rows, cols: this.cols });
   }
+
+  refresh(): void {
+    this.itemsSubject.next(this.getItems());
+  }
 }

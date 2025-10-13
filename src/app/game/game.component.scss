@@ -392,3 +392,35 @@
     transform: translateY(0) scale(1);
   }
 }
+
+.inventory-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+}
+
+.inventory-wrapper {
+  position: relative;
+  width: 95%;
+  max-width: 900px;
+  background: #fffaf0;
+  border: 3px solid #6e4a20;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  padding: 12px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #5a3a1b;
+}

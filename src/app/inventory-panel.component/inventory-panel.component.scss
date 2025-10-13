@@ -1,0 +1,150 @@
+.inventory-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+  color: #2b1b0f;
+  background: linear-gradient(180deg, #f8e4b5 0%, #e5c78a 100%);
+  border: 3px solid #6e4a20;
+  border-radius: 12px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: 'Cinzel', serif;
+}
+
+/* === SECTIONS === */
+.inventory-section,
+.loot-section {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #6e4a20;
+  margin-bottom: 10px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .expand-btn {
+    background: #d8b46a;
+    border: 1px solid #5a3a1b;
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #2b1b0f;
+
+    &:hover {
+      background: #e4c273;
+    }
+  }
+}
+
+/* === GRILLES === */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
+}
+
+.slot {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background: #f9f2d0;
+  border: 2px solid #6e4a20;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  &.filled {
+    background: #f4d89c;
+  }
+
+  img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .slot-actions {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover .slot-actions {
+    opacity: 1;
+  }
+
+  button {
+    background: #d8b46a;
+    border: 1px solid #5a3a1b;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    cursor: pointer;
+  }
+}
+
+/* === LOOT === */
+.loot-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.loot-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fffbe8;
+  padding: 6px;
+  border: 1px solid #6e4a20;
+  border-radius: 6px;
+
+  img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .loot-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    font-size: 0.9rem;
+
+    .loot-source {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+
+    button {
+      align-self: flex-end;
+      background: #d8b46a;
+      border: 1px solid #5a3a1b;
+      border-radius: 4px;
+      padding: 2px 6px;
+      cursor: pointer;
+    }
+  }
+}
+
+.empty {
+  text-align: center;
+  font-style: italic;
+  color: #5a3a1b;
+}
