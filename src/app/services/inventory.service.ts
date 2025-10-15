@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { Item, ItemType } from '../models/items';
+import { EquipSlot, Item, ItemType } from '../models/items';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +13,19 @@ export class InventoryService {
 
   private itemsSubject = new BehaviorSubject<(Item & { count: number })[]>([]);
   public items$ = this.itemsSubject.asObservable();
+  
+  private equippedItemsSubject = new BehaviorSubject<Record<EquipSlot, Item | null>>({
+    [EquipSlot.Head]: null,
+    [EquipSlot.Torso]: null,
+    [EquipSlot.Hand1]: null,
+    [EquipSlot.Hand2]: null,
+    [EquipSlot.Feet]: null,
+    [EquipSlot.Accessory1]: null,
+    [EquipSlot.Accessory2]: null,
+    [EquipSlot.Weapon1]: null,
+    [EquipSlot.Weapon2]: null,
+  });
+  equipped$ = this.equippedItemsSubject.asObservable();
 
   private sizeSubject = new BehaviorSubject<{ rows: number; cols: number }>({
     rows: this.rows,
@@ -106,6 +119,32 @@ export class InventoryService {
     this.items = [];
     this.itemsSubject.next([]);
   }
+
+  equipItem(item: Item) {
+    if (!item.equipSlot) return;
+    const current = this.equippedItemsSubject.value;
+  
+    // On prend le premier slot libre compatible
+    for (const slot of item.equipSlot) {
+      if (!current[slot]) {
+        current[slot] = item;
+        this.equippedItemsSubject.next({ ...current });
+        this.removeItem(item.id);
+        return `Equipped ${item.name}`;
+      }
+    }
+    return `No available slot for ${item.name}`;
+  }
+  
+  unequipItem(slot: EquipSlot) {
+    const current = this.equippedItemsSubject.value;
+    const item = current[slot];
+    if (item) {
+      this.addItem(item);
+      current[slot] = null;
+      this.equippedItemsSubject.next({ ...current });
+    }
+  }  
 
   expandInventory(): void {
     this.rows += 1;

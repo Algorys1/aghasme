@@ -118,14 +118,22 @@
   @if (showCombat) {
     <app-combat (closed)="onCombatClosed()"></app-combat>
   }
+
   @if (showInventoryPanel) {
     <div class="inventory-overlay">
       <div class="inventory-wrapper">
-        <button class="close-btn" (click)="closeInventoryPanel()">✖</button>
+        <div class="inventory-header">
+          <div class="inventory-title">Inventory / Character</div>
+          <button class="close-btn" (click)="closeInventoryPanel()">✕</button>
+        </div>
+  
+        <hr class="inventory-separator" />
+  
         <app-inventory-panel></app-inventory-panel>
       </div>
     </div>
   }
+  
   
   
 </div>

@@ -396,7 +396,7 @@
 .inventory-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -406,21 +406,41 @@
 .inventory-wrapper {
   position: relative;
   width: 95%;
-  max-width: 900px;
-  background: #fffaf0;
-  border: 3px solid #6e4a20;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-  padding: 12px;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.inventory-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.inventory-title {
+  font-size: 1.6rem;
+  color: #f8e4b5;
 }
 
 .close-btn {
-  position: absolute;
-  top: 6px;
-  right: 10px;
-  font-size: 1.2rem;
-  background: none;
+  background: transparent;
+  color: #f8e4b5;
+  font-size: 1.6rem;
   border: none;
   cursor: pointer;
-  color: #5a3a1b;
+  text-shadow: 0 0 6px #000;
+
+  &:hover {
+    color: #fff;
+    transform: scale(1.1);
+  }
+}
+
+.inventory-separator {
+  width: 100%;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  margin-bottom: 8px;
 }

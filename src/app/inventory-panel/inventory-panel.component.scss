@@ -1,150 +1,303 @@
-.inventory-panel {
+.inventory-mobile {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 16px;
-  color: #2b1b0f;
-  background: linear-gradient(180deg, #f8e4b5 0%, #e5c78a 100%);
-  border: 3px solid #6e4a20;
-  border-radius: 12px;
-  max-width: 900px;
-  margin: 0 auto;
+  gap: 12px;
+  width: 90vw;
+  height: 85vh;
+  padding: 12px;
+  background: #f6ebc8;
+  overflow-y: auto;
+  border-radius: 8px;
   font-family: 'Cinzel', serif;
 }
 
-/* === SECTIONS === */
-.inventory-section,
-.loot-section {
-  background: rgba(255, 255, 255, 0.4);
-  padding: 12px;
-  border-radius: 8px;
-}
-
-.section-header {
+/* === ÉQUIPEMENT === */
+.equipment-section {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid #6e4a20;
-  margin-bottom: 10px;
+  flex-direction: row; /* ⬅️ Equipements à gauche, stats à droite */
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
 
-  h2 {
-    margin: 0;
-    font-size: 1.2rem;
+  /* Grille des équipements */
+  .equip-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+
+    .equip-slot {
+      width: 50px;  /* ⬅️ plus petit qu’avant (70 → 60) */
+      height: 50px;
+      background: #e3d2a3;
+      border: 2px solid #6e4a20;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.7rem;
+      color: #5a3a1b;
+
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+    }
   }
 
-  .expand-btn {
-    background: #d8b46a;
-    border: 1px solid #5a3a1b;
-    border-radius: 6px;
-    padding: 4px 8px;
-    cursor: pointer;
-    font-weight: bold;
+  /* Stats du joueur */
+  .player-stats-grid {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px 14px;
+    flex-shrink: 0; /* évite que ça se tasse */
+    width: 85px; /* largeur fixe raisonnable */
     color: #2b1b0f;
+    font-size: 0.8rem;
 
-    &:hover {
-      background: #e4c273;
+    .char-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .stats-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .char-stat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 6px;
+      padding: 3px 6px;
+      gap: 6px;
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+
+      span {
+        flex: 1;
+        text-align: right;
+        font-weight: 500;
+      }
     }
   }
 }
 
-/* === GRILLES === */
+/* === INVENTAIRE === */
 .inventory-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
+  max-height: calc((52px + 8px) * 3);
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+.inventory-grid::-webkit-scrollbar {
+  width: 6px;
+}
+.inventory-grid::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.inventory-grid::-webkit-scrollbar-thumb {
+  background: #8b6b39;
+  border-radius: 10px;
 }
 
-.slot {
+.inventory-slot {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   background: #f9f2d0;
   border: 2px solid #6e4a20;
-  border-radius: 6px;
+  border-radius: 8px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  overflow: hidden;
+  align-items: center;
+  transition: all 0.15s ease;
 
-  &.filled {
-    background: #f4d89c;
+  &.common {
+    border-color: #a0a0a0;
+    box-shadow: 0 0 6px rgba(160, 160, 160, 0.4);
+  }
+
+  &.rare {
+    border-color: #3b6eff;
+    box-shadow: 0 0 8px rgba(59, 110, 255, 0.5);
+  }
+
+  &.epic {
+    border-color: #a445ff;
+    box-shadow: 0 0 10px rgba(164, 69, 255, 0.6);
+  }
+
+  &.legendary {
+    border-color: #ffb732;
+    box-shadow: 0 0 12px rgba(255, 183, 50, 0.6);
+  }
+
+  &.artefact {
+    border-image: linear-gradient(45deg, #5b0000, #ff1e00, #000) 1;
+    box-shadow: 0 0 12px rgba(255, 60, 60, 0.6);
+    animation: artefactPulse 2s infinite alternate;
+  }
+
+  @keyframes artefactPulse {
+    0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); }
+    100% { box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); }
+  }
+
+  &.selected {
+    border-color: #c0863c;
+    box-shadow: 0 0 8px #c0863c;
+    transform: scale(1.05);
   }
 
   img {
-    width: 64px;
-    height: 64px;
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
   }
 
-  .slot-actions {
+  .stack-count {
     position: absolute;
-    bottom: 2px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-around;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  &:hover .slot-actions {
-    opacity: 1;
-  }
-
-  button {
-    background: #d8b46a;
-    border: 1px solid #5a3a1b;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    padding: 2px 6px;
-    cursor: pointer;
+    bottom: 4px;
+    right: 6px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #2b1b0f;
   }
 }
 
-/* === LOOT === */
-.loot-grid {
+/* === DESCRIPTION & ACTIONS === */
+.item-description {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.85rem;
+  color: #2b1b0f;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
+  gap: 4px;
 
-.loot-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #fffbe8;
-  padding: 6px;
-  border: 1px solid #6e4a20;
-  border-radius: 6px;
-
-  img {
-    width: 40px;
-    height: 40px;
-  }
-
-  .loot-info {
+  .item-header {
     display: flex;
-    flex-direction: column;
-    flex: 1;
-    font-size: 0.9rem;
+    justify-content: space-between;
+    align-items: center;
 
-    .loot-source {
-      font-size: 0.75rem;
-      opacity: 0.7;
+    h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: bold;
     }
 
-    button {
-      align-self: flex-end;
-      background: #d8b46a;
-      border: 1px solid #5a3a1b;
-      border-radius: 4px;
-      padding: 2px 6px;
-      cursor: pointer;
+    .rarity-label {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    /* Couleurs par rareté */
+    .common { color: #3b3b3b; }
+    .uncommon { color: #228b22; }
+    .rare { color: #4169e1; }
+    .epic { color: #9932cc; }
+    .legendary { color: #ff8c00; }
+  }
+
+  .item-text {
+    margin-top: 4px;
+    opacity: 0.9;
+  }
+
+  .item-effects {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0;
+    li {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+      font-size: 0.8rem;
+    }
+    .effect-stat {
+      text-transform: uppercase;
+    }
+    .effect-value {
+      font-weight: bold;
+    }
+  }
+
+  .item-value {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    font-weight: bold;
+    img {
+      width: 14px;
+      height: 14px;
     }
   }
 }
 
-.empty {
-  text-align: center;
-  font-style: italic;
-  color: #5a3a1b;
+.item-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+
+  .action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.15s ease, filter 0.2s ease;
+    width: 50px;
+    height: 50px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    &:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+
+    &:active {
+      transform: scale(0.95);
+      filter: brightness(0.9);
+    }
+  }
+}
+
+@media (min-width: 700px) {
+  .equipment-section {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+
+  .player-stats {
+    flex: 0 0 160px;
+    align-self: stretch;
+  }
 }

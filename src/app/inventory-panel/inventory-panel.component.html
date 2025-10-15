@@ -1,52 +1,150 @@
-<div class="inventory-panel">
-  <!-- === INVENTAIRE JOUEUR === -->
-  <section class="inventory-section">
-    <div class="section-header">
-      <h2>🎒 Your Inventory</h2>
-      <button class="expand-btn" (click)="expandInventory()">+ Expand</button>
+<div class="inventory-mobile">
+  <!-- === EQUIPMENT + STATS === -->
+  <section class="equipment-section">
+    <!-- === Stats === -->
+    <div class="player-stats-grid" *ngIf="character">
+      <div class="char-header">
+        <strong>{{ character.name }}</strong>
+        <span class="char-level">Lv {{ character.level }}</span>
+      </div>
+  
+      <div class="stats-grid">
+        <div class="char-stat">
+          <img src="assets/ui/hp.png" alt="HP" />
+          <span>{{ character.hp }} / {{ character.maxHp }}</span>
+        </div>
+  
+        <div class="char-stat">
+          <img src="assets/ui/mana.png" alt="MP" />
+          <span>{{ character.mp }} / {{ character.maxMp }}</span>
+        </div>
+  
+        <div class="char-stat">
+          <img src="assets/ui/attack.png" alt="ATK" />
+          <span>{{ character.attack }}</span>
+        </div>
+  
+        <div class="char-stat">
+          <img src="assets/ui/defense.png" alt="DEF" />
+          <span>{{ character.defense }}</span>
+        </div>
+  
+        <div class="char-stat">
+          <img src="assets/ui/xp.png" alt="XP" />
+          <span>{{ character.xp }}</span>
+        </div>
+  
+        <div class="char-stat">
+          <img src="assets/ui/gold.png" alt="Gold" />
+          <span>{{ character.gold }}</span>
+        </div>
+      </div>
     </div>
-
-    <div class="inventory-grid">
-      @for (index of slotIndexes; track trackByIndex(index, $index)) {
-        <div class="slot" [class.filled]="getItemAt(index)">
-          @if (getItemAt(index)) {
+  
+    <!-- === ÉQUIPEMENT === -->
+    <div class="equip-grid">
+      @for (slot of equipSlots; track $index) {
+        <div class="equip-slot">
+          @if (equipped[slot]) {
             <img
-              [src]="getItemAt(index)!.icon"
-              [alt]="getItemAt(index)!.name"
+              [src]="equipped[slot]!.icon"
+              [alt]="equipped[slot]!.name"
+              (click)="unequip(slot)"
             />
-            <div class="slot-actions">
-              <button (click)="useItem(getItemAt(index)!)">Use</button>
-              <button (click)="dropItem(getItemAt(index)!)">Drop</button>
-            </div>
+          } @else {
+            <div class="slot-name">{{ slot }}</div>
           }
         </div>
       }
     </div>
-  </section>
+  </section>  
 
-  <!-- === OBJETS AU SOL === -->
-  <section class="loot-section">
-    <div class="section-header">
-      <h2>🪙 Items on the Ground</h2>
-    </div>
-
-    @if (groundItems.length > 0) {
-      <div class="loot-grid">
-        @for (g of groundItems; track g.id) {
-          <div class="loot-item">
-            <img [src]="g.item.icon" [alt]="g.item.name" />
-            <div class="loot-info">
-              <div>{{ g.item.name }}</div>
-              <div class="loot-source">from {{ g.source }}</div>
-              <button (click)="takeItem(g)">Take</button>
-            </div>
-          </div>
+  <!-- === INVENTAIRE DU JOUEUR === -->
+  <section class="inventory-grid">
+    @for (item of items; track item.id + '-' + $index) {
+      <div
+        class="inventory-slot"
+        [class.selected]="selectedItem?.id === item.id"
+        [ngClass]="item.rarity.toLowerCase()"
+        (click)="selectItem(item)"
+      >
+        <img [src]="item.icon" [alt]="item.name" />
+        @if (item.count && item.count > 1) {
+          <div class="stack-count">x{{ item.count }}</div>
         }
       </div>
-    } @else {
-      <p class="empty">Nothing on the ground here.</p>
     }
   </section>
-  
+
+  <!-- === DESCRIPTION + ACTIONS === -->
+  @if (selectedItem) {
+    <section class="item-description" *ngIf="selectedItem">
+      <div class="item-header">
+        <h3 [ngClass]="selectedItem.rarity.toLowerCase()">
+          {{ selectedItem.name }}
+        </h3>
+        <span class="rarity-label">{{ selectedItem.rarity }}</span>
+      </div>
+    
+      <p class="item-text">{{ selectedItem.description }}</p>
+    
+      @if (selectedItem.effects?.length) {
+        <ul class="item-effects">
+          @for (eff of selectedItem.effects; track eff.stat + '-' + eff.value) {
+            <li>
+              <span class="effect-stat">{{ eff.stat | uppercase }}</span>
+              <span class="effect-value"
+                >{{ eff.value > 0 ? '+' : '' }}{{ eff.value
+                }}{{ eff.type === 'percent' ? '%' : '' }}</span
+              >
+            </li>
+          }
+        </ul>
+      }
+    
+      <div class="item-value">
+        <img src="assets/ui/gold.png" alt="Gold" />
+        <span>{{ selectedItem.computedValue ?? selectedItem.baseValue }}</span>
+      </div>
+    </section>
+    
+
+    <section class="item-actions">
+      @if (selectedItem) {
+        <button
+          class="action-btn"
+          title="Use"
+          (click)="useItem()"
+        >
+          <img src="assets/ui/action-use.png" alt="Use" />
+        </button>
+    
+        @if (selectedItem.equipSlot?.length) {
+          <button
+            class="action-btn"
+            title="Equip"
+            (click)="inventory.equipItem(selectedItem)"
+          >
+            <img src="assets/ui/action-equip.png" alt="Equip" />
+          </button>
+        }
+    
+        <button
+          class="action-btn"
+          title="Throw"
+          (click)="inventory.removeItem(selectedItem!.id)"
+        >
+          <img src="assets/ui/action-throw.png" alt="Throw" />
+        </button>
+    
+        <button
+          class="action-btn"
+          title="Delete"
+          (click)="clearSelection()"
+        >
+          <img src="assets/ui/action-delete.png" alt="Delete" />
+        </button>
+      }
+    </section>     
+  }
 </div>
-  

@@ -15,7 +15,7 @@ import {ActionType} from '../models/actions';
 import {ActionService} from '../services/action.service';
 import { CombatService } from '../services/combat.service';
 import { CombatComponent } from '../combat/combat.component';
-import { InventoryPanelComponent } from '../inventory-panel.component/inventory-panel.component';
+import { InventoryPanelComponent } from '../inventory-panel/inventory-panel.component';
 
 @Component({
   selector: 'app-game',
@@ -199,7 +199,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('❌ Closing inventory panel');
     this.showInventoryPanel = false;
   }
-  
+
   openQuests() { console.log('Open Quests'); }
   openSkills() { console.log('Open Skills'); }
 

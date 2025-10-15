@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { EquipSlot, Item } from '../models/items';
 import { InventoryService } from '../services/inventory.service';
-import { LootService, GroundItem } from '../services/loot.service';
-import { BASE_ITEMS, Item } from '../models/items';
+import { Character } from '../models/character.model';
+import { CharacterService } from '../services/character.service';
+import { BASE_ITEMS } from '../factories/item-tables';
 
 @Component({
   selector: 'app-inventory-panel',
@@ -12,84 +13,70 @@ import { BASE_ITEMS, Item } from '../models/items';
   templateUrl: './inventory-panel.component.html',
   styleUrls: ['./inventory-panel.component.scss'],
 })
-export class InventoryPanelComponent implements OnInit, OnDestroy {
-  // === Données ===
-  playerItems: (Item & { count: number })[] = [];
-  groundItems: GroundItem[] = [];
+export class InventoryPanelComponent {
+  equipSlots = Object.values(EquipSlot);
+  equipped: Record<EquipSlot, Item | null> = {} as any;
 
-  rows = 2;
-  cols = 4;
+  items: (Item & { count?: number })[] = [];
+  selectedItem: Item | null = null;
 
-  private subs: Subscription[] = [];
+  character: Character | null = null;
 
   constructor(
-    private inventory: InventoryService,
-    private loot: LootService
+    public inventory: InventoryService,
+    private characterService: CharacterService
   ) {}
 
   ngOnInit(): void {
-    // 🔹 Inventaire joueur
-    this.subs.push(
-      this.inventory.items$.subscribe(items => (this.playerItems = items))
-    );
+    this.inventory.items$.subscribe(items => (this.items = items));
+    this.inventory.equipped$.subscribe(eq => (this.equipped = eq));
 
-    // 🔹 Taille grille
-    this.subs.push(
-      this.inventory.size$.subscribe(size => {
-        this.rows = size.rows;
-        this.cols = size.cols;
-      })
-    );
+    this.character = this.characterService.getCharacter();
 
-    // 🔹 Loot au sol
-    this.subs.push(
-      this.loot.ground$.subscribe(loots => (this.groundItems = loots))
-    );
-
+    // TODO for test purpose
+    this.inventory.expandInventory();
+    this.inventory.expandInventory();
+    this.inventory.addItem(BASE_ITEMS[8]);
+    this.inventory.addItem(BASE_ITEMS[9]);
     this.inventory.addItem(BASE_ITEMS[10]);
-    this.inventory.addItem(BASE_ITEMS[25]);
-    this.inventory.addItem(BASE_ITEMS[25]);
-    this.inventory.addItem(BASE_ITEMS[56]);
+    this.inventory.addItem(BASE_ITEMS[12]);
+    this.inventory.addItem(BASE_ITEMS[26]);
+    this.inventory.addItem(BASE_ITEMS[33]);
+    this.inventory.addItem(BASE_ITEMS[33]);
+    this.inventory.addItem(BASE_ITEMS[35]);
+    this.inventory.addItem(BASE_ITEMS[60]);
+    this.inventory.addItem(BASE_ITEMS[63]);
+    this.inventory.addItem(BASE_ITEMS[58]);
+    this.inventory.addItem(BASE_ITEMS[40]);
+    this.inventory.addItem(BASE_ITEMS[42]);
+    this.inventory.addItem(BASE_ITEMS[42]);
+    this.inventory.addItem(BASE_ITEMS[42]);
+    this.inventory.addItem(BASE_ITEMS[42]);
+    this.inventory.addItem(BASE_ITEMS[8]);
+    this.inventory.addItem(BASE_ITEMS[9]);
+    this.inventory.addItem(BASE_ITEMS[10]);
+    this.inventory.addItem(BASE_ITEMS[12]);
+    this.inventory.addItem(BASE_ITEMS[26]);
+    this.inventory.addItem(BASE_ITEMS[33]);
+    this.inventory.addItem(BASE_ITEMS[33]);
+    this.inventory.addItem(BASE_ITEMS[35]);
   }
 
-  ngOnDestroy(): void {
-    this.subs.forEach(s => s.unsubscribe());
+  selectItem(item: any) {
+    this.selectedItem = item;
   }
 
-  // === INVENTAIRE JOUEUR ===
-  get slotIndexes(): number[] {
-    return Array.from({ length: this.rows * this.cols }, (_, i) => i);
-  }
-  trackByIndex(_value: number, index: number): number {
-    return index;
+  clearSelection() {
+    this.selectedItem = null;
   }
 
-  getItemAt(index: number): (Item & { count: number }) | null {
-    return this.playerItems[index] || null;
-  }
-
-  useItem(item: Item) {
-    const result = this.inventory.useItem(item.id);
+  useItem() {
+    if (!this.selectedItem) return;
+    const result = this.inventory.useItem(this.selectedItem.id);
     if (result) alert(result);
   }
 
-  dropItem(item: Item) {
-    console.log('📦 Dropping item:', item.name);
-    this.inventory.removeItem(item.id);
-    this.loot.dropItem(item, { q: 0, r: 0 }, 'player'); // TODO: remplacer coords par MapService
-  }
-
-  expandInventory() {
-    this.inventory.expandInventory();
-  }
-
-  // === LOOT AU SOL ===
-  takeItem(ground: GroundItem) {
-    const added = this.inventory.addItem(ground.item);
-    if (added) {
-      this.loot.pickupItem(ground.id);
-    } else {
-      alert('Inventory full!');
-    }
+  unequip(slot: EquipSlot) {
+    this.inventory.unequipItem(slot);
   }
 }
