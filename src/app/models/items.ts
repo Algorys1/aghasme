@@ -1,3 +1,5 @@
+import { Effect } from "./effect.model";
+
 export enum ItemType {
   Accessory = 'Accessory',
   Armor = 'Armor',
@@ -43,7 +45,7 @@ export interface Item {
   subtype?: ItemSubtype;
   equipSlot?: EquipSlot[];
   twoHanded?: boolean;
-  effects: ItemEffect[];
+  effects: Effect[];
   instanceId?: string,
 }
 

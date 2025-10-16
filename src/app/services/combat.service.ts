@@ -19,7 +19,6 @@ export class CombatService {
 
   constructor(private playerService: PlayerService) {}
 
-  // === FIGHT INITIALIZATION ==========================================
   startCombat(enemy: Enemy): void {
     this.enemy = enemy;
     this.inCombat = true;
@@ -30,7 +29,6 @@ export class CombatService {
   isInCombat(): boolean { return this.inCombat; }
   getLastResult(): CombatResult | null { return this.lastResult; }
 
-  // === ATTACK COMPUTING ================================================
   playerAttack(): number {
     const player = this.playerService.getCharacter();
     if (!player || !this.enemy) return 0;
@@ -58,12 +56,29 @@ export class CombatService {
   }
 
   private computeDamage(attack: number, defense: number): number {
-    const base = attack - defense / 2;
-    const variance = Math.random() * 4 - 2; // +/- 2
-    return Math.max(1, Math.round(base + variance));
-  }
+    const roll = this.rollD20();
+  
+    if (roll === 1) { 
+      console.log('💀 Critical failure!');
+      return 0; 
+    }
+    if (roll === 20) { 
+      console.log('🔥 Critical hit!');
+      return Math.max(1, (attack * 1.5) - defense);
+    }    
+    if (roll > attack) {
+      console.log(`❌ Attack failed (roll ${roll} > attack ${attack})`);
+      return 0;
+    }
+  
+    const baseDamage = Math.max(1, attack - defense);
+    const variance = Math.random() * 2 - 1;
+    const final = Math.max(1, Math.round(baseDamage + variance));
+  
+    console.log(`🎯 Hit! Roll ${roll} <= attack ${attack}, damage ${final}`);
+    return final;
+  }  
 
-  // === END OF FIGHT =====================================================
   private finish(winner: 'player' | 'enemy') {
     const player = this.playerService.getCharacter();
     if (!player || !this.enemy) return;
@@ -82,6 +97,10 @@ export class CombatService {
 
     this.enemy = null;
   }
+
+  private rollD20(): number {
+    return Math.floor(Math.random() * 20) + 1;
+  }  
 
   reset(): void {
     this.inCombat = false;

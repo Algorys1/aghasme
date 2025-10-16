@@ -4,6 +4,8 @@ import { EquipSlot, Item, ItemType } from '../models/items';
 import { CharacterService } from './character.service';
 import { LootService } from './loot.service';
 import { MapService } from './map.service';
+import { Effect } from '../models/effect.model';
+import { applyEffectsToEntity, resolveCharacterStats } from '../utils/effect-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -140,71 +142,90 @@ export class InventoryService {
 
   equipItem(item: Item) {
     if (!item.equipSlot) return;
-    const current = this.equippedItemsSubject.value;
+    const current = { ...this.equippedItemsSubject.value };
   
+    // on tente de placer l’objet dans le premier slot disponible
+    let equipped = false;
     for (const slot of item.equipSlot) {
       if (!current[slot]) {
         current[slot] = item;
-        this.equippedItemsSubject.next({ ...current });
-        this.removeItem(item.id);
-        this.applyItemEffects();
-        return `Equipped ${item.name}`;
+        equipped = true;
+        break;
       }
     }
-    return `No available slot for ${item.name}`;
-  }  
+  
+    if (!equipped) {
+      this.errorSubject.next(`No available slot for ${item.name}`);
+      return;
+    }
+  
+    // mise à jour propre de l’état
+    this.equippedItemsSubject.next(current);
+    this.removeItem(item.id);
+  
+    // recalcul complet des stats
+    this.recalculateCharacterStats();
+  
+    return `Equipped ${item.name}`;
+  }
   
   unequipItem(slot: EquipSlot) {
-    const current = this.equippedItemsSubject.value;
+    const current = { ...this.equippedItemsSubject.value };
     const item = current[slot];
-    if (item) {
-      this.addItem(item);
-      this.removeItemEffects();
-      current[slot] = null;
-      this.equippedItemsSubject.next({ ...current });
-    }
-  }
+    if (!item) return;
   
-  private applyItemEffects(): void {
-    this.recalculateCharacterStats();
-  }
+    // on retire du slot, puis on le remet dans l’inventaire
+    current[slot] = null;
+    this.equippedItemsSubject.next(current);
+    this.addItem(item);
   
-  private removeItemEffects(): void {
+    // recalcul complet après la mise à jour
     this.recalculateCharacterStats();
-  }  
+  
+    return `Unequipped ${item.name}`;
+  }
 
   recalculateCharacterStats() {
     const char = this.characterService.getCharacter();
-    const equipped = this.equippedItemsSubject.value;
     if (!char || !char.baseStats) return;
   
-    // Reset to base stats  
-    char.attack = char.baseStats.attack;
-    char.defense = char.baseStats.defense;
-    char.maxHp = char.baseStats.maxHp;
-    char.maxMp = char.baseStats.maxMp;
+    const equipped = this.equippedItemsSubject.value;
   
-    // Apply all equipped item effects
+    // 1️⃣ Récupère tous les effets actifs
+    const effects: Effect[] = [];
     Object.values(equipped).forEach(item => {
-      if (!item?.effects) return;
-      item.effects.forEach(effect => {
-        switch (effect.stat) {
-          case 'hp': char.maxHp += effect.value; break;
-          case 'mp': char.maxMp += effect.value; break;
-          case 'attack': char.attack += effect.value; break;
-          case 'defense': char.defense += effect.value; break;
-          default: break;
-        }
-      });
+      if (item?.effects?.length) {
+        effects.push(...item.effects);
+      }
     });
   
-    // Adjust current HP/MP if max changed
-    char.hp = Math.min(char.hp, char.maxHp);
-    char.mp = Math.min(char.mp, char.maxMp);
+    // 2️⃣ Repart de la base
+    const base = {
+      attack: char.baseStats.attack,
+      defense: char.baseStats.defense,
+      maxHp: char.baseStats.maxHp,
+      maxMp: char.baseStats.maxMp,
+    };
   
-    this.characterService.setCharacter(char);
-  }  
+    // 3️⃣ Applique les effets
+    const modified = applyEffectsToEntity(base, effects);
+  
+    // 4️⃣ Clamp des jauges
+    const newHp = Math.min(char.hp, modified.maxHp);
+    const newMp = Math.min(char.mp, modified.maxMp);
 
+    console.log('💥 Base stats:', char.baseStats);
+    console.log('💥 Modified stats:', modified);
+  
+    // 5️⃣ Met à jour le CharacterService
+    this.characterService.setCharacter({
+      ...char,
+      ...modified,
+      hp: newHp,
+      mp: newMp,
+    });
+  }  
+  
   expandInventory(): void {
     this.rows += 1;
     this.sizeSubject.next({ rows: this.rows, cols: this.cols });

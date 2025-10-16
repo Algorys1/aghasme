@@ -64,19 +64,20 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.character = this.player.getCharacter();
 
-    // Abonnements aux événements de la carte
     this.subs.push(
       this.mapService.playerMoved.subscribe(() => this.autoSave()),
       this.mapService.tileChange.subscribe(tile => {
         this.currentTile = tile;
       }),
       this.mapService.overlayChange.subscribe(kind => {
-        // Si l’overlay n’est pas vide → on génère une instance unique
         if (kind && kind !== OverlayKind.None) {
           this.activeOverlay = OverlayFactory.create(kind);
         } else {
           this.activeOverlay = null;
         }
+      }),
+      this.characterService.character$.subscribe(char => {
+        this.character = char;
       }),
       this.actionService.nextOverlay$.subscribe(nextOverlay => {
         console.log('🌀 Transitioning to next overlay:', nextOverlay.name);
@@ -100,7 +101,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   async ngAfterViewInit() {
     const canvas = await this.waitForCanvas();
     if (!canvas) {
-      console.error('❌ Impossible de trouver le canvas');
+      console.error('❌ Impossible to find canvas');
       return;
     }
 
@@ -234,7 +235,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onCombatClosed() {
     this.showCombat = false;
-    this.activeOverlay = null; // Le combat “consomme” l’overlay
+    this.activeOverlay = null; // Combat "consume" overlay
   }  
 
   ngOnDestroy(): void {

@@ -87,3 +87,10 @@ export const ORB_DEFINITIONS: Record<OrbKey, { label: string; icon: string; desc
     description: 'Engineering, technology, and invention. Provides precision and mastery of advanced tools.',
   },
 };
+
+export const ARCHETYPE_ORB_MODIFIERS: Record<Archetype, Partial<Orbs>> = {
+  beast:      { bestial: +1, elemental: -1 },
+  elemental:  { elemental: +1, mechanic: -1 },
+  ant:        { natural: +1, bestial: -1 },
+  engineer:   { mechanic: +1, natural: -1 },
+};

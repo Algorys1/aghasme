@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Character, NewCharacterInput, Orbs } from '../models/character.model';
+import { ARCHETYPE_ORB_MODIFIERS, Character, NewCharacterInput, Orbs } from '../models/character.model';
 
 const DEFAULT_ORBS: Orbs = { bestial: 0, elemental: 0, natural: 0, mechanic: 0 };
 
@@ -10,18 +10,48 @@ export class CharacterService {
   private characterSubject = new BehaviorSubject<Character | null>(null);
   character$ = this.characterSubject.asObservable();
 
-  /** Création (ou remplacement) du personnage (mémoire uniquement) */
   createCharacter(data: NewCharacterInput): Character {
     const level = data.level ?? 1;
-    const orbs: Orbs = { ...DEFAULT_ORBS, ...(data.orbs ?? {}) };
+    let orbs: Orbs = { ...DEFAULT_ORBS, ...(data.orbs ?? {}) };
+    const archetype = data.archetype ?? 'beast';
+  
+    const mods = ARCHETYPE_ORB_MODIFIERS[archetype];
+    for (const key of Object.keys(mods) as (keyof Orbs)[]) {
+      orbs[key] = Math.max(0, (orbs[key] ?? 0) + (mods[key] ?? 0));
+    }
+  
+    // --- HP & MP
     const baseMaxHp = Math.floor((orbs.natural + orbs.mechanic) / 2);
     const baseMaxMp = Math.floor((orbs.elemental + orbs.natural) / 2);
-    const baseAttack = 5 + Math.floor((orbs.bestial + orbs.elemental) / 2) + level;
-    const baseDefense = 3 + Math.floor((orbs.mechanic + orbs.natural) / 2) + Math.floor(level / 2);  
-
+  
+    // --- ATTACK calculation
+    const baseAttack = Math.floor((orbs.bestial + orbs.elemental) / 2);
+    let attackBonus = 0;
+  
+    if (baseAttack >= 5 && baseAttack <= 7) attackBonus = -1;
+    else if (baseAttack >= 8 && baseAttack <= 11) attackBonus = 0;
+    else if (baseAttack >= 12 && baseAttack <= 14) attackBonus = 1;
+    else if (baseAttack >= 15 && baseAttack <= 17) attackBonus = 2;
+    else if (baseAttack >= 18 && baseAttack <= 20) attackBonus = 3;
+  
+    const finalAttack = baseAttack + attackBonus;
+  
+    // --- DEFENSE calculation (palier-based)
+    const baseDefense = Math.floor((orbs.mechanic + orbs.natural) / 2);
+    let defenseBonus = 0;
+  
+    if (baseDefense >= 5 && baseDefense <= 7) defenseBonus = -1;
+    else if (baseDefense >= 8 && baseDefense <= 11) defenseBonus = 0;
+    else if (baseDefense >= 12 && baseDefense <= 14) defenseBonus = 1;
+    else if (baseDefense >= 15 && baseDefense <= 17) defenseBonus = 2;
+    else if (baseDefense >= 18 && baseDefense <= 20) defenseBonus = 3;
+  
+    const finalDefense = defenseBonus;
+  
+    // --- Création du personnage final
     this.character = {
       name: data.name,
-      archetype: data.archetype ?? 'beast',
+      archetype,
       level,
       xp: data.xp ?? 0,
       hp: baseMaxHp,
@@ -32,20 +62,20 @@ export class CharacterService {
       orbs,
       skills: data.skills ?? [],
       inventory: data.inventory ?? [],
-      attack: baseAttack,
-      defense: baseDefense,
-
+      attack: finalAttack,
+      defense: finalDefense,
+  
       baseStats: {
-        attack: baseAttack,
-        defense: baseDefense,
+        attack: finalAttack,
+        defense: finalDefense,
         maxHp: baseMaxHp,
         maxMp: baseMaxMp,
       },
     };
+  
     this.characterSubject.next(this.character);
-
     return this.character;
-  }
+  }  
 
   /** Lecture (mémoire uniquement) */
   getCharacter(): Character | null {

@@ -1,6 +1,27 @@
 import { Terrain } from './tile.factory';
 import { EnemyTemplate } from './enemy.factory';
+import { Effect } from '../models/effect.model';
 
+// TODO move dedicated effect
+export const ENEMY_BONUS_EFFECTS: Record<string, Effect[]> = {
+  'Dark Knight': [
+    { stat: 'attack', value: +3, source: 'trait' },
+    { stat: 'defense', value: +2, source: 'trait' },
+  ],
+  'Dragon': [
+    { stat: 'attack', value: +4, source: 'trait' },
+    { stat: 'defense', value: +4, source: 'trait' },
+    { stat: 'hp', value: +40, source: 'trait' },
+  ],
+  'Ghost': [
+    { stat: 'defense', value: +2, source: 'ethereal' },
+    { stat: 'hp', value: -15, source: 'fragile' },
+  ],
+  'Skeleton': [
+    { stat: 'defense', value: +1, source: 'bones' },
+    { stat: 'hp', value: -10, source: 'bones' },
+  ],
+};
 
 // TODO Add other monsters
 export const EnemyTables: Record<Terrain, EnemyTemplate[]> = {

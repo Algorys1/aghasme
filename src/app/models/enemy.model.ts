@@ -1,3 +1,5 @@
+import { Effect } from "./effect.model";
+
 export interface EnemyData {
   name: string;
   desc: string;
@@ -8,6 +10,7 @@ export interface EnemyData {
   mp: number;
   attack: number;
   defense: number;
+  effects?: Effect[];
 }
 
 export class Enemy implements EnemyData {
@@ -20,6 +23,7 @@ export class Enemy implements EnemyData {
   mp: number;
   attack: number;
   defense: number;
+  effects?: Effect[];
 
   constructor(data: EnemyData) {
     this.name = data.name;
@@ -31,5 +35,6 @@ export class Enemy implements EnemyData {
     this.mp = data.mp;
     this.attack = data.attack;
     this.defense = data.defense;
+    this.effects = data.effects;
   }
 }
