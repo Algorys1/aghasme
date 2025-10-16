@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LootService, GroundItem } from '../services/loot.service';
 import { InventoryService } from '../services/inventory.service';
+import { MapService } from '../services/map.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-loot-panel',
@@ -16,12 +18,20 @@ export class LootPanelComponent implements OnInit {
 
   constructor(
     private lootService: LootService,
-    private inventoryService: InventoryService
+    private inventoryService: InventoryService,
+    private mapService: MapService
   ) {}
 
   ngOnInit(): void {
-    this.lootService.ground$.subscribe(loots => (this.groundItems = loots));
-  }
+    combineLatest([
+      this.lootService.ground$,
+      this.mapService.playerMoved
+    ]).subscribe(([loots, pos]) => {
+      this.groundItems = loots.filter(
+        g => g.pos.q === pos.q && g.pos.r === pos.r
+      );
+    });
+  }  
 
   selectItem(item: GroundItem) {
     this.selectedItem =

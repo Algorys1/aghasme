@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { createNoise2D } from 'simplex-noise';
 
 import { createTile, Terrain } from '../factories/tile.factory';
@@ -54,7 +54,7 @@ export class MapService {
   private activeOverlay: OverlayKind | null = null;
   overlayChange = new Subject<OverlayKind>();
   tileChange = new Subject<{ type: string; description?: string }>();
-  playerMoved = new Subject<{ q: number; r: number }>();
+  playerMoved = new BehaviorSubject<{ q: number; r: number }>(this.playerPos);
 
   constructor(
     private characterService: CharacterService,

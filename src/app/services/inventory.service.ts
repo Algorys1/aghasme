@@ -3,6 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { EquipSlot, Item, ItemType } from '../models/items';
 import { CharacterService } from './character.service';
 import { LootService } from './loot.service';
+import { MapService } from './map.service';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +41,8 @@ export class InventoryService {
 
   constructor(
     private characterService: CharacterService,
-    private lootService: LootService
+    private lootService: LootService,
+    private mapService: MapService
   ) {}
 
   /** Retourne les items actuels */
@@ -89,7 +91,8 @@ export class InventoryService {
     const removed = this.removeItem(item.id);
     if (!removed) return false;
   
-    this.lootService.dropItem(item, { q: 0, r: 0 }, 'player');
+    const pos = this.mapService.getPlayerPosition();
+    this.lootService.dropItem(item, pos, 'player');
     return true;
   }
   

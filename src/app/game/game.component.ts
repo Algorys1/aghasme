@@ -16,6 +16,7 @@ import {ActionService} from '../services/action.service';
 import { CombatComponent } from '../combat/combat.component';
 import { InventoryPanelComponent } from '../inventory-panel/inventory-panel.component';
 import { LootPanelComponent } from "../loot-panel/loot-panel.component";
+import { LootService } from '../services/loot.service';
 
 @Component({
   selector: 'app-game',
@@ -57,6 +58,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private saveService: SaveService,
     private characterService: CharacterService,
     private actionService: ActionService,
+    private lootService: LootService
   ) {}
 
   ngOnInit(): void {
@@ -109,7 +111,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     const isNewGame: boolean = !!nav.newGame;
 
     if (isNewGame) {
-      console.log('🎲 Nouvelle partie demandée → reset complet');
+      console.log('🎲 New game → reset all');
       this.mapService.clearAll();
       this.mapService.generateNewSeed();
       await this.mapService.initMapWithCanvas(canvas, 10);
@@ -122,6 +124,9 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
         this.characterService.setCharacter(save.character);
         this.character = save.character;
         await this.mapService.loadFromSnapshotWithCanvas(save.map, canvas);
+        if (save?.groundItems?.length) {
+          this.lootService.restoreGroundItems(save.groundItems);
+        }
         this.refreshOrbs();
         return;
       }
@@ -134,6 +139,9 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       this.characterService.setCharacter(auto.character);
       this.character = auto.character;
       await this.mapService.loadFromSnapshotWithCanvas(auto.map, canvas);
+      if (auto?.groundItems?.length) {
+        this.lootService.restoreGroundItems(auto.groundItems);
+      }
       this.refreshOrbs();
     } else {
       await this.mapService.initMapWithCanvas(canvas, 10);
@@ -172,7 +180,13 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!char) return null;
     const mapState = this.mapService.serializeMap();
     const charState = structuredClone(char);
-    return { character: charState, map: mapState, timestamp: Date.now() };
+    const groundItems = this.lootService.getAllGroundItems();
+    return { 
+      character: charState, 
+      map: mapState,
+      groundItems,
+      timestamp: Date.now() 
+    };
   }
 
   private autoSave() {
