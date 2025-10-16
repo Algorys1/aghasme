@@ -52,6 +52,7 @@ export class InventoryService {
   }
 
   addItem(newItem: Item): boolean {
+    newItem.instanceId = crypto.randomUUID();
     if (newItem.stackable) {
       const existing = this.items.find((i) => i.id === newItem.id);
       if (existing) {

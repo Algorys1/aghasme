@@ -61,10 +61,10 @@
 
   <!-- === INVENTAIRE DU JOUEUR === -->
   <section class="inventory-grid">
-    @for (item of items; track item.id + '-' + $index) {
+    @for (item of items; track item.instanceId ?? item.id + '-' + $index) {
       <div
         class="inventory-slot"
-        [class.selected]="selectedItem?.id === item.id"
+        [class.selected]="selectedItem?.instanceId === item.instanceId"
         [ngClass]="item.rarity.toLowerCase()"
         (click)="selectItem(item)"
       >

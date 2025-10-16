@@ -37,13 +37,14 @@ export interface Item {
   icon: string;
   rarity: RarityType;
 
-  baseValue: number;          // valeur économique de base
-  computedValue?: number;     // valeur recalculée via rareté + effets
-  stackable?: boolean;        // peut être empilé
-  subtype?: ItemSubtype;      // ex: "sword", "shield", "potion"
-  equipSlot?: EquipSlot[];    // slots occupés
-  twoHanded?: boolean;        // indique si l’objet bloque les deux mains
-  effects?: ItemEffect[];     // effets chiffrés et lisibles (atk, hp, etc.)
+  baseValue: number;
+  computedValue?: number;
+  stackable?: boolean;
+  subtype?: ItemSubtype;
+  equipSlot?: EquipSlot[];
+  twoHanded?: boolean;
+  effects?: ItemEffect[];
+  instanceId?: string,
 }
 
 export interface ItemEffect {
