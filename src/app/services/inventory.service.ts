@@ -175,8 +175,8 @@ export class InventoryService {
         switch (effect.stat) {
           case 'hp': char.maxHp += effect.value; break;
           case 'mp': char.maxMp += effect.value; break;
-          case 'atk': char.attack += effect.value; break;
-          case 'def': char.defense += effect.value; break;
+          case 'attack': char.attack += effect.value; break;
+          case 'defense': char.defense += effect.value; break;
           default: break;
         }
       });

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LootService, GroundItem } from '../services/loot.service';
 import { InventoryService } from '../services/inventory.service';
+import { MapService } from '../services/map.service';
+import { BASE_ITEMS } from '../factories/item-tables';
 
 @Component({
   selector: 'app-loot-panel',
@@ -15,7 +17,8 @@ export class LootPanelComponent implements OnInit {
 
   constructor(
     public lootService: LootService,
-    private inventoryService: InventoryService
+    private inventoryService: InventoryService,
+    private mapService: MapService
   ) {}
 
   ngOnInit(): void {
@@ -23,7 +26,9 @@ export class LootPanelComponent implements OnInit {
       this.groundItems = loots;
     });
 
-    this.groundItems
+    // TODO for Tests
+    const item = BASE_ITEMS[56];
+    this.lootService.dropItem(item, this.mapService.getPlayerPosition(), "player")
   }
 
   takeItem(item: GroundItem) {

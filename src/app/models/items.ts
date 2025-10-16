@@ -43,7 +43,7 @@ export interface Item {
   subtype?: ItemSubtype;
   equipSlot?: EquipSlot[];
   twoHanded?: boolean;
-  effects?: ItemEffect[];
+  effects: ItemEffect[];
   instanceId?: string,
 }
 

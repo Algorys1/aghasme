@@ -8,9 +8,10 @@ export const ACCESSORY_ITEMS: Item[] = [
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/amulet-epic.png',
     baseValue: 750,
-    equipSlot: [EquipSlot.Accessory1],
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
     rarity: RarityType.Epic,
-    subtype: 'amulet'
+    subtype: 'amulet',
+    effects: [{stat: 'hp', value: 10}]
   },
   {
     id: 'charm-wild',
@@ -21,8 +22,20 @@ export const ACCESSORY_ITEMS: Item[] = [
     baseValue: 480,
     rarity: RarityType.Rare,
     subtype: 'amulet',
-    equipSlot: [EquipSlot.Accessory1],
-    effects: [{ stat: 'hp', value: 10 }, { stat: 'resist', value: 1 }],
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
+    effects: [{ stat: 'hp', value: 2 }, { stat: 'resist', value: 1 }],
+  },
+  {
+    id: 'chalice-shadows',
+    name: 'Chalice of Shadows',
+    description: 'Forged in the crypts of a forgotten empire, this chalice is only filled with the fall of a soul.',
+    type: ItemType.Accessory,
+    icon: 'assets/items/accessories/chalice-of-shadows.png',
+    baseValue: 2000,
+    rarity: RarityType.Artefact,
+    subtype: 'generic',
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
+    effects: [{stat: 'mp', value: 20}]
   },
   {
     id: 'magic-tome',
@@ -31,9 +44,10 @@ export const ACCESSORY_ITEMS: Item[] = [
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/magic-tome.png',
     baseValue: 300,
-    equipSlot: [EquipSlot.Accessory1],
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
     rarity: RarityType.Rare,
-    subtype: 'book'
+    subtype: 'book',
+    effects: [{stat: 'mp', value: 5}]
   },
   {
     id: 'magic-tome-epic',
@@ -42,9 +56,10 @@ export const ACCESSORY_ITEMS: Item[] = [
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/magic-tome-epic.png',
     baseValue: 750,
-    equipSlot: [EquipSlot.Accessory1],
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
     rarity: RarityType.Epic,
-    subtype: 'book'
+    subtype: 'book',
+    effects: [{stat: 'mp', value: 15}]
   },
   {
     id: 'orb-epic',
@@ -53,8 +68,8 @@ export const ACCESSORY_ITEMS: Item[] = [
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/orb-epic.png',
     baseValue: 825,
-    equipSlot: [EquipSlot.Accessory1],
-    effects: [{ stat: 'bestial', value: 1 }],
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
+    effects: [{ stat: 'orbs.bestial', value: 1 }],
     rarity: RarityType.Epic,
     subtype: 'amulet'
   },
@@ -65,8 +80,8 @@ export const ACCESSORY_ITEMS: Item[] = [
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/pendant-epic.png',
     baseValue: 825,
-    equipSlot: [EquipSlot.Accessory1],
-    effects: [{ stat: 'elemental', value: 1 }],
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
+    effects: [{ stat: 'orbs.elemental', value: 1 }],
     rarity: RarityType.Epic,
     subtype: 'amulet'
   },
@@ -77,8 +92,9 @@ export const ACCESSORY_ITEMS: Item[] = [
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/ring-red.png',
     baseValue: 100,
-    equipSlot: [EquipSlot.Accessory1],
-    rarity: RarityType.Normal
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
+    rarity: RarityType.Normal,
+    effects: [{stat: 'hp', value: 1}]
   },
   {
     id: 'ring-blue',
@@ -87,8 +103,9 @@ export const ACCESSORY_ITEMS: Item[] = [
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/ring-blue.png',
     baseValue: 100,
-    equipSlot: [EquipSlot.Accessory1],
-    rarity: RarityType.Normal
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
+    rarity: RarityType.Normal,
+    effects: [{stat: 'mp', value: 1}]
   },
   {
     id: 'ring-sparks',
@@ -100,7 +117,7 @@ export const ACCESSORY_ITEMS: Item[] = [
     rarity: RarityType.Rare,
     subtype: 'ring',
     equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
-    effects: [{ stat: 'mp', value: 5 }, { stat: 'atk', value: 1 }],
+    effects: [{ stat: 'mp', value: 5 }, { stat: 'attack', value: 1 }],
   },
   {
     id: 'tab-epic',
@@ -109,14 +126,14 @@ export const ACCESSORY_ITEMS: Item[] = [
     type: ItemType.Accessory,
     icon: 'assets/items/accessories/tab-epic.png',
     baseValue: 750,
-    equipSlot: [EquipSlot.Accessory1],
-    rarity: RarityType.Epic
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
+    rarity: RarityType.Epic,
+    effects: [{stat: 'orbs.natural', value: 1}]
   },
 ];
 
 export const ARMOR_ITEMS: Item[] = [
-  // ARMORS
-  { // 10
+  {
     id: 'armor-leather',
     name: 'Leather Armor',
     description: 'Light armor, offers minimal protection but keeps mobility.',
@@ -124,7 +141,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/armor-leather.png',
     baseValue: 120,
     equipSlot: [EquipSlot.Torso],
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: [{stat: 'defense', value: 2}]
   },
   {
     id: 'armor-iron',
@@ -134,7 +152,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/armor-iron.png',
     baseValue: 250,
     equipSlot: [EquipSlot.Torso],
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: [{stat: 'defense', value: 4}]
   },
   {
     id: 'boots-travel',
@@ -144,7 +163,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/boots-travel.png',
     baseValue: 40,
     equipSlot: [EquipSlot.Feet],
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: [{stat: 'flee', value: 1}]
   },
   {
     id: 'gloves-leather',
@@ -154,7 +174,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/gloves-leather.png',
     baseValue: 60,
     equipSlot: [EquipSlot.Hand1],
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: [{stat: 'attack', value: 1}]
   },
   {
     id: 'helmet-echo',
@@ -166,7 +187,7 @@ export const ARMOR_ITEMS: Item[] = [
     rarity: RarityType.Rare,
     subtype: 'helmet',
     equipSlot: [EquipSlot.Head],
-    effects: [{ stat: 'perception', value: 1 }],
+    effects: [{stat: 'defense', value: 2}, { stat: 'perception', value: 1 }],
   },
   {
     id: 'helmet-epic',
@@ -176,7 +197,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/helmet-epic.png',
     baseValue: 750,
     equipSlot: [EquipSlot.Head],
-    rarity: RarityType.Epic
+    rarity: RarityType.Epic,
+    effects: [{stat: 'orbs.bestial', value: 2}]
   },
   {
     id: 'helmet-leather',
@@ -186,7 +208,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/helmet-leather.png',
     baseValue: 70,
     equipSlot: [EquipSlot.Head],
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: [{stat: 'defense', value: 1}]
   },
   {
     id: 'hat-magician',
@@ -196,7 +219,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/hat-magician.png',
     baseValue: 60,
     equipSlot: [EquipSlot.Head],
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: [{stat: 'mp', value: 5}]
   },
   {
     id: 'hat-travel',
@@ -206,7 +230,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/hat-travel.png',
     baseValue: 30,
     equipSlot: [EquipSlot.Head],
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'mantle-travel',
@@ -218,7 +243,7 @@ export const ARMOR_ITEMS: Item[] = [
     rarity: RarityType.Rare,
     subtype: 'robe',
     equipSlot: [EquipSlot.Torso],
-    effects: [{ stat: 'def', value: 2 }, { stat: 'stamina', value: 5 }],
+    effects: [{ stat: 'hp', value: 5 }],
   },
   {
     id: 'shield-mirror',
@@ -230,7 +255,7 @@ export const ARMOR_ITEMS: Item[] = [
     rarity: RarityType.Legendary,
     subtype: 'shield',
     equipSlot: [EquipSlot.Weapon2],
-    effects: [{ stat: 'def', value: 4 }, { stat: 'reflect', value: 1 }],
+    effects: [{ stat: 'defense', value: 5 }, { stat: 'reflect', value: 10, type: 'percent'}],
   },
   {
     id: 'outfit-common',
@@ -240,7 +265,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/outfit-travel.png',
     baseValue: 20,
     equipSlot: [EquipSlot.Torso],
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: [],
   },
   {
     id: 'outfit-travel',
@@ -250,7 +276,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/outfit-travel.png',
     baseValue: 60,
     equipSlot: [EquipSlot.Torso],
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: [],
   },
   {
     id: 'outfit-magician',
@@ -260,7 +287,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/outfit-magician.png',
     baseValue: 300,
     equipSlot: [EquipSlot.Torso],
-    rarity: RarityType.Rare
+    rarity: RarityType.Rare,
+    effects: [{stat: 'hp', value: 5}, {stat: 'mp', value: 10} ],
   },
   {
     id: 'outfit-priest',
@@ -270,7 +298,8 @@ export const ARMOR_ITEMS: Item[] = [
     icon: 'assets/items/armors/outfit-priest.png',
     baseValue: 100,
     equipSlot: [EquipSlot.Torso],
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: [{stat: 'hp', value: 2}],
   },
   {
     id: 'shield-spirit',
@@ -279,8 +308,9 @@ export const ARMOR_ITEMS: Item[] = [
     type: ItemType.Armor,
     icon: 'assets/items/armors/shield-spirit.png',
     baseValue: 500,
-    equipSlot: [EquipSlot.Weapon2],
-    rarity: RarityType.Rare
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Rare,
+    effects: [{stat: 'mp', value: 5}, {stat: 'defense', value: 5}],
   },
   {
     id: 'shield-iron',
@@ -289,8 +319,9 @@ export const ARMOR_ITEMS: Item[] = [
     type: ItemType.Armor,
     icon: 'assets/items/armors/shield-iron.png',
     baseValue: 250,
-    equipSlot: [EquipSlot.Weapon2],
-    rarity: RarityType.Normal
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Normal,
+    effects: [{stat: 'defense', value: 3}],
   },
   {
     id: 'shield-long',
@@ -299,8 +330,9 @@ export const ARMOR_ITEMS: Item[] = [
     type: ItemType.Armor,
     icon: 'assets/items/armors/shield-epic.png',
     baseValue: 500,
-    equipSlot: [EquipSlot.Weapon2],
-    rarity: RarityType.Rare
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Rare,
+    effects: [{stat: 'defense', value: 6}, {stat: 'attack', value: -3}],
   },
   {
     id: 'shield-runic',
@@ -309,8 +341,9 @@ export const ARMOR_ITEMS: Item[] = [
     type: ItemType.Armor,
     icon: 'assets/items/armors/shield-runic.png',
     baseValue: 750,
-    equipSlot: [EquipSlot.Weapon2],
-    rarity: RarityType.Epic
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Epic,
+    effects: [{stat: 'defense', value: 3}, {stat: 'hp', value: 10}]
   },
   {
     id: 'shield-small',
@@ -319,14 +352,14 @@ export const ARMOR_ITEMS: Item[] = [
     type: ItemType.Armor,
     icon: 'assets/items/armors/shield-small.png',
     baseValue: 90,
-    equipSlot: [EquipSlot.Weapon2],
-    rarity: RarityType.Normal
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Normal,
+    effects: [{stat: 'defense', value: 2}]
   },  
 ];
 
 export const CONSUMABLE_ITEMS: Item[] = [
-  // CONSUMABLES
-  { // 30
+  {
     id: 'ammo-arrows',
     name: 'Arrows',
     description: 'Having a bow is good! With arrows it\'s even better.',
@@ -334,7 +367,8 @@ export const CONSUMABLE_ITEMS: Item[] = [
     icon: 'assets/items/consumables/ammo-arrows.png',
     stackable: true,
     baseValue: 5,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'ammo-bolts',
@@ -344,7 +378,8 @@ export const CONSUMABLE_ITEMS: Item[] = [
     icon: 'assets/items/consumables/ammo-bolts.png',
     stackable: true,
     baseValue: 5,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'gold',
@@ -354,7 +389,8 @@ export const CONSUMABLE_ITEMS: Item[] = [
     icon: 'assets/items/consumables/gold.png',
     stackable: true,
     baseValue: 1,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'potion-heal-small',
@@ -414,8 +450,7 @@ export const CONSUMABLE_ITEMS: Item[] = [
 ];
 
 export const RESOURCE_ITEMS: Item[] = [
-  // RESOURCES
-  { // 40
+  {
     id: 'bones',
     name: 'Bones',
     description: 'A pile of bones... of perhaps several creatures.',
@@ -423,7 +458,8 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/bones.png',
     stackable: true,
     baseValue: 10,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'coal',
@@ -433,7 +469,8 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/coal.png',
     stackable: true,
     baseValue: 10,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'fibers',
@@ -443,7 +480,8 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/fibers.png',
     stackable: true,
     baseValue: 10,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'herbs',
@@ -453,7 +491,8 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/herbs.png',
     stackable: true,
     baseValue: 10,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'iron',
@@ -463,7 +502,8 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/iron.png',
     stackable: true,
     baseValue: 15,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'leather',
@@ -473,7 +513,8 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/leather.png',
     stackable: true,
     baseValue: 15,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'oil',
@@ -483,7 +524,8 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/oil.png',
     stackable: true,
     baseValue: 15,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'sand',
@@ -493,7 +535,8 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/sand.png',
     stackable: true,
     baseValue: 5,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'stone',
@@ -503,7 +546,8 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/stone.png',
     stackable: true,
     baseValue: 10,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'water',
@@ -513,7 +557,8 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/water.png',
     stackable: true,
     baseValue: 5,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
   {
     id: 'wood',
@@ -523,12 +568,12 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/wood.png',
     stackable: true,
     baseValue: 10,
-    rarity: RarityType.Normal
+    rarity: RarityType.Normal,
+    effects: []
   },
 ];
 
 export const UTILITY_ITEMS: Item[] = [
-  // UTILITY
   {
     id: 'key-iron',
     name: 'Iron Key',
@@ -573,7 +618,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     rarity: RarityType.Rare,
     subtype: 'axe',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
-    effects: [{ stat: 'atk', value: 6 }],
+    effects: [{ stat: 'damage', value: 6 }],
   },
   {
     id: 'axe',
@@ -584,7 +629,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     baseValue: 100,
     subtype: 'axe',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
-    effects: [{ stat: 'atk', value: 5 }],
+    effects: [{ stat: 'damage', value: 3 }],
     rarity: RarityType.Normal
   },
   {
@@ -594,8 +639,8 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/club.png',
     baseValue: 270,
-    effects: [{ stat: 'atk', value: 3 }],
-    equipSlot: [EquipSlot.Weapon1],
+    effects: [{ stat: 'damage', value: 1 }],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Rare
   },
   {
@@ -605,8 +650,8 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/dagger-ceremonial.png',
     baseValue: 330,
-    effects: [{ stat: 'atk', value: 8 }],
-    equipSlot: [EquipSlot.Weapon1],
+    effects: [{ stat: 'damage', value: 3 }, {stat: 'critical', value: 5}],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Rare
   },
   {
@@ -616,8 +661,8 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/dagger-damaged.png',
     baseValue: 20,
-    effects: [{ stat: 'atk', value: 1 }],
-    equipSlot: [EquipSlot.Weapon1],
+    effects: [{ stat: 'damage', value: 1 }],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
   {
@@ -627,8 +672,8 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/dagger-epic.png',
     baseValue: 875,
-    effects: [{ stat: 'atk', value: 10 }],
-    equipSlot: [EquipSlot.Weapon1],
+    effects: [{ stat: 'damage', value: 5 }, {stat: 'attack', value: 1}],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Epic
   },
   {
@@ -638,7 +683,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/hammer.png',
     baseValue: 430,
-    effects: [{ stat: 'atk', value: 8 }],
+    effects: [{ stat: 'damage', value: 4 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
     rarity: RarityType.Normal
@@ -650,7 +695,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/hammer-epic.png',
     baseValue: 980,
-    effects: [{ stat: 'atk', value: 15 }],
+    effects: [{ stat: 'damage', value: 15 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
     rarity: RarityType.Epic
@@ -666,7 +711,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     subtype: 'hammer',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
-    effects: [{ stat: 'atk', value: 10 }, { stat: 'tool', value: 1 }],
+    effects: [{ stat: 'damage', value: 10 }, { stat: 'tool', value: 1 }],
   },
   {
     id: 'sword-long',
@@ -675,7 +720,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/sword-long.png',
     baseValue: 150,
-    effects: [{ stat: 'atk', value: 6 }],
+    effects: [{ stat: 'damage', value: 6 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
@@ -686,7 +731,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/sword-short.png',
     baseValue: 90,
-    effects: [{ stat: 'atk', value: 3 }],
+    effects: [{ stat: 'damage', value: 3 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
@@ -700,7 +745,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     rarity: RarityType.Rare,
     subtype: 'sword',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
-    effects: [{ stat: 'atk', value: 7 }, { stat: 'burn', value: 1 }],
+    effects: [{ stat: 'damage', value: 6 }, { stat: 'burn', value: 1 }],
   },
   {
     id: 'saber',
@@ -709,7 +754,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/saber.png',
     baseValue: 90,
-    effects: [{ stat: 'atk', value: 3 }],
+    effects: [{ stat: 'damage', value: 3 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
@@ -720,7 +765,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/spear.png',
     baseValue: 210,
-    effects: [{ stat: 'atk', value: 7 }],
+    effects: [{ stat: 'damage', value: 7 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
     rarity: RarityType.Normal
@@ -732,7 +777,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/staff-fighting.png',
     baseValue: 180,
-    effects: [{ stat: 'atk', value: 5 }],
+    effects: [{ stat: 'damage', value: 4 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
     rarity: RarityType.Normal
@@ -744,7 +789,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/sword-epic.png',
     baseValue: 850,
-    effects: [{ stat: 'atk', value: 15 }],
+    effects: [{ stat: 'damage', value: 7 }, {stat: 'mp', value: 10}],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Epic
   },
@@ -755,7 +800,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/sword-epic.png',
     baseValue: 150,
-    effects: [{ stat: 'atk', value: 15 }, { stat: 'tool', value: 2 }],
+    effects: [{ stat: 'damage', value: 15 }, { stat: 'tool', value: 2 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },
@@ -772,7 +817,9 @@ export const WEAPON_RANGE_ITEMS: Item[] = [
     baseValue: 80,
     subtype: 'bow',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
-    rarity: RarityType.Normal
+    twoHanded: true,
+    rarity: RarityType.Normal,
+    effects: [{ stat: 'damage', value: 2 }]
   },
   {
     id: 'bow-whisper',
@@ -785,7 +832,7 @@ export const WEAPON_RANGE_ITEMS: Item[] = [
     subtype: 'bow',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
-    effects: [{ stat: 'atk', value: 4 }, { stat: 'crit', value: 5 }],
+    effects: [{ stat: 'damage', value: 4 }, { stat: 'critical', value: 5 }],
   },  
 ];
 

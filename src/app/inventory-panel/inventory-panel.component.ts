@@ -38,32 +38,14 @@ export class InventoryPanelComponent {
     this.character = this.characterService.getCharacter();
 
     // TODO for test purpose
-    this.inventory.expandInventory();
-    this.inventory.expandInventory();
-    this.inventory.addItem(BASE_ITEMS[8]);
+    this.inventory.addItem(BASE_ITEMS[2]);
     this.inventory.addItem(BASE_ITEMS[9]);
     this.inventory.addItem(BASE_ITEMS[10]);
-    this.inventory.addItem(BASE_ITEMS[12]);
-    this.inventory.addItem(BASE_ITEMS[26]);
     this.inventory.addItem(BASE_ITEMS[33]);
     this.inventory.addItem(BASE_ITEMS[33]);
     this.inventory.addItem(BASE_ITEMS[35]);
     this.inventory.addItem(BASE_ITEMS[60]);
     this.inventory.addItem(BASE_ITEMS[63]);
-    this.inventory.addItem(BASE_ITEMS[58]);
-    this.inventory.addItem(BASE_ITEMS[40]);
-    this.inventory.addItem(BASE_ITEMS[42]);
-    this.inventory.addItem(BASE_ITEMS[42]);
-    this.inventory.addItem(BASE_ITEMS[42]);
-    this.inventory.addItem(BASE_ITEMS[42]);
-    this.inventory.addItem(BASE_ITEMS[8]);
-    this.inventory.addItem(BASE_ITEMS[9]);
-    this.inventory.addItem(BASE_ITEMS[10]);
-    this.inventory.addItem(BASE_ITEMS[12]);
-    this.inventory.addItem(BASE_ITEMS[26]);
-    this.inventory.addItem(BASE_ITEMS[33]);
-    this.inventory.addItem(BASE_ITEMS[33]);
-    this.inventory.addItem(BASE_ITEMS[35]);
   }
 
   selectItem(item: any) {
