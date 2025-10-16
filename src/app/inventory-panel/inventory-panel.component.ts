@@ -31,6 +31,10 @@ export class InventoryPanelComponent {
     this.inventory.items$.subscribe(items => (this.items = items));
     this.inventory.equipped$.subscribe(eq => (this.equipped = eq));
 
+    this.characterService.character$.subscribe(char => {
+      this.character = char;
+    });
+    
     this.character = this.characterService.getCharacter();
 
     // TODO for test purpose

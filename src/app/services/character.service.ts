@@ -1,5 +1,5 @@
-// character.service.ts
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Character, NewCharacterInput, Orbs } from '../models/character.model';
 
 const DEFAULT_ORBS: Orbs = { bestial: 0, elemental: 0, natural: 0, mechanic: 0 };
@@ -7,6 +7,8 @@ const DEFAULT_ORBS: Orbs = { bestial: 0, elemental: 0, natural: 0, mechanic: 0 }
 @Injectable({ providedIn: 'root' })
 export class CharacterService {
   private character: Character | null = null;
+  private characterSubject = new BehaviorSubject<Character | null>(null);
+  character$ = this.characterSubject.asObservable();
 
   /** Création (ou remplacement) du personnage (mémoire uniquement) */
   createCharacter(data: NewCharacterInput): Character {
@@ -32,7 +34,15 @@ export class CharacterService {
       inventory: data.inventory ?? [],
       attack: baseAttack,
       defense: baseDefense,
+
+      baseStats: {
+        attack: baseAttack,
+        defense: baseDefense,
+        maxHp: baseMaxHp,
+        maxMp: baseMaxMp,
+      },
     };
+    this.characterSubject.next(this.character);
 
     return this.character;
   }
@@ -45,6 +55,7 @@ export class CharacterService {
   /** Remplace le personnage courant (mémoire uniquement) */
   setCharacter(c: Character) {
     this.character = { ...c };
+    this.characterSubject.next(this.character);
   }
 
   // --- Mutations simples (toujours mémoire) ---
@@ -71,15 +82,18 @@ export class CharacterService {
   spendMP(amount: number): boolean {
     if (!this.character || this.character.mp < amount) return false;
     this.character.mp -= amount;
+    this.characterSubject.next(this.character);
     return true;
   }
   heal(amount: number) {
     if (!this.character) return;
     this.character.hp = Math.min(this.character.maxHp, this.character.hp + amount);
+    this.characterSubject.next(this.character);
   }
   takeDamage(amount: number) {
     if (!this.character) return;
     this.character.hp = Math.max(0, this.character.hp - amount);
+    this.characterSubject.next(this.character);
   }
   gainGold(amount: number) {
     if (!this.character) return;

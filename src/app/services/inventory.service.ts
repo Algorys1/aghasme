@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { EquipSlot, Item, ItemType } from '../models/items';
+import { CharacterService } from './character.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,7 @@ export class InventoryService {
   private errorSubject = new Subject<string>();
   public errors$ = this.errorSubject.asObservable();
 
-  constructor() {}
+  constructor(private characterService: CharacterService) {}
 
   /** Retourne les items actuels */
   getItems(): (Item & { count: number })[] {
@@ -125,26 +126,67 @@ export class InventoryService {
     if (!item.equipSlot) return;
     const current = this.equippedItemsSubject.value;
   
-    // On prend le premier slot libre compatible
     for (const slot of item.equipSlot) {
       if (!current[slot]) {
         current[slot] = item;
         this.equippedItemsSubject.next({ ...current });
         this.removeItem(item.id);
+        this.applyItemEffects();
         return `Equipped ${item.name}`;
       }
     }
     return `No available slot for ${item.name}`;
-  }
+  }  
   
   unequipItem(slot: EquipSlot) {
     const current = this.equippedItemsSubject.value;
     const item = current[slot];
     if (item) {
       this.addItem(item);
+      this.removeItemEffects();
       current[slot] = null;
       this.equippedItemsSubject.next({ ...current });
     }
+  }
+  
+  private applyItemEffects(): void {
+    this.recalculateCharacterStats();
+  }
+  
+  private removeItemEffects(): void {
+    this.recalculateCharacterStats();
+  }  
+
+  recalculateCharacterStats() {
+    const char = this.characterService.getCharacter();
+    const equipped = this.equippedItemsSubject.value;
+    if (!char || !char.baseStats) return;
+  
+    // Reset to base stats  
+    char.attack = char.baseStats.attack;
+    char.defense = char.baseStats.defense;
+    char.maxHp = char.baseStats.maxHp;
+    char.maxMp = char.baseStats.maxMp;
+  
+    // Apply all equipped item effects
+    Object.values(equipped).forEach(item => {
+      if (!item?.effects) return;
+      item.effects.forEach(effect => {
+        switch (effect.stat) {
+          case 'hp': char.maxHp += effect.value; break;
+          case 'mp': char.maxMp += effect.value; break;
+          case 'atk': char.attack += effect.value; break;
+          case 'def': char.defense += effect.value; break;
+          default: break;
+        }
+      });
+    });
+  
+    // Adjust current HP/MP if max changed
+    char.hp = Math.min(char.hp, char.maxHp);
+    char.mp = Math.min(char.mp, char.maxMp);
+  
+    this.characterService.setCharacter(char);
   }  
 
   expandInventory(): void {

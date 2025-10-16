@@ -16,13 +16,14 @@ import {ActionService} from '../services/action.service';
 import { CombatService } from '../services/combat.service';
 import { CombatComponent } from '../combat/combat.component';
 import { InventoryPanelComponent } from '../inventory-panel/inventory-panel.component';
+import { LootPanelComponent } from "../loot-panel/loot-panel.component";
 
 @Component({
   selector: 'app-game',
   standalone: true,
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
-  imports: [MinimapComponent, OverlayWindowComponent, CombatComponent, InventoryPanelComponent]
+  imports: [MinimapComponent, OverlayWindowComponent, CombatComponent, InventoryPanelComponent, LootPanelComponent]
 })
 export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -32,9 +33,13 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   currentTile: { type: string; description?: string } | null = null;
 
-  activeOverlay: OverlayInstance | null = null;
   showCombat = false;
   showInventoryPanel = false;
+  showLootPanel = false;
+  showMenuPanel = false;
+  showMapPanel = false;
+
+  activeOverlay: OverlayInstance | null = null;
   isTransitioning = false;
 
   private subs: Subscription[] = [];
@@ -45,9 +50,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     natural: 'assets/ui/orb-natural.png',
     mechanic: 'assets/ui/orb-mechanic.png',
   };
-
-  pauseMenuOpen = false;
-  showMap = false;
 
   constructor(
     private player: PlayerService,
@@ -190,23 +192,20 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // === HUD buttons ===
-  openMap() { this.showMap = !this.showMap; }
-  openBackpack() {
-    this.showInventoryPanel = true;
-  }
-  
-  closeInventoryPanel() {
-    console.log('❌ Closing inventory panel');
-    this.showInventoryPanel = false;
-  }
+  openMapPanel() { this.showMapPanel = true; }
+  openInventoryPanel() { this.showInventoryPanel = true; }
+  openLootPanel() { this.showLootPanel = true; }
+  openPauseMenu() { this.showMenuPanel = true; }
 
+  closeMap() { this.showMapPanel = false; }
+  closeInventoryPanel() { this.showInventoryPanel = false; }
+  closeLootPanel() { this.showLootPanel = false; }
+  closePauseMenu() { this.showMenuPanel = false; }
+
+  // TODO
   openQuests() { console.log('Open Quests'); }
-  openSkills() { console.log('Open Skills'); }
 
   goHome() { this.router.navigate(['/home']); }
-
-  openPauseMenu() { this.pauseMenuOpen = true; }
-  closePauseMenu() { this.pauseMenuOpen = false; }
 
   // === Overlay window actions ===
   onOverlayAction(action: ActionType) {
@@ -222,7 +221,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onCombatClosed() {
-    console.log('✅ Combat ended, returning to map');
     this.showCombat = false;
     this.activeOverlay = null; // Le combat “consomme” l’overlay
   }  

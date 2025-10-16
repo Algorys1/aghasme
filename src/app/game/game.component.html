@@ -12,20 +12,20 @@
       </div>
 
       <div class="hud-buttons">
-        <div class="hud-button" (click)="openMap()">
-          <img src="assets/ui/map.png" alt="Map" />
+        <div class="hud-button" (click)="openMapPanel()">
+          <img src="assets/ui/ui-map.png" alt="Map" />
         </div>
-        <div class="hud-button" (click)="openBackpack()">
-          <img src="assets/ui/backpack.png" alt="Backpack" />
+        <div class="hud-button" (click)="openInventoryPanel()">
+          <img src="assets/ui/ui-backpack.png" alt="Backpack" />
         </div>
         <div class="hud-button" (click)="openQuests()">
-          <img src="assets/ui/quests.png" alt="Quests" />
+          <img src="assets/ui/ui-quests.png" alt="Quests" />
         </div>
-        <div class="hud-button" (click)="openSkills()">
-          <img src="assets/ui/skills.png" alt="Skills" />
+        <div class="hud-button" (click)="openLootPanel()">
+          <img src="assets/ui/ui-loot.png" alt="Skills" />
         </div>
         <div class="hud-button" (click)="openPauseMenu()">
-          <img src="assets/ui/settings.png" alt="Settings" />
+          <img src="assets/ui/ui-settings.png" alt="Settings" />
         </div>
       </div>
     </div>
@@ -42,11 +42,11 @@
           <span>{{ character?.mp }} / {{ character?.maxMp }}</span>
         </div>
         <div class="stat">
-          <img src="assets/ui/xp.png" alt="XP" />
+          <span>XP</span>
           <span>{{ character?.xp }}</span>
         </div>
         <div class="stat">
-          <img src="assets/ui/gold.png" alt="Gold" />
+          <span>Gold</span>
           <span>{{ character?.gold }}</span>
         </div>
       </div>
@@ -71,33 +71,34 @@
   </div>
 
   <!-- Map Menu Overlay -->
-  @if (showMap) {
-    <div class="map-overlay">
-      <div class="map-parchment">
-        <div class="map-header">
-          <h2>World Map</h2>
-          <button class="close-btn" (click)="showMap = false">✕</button>
+  @if (showMapPanel) {
+    <div class="common-overlay">
+      <div class="common-wrapper">
+        <div class="common-header">
+          <div class="common-title">World Map</div>
+          <button class="close-btn" (click)="closeMap()">✕</button>
         </div>
-
-        <div class="map-body">
-          <app-minimap [size]="900" [hexSize]="8"></app-minimap>
-        </div>
-
-        <div class="map-footer">
-          <p>Move across the world to discover new lands and mysteries...</p>
-        </div>
+        <hr class="common-separator" />
+        <app-minimap [size]="900" [hexSize]="8"></app-minimap>
       </div>
     </div>
   }
 
   <!-- Pause Menu Overlay -->
-  @if (pauseMenuOpen) {
-    <div class="pause-overlay">
-      <div class="pause-menu">
-        <h2>Pause</h2>
-        <button (click)="closePauseMenu()">Continue</button>
-        <button (click)="saveGameManual()">Save Game</button>
-        <button (click)="goHome()">Back to home</button>
+  @if (showMenuPanel) {
+    <div class="common-overlay">
+      <div class="common-wrapper">
+        <div class="common-header">
+          <div class="common-title">Pause</div>
+          <button class="close-btn" (click)="closePauseMenu()">✕</button>
+        </div>
+        <hr class="common-separator" />
+        <div class="pause-menu">
+          <h2>Pause</h2>
+          <button (click)="closePauseMenu()">Continue</button>
+          <button (click)="saveGameManual()">Save Game</button>
+          <button (click)="goHome()">Back to home</button>
+        </div>
       </div>
     </div>
   }
@@ -120,20 +121,29 @@
   }
 
   @if (showInventoryPanel) {
-    <div class="inventory-overlay">
-      <div class="inventory-wrapper">
-        <div class="inventory-header">
-          <div class="inventory-title">Inventory / Character</div>
+    <div class="common-overlay">
+      <div class="common-wrapper">
+        <div class="common-header">
+          <div class="common-title">Inventory / Character</div>
           <button class="close-btn" (click)="closeInventoryPanel()">✕</button>
         </div>
-  
-        <hr class="inventory-separator" />
-  
+        <hr class="common-separator" />
         <app-inventory-panel></app-inventory-panel>
       </div>
     </div>
   }
   
-  
+  @if (showLootPanel) {
+    <div class="common-overlay">
+      <div class="common-wrapper">
+        <div class="common-header">
+          <div class="common-title">Ground Items</div>
+          <button class="close-btn" (click)="closeLootPanel()">✕</button>
+        </div>
+        <hr class="common-separator" />
+        <app-loot-panel></app-loot-panel>
+      </div>
+    </div>
+  }
   
 </div>

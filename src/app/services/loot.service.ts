@@ -39,7 +39,6 @@ export class LootService {
 
     const [picked] = this.ground.splice(index, 1);
     this.emitChange();
-    console.log(`🪙 Picked up: ${picked.item.name}`);
     return picked.item;
   }
 

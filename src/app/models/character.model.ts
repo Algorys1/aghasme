@@ -36,6 +36,13 @@ export interface Character {
 
   defense: number;
   attack: number;
+
+  baseStats?: {
+    attack: number;
+    defense: number;
+    maxHp: number;
+    maxMp: number;
+  };
 }
 
 export interface NewCharacterInput {

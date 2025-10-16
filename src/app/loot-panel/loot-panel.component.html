@@ -1,0 +1,23 @@
+<div class="loot-panel">
+  <section class="loot-grid">
+    @if (groundItems.length > 0) {
+      @for (g of groundItems; track g.id) {
+        <div class="loot-slot">
+          <img [src]="g.item.icon" [alt]="g.item.name" />
+          <div class="loot-name">{{ g.item.name }}</div>
+          <div class="loot-actions">
+            <button class="take-btn" (click)="takeItem(g)">Take</button>
+          </div>
+        </div>
+      }
+    } @else {
+      <p class="empty">Nothing to loot here...</p>
+    }
+  </section>
+
+  @if (groundItems.length > 1) {
+    <div class="loot-actions-global">
+      <button class="take-all-btn" (click)="takeAll()">Take All</button>
+    </div>
+  }
+</div>
