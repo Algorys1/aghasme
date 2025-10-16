@@ -11,68 +11,138 @@
   font-family: 'Cinzel', serif;
 }
 
+/* === GRILLE === */
 .loot-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+  max-height: calc((70px + 8px) * 4); /* 4 lignes max */
   overflow-y: auto;
-  padding-right: 4px;
+  padding: 4px;
   scrollbar-width: thin;
 }
 
 .loot-slot {
-  position: relative;
-  width: 70px;  /* si tu veux 50x50 partout, passe à 50px */
-  height: 70px;
+  width: 50px;
+  height: 50px;
   background: #f9f2d0;
   border: 2px solid #6e4a20;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  transition: all 0.15s ease;
+  cursor: pointer;
 
-  img { width: 50px; height: 50px; }
+  img {
+    width: 50px;
+    height: 50px;
+  }
 
   .loot-name {
-    margin-top: 4px;
     font-size: 0.75rem;
     color: #2b1b0f;
+    margin-top: 4px;
+    text-align: center;
     max-width: 90%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align: center;
   }
 
-  .loot-actions {
-    margin-top: 2px;
-    .take-btn {
-      background: #d8b46a;
-      border: 1px solid #5a3a1b;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      padding: 2px 6px;
-      cursor: pointer;
-      color: #2b1b0f;
+  &.selected {
+    border-color: #c0863c;
+    box-shadow: 0 0 8px #c0863c;
+    transform: scale(1.05);
+  }
+}
+
+/* === DESCRIPTION === */
+.item-description {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.85rem;
+  color: #2b1b0f;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .rarity-label {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    .common { color: #3b3b3b; }
+    .rare { color: #4169e1; }
+    .epic { color: #9932cc; }
+    .legendary { color: #ff8c00; }
+    .artefact { color: #b22222; }
+  }
+
+  .item-effects {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0;
+    li {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+      font-size: 0.8rem;
     }
   }
 }
 
+/* === ACTIONS GLOBALES === */
 .loot-actions-global {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
   margin-top: auto;
+  flex-shrink: 0;
 
-  .take-all-btn {
-    background: #d8b46a;
-    border: 2px solid #5a3a1b;
-    border-radius: 8px;
-    font-size: 1rem;
-    padding: 6px 12px;
+  .action-btn {
+    background: none;
+    border: none;
     cursor: pointer;
-    font-weight: bold;
-    color: #2b1b0f;
+    width: 60px;
+    height: 60px;
+    flex: 0 0 60px;
+    transition: transform 0.15s ease, filter 0.2s ease;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      display: block;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      filter: none;
+    }
   }
 }
 

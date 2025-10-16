@@ -132,7 +132,7 @@
         <button
           class="action-btn"
           title="Throw"
-          (click)="inventory.removeItem(selectedItem!.id)"
+          (click)="inventory.dropItem(selectedItem)"
         >
           <img src="assets/ui/action-throw.png" alt="Throw" />
         </button>
@@ -140,7 +140,7 @@
         <button
           class="action-btn"
           title="Delete"
-          (click)="clearSelection()"
+          (click)="inventory.removeItem(selectedItem!.id)"
         >
           <img src="assets/ui/action-delete.png" alt="Delete" />
         </button>

@@ -13,7 +13,6 @@ import { MinimapComponent } from "../minimap/minimap.component";
 import { OverlayWindowComponent } from '../overlay-window/overlay-window.component';
 import {ActionType} from '../models/actions';
 import {ActionService} from '../services/action.service';
-import { CombatService } from '../services/combat.service';
 import { CombatComponent } from '../combat/combat.component';
 import { InventoryPanelComponent } from '../inventory-panel/inventory-panel.component';
 import { LootPanelComponent } from "../loot-panel/loot-panel.component";
@@ -58,7 +57,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private saveService: SaveService,
     private characterService: CharacterService,
     private actionService: ActionService,
-    private combatService: CombatService,
   ) {}
 
   ngOnInit(): void {

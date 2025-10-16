@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { EquipSlot, Item, ItemType } from '../models/items';
 import { CharacterService } from './character.service';
+import { LootService } from './loot.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,10 @@ export class InventoryService {
   private errorSubject = new Subject<string>();
   public errors$ = this.errorSubject.asObservable();
 
-  constructor(private characterService: CharacterService) {}
+  constructor(
+    private characterService: CharacterService,
+    private lootService: LootService
+  ) {}
 
   /** Retourne les items actuels */
   getItems(): (Item & { count: number })[] {
@@ -80,6 +84,15 @@ export class InventoryService {
     this.itemsSubject.next(this.getItems());
     return true;
   }
+
+  dropItem(item: Item): boolean {
+    const removed = this.removeItem(item.id);
+    if (!removed) return false;
+  
+    this.lootService.dropItem(item, { q: 0, r: 0 }, 'player');
+    return true;
+  }
+  
 
   removeItem(itemId: string): boolean {
     const index = this.items.findIndex((i) => i.id === itemId);

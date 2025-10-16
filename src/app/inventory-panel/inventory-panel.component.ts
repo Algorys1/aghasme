@@ -36,13 +36,16 @@ export class InventoryPanelComponent {
     });
     
     this.character = this.characterService.getCharacter();
+    // FOR TESTING PURPOSE
+    if (!this.inventory.getItems().length) {
+      this.loadtestInventory();
+    }
+  }
 
-    // TODO for test purpose
+  loadtestInventory() {
     this.inventory.addItem(BASE_ITEMS[2]);
     this.inventory.addItem(BASE_ITEMS[9]);
     this.inventory.addItem(BASE_ITEMS[10]);
-    this.inventory.addItem(BASE_ITEMS[33]);
-    this.inventory.addItem(BASE_ITEMS[33]);
     this.inventory.addItem(BASE_ITEMS[35]);
     this.inventory.addItem(BASE_ITEMS[60]);
     this.inventory.addItem(BASE_ITEMS[63]);
