@@ -15,6 +15,7 @@ export interface MapTileSnapshot {
   terrain: Terrain;
   discovered: boolean;
   overlay?: OverlayKind | null;
+  variant?: string
 }
 
 export interface MapSnapshot {
@@ -32,7 +33,7 @@ export class MapService {
   private size = 80;
 
   // --- Map Data ---
-  private tiles: Record<string, { gfx: Container; terrain: Terrain; discovered: boolean }> = {};
+  private tiles: Record<string, { gfx: Container; terrain: Terrain; discovered: boolean, variant: string }> = {};
   private overlaySprites: Record<string, Sprite[]> = {};
   private overlayTypes: Record<string, OverlayKind[]> = {};
 
@@ -107,11 +108,16 @@ export class MapService {
             size: this.size,
             terrain,
             container: this.renderer.container,
-            textures: this.renderer.textures,            
+            textures: this.renderer.textures,
             onClick: () => this.movePlayer(q, r)
           });
 
-          this.tiles[`${q},${r}`] = { gfx: tile, terrain, discovered: false };
+          this.tiles[`${q},${r}`] = { 
+            gfx: tile, 
+            terrain,
+            discovered: false,
+            variant: (tile as any).variantKey ?? `${terrain}-1` 
+          };
 
           const overlay = this.pickOverlayForTerrain(terrain);
           if (overlay !== OverlayKind.None) this.addOverlay(q, r, overlay);
@@ -222,7 +228,8 @@ export class MapService {
         r: Number(rs),
         terrain: entry.terrain,
         discovered: entry.discovered,
-        overlay: (entry as any).overlay ?? null
+        overlay: (entry as any).overlay ?? null,
+        variant: (entry as any).variant ?? `${entry.terrain}-1`
       });
     }
 
@@ -325,19 +332,25 @@ export class MapService {
 
     for (const tile of snapshot.tiles) {
       const { x, y } = this.hexToPixel(tile.q, tile.r);
+      const variantKey = tile.variant ?? `${tile.terrain}-1`;
+    
       const tileContainer = createTile({
         x, y,
         size: this.size,
         terrain: tile.terrain ?? 'plain',
         container: this.renderer.container,
         textures: this.renderer.textures,
-        onClick: () => this.movePlayer(tile.q, tile.r)
+        onClick: () => this.movePlayer(tile.q, tile.r),
+        variantKey
       });
+    
       this.tiles[tile.key] = {
         gfx: tileContainer,
         terrain: tile.terrain,
-        discovered: tile.discovered
+        discovered: tile.discovered,
+        variant: variantKey
       };
+    
       const tileGfx = tileContainer as any;
       if (tileGfx.fog) tileGfx.fog.visible = !tile.discovered;
     }

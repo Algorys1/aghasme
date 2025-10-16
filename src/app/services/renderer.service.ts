@@ -1,4 +1,3 @@
-// src/app/services/renderer.service.ts
 import { Injectable } from '@angular/core';
 import { Application, Container, Sprite, Texture, Assets } from 'pixi.js';
 import { OVERLAY_MANIFEST } from '../models/overlays';
@@ -19,22 +18,13 @@ export class RendererService {
     return this.mapContainer;
   }
 
-  get application(): Application {
-    return this.app;
-  }
-
-  get ready(): boolean {
-    return this.initialized;
-  }
-
-  get textures(): Record<string, Texture>{
+  get textures(): Record<string, Texture> {
     return this.tileTextures;
   }
 
   /** Boot Pixi Application */
   async init(canvas: HTMLCanvasElement): Promise<void> {
     if (this.app) {
-      console.log('♻️ Reboot Pixi instance');
       this.app.destroy(true, { children: true, texture: false, context: true });
     }
 
@@ -42,7 +32,7 @@ export class RendererService {
     await this.app.init({
       resizeTo: canvas.parentElement!,
       backgroundColor: 0x111111,
-      canvas
+      canvas,
     });
 
     this.mapContainer = new Container();
@@ -52,53 +42,73 @@ export class RendererService {
     window.addEventListener('resize', () => this.centerCamera());
   }
 
-  /** Load terrain tiles */
+  /** 🔥 Nouvelle version clean : auto-chargement des variantes terrain-n.png */
   async loadTileTextures(): Promise<void> {
-    if (Object.keys(this.tileTextures).length > 0) return;
+    this.tileTextures = {}; // reset complet
 
-    const manifest = await fetch('assets/tiles/tiles.json').then(res => res.json());
-    for (const [key, path] of Object.entries(manifest)) {
-      this.tileTextures[key] = await Assets.load(path as string);
+    const terrains = [
+      'plain', 'forest', 'desert', 'mountain',
+      'volcano', 'sea', 'jungle', 'swamp', 'fog'
+    ];
+
+    const fallback = 'assets/tiles/plain-1.png';
+
+    for (const terrain of terrains) {
+      let variantIndex = 1;
+      let foundAny = false;
+
+      while (true) {
+        const path = `assets/tiles/${terrain}-${variantIndex}.png`;
+        try {
+          const tex = await Assets.load(path);
+          this.tileTextures[`${terrain}-${variantIndex}`] = tex;
+          foundAny = true;
+          variantIndex++;
+        } catch {
+          break;
+        }
+      }
+
+      if (!foundAny) {
+        console.warn(`⚠️ No variants found for ${terrain}, using fallback plain-1.png`);
+        const tex = await Assets.load(fallback);
+        this.tileTextures[`${terrain}-1`] = tex;
+      }
     }
+
+    const fogKey = Object.keys(this.tileTextures).find(k => k.startsWith('fog-'));
+    if (fogKey) {
+      this.tileTextures['fog'] = this.tileTextures[fogKey];
+    } else {
+      console.warn('⚠️ Missing fog texture, using plain-1 as fallback.');
+      this.tileTextures['fog'] = this.tileTextures['plain-1'];
+    }
+
     console.log(`🧩 ${Object.keys(this.tileTextures).length} tile textures loaded.`);
   }
 
-  /** Load overlay icons from manifest */
+  /** Overlays (inchangé) */
   async loadOverlayTextures(): Promise<void> {
-    if (Object.keys(this.overlayTextures).length > 0) return;
-
+    this.overlayTextures = {};
     for (const [key, info] of Object.entries(OVERLAY_MANIFEST)) {
       if (!info.icon) continue;
       try {
         this.overlayTextures[key] = await Assets.load(info.icon);
       } catch {
-        const fallback = `assets/overlays/${key}.png`;
-        try {
-          this.overlayTextures[key] = await Assets.load(fallback);
-          console.warn(`⚠️ Missing ${info.icon}, used fallback ${fallback}`);
-        } catch {
-          console.warn(`⚠️ Could not load overlay "${key}" (${info.icon})`);
-        }
+        console.warn(`⚠️ Could not load overlay "${key}" (${info.icon})`);
       }
     }
     console.log(`🧿 ${Object.keys(this.overlayTextures).length} overlay textures loaded.`);
   }
 
-  /** Load player texture from archetype */
+  /** Player */
   async loadPlayerTexture(archetype: Archetype): Promise<Texture> {
-    const path = CHARACTER_ASSETS[archetype]; // ✅ maintenant reconnu comme une clé valide
+    const path = CHARACTER_ASSETS[archetype];
     if (!path) throw new Error(`No asset for archetype "${archetype}"`);
-
-    if (Assets.cache.has(path)) {
-      console.log('♻️ Unload previous player texture:', path);
-      await Assets.unload(path);
-    }
-
     this.playerTexture = await Assets.load(path);
     return this.playerTexture;
   }
 
-  /** Create an overlay sprite */
   createOverlaySprite(kind: string, x: number, y: number, size: number): Sprite | null {
     const tex = this.overlayTextures[kind];
     if (!tex) return null;
@@ -112,7 +122,6 @@ export class RendererService {
     return s;
   }
 
-  /** Create the player sprite */
   createPlayerSprite(size: number): Sprite {
     if (!this.playerTexture) throw new Error('Player texture not loaded');
     const s = new Sprite(this.playerTexture);
@@ -123,28 +132,17 @@ export class RendererService {
     return s;
   }
 
-  /** Camera centering */
-  centerCamera(q: number = 0, r: number = 0, size = 80): void {
+  centerCamera(q = 0, r = 0, size = 80): void {
     if (!this.app || !this.mapContainer) return;
     const x = size * Math.sqrt(3) * (q + r / 2);
     const y = size * 1.5 * r;
-    const targetX = this.app.screen.width / 2 - x;
-    const targetY = this.app.screen.height / 2 - y;
-    this.mapContainer.x = targetX;
-    this.mapContainer.y = targetY;
+    this.mapContainer.x = this.app.screen.width / 2 - x;
+    this.mapContainer.y = this.app.screen.height / 2 - y;
   }
 
-  /** Cleanup */
   clear(): void {
     if (!this.app) return;
-
-    try {
-      console.log('🧹 Destroying Pixi renderer...');
-      this.app.destroy(true, { children: true, texture: false, context: true });
-    } catch (e) {
-      console.warn('⚠️ Error while destroying Pixi:', e);
-    }
-
+    this.app.destroy(true, { children: true, texture: false, context: true });
     this.tileTextures = {};
     this.overlayTextures = {};
     this.playerTexture = undefined;
