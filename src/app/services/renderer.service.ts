@@ -102,8 +102,8 @@ export class RendererService {
   }
 
   /** Player */
-  async loadPlayerTexture(archetype: Archetype): Promise<Texture> {
-    const path = CHARACTER_ASSETS[archetype];
+  async loadPlayerTexture(gender: string, archetype: Archetype): Promise<Texture> {
+    const path = CHARACTER_ASSETS[gender][archetype];
     if (!path) throw new Error(`No asset for archetype "${archetype}"`);
     this.playerTexture = await Assets.load(path);
     return this.playerTexture;

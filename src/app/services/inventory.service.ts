@@ -5,7 +5,7 @@ import { CharacterService } from './character.service';
 import { LootService } from './loot.service';
 import { MapService } from './map.service';
 import { Effect } from '../models/effect.model';
-import { applyEffectsToEntity, resolveCharacterStats } from '../utils/effect-utils';
+import { applyEffectsToEntity, resolveCharacterStats } from '../tools/effect-utils';
 
 @Injectable({
   providedIn: 'root',

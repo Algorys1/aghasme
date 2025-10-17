@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ARCHETYPE_ORB_MODIFIERS, Character, NewCharacterInput, Orbs } from '../models/character.model';
+import { Archetype, ARCHETYPE_ORB_MODIFIERS, Character, NewCharacterInput, Orbs } from '../models/character.model';
+import { BACKGROUNDS } from '../models/background.model';
 
 const DEFAULT_ORBS: Orbs = { bestial: 0, elemental: 0, natural: 0, mechanic: 0 };
 
@@ -48,9 +49,10 @@ export class CharacterService {
   
     const finalDefense = defenseBonus;
   
-    // --- Création du personnage final
+    // --- Create & finalize
     this.character = {
       name: data.name,
+      gender: data.gender,
       archetype,
       level,
       xp: data.xp ?? 0,
@@ -72,8 +74,34 @@ export class CharacterService {
         maxMp: baseMaxMp,
       },
     };
+
+    if (data.background) {
+      const bg = BACKGROUNDS.find(b => b.id === data.background);
+      if (bg) {
+        bg.effects?.forEach(eff => {
+          switch (eff.stat) {
+            case 'attack': this.character!.attack += eff.value; break;
+            case 'defense': this.character!.defense += eff.value; break;
+            case 'maxHp': this.character!.maxHp += eff.value; this.character!.hp = this.character!.maxHp; break;
+            case 'maxMp': this.character!.maxMp += eff.value; this.character!.mp = this.character!.maxMp; break;
+            case 'bestial':
+            case 'elemental':
+            case 'natural':
+            case 'mechanic':
+              (this.character!.orbs as any)[eff.stat] += eff.value;
+              break;
+          }
+        });
+    
+        // Equipment
+        if (bg.startingItemIds?.length) {
+          this.character!.inventory.push(...bg.startingItemIds);
+        }
+      }
+    }
   
     this.characterSubject.next(this.character);
+    
     return this.character;
   }  
 
@@ -137,6 +165,48 @@ export class CharacterService {
 
   private xpToNextLevel(level: number) {
     return 100 + (level - 1) * 50;
+  }
+
+  previewStats(archetype: Archetype, orbs: Orbs) {
+    const mods = ARCHETYPE_ORB_MODIFIERS[archetype];
+    const adjusted = { ...orbs };
+    for (const key of Object.keys(mods) as (keyof Orbs)[]) {
+      adjusted[key] = Math.max(0, adjusted[key] + (mods[key] ?? 0));
+    }
+  
+    // --- même logique que pour le createCharacter ---
+    const baseAttack = Math.floor((adjusted.bestial + adjusted.elemental) / 2);
+    const baseDefense = Math.floor((adjusted.mechanic + adjusted.natural) / 2);
+  
+    let attackBonus = 0;
+    if (baseAttack >= 5 && baseAttack <= 7) attackBonus = -1;
+    else if (baseAttack >= 8 && baseAttack <= 11) attackBonus = 0;
+    else if (baseAttack >= 12 && baseAttack <= 14) attackBonus = 1;
+    else if (baseAttack >= 15 && baseAttack <= 17) attackBonus = 2;
+    else if (baseAttack >= 18 && baseAttack <= 20) attackBonus = 3;
+  
+    let defenseBonus = 0;
+    if (baseDefense >= 5 && baseDefense <= 7) defenseBonus = -1;
+    else if (baseDefense >= 8 && baseDefense <= 11) defenseBonus = 0;
+    else if (baseDefense >= 12 && baseDefense <= 14) defenseBonus = 1;
+    else if (baseDefense >= 15 && baseDefense <= 17) defenseBonus = 2;
+    else if (baseDefense >= 18 && baseDefense <= 20) defenseBonus = 3;
+  
+    return {
+      attack: baseAttack + attackBonus,
+      defense: defenseBonus,
+      maxHp: Math.floor((adjusted.natural + adjusted.mechanic) / 2),
+      maxMp: Math.floor((adjusted.elemental + adjusted.natural) / 2),
+      adjustedOrbs: adjusted,
+    };
+  }
+
+  getArchetypeModifiers(archetype: Archetype) {
+    const mods = ARCHETYPE_ORB_MODIFIERS[archetype];
+    return Object.entries(mods).map(([key, value]) => ({
+      key,
+      value,
+    }));
   }
 
   /** Nettoyage mémoire */

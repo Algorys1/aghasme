@@ -1,10 +1,19 @@
 export type Archetype = 'beast' | 'elemental' | 'ant' | 'engineer';
+export type Gender = 'male' | 'female';
 
-export const CHARACTER_ASSETS: Record<Archetype, string> = {
-  beast: 'assets/characters/beast.png',
-  elemental: 'assets/characters/elemental.png',
-  ant: 'assets/characters/ant.png',
-  engineer: 'assets/characters/engineer.png'
+export const CHARACTER_ASSETS: Record<string, Record <Archetype, string>> = {
+  "male" : {
+    beast: 'assets/characters/beast-male.png',
+    elemental: 'assets/characters/elemental-male.png',
+    ant: 'assets/characters/ant-male.png',
+    engineer: 'assets/characters/engineer-male.png'
+  },
+  "female" :{
+    beast: 'assets/characters/beast-female.png',
+    elemental: 'assets/characters/elemental-female.png',
+    ant: 'assets/characters/ant-female.png',
+    engineer: 'assets/characters/engineer-female.png'
+  }
 };
 
 export type OrbKey = 'bestial' | 'elemental' | 'natural' | 'mechanic';
@@ -18,6 +27,7 @@ export interface Orbs {
 
 export interface Character {
   name: string;
+  gender: Gender;
   archetype: Archetype;
   level: number;
   xp: number;
@@ -46,7 +56,9 @@ export interface Character {
 }
 
 export interface NewCharacterInput {
+  background: any;
   name: string;
+  gender: Gender;
   archetype?: Archetype;
   level?: number;
   xp?: number;
@@ -69,22 +81,22 @@ export const ORB_DEFINITIONS: Record<OrbKey, { label: string; icon: string; desc
   bestial: {
     label: 'Bestial',
     icon: 'assets/ui/orb-bestial.png',
-    description: 'Raw power and primal instincts. Increases vitality and your chances of survival.',
+    description: 'Embodies raw power and primal strength. Enhances your physical attacks and combat prowess.',
   },
   elemental: {
     label: 'Elemental',
     icon: 'assets/ui/orb-elemental.png',
-    description: 'Connection to the elements that make up the world. Determines mystical energy.',
+    description: 'Channel the power of the elements. Improves your mystical energy and magical offense.',
   },
   natural: {
     label: 'Natural',
     icon: 'assets/ui/orb-natural.png',
-    description: 'Resilience, harmony, and growth. Represents endurance, adaptation, and your connection to nature.',
+    description: 'Represents endurance and balance. Increases vitality, resilience, and connection to nature.',
   },
   mechanic: {
     label: 'Mechanic',
     icon: 'assets/ui/orb-mechanic.png',
-    description: 'Engineering, technology, and invention. Provides precision and mastery of advanced tools.',
+    description: 'Precision and ingenuity. Strengthens your defense and mastery of crafted tools and armor.',
   },
 };
 

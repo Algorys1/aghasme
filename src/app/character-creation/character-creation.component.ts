@@ -1,81 +1,137 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { CharacterService } from '../services/character.service';
-import { Archetype, NewCharacterInput, OrbKey, ORB_DEFINITIONS } from '../models/character.model';
-import { CHARACTER_ASSETS } from '../models/character.model';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { TitleCasePipe } from '@angular/common';
+import { CharacterService } from '../services/character.service';
+import { Archetype, Orbs, Gender, ORB_DEFINITIONS, ARCHETYPE_ORB_MODIFIERS } from '../models/character.model';
+import { BACKGROUNDS, CharacterBackground } from '../models/background.model';
 
 @Component({
   selector: 'app-character-creation',
+  imports: [TitleCasePipe, FormsModule],
   templateUrl: './character-creation.component.html',
-  styleUrls: ['./character-creation.component.scss'],
-  imports: [FormsModule, CommonModule, FormsModule]
+  styleUrls: ['./character-creation.component.scss']
 })
 export class CharacterCreationComponent {
-  archetypes = Object.keys(CHARACTER_ASSETS) as Archetype[];
-  CHARACTER_ASSETS = CHARACTER_ASSETS;
+  step = 1; // 1: archetype, 2: orbs, 3: name
 
-  name: string = '';
-  selectedArchetype: Archetype = 'beast';
+  archetypes: Archetype[] = ['beast', 'elemental', 'ant', 'engineer'];
+  genders: Gender[] = ['male', 'female'];
+  selectedArchetype: Archetype | null = null;
+  selectedGender: Gender = 'male';
+  hasInitialized = false;
 
-  // points à répartir
-  totalPoints: number = 12;
-  remainingPoints: number = this.totalPoints;
+  orbs: Orbs = { bestial: 7, elemental: 7, natural: 7, mechanic: 7 };
+  orbKeys: (keyof Orbs)[] = ['bestial', 'elemental', 'natural', 'mechanic'];
+  orbDefs = ORB_DEFINITIONS;
+  orbModifiers: Partial<Orbs> = {};
+  pointsLeft = 10;
+  name = '';
 
-  readonly MAX_ORB_VALUE = 16;
+  backgrounds = BACKGROUNDS;
+  selectedBackground: CharacterBackground | null = null;
 
-  // On utilise directement les orbes
-  orbs: Record<OrbKey, number> = {
-    bestial: 8,
-    elemental: 8,
-    natural: 8,
-    mechanic: 8,
+  previewStats = {
+    attack: 0,
+    defense: 0,
+    maxHp: 0,
+    maxMp: 0
   };
 
-  readonly ORB_DEFS = ORB_DEFINITIONS;
-  orbKeys: OrbKey[] = ['bestial', 'elemental', 'natural', 'mechanic'];
-
   constructor(
-    private characterService: CharacterService,
+    public characterService: CharacterService,
     private router: Router
   ) {}
 
+  // === STEP 1 : ARCHETYPE & GENDER ===
   selectArchetype(type: Archetype) {
     this.selectedArchetype = type;
+    this.orbModifiers = ARCHETYPE_ORB_MODIFIERS[type] ?? {};
+    this.updatePreview();
   }
 
-  assetFor(a: Archetype): string {
-    return this.CHARACTER_ASSETS[a];
+  selectGender(g: Gender) {
+    this.selectedGender = g;
   }
 
-  increaseOrb(key: OrbKey) {
-    if (this.remainingPoints > 0 && this.orbs[key] < this.MAX_ORB_VALUE) {
-      this.orbs[key]++;
-      this.remainingPoints--;
+  // === STEP 2 : ORBS ===
+  adjustOrb(key: keyof Orbs, delta: number) {
+    const current = this.orbs[key];
+
+    if (delta < 0 && current <= 0) return;
+    if (delta > 0 && this.pointsLeft === 0) return;
+    if (delta > 0 && current >= 16) return;
+  
+    this.orbs[key] = current + delta;
+    this.pointsLeft -= delta;
+
+    this.updatePreview();
+  }
+
+  updatePreview() {
+    if (!this.selectedArchetype) return;
+    this.previewStats = this.characterService.previewStats(this.selectedArchetype, this.orbs);
+  }
+  
+  // === STEP 3 : BACKGROUND ===
+  selectBackground(bg: CharacterBackground) {
+    this.selectedBackground = bg;
+  }  
+
+  // === STEP 4 : NAME & CONFIRMATION ===
+  validateName(raw: string): string {
+    if (!raw) return '';
+  
+    let name = raw.trim();
+  
+    name = name.replace(/[^a-zA-Z _-]/g, '');
+    name = name.replace(/\s{2,}/g, ' ');
+    name = name.slice(0, 12);
+  
+    if (name.length > 0) {
+      name = name[0].toUpperCase() + name.slice(1);
     }
+  
+    return name;
   }
 
-  decreaseOrb(key: OrbKey) {
-    if (this.orbs[key] > 0) {
-      this.orbs[key]--;
-      this.remainingPoints++;
-    }
-  }
-
-  onCreateCharacter() {
-    if (!this.name || this.remainingPoints > 0) {
-      alert('Give a name and distribute all points before !');
-      return;
-    }
-
-    const newChar: NewCharacterInput = {
-      name: this.name,
+  confirm() {
+    if (!this.selectedArchetype || !this.name.trim()) return;
+    const cleanName = this.validateName(this.name);
+    if (!cleanName) return;
+  
+    const newChar = this.characterService.createCharacter({
+      name: cleanName,
       archetype: this.selectedArchetype,
-      orbs: { ...this.orbs },
-    };
+      gender: this.selectedGender,
+      orbs: this.orbs,
+      background: this.selectedBackground?.id
+    });
+  
+    this.router.navigate(['/game'], {
+      state: { newGame: true }
+    });
+  }  
 
-    this.characterService.createCharacter(newChar);
-    this.router.navigate(['/game'], { state: { newGame: true } });
+  nextStep() {
+    if (this.step < 4) this.step++;
+  }
+
+  prevStep() {
+    if (this.step > 1) this.step--;
+  }
+
+  backToHome() {
+    this.router.navigate(['/start']);
+  }
+
+  getSlideTransform(): string {
+    return `translateX(${(this.step - 1) * -100}vw)`;
+  }
+  
+  
+  getPortrait(): string {
+    if (!this.selectedArchetype) return 'assets/characters/default.png';
+    return `assets/characters/${this.selectedArchetype}-${this.selectedGender}.png`;
   }
 }

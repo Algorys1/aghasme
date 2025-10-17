@@ -24,7 +24,7 @@ export class PlayerService {
   get portrait(): string {
     const char = this.getCharacter();
     if (!char) return 'assets/characters/default.png';
-    return CHARACTER_ASSETS[char.archetype];
+    return CHARACTER_ASSETS[char.gender][char.archetype];
   }
 
   /** Rafraîchit les observables */

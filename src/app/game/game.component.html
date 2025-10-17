@@ -8,24 +8,25 @@
   <div class="hud-top">
     <div class="hud-row hud-top-row">
       <div class="character-name">
-        {{ character?.name }} <span class="lvl">Lv {{ character?.level }}</span>
+        <span>{{ character?.name }}</span>
+        <span class="lvl">Lv {{ character?.level }}</span>
       </div>
 
       <div class="hud-buttons">
         <div class="hud-button" (click)="openMapPanel()">
-          <img src="assets/ui/ui-map.png" alt="Map" />
+          <img src="assets/ui/hud-map.png" alt="Map" />
         </div>
         <div class="hud-button" (click)="openInventoryPanel()">
-          <img src="assets/ui/ui-backpack.png" alt="Backpack" />
+          <img src="assets/ui/hud-inventory.png" alt="Backpack" />
         </div>
         <div class="hud-button" (click)="openQuests()">
-          <img src="assets/ui/ui-quests.png" alt="Quests" />
+          <img src="assets/ui/hud-quests.png" alt="Quests" />
         </div>
         <div class="hud-button" (click)="openLootPanel()">
-          <img src="assets/ui/ui-loot.png" alt="Skills" />
+          <img src="assets/ui/hud-loot.png" alt="Skills" />
         </div>
         <div class="hud-button" (click)="openPauseMenu()">
-          <img src="assets/ui/ui-settings.png" alt="Settings" />
+          <img src="assets/ui/hud-settings.png" alt="Settings" />
         </div>
       </div>
     </div>

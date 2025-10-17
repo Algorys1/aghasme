@@ -2,7 +2,7 @@ import { Enemy } from '../models/enemy.model';
 import { Terrain } from './tile.factory';
 import { EnemyTables } from './enemy-tables';
 import { Effect } from '../models/effect.model';
-import { applyEffectsToEntity } from '../utils/effect-utils';
+import { applyEffectsToEntity } from '../tools/effect-utils';
 
 export interface EnemyTemplate {
   name: string;

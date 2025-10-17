@@ -314,7 +314,7 @@ export class MapService {
   
     const char = this.characterService.getCharacter();
     if (!char) throw new Error('No character found to load player texture');
-    await this.renderer.loadPlayerTexture(char.archetype);
+    await this.renderer.loadPlayerTexture(char.gender, char.archetype);
   }
 
   async loadFromSnapshotWithCanvas(snapshot: MapSnapshot, canvas: HTMLCanvasElement): Promise<void> {

@@ -1,51 +1,194 @@
-<div class="creation-container">
-  <h2>Create a character</h2>
-
-  <div class="name-input">
-    <label for="name">Name</label>
-    <input id="name" type="text" [(ngModel)]="name" placeholder="Enter your character's name" />
+<div class="wrapper">
+  <div class="progress-bar">
+    <div class="progress-fill" [style.width.%]="(step / 4) * 100"></div>
   </div>
-
-  <h3>Choose an archetype</h3>
-  <div class="archetype-grid">
-    @for (type of archetypes; track type) {
-      <div
-        (click)="selectArchetype(type)"
-        [class.selected]="selectedArchetype === type"
-        class="archetype-card">
-        <img [src]="assetFor(type)" [alt]="type" />
-        <p>{{ type | titlecase }}</p>
-      </div>
-    }
-  </div>
-
-  <h3>Distribute your points</h3>
-  <p class="remaining">Remaining points: {{ remainingPoints }}</p>
-
-  <div class="stats">
-    @for (orb of orbKeys; track orb) {
-      <div class="stat" [ngClass]="orb">
-        <span class="label">
-          <img [src]="ORB_DEFS[orb].icon" [alt]="ORB_DEFS[orb].label + ' orb'" />
-          {{ ORB_DEFS[orb].label }}
-        </span>
   
-        <!-- Contrôles en ligne -->
-        <div class="controls">
-          <button (click)="decreaseOrb(orb)" [disabled]="orbs[orb] <= 0">-</button>
-          <span class="value">{{ orbs[orb] }}</span>
-          <button 
-            (click)="increaseOrb(orb)" 
-            [disabled]="orbs[orb] >= MAX_ORB_VALUE || remainingPoints <= 0">
-            +
+  <div class="container" [style.transform]="getSlideTransform()">
+
+    <!-- === STEP 1 : ARCHETYPE & GENDER === -->
+    <section class="slide">
+      <h2>Select Archetype</h2>
+
+      <div class="archetype-grid">
+        @for (type of archetypes; track type) {
+          <div
+            class="archetype-card"
+            [class.selected]="selectedArchetype === type"
+            (click)="selectArchetype(type)"
+          >
+            <img [src]="'assets/characters/' + type + '-' + selectedGender + '.png'" [alt]="type" />
+            <p>{{ type | titlecase }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="gender-select">
+        @for (g of genders; track g) {
+          <button
+            [class.active]="selectedGender === g"
+            (click)="selectGender(g)"
+          >
+            {{ g | titlecase }}
           </button>
-        </div>
-  
-        <!-- Description -->
-        <p class="orb-desc">{{ ORB_DEFS[orb].description }}</p>
+        }
       </div>
-    }
-  </div>   
 
-  <button class="create-btn" (click)="onCreateCharacter()">Start the adventure</button>
+      @if (selectedArchetype) {
+        <div class="preview-block">
+          <img [src]="getPortrait()" class="portrait" />
+          <div class="modifiers">
+            <h4>Modifiers ({{ selectedArchetype | titlecase }})</h4>
+            <ul>
+              @for (entry of characterService.getArchetypeModifiers(selectedArchetype!); track entry.key) {
+                <li>
+                  {{ entry.key | titlecase }}:
+                  <span [class.bonus]="entry.value > 0" [class.malus]="entry.value < 0">
+                    {{ entry.value > 0 ? '+' : '' }}{{ entry.value }}
+                  </span>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      }
+
+      <div class="nav-buttons">
+        <button (click)="backToHome()" >Cancel</button>
+        <button (click)="nextStep()" [disabled]="!selectedArchetype">Next ▶</button>
+      </div>
+    </section>
+
+    <!-- === STEP 2 : ORBS === -->
+    <section class="slide">
+      <h2>Distribute Orbs</h2>
+      <div>Points left: {{ pointsLeft }}</div>
+
+      <div class="orbs-grid">
+        @for (key of orbKeys; track key) {
+          <div class="orb-row">
+            <img [src]="orbDefs[key].icon" class="orb-icon" [alt]="orbDefs[key].label" />
+            <label>{{ key | titlecase }}</label>
+
+            <!-- ✅ Affichage du bonus/malus d'archetype -->
+            @if (orbModifiers[key]) {
+              <span 
+                class="orb-modifier" 
+                [class.bonus]="orbModifiers[key]! > 0" 
+                [class.malus]="orbModifiers[key]! < 0"
+              >
+                {{ orbModifiers[key]! > 0 ? '+' : '' }}{{ orbModifiers[key] }}
+              </span>
+            } @else {
+              <span class="orb-modifier empty"> </span>
+            }
+            <div class="orb-controls">
+              <img
+                src="assets/ui/btn-minus.png"
+                class="control-btn"
+                alt="minus"
+                (click)="adjustOrb(key, -1)"
+              />
+              <span>{{ orbs[key] }}</span>
+              <img
+                src="assets/ui/btn-plus.png"
+                class="control-btn"
+                alt="plus"
+                (click)="adjustOrb(key, +1)"
+              />
+            </div>
+          </div>
+
+          <div class="orb-description">
+            {{ orbDefs[key].description }}
+          </div>
+        }
+      </div>      
+
+      <div class="stats-preview">
+        <div class="preview-title">Stats Preview</div>
+        <div class="stats">
+          <div>
+            <p>Attack: {{ previewStats.attack }}</p>
+            <p>Defense: {{ previewStats.defense }}</p>
+          </div>
+          <div>
+            <p>
+              <img src="assets/ui/hp.png">
+              <span>HP: {{ previewStats.maxHp }}</span>
+            </p>
+            <p>
+              <img src="assets/ui/mana.png">
+              <span>MP: {{ previewStats.maxMp }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button (click)="prevStep()">◀ Back</button>
+        <button (click)="nextStep()" [disabled]="pointsLeft > 0">Next ▶</button>
+      </div>
+    </section>
+
+    <!-- === STEP 3 : BACKGROUND === -->
+    <section class="slide">
+      <h2>Select Background</h2>
+    
+      <div class="background-grid">
+        @for (bg of backgrounds; track bg.id) {
+          <div
+            class="background-card"
+            [class.selected]="selectedBackground?.id === bg.id"
+            (click)="selectBackground(bg)"
+          >
+            <h3>{{ bg.name }}</h3>
+            <p>{{ bg.description }}</p>
+    
+            @if (bg.effects?.length) {
+              <ul>
+                @for (eff of bg.effects; track eff.stat) {
+                  <li>
+                    {{ eff.stat | titlecase }}:
+                    <span [class.bonus]="eff.value > 0" [class.malus]="eff.value < 0">
+                      {{ eff.value > 0 ? '+' : '' }}{{ eff.value }}
+                    </span>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        }
+      </div>
+    
+      @if (selectedBackground?.flavor) {
+        <p class="flavor-text">“{{ selectedBackground?.flavor }}”</p>
+      }
+    
+      <div class="nav-buttons">
+        <button (click)="prevStep()">◀ Back</button>
+        <button (click)="nextStep()" [disabled]="!selectedBackground">Next ▶</button>
+      </div>
+    </section>    
+    
+    <!-- === STEP 4 : NAME === -->
+    <section class="slide">
+      <h2>During this adventure, what should we call you?</h2>
+      <input 
+        type="text" 
+        [(ngModel)]="name"
+        (ngModelChange)="name = validateName($event)"
+        maxlength="12"
+        placeholder="Enter name..."
+      />
+      <p class="name-hint">
+        Allowed: letters, spaces, dashes (-) and underscores (_). Max 12 characters.
+      </p>
+
+      <div class="nav-buttons">
+        <button (click)="prevStep()">◀ Back</button>
+        <button (click)="confirm()" [disabled]="!name.trim()">Start Adventure ▶</button>
+      </div>
+    </section>
+
+  </div>
 </div>
