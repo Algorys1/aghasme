@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Application, Container, Sprite, Texture, Assets } from 'pixi.js';
-import { OVERLAY_MANIFEST } from '../models/overlays';
+import { OVERLAY_ICONS } from '../models/overlays.model';
 import { Archetype, CHARACTER_ASSETS } from '../models/character.model';
 
 @Injectable({ providedIn: 'root' })
@@ -90,12 +90,12 @@ export class RendererService {
   /** Overlays (inchangé) */
   async loadOverlayTextures(): Promise<void> {
     this.overlayTextures = {};
-    for (const [key, info] of Object.entries(OVERLAY_MANIFEST)) {
-      if (!info.icon) continue;
+    for (const [key, icon] of Object.entries(OVERLAY_ICONS)) {
+      if (!icon) continue;
       try {
-        this.overlayTextures[key] = await Assets.load(info.icon);
+        this.overlayTextures[key] = await Assets.load(icon);
       } catch {
-        console.warn(`⚠️ Could not load overlay "${key}" (${info.icon})`);
+        console.warn(`⚠️ Could not load overlay "${key}" (${icon})`);
       }
     }
     console.log(`🧿 ${Object.keys(this.overlayTextures).length} overlay textures loaded.`);

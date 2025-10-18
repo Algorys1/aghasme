@@ -1,0 +1,67 @@
+import { ActionType } from './actions';
+import { Effect } from './effect.model';
+import { Terrain } from '../factories/tile.factory';
+
+/**
+ * Narrative context for generating or evaluating an overlay.
+ */
+export interface OverlayContext {
+  playerLevel?: number;
+  terrain?: Terrain;
+}
+
+/**
+ * Describes a context modifier (object, buff, condition, etc.)
+ */
+export interface OverlayContextModifier {
+  key: string;
+  value: number;
+  /** If true: applies when the condition is met, otherwise when it is absent */
+  requiresPresence?: boolean;
+}
+
+/**
+ * Test de compétence basé sur un jet D20 + orb correspondante.
+ */
+export interface OverlayCheck {
+  orb: 'bestial' | 'natural' | 'elemental' | 'mechanic';
+  difficulty: number;
+  modifier?: number;
+  contextModifiers?: OverlayContextModifier[];
+}
+
+/**
+* Special action without changing floor,
+* may involve a die roll and/or effects.
+*/
+export interface PassiveOverlayPhase {
+  description?: string;
+  check?: OverlayCheck;
+  effects?: Effect[];
+
+  onSuccess?: {
+    description?: string;
+    effects?: Effect[];
+    next?: string;
+  };
+
+  onFailure?: {
+    description?: string;
+    effects?: Effect[];
+    next?: string;
+  };
+}
+
+/**
+* Stage of an overlay narrative event.
+* Contains possible actions and transitions.
+*/
+export interface OverlayPhase {
+  title: string;
+  description: string;
+  actions: ActionType[];
+  next?: string;
+
+  /** Associates each action with a phase or passive behavior */
+  actionNext?: Record<ActionType, string | PassiveOverlayPhase>;
+}

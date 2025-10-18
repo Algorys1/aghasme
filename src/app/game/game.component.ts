@@ -7,8 +7,8 @@ import { MapService } from '../services/map.service';
 import { CharacterService } from '../services/character.service';
 import { SaveService } from '../services/save.service';
 import { GameState } from '../models/game-state.model';
-import { OverlayKind } from '../models/overlays';
-import { OverlayFactory, OverlayInstance } from '../factories/overlay.factory';
+import { OverlayInstance, OverlayKind } from '../models/overlays.model';
+import { OverlayFactory } from '../factories/overlay.factory';
 import { MinimapComponent } from "../minimap/minimap.component";
 import { OverlayWindowComponent } from '../overlay-window/overlay-window.component';
 import {ActionType} from '../models/actions';
@@ -81,13 +81,17 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       }),
       this.actionService.nextOverlay$.subscribe(nextOverlay => {
         console.log('🌀 Transitioning to next overlay:', nextOverlay.name);
-    
+
         this.isTransitioning = true;
-    
+
         setTimeout(() => {
           this.activeOverlay = nextOverlay;
           this.isTransitioning = false;
         }, 350);
+      }),
+      this.actionService.closeOverlay$.subscribe(() => {
+        console.log('🧹 Overlay closed via closeOverlay$');
+        this.activeOverlay = null;
       }),
       this.actionService.startCombat$.subscribe(enemy => {
         console.log(`🎯 Launching combat UI vs ${enemy.name}`);
@@ -182,11 +186,11 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     const mapState = this.mapService.serializeMap();
     const charState = structuredClone(char);
     const groundItems = this.lootService.getAllGroundItems();
-    return { 
-      character: charState, 
+    return {
+      character: charState,
       map: mapState,
       groundItems,
-      timestamp: Date.now() 
+      timestamp: Date.now()
     };
   }
 
@@ -223,20 +227,20 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   // === Overlay window actions ===
   onOverlayAction(action: ActionType) {
     if (!this.activeOverlay) return;
-  
+
     const overlay = this.activeOverlay;
     this.actionService.executeAction(action, overlay);
-  
-    const hasNext = overlay.nextEvent && overlay.eventChain?.[overlay.nextEvent];
-    if (!hasNext) {
-      this.activeOverlay = null;
-    }
+
+    // const hasNext = overlay.nextEvent && overlay.eventChain?.[overlay.nextEvent];
+    // if (!hasNext) {
+    //   this.activeOverlay = null;
+    // }
   }
 
   onCombatClosed() {
     this.showCombat = false;
     this.activeOverlay = null; // Combat "consume" overlay
-  }  
+  }
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());

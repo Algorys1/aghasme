@@ -12,9 +12,8 @@ export enum ActionType {
   Pray = 'Pray',
 
   Rest = 'Rest',
-  Quests = 'Quests',
 
   Avoid = 'Avoid',
-  Open = 'Open',
+  Interact = 'Interact',
   Inspect = 'Inspect',
 }

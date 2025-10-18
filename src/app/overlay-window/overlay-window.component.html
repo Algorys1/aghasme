@@ -1,12 +1,31 @@
 <div class="overlay-window">
   <div class="overlay-content">
-    <div class="overlay-header">
-      <img [src]="data.icon" [alt]="data.name" />
+
+    <!-- HEADER COMPACT -->
+    <div class="overlay-top">
+      <img class="overlay-icon" [src]="data.icon" [alt]="data.name" />
+      <h2 class="overlay-name">{{ data.name }}</h2>
     </div>
 
-    <h2 class="overlay-title">{{ data.name }}</h2>
-    <p class="overlay-description">{{ data.description }}</p>
+    <hr class="divider" />
 
+    <!-- IMAGE HEADER -->
+    <div
+      class="overlay-header"
+      [style.background-image]="'url(assets/overlays/backgrounds/' + kind + '.png)'"
+    ></div>
+
+    <hr class="divider" />
+
+    <!-- TITLE + DESCRIPTION -->
+    <div class="overlay-body">
+      <h3 class="overlay-title">{{ data.name }}</h3>
+      <p class="overlay-description">{{ data.description }}</p>
+    </div>
+
+    <hr class="divider last" />
+
+    <!-- ACTIONS -->
     <div class="overlay-actions">
       @for (action of data.actions; track action) {
         <div class="overlay-action-block">
@@ -17,5 +36,6 @@
         </div>
       }
     </div>
+
   </div>
 </div>

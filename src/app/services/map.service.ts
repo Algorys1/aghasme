@@ -3,9 +3,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { createNoise2D } from 'simplex-noise';
 
 import { createTile, Terrain } from '../factories/tile.factory';
-import { OverlayKind, OVERLAY_POOLS } from '../models/overlays';
+import { OverlayKind, OVERLAY_POOLS } from '../models/overlays.model';
 import { CharacterService } from './character.service';
-import { RendererService } from './renderer.service'; 
+import { RendererService } from './renderer.service';
 import { Container, Sprite } from 'pixi.js';
 
 export interface MapTileSnapshot {
@@ -112,11 +112,11 @@ export class MapService {
             onClick: () => this.movePlayer(q, r)
           });
 
-          this.tiles[`${q},${r}`] = { 
-            gfx: tile, 
+          this.tiles[`${q},${r}`] = {
+            gfx: tile,
             terrain,
             discovered: false,
-            variant: (tile as any).variantKey ?? `${terrain}-1` 
+            variant: (tile as any).variantKey ?? `${terrain}-1`
           };
 
           const overlay = this.pickOverlayForTerrain(terrain);
@@ -128,7 +128,7 @@ export class MapService {
 
   private createPlayer() {
     this.player = this.renderer.createPlayerSprite(this.size);
-    this.updatePlayerPosition();    
+    this.updatePlayerPosition();
   }
 
   // === PLAYER MOVEMENT / CAMERA ====================================================
@@ -193,21 +193,21 @@ export class MapService {
     const { x, y } = this.hexToPixel(q, r);
     const sprite = this.renderer.createOverlaySprite(kind, x, y, this.size);
     if (!sprite) return;
-  
+
     const key = `${q},${r}`;
     (this.overlaySprites[key] ||= []).push(sprite);
     (this.overlayTypes[key] ||= []).push(kind);
-  }  
+  }
 
   private pickOverlayForTerrain(terrain: Terrain): OverlayKind {
     const poolObj = OVERLAY_POOLS[terrain];
     if (!poolObj) return OverlayKind.None;
-  
+
     const pool = Object.entries(poolObj).map(([kind, weight]) => ({
       kind: kind as OverlayKind,
       weight: weight as number,
     }));
-  
+
     const total = pool.reduce((sum, o) => sum + o.weight, 0);
     let roll = this.nextRand() * total;
     for (const o of pool) {
@@ -273,7 +273,7 @@ export class MapService {
     this.seed = Date.now();
     this.randState = 1;
   }
-  
+
 
   public generateNewSeed(): number {
     this.seed = Math.floor(Math.random() * Date.now());
@@ -285,7 +285,7 @@ export class MapService {
 
   private async bootPixi(canvas: HTMLCanvasElement) {
     await this.renderer.init(canvas);
-  }  
+  }
 
   async initMapWithCanvas(canvas: HTMLCanvasElement, mapRadius: number, seed?: number): Promise<void> {
     await this.bootPixi(canvas);
@@ -311,7 +311,7 @@ export class MapService {
   private async prepareRenderer() {
     await this.renderer.loadTileTextures();
     await this.renderer.loadOverlayTextures();
-  
+
     const char = this.characterService.getCharacter();
     if (!char) throw new Error('No character found to load player texture');
     await this.renderer.loadPlayerTexture(char.gender, char.archetype);
@@ -333,7 +333,7 @@ export class MapService {
     for (const tile of snapshot.tiles) {
       const { x, y } = this.hexToPixel(tile.q, tile.r);
       const variantKey = tile.variant ?? `${tile.terrain}-1`;
-    
+
       const tileContainer = createTile({
         x, y,
         size: this.size,
@@ -343,14 +343,14 @@ export class MapService {
         onClick: () => this.movePlayer(tile.q, tile.r),
         variantKey
       });
-    
+
       this.tiles[tile.key] = {
         gfx: tileContainer,
         terrain: tile.terrain,
         discovered: tile.discovered,
         variant: variantKey
       };
-    
+
       const tileGfx = tileContainer as any;
       if (tileGfx.fog) tileGfx.fog.visible = !tile.discovered;
     }
@@ -358,7 +358,7 @@ export class MapService {
     for (const o of snapshot.overlays ?? []) this.addOverlay(o.q, o.r, o.kind);
 
     this.createPlayer();
-    this.renderer.centerCamera(this.playerPos.q, this.playerPos.r, this.size);    
+    this.renderer.centerCamera(this.playerPos.q, this.playerPos.r, this.size);
 
     console.log(`✅ Map restored (${snapshot.tiles.length} tiles).`);
   }

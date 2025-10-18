@@ -1,93 +1,135 @@
 .overlay-window {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(6px);
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: fadeIn 0.3s ease;
+
+  .overlay-content {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+    width: 90vw;
+    height: 92vh;
+    padding: 12px;
+    background: #f6ebc8;
+    overflow-y: auto;
+    border-radius: 8px;
+    font-family: 'Cinzel', serif;
+  }
+
+  .overlay-top {
+    display: flex;
     align-items: center;
-    z-index: 100;
-  
-    .overlay-content {
-      width: 90%;
-      max-width: 500px;
-      background: #1b1b1b;
-      color: #eee;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-      animation: fadeIn 0.3s ease;
-  
-      .overlay-header {
-        width: 100%;
-        height: 180px;
-        background-size: cover;
-        background-position: center;
-        border-bottom: 2px solid #444;
-      }
-  
-      .overlay-title {
-        text-align: center;
-        font-size: 1.6rem;
-        margin: 1rem 0 0.5rem;
-      }
-  
-      .overlay-description {
-        padding: 0 1rem;
-        text-align: center;
-        line-height: 1.4;
-        color: #ccc;
-      }
-  
-      .overlay-actions {
-        margin-top: 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.75rem;
-  
-        .overlay-action-block {
-          text-align: center;
-  
-          .action-btn {
-            background: #3a3a3a;
-            border: 1px solid #666;
-            border-radius: 8px;
-            padding: 0.5rem 1.5rem;
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-  
-            &:hover {
-              background: #555;
-            }
-          }
-  
-          .consequence {
-            display: block;
-            color: #aaa;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-          }
-        }
-      }
-  
-      .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: transparent;
-        border: none;
-        color: #fff;
-        font-size: 1.4rem;
-        cursor: pointer;
-      }
+    justify-content: space-between;
+    gap: 0.75rem;
+
+    .overlay-icon {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
     }
-  
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
+
+    .overlay-name {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #3b250e;
+      font-weight: 700;
+      text-shadow: 1px 1px 1px #fff2;
     }
   }
-  
+
+  .divider {
+    border: none;
+    border-top: 2px solid rgba(0, 0, 0, 0.2);
+    margin: .5rem 0;
+  }
+
+  .last {
+    margin-top: auto;
+  }
+
+  .overlay-header {
+    width: 98%;
+    height: 160px;
+    border-radius: 6px;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid rgba(0, 0, 0, 0.25);
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .overlay-body {
+    padding: 0 1rem;
+
+    .overlay-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      margin-top: .25rem;
+      color: #3b250e;
+      font-weight: 700;
+    }
+
+    .overlay-description {
+      color: #372616;
+      font-size: 1rem;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+  }
+
+  .overlay-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    .overlay-action-block {
+      text-align: center;
+
+      .action-btn {
+        background: #5b4b36;
+        color: #fff5d8;
+        border: 1px solid #3a2d20;
+        border-radius: 8px;
+        padding: 0.6rem 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+        &:hover {
+          background: #5c4a32;
+        }
+
+        &:visited {
+          background: #5b4b36;
+        }
+      }
+
+      .consequence {
+        display: block;
+        color: #3b250e;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+      }
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

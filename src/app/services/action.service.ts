@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionType } from '../models/actions';
-import { OverlayInstance } from '../factories/overlay.factory';
-import { OverlayKind } from '../models/overlays';
+import { OverlayInstance } from '../models/overlays.model';
+import { OverlayPhase, PassiveOverlayPhase } from '../models/overlay-phase.model';
 import { CharacterService } from './character.service';
 import { MapService } from './map.service';
 import { CombatService } from './combat.service';
@@ -16,6 +16,7 @@ import {Subject} from 'rxjs';
 export class ActionService {
   public nextOverlay$ = new Subject<OverlayInstance>();
   public startCombat$ = new Subject<Enemy>();
+  public closeOverlay$ = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -25,148 +26,71 @@ export class ActionService {
   ) {}
 
   /**
-   * Point d’entrée unique : exécute une action selon son type.
+   * Execute action depending on type
    */
   executeAction(action: ActionType, overlay: OverlayInstance) {
     console.log(`🎬 Executing ${action} on ${overlay.name}`);
 
     switch (action) {
-      // === Fight / Flee ===
       case ActionType.Fight:
         this.startCombat(overlay);
         break;
-      case ActionType.Flee:
-        this.fleeEncounter(overlay);
-        break;
-
-      // === Explore / Collect ===
       case ActionType.Explore:
-      case ActionType.Harvest:
         this.exploreLocation(overlay);
         break;
-
-      // === Trade / Talk ===
+      case ActionType.Flee:
+      case ActionType.Harvest:
       case ActionType.Trade:
-        this.openTrade(overlay);
-        break;
       case ActionType.Talk:
-        this.startDialogue(overlay);
-        break;
-
-      // === Spirit ===
       case ActionType.Pray:
-        this.performRitual(overlay);
-        break;
-
-      // === Rest / Quest ===
       case ActionType.Rest:
-        this.restAtLocation(overlay);
-        break;
-      case ActionType.Quests:
-        this.showQuests(overlay);
-        break;
-
-      // === Others ===
-      case ActionType.Open:
+      case ActionType.Interact:
       case ActionType.Inspect:
-        this.openDiscovery(overlay);
-        break;
       case ActionType.Avoid:
         this.skipOverlay(overlay);
         break;
-
       default:
         console.warn('⚠️ Unhandled action type:', action);
         break;
     }
   }
 
-  // -----------------------------------------------------------------
-  // 🧩 Gameplay Logic (TODO)
-  // -----------------------------------------------------------------
-
-  private startCombat(overlay: OverlayInstance) {
-    const player = this.characterService.getCharacter();
-    if (!player) return;
-  
-    const tile = this.mapService.getCurrentTile?.();
-    const terrain = tile?.terrain ?? 'plain';
-    const level = overlay.level ?? player.level;
-  
-    // Génère l'ennemi exact de l'overlay
-    const enemy = EnemyFactory.createByName(overlay.name, level);
-  
-    console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
-  
-    // Démarre le combat dans le CombatService
-    this.combatService.startCombat(enemy);
-  
-    // Notifie le GameComponent pour afficher l'interface de combat
-    this.startCombat$.next(enemy);
-  }
-
-  private fleeEncounter(overlay: OverlayInstance) {
-    console.log(`🏃 You escape from ${overlay.name}.`);
-    // TODO: maybe apply penalty or stamina cost
+  private skipOverlay(overlay: OverlayInstance) {
+    console.log(`🚶 You decide to move on from ${overlay.name}.`);
+    this.closeOverlay$.next();
   }
 
   private exploreLocation(overlay: OverlayInstance) {
     console.log(`🧭 Exploring ${overlay.name}...`);
+    if (overlay.eventChain && !overlay.nextEvent) {
+      const firstKey = Object.keys(overlay.eventChain)[0];
+      if (firstKey) {
+        overlay.nextEvent = firstKey;
+        this.triggerNextEvent(overlay);
+        return;
+      }
+    }
+
     if (overlay.nextEvent) {
       this.triggerNextEvent(overlay);
       return;
     }
-
-    if (Math.random() < 0.3) {
-      console.log('💰 You find a few coins on the ground.');
-    } else if (Math.random() < 0.2) {
-      console.log('⚔️ A wild creature attacks!');
-    } else {
-      console.log('Nothing of interest here.');
-    }
   }
 
-  private openTrade(overlay: OverlayInstance) {
-    console.log(`💰 Opening trade with ${overlay.name}.`);
-    // TODO: open trade overlay or merchant component
-  }
+  private startCombat(overlay: OverlayInstance) {
+    const player = this.characterService.getCharacter();
+    if (!player) return;
 
-  private startDialogue(overlay: OverlayInstance) {
-    console.log(`🗣️ Talking to ${overlay.name}.`);
-    // TODO: open dialogue interface
-  }
+    const tile = this.mapService.getCurrentTile?.();
+    const terrain = tile?.terrain ?? 'plain';
+    const level = overlay.level ?? player.level;
 
-  private performRitual(overlay: OverlayInstance) {
-    console.log(`🙏 Performing a ritual at ${overlay.name}.`);
-    // TODO: grant buff or trigger mystical event
-  }
+    const enemy = EnemyFactory.createByName(overlay.name, level);
 
-  private restAtLocation(overlay: OverlayInstance) {
-    const char = this.characterService.getCharacter();
-    if (!char) return;
-    const restoredHp = Math.min(char.maxHp, char.hp + Math.ceil(char.maxHp * 0.5));
-    const restoredMp = Math.min(char.maxMp, char.mp + Math.ceil(char.maxMp * 0.5));
+    console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
 
-    char.hp = restoredHp;
-    char.mp = restoredMp;
-    this.characterService.setCharacter(char);
-
-    console.log(`😴 You rest at ${overlay.name}. HP/MP restored.`);
-  }
-
-  private showQuests(overlay: OverlayInstance) {
-    console.log(`📜 Viewing quests at ${overlay.name}.`);
-    // TODO: open quest board
-  }
-
-  private openDiscovery(overlay: OverlayInstance) {
-    console.log(`🎁 Inspecting discovery at ${overlay.name}.`);
-    // TODO: trigger loot or special scene
-  }
-
-  private skipOverlay(overlay: OverlayInstance) {
-    console.log(`🚶 You decide to move on from ${overlay.name}.`);
-    // TODO: simple dismiss or step forward
+    this.combatService.startCombat(enemy);
+    this.startCombat$.next(enemy);
   }
 
   // -----------------------------------------------------------------
@@ -174,37 +98,93 @@ export class ActionService {
   // -----------------------------------------------------------------
   private triggerNextEvent(overlay: OverlayInstance) {
     if (!overlay.nextEvent || !overlay.eventChain) return;
-  
+
     const phase = overlay.eventChain[overlay.nextEvent];
     if (!phase) return;
-  
-    console.log(`➡️ Triggering next event: ${overlay.nextEvent}`);
-  
-    if (phase.combatChance && Math.random() < phase.combatChance) {
-      console.log('⚔️ A hidden enemy appears!');
-      // TODO: combat to be handled later
+
+    console.log(`➡️ Triggering phase: ${overlay.nextEvent}`);
+
+    if (phase.next) {
+      const nextOverlay: OverlayInstance = {
+        ...overlay,
+        id: overlay.id + '-' + phase.next,
+        name: phase.title,
+        description: phase.description,
+        actions: phase.actions,
+        nextEvent: phase.next,
+        eventChain: overlay.eventChain,
+      };
+      this.nextOverlay$.next(nextOverlay);
       return;
     }
-  
-    if (phase.lootChance && Math.random() < phase.lootChance) {
-      const gold = Math.floor(Math.random() * 20) + 5;
-      console.log(`💰 You find ${gold} gold!`);
-      // TODO: add gold to player inventory
-    }
-  
-    const nextOverlay: OverlayInstance = {
+
+    // Otherwise final floor
+    const finalOverlay: OverlayInstance = {
       ...overlay,
-      id: overlay.id + '-' + overlay.nextEvent,
+      id: overlay.id + '-end',
       name: phase.title,
       description: phase.description,
       actions: phase.actions,
-      nextEvent: phase.next,
+      nextEvent: undefined,
+      eventChain: overlay.eventChain,
+    };
+    this.nextOverlay$.next(finalOverlay);
+  }
+
+  private handlePassivePhase(passive: PassiveOverlayPhase, overlay: OverlayInstance, phase: OverlayPhase) {
+    console.log('🎲 Passive phase triggered:', passive.description ?? '(no description)');
+
+    if (passive.effects?.length) {
+      console.log(`✨ Applying ${passive.effects.length} immediate effect(s).`);
+      // TODO: apply effects via CharacterService
+    }
+
+    // Simule un D20 (pour l'instant)
+    if (passive.check) {
+      const roll = Math.floor(Math.random() * 20) + 1;
+      const orb = passive.check.orb;
+      const difficulty = passive.check.difficulty;
+      const bonus = passive.check.modifier ?? 0;
+      const total = roll + bonus;
+
+      const success = total >= difficulty;
+
+      console.log(
+        `🎲 Rolled D20 = ${roll} (${orb.toUpperCase()} check +${bonus}) → total ${total} vs DC ${difficulty} → ${success ? '✅ success' : '❌ fail'}`
+      );
+
+      const result = success ? passive.onSuccess : passive.onFailure;
+      if (result) {
+        if (result.effects?.length) {
+          console.log(`🌀 Applying ${result.effects.length} result effect(s).`);
+          // TODO: apply result.effects to character
+        }
+        if (result.description) console.log(result.description);
+
+        if (result.next) {
+          const nextOverlay = this.buildNextOverlay(overlay, phase, result.next);
+          this.nextOverlay$.next(nextOverlay);
+          return;
+        }
+      }
+    }
+    console.log('🕯️ The situation remains unchanged.');
+  }
+
+  private buildNextOverlay(
+    overlay: OverlayInstance,
+    phase: OverlayPhase,
+    nextKey?: string
+  ): OverlayInstance {
+    const nextOverlay: OverlayInstance = {
+      ...overlay,
+      id: overlay.id + '-' + (nextKey ?? 'end'),
+      name: phase.title,
+      description: phase.description,
+      actions: phase.actions,
+      nextEvent: nextKey,
       eventChain: overlay.eventChain
     };
-  
-    // 🔹 Et on notifie les abonnés (GameComponent)
-    this.nextOverlay$.next(nextOverlay);
+    return nextOverlay;
   }
-  
-
 }

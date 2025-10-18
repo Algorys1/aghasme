@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { OverlayKind } from '../models/overlays';
-import { OverlayInstance } from '../factories/overlay.factory';
+import { OVERLAY_BACKGROUNDS, OverlayKind, OverlayInstance } from '../models/overlays.model';
 import {ActionType} from '../models/actions';
 
 @Component({
@@ -17,6 +16,10 @@ export class OverlayWindowComponent {
 
   onAction(action: ActionType) {
     this.actionSelected.emit(action);
+  }
+
+  get backgroundUrl(): string {
+    return OVERLAY_BACKGROUNDS[this.kind] ?? 'assets/overlays/backgrounds/default.png';
   }
 
   getConsequence(action: string): string {
