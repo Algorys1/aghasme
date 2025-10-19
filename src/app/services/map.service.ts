@@ -124,6 +124,7 @@ export class MapService {
         }
       }
     }
+    this.forceOverlay();
   }
 
   private createPlayer() {
@@ -377,5 +378,10 @@ export class MapService {
 
   public getPlayerPosition(): {q:number, r:number} {
     return this.playerPos;
+  }
+
+  forceOverlay() {
+    console.log('TEST : FORCE OVERLAY')
+    this.addOverlay(-2, 2, OverlayKind.Ritual);
   }
 }

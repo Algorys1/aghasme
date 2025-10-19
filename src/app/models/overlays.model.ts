@@ -48,7 +48,8 @@ export interface OverlayInstance extends OverlayTemplate {
   id: string;
   kind: OverlayKind;
   level?: number;
-  nextEvent?: string;
+  currentFloor?: string;
+  nextFloor?: string;
 }
 
 // -----------------------------------------------------------------

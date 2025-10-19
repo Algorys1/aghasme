@@ -281,56 +281,7 @@
 /* ======================================================
    TRANSITIONS D’OVERLAY (fade + fond cinématique)
    ====================================================== */
-.overlay-container {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-  background: rgba(0, 0, 0, 0.0);
-  backdrop-filter: blur(0px);
-  z-index: 50;
-
-  transition:
-    background 0.4s ease,
-    backdrop-filter 0.4s ease;
-  pointer-events: none;
-}
-
-.overlay-container app-overlay-window {
-  pointer-events: all;
-  max-width: 90vw;
-  width: 600px;
-  opacity: 1; /* ✅ visible dès le premier affichage */
-  transform: translateY(0) scale(1);
-  animation: fadeIn 0.4s ease-out forwards; /* ✅ animation d’entrée par défaut */
-  transition:
-    opacity 0.4s ease,
-    transform 0.4s ease;
-}
-
-/* Phase d’entrée (apparition) */
-.overlay-container.transition-in {
-  background: rgba(0, 0, 0, 0.25); /* fond légèrement assombri */
-  backdrop-filter: blur(2px);
-}
-.overlay-container.transition-in app-overlay-window {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-/* Phase de sortie (disparition) */
-.overlay-container.transition-out {
-  background: rgba(0, 0, 0, 0);
-  backdrop-filter: blur(0);
-}
-.overlay-container.transition-out app-overlay-window {
-  opacity: 0;
-  transform: translateY(40px) scale(0.95);
-}
-
-/* Animation de fade + slide */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -342,6 +293,7 @@
   }
 }
 
+/** COMMON OVERLAY DESIGN **/
 .common-overlay {
   position: fixed;
   inset: 0;

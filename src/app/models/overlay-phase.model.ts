@@ -36,8 +36,13 @@ export interface OverlayCheck {
 */
 export interface PassiveOverlayPhase {
   description?: string;
-  check?: OverlayCheck;
   effects?: Effect[];
+
+  check?: {
+    orb: 'bestial' | 'elemental' | 'natural' | 'mechanic';
+    difficulty: number;
+    modifier?: number;
+  };
 
   onSuccess?: {
     description?: string;
@@ -63,5 +68,5 @@ export interface OverlayPhase {
   next?: string;
 
   /** Associates each action with a phase or passive behavior */
-  actionNext?: Record<ActionType, string | PassiveOverlayPhase>;
+  actionPassive?: Partial<Record<ActionType, PassiveOverlayPhase>>;
 }

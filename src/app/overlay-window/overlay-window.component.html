@@ -3,8 +3,8 @@
 
     <!-- HEADER COMPACT -->
     <div class="overlay-top">
-      <img class="overlay-icon" [src]="data.icon" [alt]="data.name" />
-      <h2 class="overlay-name">{{ data.name }}</h2>
+      <img class="overlay-icon" [src]="data.icon" [alt]="mainTitle" />
+      <h2 class="overlay-name">{{ mainTitle }}</h2>
     </div>
 
     <hr class="divider" />
@@ -18,9 +18,9 @@
     <hr class="divider" />
 
     <!-- TITLE + DESCRIPTION -->
-    <div class="overlay-body">
-      <h3 class="overlay-title">{{ data.name }}</h3>
-      <p class="overlay-description">{{ data.description }}</p>
+    <div class="overlay-body" #bodyContainer>
+      <h3 class="overlay-title" [class.no-cursor]="!writingTitle">{{ displayedTitle }}</h3>
+      <p class="overlay-description" [class.no-cursor]="!writingDesc">{{ displayedDescription }}</p>
     </div>
 
     <hr class="divider last" />

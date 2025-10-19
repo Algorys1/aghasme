@@ -17,6 +17,7 @@ export class ActionService {
   public nextOverlay$ = new Subject<OverlayInstance>();
   public startCombat$ = new Subject<Enemy>();
   public closeOverlay$ = new Subject<void>();
+  public passiveText$ = new Subject<string>();
 
   constructor(
     private router: Router,
@@ -30,6 +31,16 @@ export class ActionService {
    */
   executeAction(action: ActionType, overlay: OverlayInstance) {
     console.log(`🎬 Executing ${action} on ${overlay.name}`);
+
+    if (overlay.eventChain && overlay.currentFloor) {
+      const phase = overlay.eventChain[overlay.currentFloor];
+      const passive = phase?.actionPassive?.[action];
+      if (passive) {
+        console.log(`💫 Passive action detected for ${action}`);
+        this.handlePassivePhase(passive, overlay, phase);
+        return;
+      }
+    }
 
     switch (action) {
       case ActionType.Fight:
@@ -62,16 +73,16 @@ export class ActionService {
 
   private exploreLocation(overlay: OverlayInstance) {
     console.log(`🧭 Exploring ${overlay.name}...`);
-    if (overlay.eventChain && !overlay.nextEvent) {
+    if (overlay.eventChain && !overlay.nextFloor) {
       const firstKey = Object.keys(overlay.eventChain)[0];
       if (firstKey) {
-        overlay.nextEvent = firstKey;
+        overlay.nextFloor = firstKey;
         this.triggerNextEvent(overlay);
         return;
       }
     }
 
-    if (overlay.nextEvent) {
+    if (overlay.nextFloor) {
       this.triggerNextEvent(overlay);
       return;
     }
@@ -97,12 +108,14 @@ export class ActionService {
   // 🔄 NextEvent system for multi-phase overlays
   // -----------------------------------------------------------------
   private triggerNextEvent(overlay: OverlayInstance) {
-    if (!overlay.nextEvent || !overlay.eventChain) return;
+    if (!overlay.nextFloor || !overlay.eventChain) return;
 
-    const phase = overlay.eventChain[overlay.nextEvent];
+    const phase = overlay.eventChain[overlay.nextFloor];
     if (!phase) return;
 
-    console.log(`➡️ Triggering phase: ${overlay.nextEvent}`);
+    console.log(`➡️ Triggering phase: ${overlay.nextFloor}`);
+
+    overlay.currentFloor = overlay.nextFloor;
 
     if (phase.next) {
       const nextOverlay: OverlayInstance = {
@@ -111,7 +124,7 @@ export class ActionService {
         name: phase.title,
         description: phase.description,
         actions: phase.actions,
-        nextEvent: phase.next,
+        nextFloor: phase.next,
         eventChain: overlay.eventChain,
       };
       this.nextOverlay$.next(nextOverlay);
@@ -125,7 +138,7 @@ export class ActionService {
       name: phase.title,
       description: phase.description,
       actions: phase.actions,
-      nextEvent: undefined,
+      nextFloor: undefined,
       eventChain: overlay.eventChain,
     };
     this.nextOverlay$.next(finalOverlay);
@@ -134,32 +147,46 @@ export class ActionService {
   private handlePassivePhase(passive: PassiveOverlayPhase, overlay: OverlayInstance, phase: OverlayPhase) {
     console.log('🎲 Passive phase triggered:', passive.description ?? '(no description)');
 
+    let msgParts: string[] = [];
+
+    if (passive.description) {
+      let base = passive.description;
+      if (passive.effects?.length) {
+        const effects = passive.effects.map(e =>
+          `${e.value > 0 ? '+' : ''}${e.value} ${e.stat.toUpperCase()}`
+        ).join(', ');
+        base += ` (${effects})`;
+      }
+      msgParts.push(base);
+    }
+
     if (passive.effects?.length) {
       console.log(`✨ Applying ${passive.effects.length} immediate effect(s).`);
       // TODO: apply effects via CharacterService
     }
 
-    // Simule un D20 (pour l'instant)
     if (passive.check) {
       const roll = Math.floor(Math.random() * 20) + 1;
       const orb = passive.check.orb;
       const difficulty = passive.check.difficulty;
       const bonus = passive.check.modifier ?? 0;
       const total = roll + bonus;
-
       const success = total >= difficulty;
 
-      console.log(
-        `🎲 Rolled D20 = ${roll} (${orb.toUpperCase()} check +${bonus}) → total ${total} vs DC ${difficulty} → ${success ? '✅ success' : '❌ fail'}`
-      );
+      const rollMsg = `🎲 Roll: ${roll} (${orb.toUpperCase()} +${bonus}) → total ${total} vs DC ${difficulty} → ${success ? '✅ Success' : '❌ Failure'}`;
+      msgParts.push(rollMsg);
 
       const result = success ? passive.onSuccess : passive.onFailure;
       if (result) {
         if (result.effects?.length) {
-          console.log(`🌀 Applying ${result.effects.length} result effect(s).`);
-          // TODO: apply result.effects to character
+          const eff = result.effects.map(e =>
+            `${e.value > 0 ? '+' : ''}${e.value} ${e.stat.toUpperCase()}`
+          ).join(', ');
+          msgParts.push(`🌀 Effect(s): ${eff}`);
         }
-        if (result.description) console.log(result.description);
+        if (result.description){
+          msgParts.push(result.description);
+        }
 
         if (result.next) {
           const nextOverlay = this.buildNextOverlay(overlay, phase, result.next);
@@ -168,7 +195,10 @@ export class ActionService {
         }
       }
     }
-    console.log('🕯️ The situation remains unchanged.');
+
+    const fullMessage = msgParts.join('\n');
+    console.log('📜 Full passive message:', fullMessage);
+    this.passiveText$.next(fullMessage);
   }
 
   private buildNextOverlay(
@@ -182,7 +212,7 @@ export class ActionService {
       name: phase.title,
       description: phase.description,
       actions: phase.actions,
-      nextEvent: nextKey,
+      nextFloor: nextKey,
       eventChain: overlay.eventChain
     };
     return nextOverlay;

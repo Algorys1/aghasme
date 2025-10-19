@@ -105,15 +105,15 @@
   }
 
   @if (activeOverlay) {
-    <div class="overlay-container"
-         [class.transition-out]="isTransitioning"
-         [class.transition-in]="!isTransitioning">
-      <app-overlay-window
+    <div class="common-overlay">
+      <div class="common-wrapper">
+        <app-overlay-window
         [kind]="activeOverlay.kind"
         [data]="activeOverlay"
         (close)="activeOverlay = null"
         (actionSelected)="onOverlayAction($event)">
       </app-overlay-window>
+      </div>
     </div>
   }
 
@@ -133,7 +133,7 @@
       </div>
     </div>
   }
-  
+
   @if (showLootPanel) {
     <div class="common-overlay">
       <div class="common-wrapper">
@@ -146,5 +146,5 @@
       </div>
     </div>
   }
-  
+
 </div>
