@@ -45,7 +45,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Inspect],
         encounter: {
           chance: 0.25,
-          enemies: ['stone_sentinel'],
+          enemies: ['Mechanical Golem'],
           random: false,
         },
         actionPassive: {
@@ -103,7 +103,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact, ActionType.Pray],
         encounter: {
           chance: 0.4,
-          enemies: ['lunar_wraith'],
+          enemies: ['Ghost'],
           random: true,
         },
         actionPassive: {
@@ -169,7 +169,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Interact],
         encounter: {
           chance: 0.35,
-          enemies: ['crystal_sentinel'],
+          enemies: ['Orb Mechanic'],
         },
         actionPassive: {
           [ActionType.Pray]: {
@@ -226,7 +226,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Interact],
         encounter: {
           chance: 0.3,
-          enemies: ['goblin_trickster'],
+          enemies: ['Goblin Warrior'],
           random: true,
         },
         actionPassive: {
@@ -285,7 +285,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact, ActionType.Pray],
         encounter: {
           chance: 0.45,
-          enemies: ['skeletal_acolyte', 'bone_wraith'],
+          enemies: ['Skeleton Archer', 'Ghost'],
           random: true,
         },
         actionPassive: {

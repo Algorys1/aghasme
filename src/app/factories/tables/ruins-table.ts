@@ -61,7 +61,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact, ActionType.Pray],
         encounter: {
           chance: 0.3,
-          enemies: ['guardian_statue'],
+          enemies: ['Mechanical Orb'],
         },
         actionPassive: {
           [ActionType.Interact]: {
@@ -117,7 +117,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Rest],
         encounter: {
           chance: 0.4,
-          enemies: ['animated_armor'],
+          enemies: ['Mechanical Golem'],
         },
         actionPassive: {
           [ActionType.Inspect]: {
@@ -167,7 +167,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Pray],
         encounter: {
           chance: 0.3,
-          enemies: ['water_wraith'],
+          enemies: ['Cursed Tentacle'],
         },
         actionPassive: {
           [ActionType.Inspect]: {
@@ -193,7 +193,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact],
         encounter: {
           chance: 1.0,
-          enemies: ['drowned_sentinel'],
+          enemies: ['Mechanical Orb'],
         },
         actionPassive: {
           [ActionType.Interact]: {
@@ -230,7 +230,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Rest],
         encounter: {
           chance: 0.25,
-          enemies: ['feral_rat'],
+          enemies: ['Rats', 'Spider'],
           random: true,
         },
         actionPassive: {
@@ -299,7 +299,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Interact],
         encounter: {
           chance: 0.5,
-          enemies: ['ethereal_guardian'],
+          enemies: ['Ghost'],
         },
         actionPassive: {
           [ActionType.Pray]: {

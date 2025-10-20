@@ -5,7 +5,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
 
   {
     name: "Mage's Spire",
-    description: 'The Mage’s Spire pierces the clouds, its summit crackling with arcane energy and whispered secrets.',
+    description: 'The Mage\'s Spire pierces the clouds, its summit crackling with arcane energy and whispered secrets.',
     icon: 'assets/overlays/tower.png',
     actions: [ActionType.Rest],
     eventChain: {
@@ -38,7 +38,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Interact],
         encounter: {
           chance: 0.3,
-          enemies: ['air_elemental'],
+          enemies: ['3-Eyed Crow'],
         },
         actionPassive: {
           [ActionType.Inspect]: {
@@ -62,7 +62,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
   },
   {
     name: "Wizard's Keep",
-    description: 'Wizard’s Keep looms in eerie silence, its halls echoing with the remnants of long-forgotten spells.',
+    description: 'Wizard\'s Keep looms in eerie silence, its halls echoing with the remnants of long-forgotten spells.',
     icon: 'assets/overlays/tower.png',
     actions: [ActionType.Pray],
     eventChain: {
@@ -72,7 +72,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Interact],
         encounter: {
           chance: 0.25,
-          enemies: ['arcane_warden'],
+          enemies: ['Disciple'],
         },
         actionPassive: {
           [ActionType.Observe]: {
@@ -87,7 +87,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
               effects: [{ stat: 'gold', value: +10 }],
             },
             onFailure: {
-              description: 'The statue’s eye cracks and leaks a faint red mist.',
+              description: 'The statue\'s eye cracks and leaks a faint red mist.',
               effects: [{ stat: 'hp', value: -3 }],
             },
           },
@@ -100,7 +100,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Pray],
         encounter: {
           chance: 0.4,
-          enemies: ['living_spell'],
+          enemies: ['Priest'],
         },
         actionPassive: {
           [ActionType.Inspect]: {
@@ -135,13 +135,13 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Interact],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'You notice a conduit running up the wall, it’s pulsating faintly.',
+            description: 'You notice a conduit running up the wall, it\'s pulsating faintly.',
           },
           [ActionType.Interact]: {
             description: 'You attempt to stabilize a nearby runic focus.',
             check: { orb: 'mechanic', difficulty: 11 },
             onSuccess: {
-              description: 'The hum steadies. A faint calm overtakes the tower’s chaos.',
+              description: 'The hum steadies. A faint calm overtakes the tower\'s chaos.',
               effects: [{ stat: 'xp', value: 5 }],
             },
             onFailure: {
@@ -158,11 +158,11 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Interact],
         encounter: {
           chance: 0.45,
-          enemies: ['arcane_construct'],
+          enemies: ['Disciple'],
         },
         actionPassive: {
           [ActionType.Pray]: {
-            description: 'You align your breathing to the crystal’s oscillation.',
+            description: 'You align your breathing to the crystal\'s oscillation.',
             check: { orb: 'elemental', difficulty: 12 },
             onSuccess: {
               description: 'You resonate with its flow, fragments of knowledge enter your mind.',
@@ -184,7 +184,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe],
         encounter: {
           chance: 0.6,
-          enemies: ['arcane_shade'],
+          enemies: ['Corrupt Sorcerer'],
         },
         actionPassive: {
           [ActionType.Observe]: {
@@ -196,7 +196,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
   },
   {
     name: "Sorcerer's Pinnacle",
-    description: 'Sorcerer’s Pinnacle rises like a shard of crystal, pulsing with the lifeblood of ancient magic.',
+    description: 'Sorcerer\'s Pinnacle rises like a shard of crystal, pulsing with the lifeblood of ancient magic.',
     icon: 'assets/overlays/tower.png',
     actions: [ActionType.Pray],
     eventChain: {
@@ -217,7 +217,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
               effects: [{ stat: 'xp', value: 7 }],
             },
             onFailure: {
-              description: 'The reflection’s hand grabs yours briefly, cold as ice.',
+              description: 'The reflection\'s hand grabs yours briefly, cold as ice.',
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
@@ -226,11 +226,11 @@ export const TOWER_TABLE: OverlayTemplate[] = [
       },
       floor_2: {
         title: 'Core Chamber',
-        description: 'The tower’s pulse emanates from here. The walls breathe, alive with flickering veins of light.',
+        description: 'The tower\'s pulse emanates from here. The walls breathe, alive with flickering veins of light.',
         actions: [ActionType.Interact],
         encounter: {
           chance: 0.5,
-          enemies: ['crystal_guardian'],
+          enemies: ['Snake Crystal'],
         },
         actionPassive: {
           [ActionType.Interact]: {
@@ -255,7 +255,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
             description: 'You notice the gears do not mesh correctly, yet they still turn.',
           },
           [ActionType.Interact]: {
-            description: 'You touch one of the giant teeth, it’s warm, as if alive.',
+            description: 'You touch one of the giant teeth, it\'s warm, as if alive.',
             check: { orb: 'mechanic', difficulty: 10 },
             onSuccess: {
               description: 'A pulse of light runs through the machinery. The ticking pauses… briefly.',
@@ -275,7 +275,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Inspect],
         encounter: {
           chance: 0.35,
-          enemies: ['temporal_wraith'],
+          enemies: ['Ghost'],
         },
         actionPassive: {
           [ActionType.Pray]: {
@@ -291,7 +291,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
             },
           },
           [ActionType.Inspect]: {
-            description: 'You spot a broken watch on the ground, it’s ticking backward.',
+            description: 'You spot a broken watch on the ground, it\'s ticking backward.',
           },
         },
         next: 'floor_3',
@@ -302,7 +302,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact],
         encounter: {
           chance: 0.5,
-          enemies: ['chronos_guardian'],
+          enemies: ['Mechanical Wolf'],
         },
         actionPassive: {
           [ActionType.Interact]: {
@@ -312,12 +312,12 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         next: 'floor_4',
       },
       floor_4: {
-        title: 'The Enchantress’s Chamber',
+        title: 'The Enchantress\'s Chamber',
         description: 'A vast circular room where the walls are mirrors of shifting timelines. The Enchantress stands still… or in several places at once.',
         actions: [ActionType.Fight, ActionType.Flee],
         encounter: {
           chance: 1.0,
-          enemies: ['time_enchantress'],
+          enemies: ['Priest'],
         },
         actionPassive: {
           [ActionType.Fight]: {
@@ -330,7 +330,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         next: 'floor_5',
       },
       floor_5: {
-        title: 'Clock’s Stillness',
+        title: 'Clock\'s Stillness',
         description: 'The hands of the great clock stop completely. The silence is deafening. For a moment, time itself seems to hold its breath.',
         actions: [ActionType.Rest],
         actionPassive: {

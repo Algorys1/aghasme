@@ -91,84 +91,85 @@ export class ActionService {
     }
   }
 
-  private startCombat(overlay: OverlayInstance) {
-    if (overlay.eventChain && overlay.currentFloor) {
-      const phase = overlay.eventChain[overlay.currentFloor];
-
-      if (phase?.encounter) {
-        const { chance = 1, enemies, random } = phase.encounter;
-        if (Math.random() <= chance) {
-          const chosenEnemy = random
-            ? enemies[Math.floor(Math.random() * enemies.length)]
-            : enemies[0];
-          const enemy = EnemyFactory.createByName(chosenEnemy, 1);
-          const player = this.characterService.getCharacter();
-          if (!player) return;
-
-          console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
-
-          this.combatService.startCombat(enemy);
-          this.startCombat$.next(enemy);
-          return;
-        } else {
-          this.passiveText$.next('🍀 No encounter this time.');
-          return;
-        }
-      }
-    }
-
+  private startCombat(overlay: OverlayInstance): void {
     const player = this.characterService.getCharacter();
     if (!player) return;
 
-    const level = overlay.level ?? player.level;
-    const enemy = EnemyFactory.createByName(overlay.name, level);
+    const phase = overlay.eventChain?.[overlay.currentFloor ?? overlay.nextFloor ?? ''];
+    if (phase?.encounter) {
+      const { enemies, random } = phase.encounter;
+      const chosenEnemy = random
+        ? enemies[Math.floor(Math.random() * enemies.length)]
+        : enemies[0];
 
-    console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
+      const enemy = EnemyFactory.createByName(chosenEnemy, 1);
+      const player = this.characterService.getCharacter();
+      if (!player) return;
 
-    this.combatService.startCombat(enemy);
-    this.startCombat$.next(enemy);
-    if(overlay.kind === OverlayKind.Beast || overlay.kind === OverlayKind.Monster) {
-      overlay.isCompleted = true;
-      this.closeOverlay$.next();
-    }
-  }
+      console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
 
-  private triggerNextEvent(overlay: OverlayInstance) {
-    if (!overlay.nextFloor || !overlay.eventChain) return;
-
-    const phase = overlay.eventChain[overlay.nextFloor];
-    if (!phase) return;
-
-    console.log(`➡️ Triggering phase: ${overlay.nextFloor}`);
-
-    overlay.currentFloor = overlay.nextFloor;
-
-    if (phase.next) {
-      const nextOverlay: OverlayInstance = {
-        ...overlay,
-        id: overlay.id + '-' + phase.next,
-        name: phase.title,
-        description: phase.description,
-        actions: phase.actions,
-        nextFloor: phase.next,
-        eventChain: overlay.eventChain,
-      };
-      this.nextOverlay$.next(nextOverlay);
+      this.combatService.startCombat(enemy);
+      this.startCombat$.next(enemy);
       return;
     }
 
-    // Otherwise final floor
-    const finalOverlay: OverlayInstance = {
-      ...overlay,
-      id: overlay.id + END_MARKER,
-      name: phase.title,
-      description: phase.description,
-      actions: phase.actions,
-      nextFloor: undefined,
-      isCompleted: true,
-      eventChain: overlay.eventChain,
-    };
-    this.nextOverlay$.next(finalOverlay);
+    if (overlay.kind === OverlayKind.Beast || overlay.kind === OverlayKind.Monster) {
+      const level = overlay.level ?? player.level;
+      const enemy = EnemyFactory.createByName(overlay.name, level);
+
+      console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
+      this.combatService.startCombat(enemy);
+      this.startCombat$.next(enemy);
+
+      overlay.isCompleted = true;
+      this.closeOverlay$.next();
+      return;
+    }
+    console.warn('[startCombat] No encounter or combat context found for overlay:', overlay.name);
+  }
+
+  private triggerNextEvent(overlay: OverlayInstance) {
+    const nextFloor = overlay.nextFloor;
+    if (!nextFloor || !overlay.eventChain) return;
+
+    const nextPhase = overlay.eventChain[nextFloor];
+    if (!nextPhase) return;
+
+    console.log(`➡️ Triggering phase: ${nextFloor}`);
+    overlay.currentFloor = nextFloor;
+
+    if (nextPhase.next) {
+      const nextOverlay: OverlayInstance = {
+        ...overlay,
+        id: overlay.id + '-' + nextPhase.next,
+        name: nextPhase.title,
+        description: nextPhase.description,
+        actions: nextPhase.actions,
+        nextFloor: nextPhase.next,
+        eventChain: overlay.eventChain,
+      };
+      this.nextOverlay$.next(nextOverlay);
+
+      if (nextPhase.encounter) {
+        const { chance = 1 } = nextPhase.encounter;
+        if (Math.random() <= chance) {
+          this.startCombat(nextOverlay);
+        }
+      }
+      return;
+    } else {
+      const finalOverlay: OverlayInstance = {
+        ...overlay,
+        id: overlay.id + END_MARKER,
+        name: nextPhase.title,
+        description: nextPhase.description,
+        actions: nextPhase.actions,
+        nextFloor: undefined,
+        isCompleted: true,
+        eventChain: overlay.eventChain,
+      };
+      this.nextOverlay$.next(finalOverlay);
+    }
   }
 
   private handlePassivePhase(passive: PassiveOverlayPhase, overlay: OverlayInstance, phase: OverlayPhase) {

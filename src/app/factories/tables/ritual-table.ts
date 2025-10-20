@@ -2,12 +2,12 @@ import {ActionType} from '../../models/actions';
 import {OverlayTemplate} from '../../models/overlays.model';
 
 export const RITUAL_TABLE: OverlayTemplate[] = [
-  // {
-  //   name: 'Sacred Ritual Site',
-  //   description: 'A place where ancient rituals were performed, still radiating spiritual energy.',
-  //   icon: 'assets/overlays/ritual.png',
-  //   actions: [ActionType.Avoid, ActionType.Talk],
-  // },
+  {
+    name: 'Sacred Ritual Site',
+    description: 'A place where ancient rituals were performed, still radiating spiritual energy.',
+    icon: 'assets/overlays/ritual.png',
+    actions: [ActionType.Avoid, ActionType.Talk],
+  },
   {
     name: 'Dark Ritual Circle',
     description: 'A sinister site marked by dark symbols, hinting at forbidden practices. The ground itself seems to hum with lingering energy.',
@@ -17,21 +17,15 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
       floor_1: {
         title: 'Outer Ring',
         description: 'Candles flicker though no wind blows. The scent of burnt incense fills the air, and faint chanting echoes as if from beneath the earth.',
-        actions: [ActionType.Fight, ActionType.Flee],
-        // actionPassive: {
-        //   [ActionType.Observe]: {
-        //     description: 'You kneel by the runes. They pulse faintly, resonating with your heartbeat...',
-        //     effects: [{ stat: 'hp', value: -2 }],
-        //     onSuccess: {
-        //       description: 'The whisper grows clearer, not hostile, merely... curious. You sense awareness within the stones.',
-        //     }
-        //   }
-        // },
-        uniqueChoice: true,
-        encounter: {
-          chance: 1,
-          enemies: ['Skeleton', 'Disciple'],
-          random: true
+        actions: [ActionType.Observe],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'You kneel by the runes. They pulse faintly, resonating with your heartbeat...',
+            effects: [{ stat: 'hp', value: -2 }],
+            onSuccess: {
+              description: 'The whisper grows clearer, not hostile, merely... curious. You sense awareness within the stones.',
+            }
+          }
         },
         next: 'floor_2',
       },
@@ -86,22 +80,22 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
       },
     },
   },
-  // {
-  //   name: 'Nature\'s Altar',
-  //   description: 'An altar dedicated to nature spirits, surrounded by offerings and carvings.',
-  //   icon: 'assets/overlays/ritual.png',
-  //   actions: [ActionType.Avoid, ActionType.Talk],
-  // },
-  // {
-  //   name: 'Celestial Observatory',
-  //   description: 'A site aligned with the stars, used for celestial rituals and ceremonies.',
-  //   icon: 'assets/overlays/ritual.png',
-  //   actions: [ActionType.Avoid, ActionType.Talk],
-  // },
-  // {
-  //   name: 'Elemental Shrine',
-  //   description: 'A shrine dedicated to the elemental forces, with signs of recent activity.',
-  //   icon: 'assets/overlays/ritual.png',
-  //   actions: [ActionType.Avoid, ActionType.Talk],
-  // },
+  {
+    name: 'Nature\'s Altar',
+    description: 'An altar dedicated to nature spirits, surrounded by offerings and carvings.',
+    icon: 'assets/overlays/ritual.png',
+    actions: [ActionType.Avoid, ActionType.Talk],
+  },
+  {
+    name: 'Celestial Observatory',
+    description: 'A site aligned with the stars, used for celestial rituals and ceremonies.',
+    icon: 'assets/overlays/ritual.png',
+    actions: [ActionType.Avoid, ActionType.Talk],
+  },
+  {
+    name: 'Elemental Shrine',
+    description: 'A shrine dedicated to the elemental forces, with signs of recent activity.',
+    icon: 'assets/overlays/ritual.png',
+    actions: [ActionType.Avoid, ActionType.Talk],
+  },
 ]

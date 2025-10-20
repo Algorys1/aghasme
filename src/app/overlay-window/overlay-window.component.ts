@@ -67,6 +67,7 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     const hasBaseDescription = !!newData.description?.trim();
 
     if (hasEventChain || hasBaseDescription) {
+      // this.clearAllIntervals();
       this.resetTyping();
       this.startTypingAnimation();
     }
@@ -89,7 +90,7 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private resetTyping() {
-    this.clearActiveTypingIntervals();
+    this.clearAllIntervals();
     this.displayedTitle = '';
     this.displayedDescription = '';
     this.titleIndex = 0;
@@ -170,10 +171,17 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private appendPassiveText(msg: string) {
+    const targetId = this.lastOverlayId;
+
     const addText = () => {
+      if (this.lastOverlayId !== targetId) return;
       const textToAdd = `\n\n${msg}`;
       let i = 0;
       this.passiveInterval = setInterval(() => {
+        if (this.lastOverlayId !== targetId) {
+          clearInterval(this.passiveInterval);
+          return;
+        }
         if (i < textToAdd.length) {
           this.displayedDescription += textToAdd[i++];
           this.scrollToBottom();
@@ -229,10 +237,12 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   continue() {
+    this.clearAllIntervals();
     this.onAction(ActionType.Explore);
   }
 
   quit() {
+    this.clearAllIntervals();
     this.onAction(ActionType.Avoid);
   }
 
