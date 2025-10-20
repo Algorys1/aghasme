@@ -71,7 +71,7 @@
     scroll-behavior: smooth;
 
     .overlay-title {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       margin-bottom: 0.5rem;
       margin-top: .25rem;
       color: #3b250e;
@@ -157,3 +157,24 @@
   25%, 75% { opacity: 1; }
 }
 
+.overlay-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+  padding: 0 1rem 0.5rem;
+}
+
+.nav-btn {
+  font-size: 0.85rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: rgba(60, 40, 20, 0.7);
+  color: #f6ebc8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:disabled {
+  background: rgba(129, 125, 121, 0.7);
+}

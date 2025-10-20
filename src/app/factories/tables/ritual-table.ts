@@ -12,18 +12,18 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     name: 'Dark Ritual Circle',
     description: 'A sinister site marked by dark symbols, hinting at forbidden practices. The ground itself seems to hum with lingering energy.',
     icon: 'assets/overlays/ritual.png',
-    actions: [ActionType.Explore, ActionType.Avoid],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Outer Ring',
         description: 'Candles flicker though no wind blows. The scent of burnt incense fills the air, and faint chanting echoes as if from beneath the earth.',
-        actions: [ActionType.Explore, ActionType.Observe, ActionType.Avoid],
+        actions: [ActionType.Observe],
         actionPassive: {
           [ActionType.Observe]: {
             description: 'You kneel by the runes. They pulse faintly, resonating with your heartbeat...',
             effects: [{ stat: 'hp', value: -2 }],
             onSuccess: {
-              description: 'The whisper grows clearer — not hostile, merely... curious. You sense awareness within the stones.',
+              description: 'The whisper grows clearer, not hostile, merely... curious. You sense awareness within the stones.',
             }
           }
         },
@@ -31,11 +31,11 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
       },
       floor_2: {
         title: 'Blood Altar',
-        description: 'A stone altar stands at the center, stained with ancient blood. Strange runes glow faintly as you approach. You hear a whisper—soft, pleading, or perhaps tempting.',
-        actions: [ActionType.Explore, ActionType.Interact, ActionType.Pray, ActionType.Avoid],
+        description: 'A stone altar stands at the center, stained with ancient blood. Strange runes glow faintly as you approach. You hear a whisper-soft, pleading, or perhaps tempting.',
+        actions: [ActionType.Interact, ActionType.Pray],
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You place your hand upon the altar. It feels warm — alive.',
+            description: 'You place your hand upon the altar. It feels warm alive.',
             check: {
               orb: 'mechanic',
               difficulty: 11,
@@ -69,8 +69,14 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
       },
       floor_3: {
         title: 'Awakening',
-        description: 'The runes ignite in crimson light, and a spectral form begins to rise from the altar. The air shivers as the circle’s true master stirs from slumber.',
-        actions: [ActionType.Fight, ActionType.Flee, ActionType.Avoid],
+        description: 'The runes ignite in crimson light, and a spectral form begins to rise from the altar. The air shivers as the circle\'s true master stirs from slumber.',
+        actions: [ActionType.Fight, ActionType.Flee],
+        disableQuit: true,
+        encounter: {
+          chance: 1,
+          enemies: ['Skeleton', 'Disciple'],
+          random: true
+        }
       },
     },
   },

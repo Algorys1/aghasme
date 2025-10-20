@@ -66,7 +66,15 @@ export interface OverlayPhase {
   description: string;
   actions: ActionType[];
   next?: string;
+  disableQuit?: boolean;
 
   /** Associates each action with a phase or passive behavior */
   actionPassive?: Partial<Record<ActionType, PassiveOverlayPhase>>;
+
+  /** Encounter describe possible encounter during an Overlay**/
+  encounter?: {
+    chance?: number;             // 1 = 100% chance, otherwise .2, .1, .5
+    enemies: string[];           // list of possible ennemies
+    random?: boolean;            // true = pick an enemy in the list
+  };
 }

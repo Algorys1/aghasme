@@ -55,6 +55,14 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     this.actionSelected.emit(action);
   }
 
+  continue() {
+    this.onAction(ActionType.Explore)
+  }
+
+  quit() {
+    this.onAction(ActionType.Avoid)
+  }
+
   private startTypingAnimation() {
     if(!this.mainTitle) this.mainTitle = this.data.name;
     const title = this.data.eventChain?.[this.data.currentFloor!]?.title || this.data.name;
@@ -113,6 +121,10 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
         el.scrollTop = el.scrollHeight;
       });
     }
+  }
+
+  trackByAction(index: number, action: string) {
+    return action; // la valeur sert d'identifiant unique
   }
 
   getConsequence(action: string): string {

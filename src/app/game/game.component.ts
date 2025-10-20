@@ -40,6 +40,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   showMapPanel = false;
 
   activeOverlay: OverlayInstance | null = null;
+  isOverlayPaused = false;
   isTransitioning = false;
 
   private subs: Subscription[] = [];
@@ -96,6 +97,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       this.actionService.startCombat$.subscribe(enemy => {
         console.log(`🎯 Launching combat UI vs ${enemy.name}`);
         this.showCombat = true;
+        this.isOverlayPaused = true;
       })
     );
 
@@ -230,16 +232,13 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const overlay = this.activeOverlay;
     this.actionService.executeAction(action, overlay);
-
-    // const hasNext = overlay.nextEvent && overlay.eventChain?.[overlay.nextEvent];
-    // if (!hasNext) {
-    //   this.activeOverlay = null;
-    // }
   }
 
   onCombatClosed() {
     this.showCombat = false;
-    this.activeOverlay = null; // Combat "consume" overlay
+    this.isOverlayPaused = false;
+    // this.actionService.passiveText$.next('The fight is over. You catch your breath before continuing...');
+    // this.activeOverlay = null;
   }
 
   ngOnDestroy(): void {

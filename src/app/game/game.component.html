@@ -105,7 +105,7 @@
   }
 
   @if (activeOverlay) {
-    <div class="common-overlay">
+    <div class="common-overlay"  [class.hidden]="isOverlayPaused">
       <div class="common-wrapper">
         <app-overlay-window
         [kind]="activeOverlay.kind"

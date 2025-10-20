@@ -52,7 +52,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
       },
       floor_3: {
         title: 'Clock Tower: The Enchantress\'s Chamber',
-        description: 'At the top stands a grand clock face that seems to open onto the night sky. The Enchantress herself lingers here, frozen between seconds — or perhaps watching from beyond time. The ticking grows louder… and then stops.',
+        description: 'At the top stands a grand clock face that seems to open onto the night sky. The Enchantress herself lingers here, frozen between seconds... or perhaps watching from beyond time. The ticking grows louder… and then stops.',
         actions: [ActionType.Fight, ActionType.Explore, ActionType.Avoid]
       },
     },

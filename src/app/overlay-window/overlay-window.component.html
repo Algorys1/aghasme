@@ -1,7 +1,5 @@
 <div class="overlay-window">
   <div class="overlay-content">
-
-    <!-- HEADER COMPACT -->
     <div class="overlay-top">
       <img class="overlay-icon" [src]="data.icon" [alt]="mainTitle" />
       <h2 class="overlay-name">{{ mainTitle }}</h2>
@@ -9,7 +7,6 @@
 
     <hr class="divider" />
 
-    <!-- IMAGE HEADER -->
     <div
       class="overlay-header"
       [style.background-image]="'url(assets/overlays/backgrounds/' + kind + '.png)'"
@@ -17,17 +14,17 @@
 
     <hr class="divider" />
 
-    <!-- TITLE + DESCRIPTION -->
     <div class="overlay-body" #bodyContainer>
-      <h3 class="overlay-title" [class.no-cursor]="!writingTitle">{{ displayedTitle }}</h3>
+      <h4 class="overlay-title" [class.no-cursor]="!writingTitle">{{ displayedTitle }}</h4>
       <p class="overlay-description" [class.no-cursor]="!writingDesc">{{ displayedDescription }}</p>
     </div>
 
-    <hr class="divider last" />
+    @if(data.actions.length) {
+      <hr class="divider last" />
+    }
 
-    <!-- ACTIONS -->
     <div class="overlay-actions">
-      @for (action of data.actions; track action) {
+      @for (action of data.actions; track trackByAction($index, action)) {
         <div class="overlay-action-block">
           <button class="action-btn" (click)="onAction(action)">
             {{ action }}
@@ -37,5 +34,11 @@
       }
     </div>
 
+    <hr class="divider" [class]="!data.actions.length ? 'last':''" />
+
+    <div class="overlay-nav">
+      <button class="nav-btn" (click)="continue()">Continue</button>
+      <button class="nav-btn" (click)="quit()" [disabled]="data.eventChain?.[data.currentFloor!]?.disableQuit">Quit</button>
+    </div>
   </div>
 </div>

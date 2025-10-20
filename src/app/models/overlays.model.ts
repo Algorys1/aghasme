@@ -50,6 +50,8 @@ export interface OverlayInstance extends OverlayTemplate {
   level?: number;
   currentFloor?: string;
   nextFloor?: string;
+
+  returningFromCombat?: boolean;
 }
 
 // -----------------------------------------------------------------

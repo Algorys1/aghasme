@@ -355,7 +355,7 @@ export const ARMOR_ITEMS: Item[] = [
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal,
     effects: [{stat: 'defense', value: 2}]
-  },  
+  },
 ];
 
 export const CONSUMABLE_ITEMS: Item[] = [
@@ -438,7 +438,7 @@ export const CONSUMABLE_ITEMS: Item[] = [
   {
     id: 'scroll-fading',
     name: 'Scroll of Fading Light',
-    description: 'Once opened, the letters vanish — but something inside you changes.',
+    description: 'Once opened, the letters vanish, but something inside you changes.',
     type: ItemType.Consumable,
     icon: 'assets/items/consumables/scroll-fading.png',
     baseValue: 310,
@@ -446,7 +446,7 @@ export const CONSUMABLE_ITEMS: Item[] = [
     subtype: 'potion',
     stackable: false,
     effects: [{ stat: 'maxMp', value: 10 }, { stat: 'xp', value: 25 }],
-  },  
+  },
 ];
 
 export const RESOURCE_ITEMS: Item[] = [
@@ -603,7 +603,7 @@ export const UTILITY_ITEMS: Item[] = [
     baseValue: 10,
     effects: [{ stat: 'light', value: 1 }],
     rarity: RarityType.Normal
-  },  
+  },
 ];
 
 export const WEAPON_MELEE_ITEMS: Item[] = [
@@ -611,7 +611,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
   {
     id: 'axe-wanderer',
     name: 'Axe of the Wanderer',
-    description: 'Its edge bears runes of distant tribes — it hums softly when swung.',
+    description: 'Its edge bears runes of distant tribes, it hums softly when swung.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/axe-wanderer.png',
     baseValue: 540,
@@ -738,7 +738,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
   {
     id: 'sword-embers',
     name: 'Sword of Embers',
-    description: 'A faint orange glow dances along the blade — warm to the touch.',
+    description: 'A faint orange glow dances along the blade, warm to the touch.',
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/sword-embers.png',
     baseValue: 505,
@@ -833,7 +833,7 @@ export const WEAPON_RANGE_ITEMS: Item[] = [
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
     effects: [{ stat: 'damage', value: 4 }, { stat: 'critical', value: 5 }],
-  },  
+  },
 ];
 
 export const BASE_ITEMS: Item[] = [

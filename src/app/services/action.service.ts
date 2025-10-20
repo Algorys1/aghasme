@@ -82,24 +82,53 @@ export class ActionService {
       }
     }
 
-    if (overlay.nextFloor) {
-      this.triggerNextEvent(overlay);
-      return;
-    }
+    // if (overlay.nextFloor) {
+    //   this.triggerNextEvent(overlay);
+    //   return;
+    // }
   }
 
   private startCombat(overlay: OverlayInstance) {
+    if (overlay.eventChain && overlay.currentFloor) {
+      const phase = overlay.eventChain[overlay.currentFloor];
+
+      // 🔹 Combat défini sur la floor ?
+      if (phase?.encounter) {
+        const { chance = 1, enemies, random } = phase.encounter;
+        if (Math.random() <= chance) {
+          const chosenEnemy = random
+            ? enemies[Math.floor(Math.random() * enemies.length)]
+            : enemies[0];
+          const enemy = EnemyFactory.createByName(chosenEnemy, 1);
+          const player = this.characterService.getCharacter();
+          if (!player) return;
+
+          console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
+
+          this.combatService.startCombat(enemy);
+          overlay.returningFromCombat = true;
+          this.startCombat$.next(enemy);
+          return;
+        } else {
+          console.log('🍀 No encounter this time.');
+          return;
+        }
+      }
+    }
+
+
     const player = this.characterService.getCharacter();
     if (!player) return;
 
     const tile = this.mapService.getCurrentTile?.();
-    const terrain = tile?.terrain ?? 'plain';
+    // const terrain = tile?.terrain ?? 'plain';
     const level = overlay.level ?? player.level;
 
     const enemy = EnemyFactory.createByName(overlay.name, level);
 
     console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
 
+    overlay.returningFromCombat = true;
     this.combatService.startCombat(enemy);
     this.startCombat$.next(enemy);
   }
