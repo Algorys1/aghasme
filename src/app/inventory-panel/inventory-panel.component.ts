@@ -34,7 +34,7 @@ export class InventoryPanelComponent {
     this.characterService.character$.subscribe(char => {
       this.character = char;
     });
-    
+
     this.character = this.characterService.getCharacter();
     // FOR TESTING PURPOSE
     if (!this.inventory.getItems().length) {
@@ -46,6 +46,7 @@ export class InventoryPanelComponent {
     this.inventory.addItem(BASE_ITEMS[2]);
     this.inventory.addItem(BASE_ITEMS[9]);
     this.inventory.addItem(BASE_ITEMS[10]);
+    this.inventory.addItem(BASE_ITEMS[34]);
     this.inventory.addItem(BASE_ITEMS[35]);
     this.inventory.addItem(BASE_ITEMS[60]);
     this.inventory.addItem(BASE_ITEMS[63]);

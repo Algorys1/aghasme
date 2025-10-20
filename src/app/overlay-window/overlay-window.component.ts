@@ -82,6 +82,12 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     );
   }
 
+  disableContinue(): boolean {
+    if(this.data.eventChain?.[this.data.currentFloor ?? '']?.uniqueChoice)
+      return this.disabledActions.size === 0;
+    return false;
+  }
+
   private resetTyping() {
     this.clearActiveTypingIntervals();
     this.displayedTitle = '';
@@ -91,6 +97,8 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     this.writingTitle = false;
     this.writingDesc = false;
     this.disabledActions.clear();
+    this.data.disabledActions = [];
+    this.disableQuit = true;
   }
 
   private startTypingAnimation() {

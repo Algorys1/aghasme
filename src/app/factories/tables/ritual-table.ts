@@ -1,5 +1,5 @@
-import { ActionType } from '../../models/actions';
-import { OverlayTemplate } from '../../models/overlays.model';
+import {ActionType} from '../../models/actions';
+import {OverlayTemplate} from '../../models/overlays.model';
 
 export const RITUAL_TABLE: OverlayTemplate[] = [
   // {
@@ -17,15 +17,21 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
       floor_1: {
         title: 'Outer Ring',
         description: 'Candles flicker though no wind blows. The scent of burnt incense fills the air, and faint chanting echoes as if from beneath the earth.',
-        actions: [ActionType.Observe],
-        actionPassive: {
-          [ActionType.Observe]: {
-            description: 'You kneel by the runes. They pulse faintly, resonating with your heartbeat...',
-            effects: [{ stat: 'hp', value: -2 }],
-            onSuccess: {
-              description: 'The whisper grows clearer, not hostile, merely... curious. You sense awareness within the stones.',
-            }
-          }
+        actions: [ActionType.Fight, ActionType.Flee],
+        // actionPassive: {
+        //   [ActionType.Observe]: {
+        //     description: 'You kneel by the runes. They pulse faintly, resonating with your heartbeat...',
+        //     effects: [{ stat: 'hp', value: -2 }],
+        //     onSuccess: {
+        //       description: 'The whisper grows clearer, not hostile, merely... curious. You sense awareness within the stones.',
+        //     }
+        //   }
+        // },
+        uniqueChoice: true,
+        encounter: {
+          chance: 1,
+          enemies: ['Skeleton', 'Disciple'],
+          random: true
         },
         next: 'floor_2',
       },
@@ -71,7 +77,6 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
         title: 'Awakening',
         description: 'The runes ignite in crimson light, and a spectral form begins to rise from the altar. The air shivers as the circle\'s true master stirs from slumber.',
         actions: [ActionType.Fight, ActionType.Flee],
-        disableQuit: true,
         uniqueChoice: true,
         encounter: {
           chance: 1,

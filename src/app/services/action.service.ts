@@ -111,7 +111,7 @@ export class ActionService {
           this.startCombat$.next(enemy);
           return;
         } else {
-          console.log('🍀 No encounter this time.');
+          this.passiveText$.next('🍀 No encounter this time.');
           return;
         }
       }

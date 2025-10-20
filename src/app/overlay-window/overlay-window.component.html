@@ -40,7 +40,7 @@
       @if(data.isCompleted) {
         <button class="nav-btn" (click)="quit()" [disabled]="disableQuit">Quit</button>
       } @else {
-        <button class="nav-btn" (click)="continue()">Continue</button>
+        <button class="nav-btn" (click)="continue()" [disabled]="disableContinue()">Continue</button>
       }
     </div>
   </div>
