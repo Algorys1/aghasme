@@ -74,6 +74,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
         if (kind && kind !== OverlayKind.None) {
           console.log('🧱 Creating overlay instance:', kind);
           this.activeOverlay = OverlayFactory.create(kind);
+          console.log("GC => ", this.activeOverlay);
         } else {
           this.activeOverlay = null;
         }

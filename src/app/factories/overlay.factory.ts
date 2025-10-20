@@ -1,4 +1,4 @@
-import { OverlayKind, OverlayTemplate, OverlayInstance } from '../models/overlays.model';
+import {OverlayKind, OverlayTemplate, OverlayInstance, END_MARKER} from '../models/overlays.model';
 import { ActionType } from '../models/actions';
 import { EnemyFactory } from './enemy.factory';
 import { Terrain } from './tile.factory';
@@ -90,6 +90,7 @@ export class OverlayFactory {
 
   private static createBeast(id: string, kind: OverlayKind, playerLevel: number, terrain: Terrain): OverlayInstance {
     const beast = EnemyFactory.generateBeast(playerLevel, terrain);
+    id = `${id}${END_MARKER}`;
     return {
       id,
       kind,
@@ -98,11 +99,13 @@ export class OverlayFactory {
       icon: beast.icon || 'assets/overlays/beast.png',
       actions: [ActionType.Fight, ActionType.Flee],
       level: beast.level,
+      isCompleted: true,
     };
   }
 
   private static createMonster(id: string, kind: OverlayKind, playerLevel: number, terrain: Terrain): OverlayInstance {
     const monster = EnemyFactory.generateMonster(playerLevel, terrain);
+    id = `${id}${END_MARKER}`;
     return {
       id,
       kind,
@@ -111,6 +114,7 @@ export class OverlayFactory {
       icon: monster.icon || 'assets/overlays/monster.png',
       actions: [ActionType.Fight, ActionType.Flee],
       level: monster.level,
+      isCompleted: true,
     };
   }
 

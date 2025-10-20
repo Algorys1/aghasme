@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActionType} from '../models/actions';
-import {OverlayInstance, OverlayKind} from '../models/overlays.model';
+import {END_MARKER, OverlayInstance, OverlayKind} from '../models/overlays.model';
 import {OverlayPhase, PassiveOverlayPhase} from '../models/overlay-phase.model';
 import {CharacterService} from './character.service';
 import {CombatService} from './combat.service';
@@ -16,6 +16,7 @@ export class ActionService {
   public startCombat$ = new Subject<Enemy>();
   public closeOverlay$ = new Subject<void>();
   public passiveText$ = new Subject<string>();
+  public enableQuit$ = new Subject<void>();
 
   constructor(
     private characterService: CharacterService,
@@ -27,12 +28,18 @@ export class ActionService {
    */
   executeAction(action: ActionType, overlay: OverlayInstance) {
     console.log(`🎬 Executing ${action} on ${overlay.name}`);
+    if(overlay.id.includes(END_MARKER) && overlay.isCompleted) {
+      this.enableQuit$.next();
+    }
+
+    const phase = overlay.currentFloor ? overlay.eventChain?.[overlay.currentFloor] : undefined;
+    if (phase?.uniqueChoice) {
+      overlay.disabledActions = [...overlay.actions];
+    }
 
     if (overlay.eventChain && overlay.currentFloor) {
-      const phase = overlay.eventChain[overlay.currentFloor];
       const passive = phase?.actionPassive?.[action];
       if (passive) {
-        console.log(`💫 Passive action detected for ${action}`);
         this.handlePassivePhase(passive, overlay, phase);
         return;
       }
@@ -88,7 +95,6 @@ export class ActionService {
     if (overlay.eventChain && overlay.currentFloor) {
       const phase = overlay.eventChain[overlay.currentFloor];
 
-      // 🔹 Combat défini sur la floor ?
       if (phase?.encounter) {
         const { chance = 1, enemies, random } = phase.encounter;
         if (Math.random() <= chance) {
@@ -122,18 +128,12 @@ export class ActionService {
     this.combatService.startCombat(enemy);
     this.startCombat$.next(enemy);
     if(overlay.kind === OverlayKind.Beast || overlay.kind === OverlayKind.Monster) {
+      overlay.isCompleted = true;
       this.closeOverlay$.next();
     }
   }
 
-  // -----------------------------------------------------------------
-  // 🔄 NextEvent system for multi-phase overlays
-  // -----------------------------------------------------------------
   private triggerNextEvent(overlay: OverlayInstance) {
-    if (overlay.isCompleted) {
-      this.closeOverlay$.next();
-      return;
-    }
     if (!overlay.nextFloor || !overlay.eventChain) return;
 
     const phase = overlay.eventChain[overlay.nextFloor];
@@ -160,7 +160,7 @@ export class ActionService {
     // Otherwise final floor
     const finalOverlay: OverlayInstance = {
       ...overlay,
-      id: overlay.id + '-end',
+      id: overlay.id + END_MARKER,
       name: phase.title,
       description: phase.description,
       actions: phase.actions,
@@ -224,7 +224,6 @@ export class ActionService {
     }
 
     const fullMessage = msgParts.join('\n');
-    console.log('📜 Full passive message:', fullMessage);
     this.passiveText$.next(fullMessage);
   }
 

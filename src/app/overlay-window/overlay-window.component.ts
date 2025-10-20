@@ -39,12 +39,15 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   private passiveInterval?: ReturnType<typeof setInterval>;
 
   private lastOverlayId?: string;
+  disabledActions = new Set<ActionType>();
+  disableQuit = true;
 
   constructor(private actionService: ActionService, private zone: NgZone) {}
 
   ngOnInit() {
     this.subs.push(
-      this.actionService.passiveText$.subscribe(msg => this.appendPassiveText(msg))
+      this.actionService.passiveText$.subscribe(msg => this.appendPassiveText(msg)),
+      this.actionService.enableQuit$.subscribe(() => this.disableQuit = false),
     );
   }
 
@@ -69,6 +72,16 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
+  isActionDisabled(action: ActionType): boolean {
+    return (
+      this.writingTitle ||
+      this.writingDesc ||
+      this.disabledActions.has(action) ||
+      this.data?.disabledActions?.includes(action) ||
+      false
+    );
+  }
+
   private resetTyping() {
     this.clearActiveTypingIntervals();
     this.displayedTitle = '';
@@ -77,6 +90,7 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     this.descIndex = 0;
     this.writingTitle = false;
     this.writingDesc = false;
+    this.disabledActions.clear();
   }
 
   private startTypingAnimation() {
@@ -115,8 +129,17 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
         this.scrollToBottom();
       } else {
         this.stopTyping('desc');
+        this.animateActionButtons();
       }
     }, 50);
+  }
+
+  private animateActionButtons() {
+    const buttons = document.querySelectorAll('.action-btn');
+    buttons.forEach(btn => {
+      btn.classList.add('reactivated');
+      setTimeout(() => btn.classList.remove('reactivated'), 500);
+    });
   }
 
   onSkipText() {
@@ -192,6 +215,8 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onAction(action: ActionType) {
+    if (this.disabledActions.has(action)) return;
+    this.disabledActions.add(action);
     this.actionSelected.emit(action);
   }
 

@@ -26,7 +26,7 @@
     <div class="overlay-actions">
       @for (action of data.actions; track trackByAction($index, action)) {
         <div class="overlay-action-block">
-          <button class="action-btn" (click)="onAction(action)">
+          <button class="action-btn" (click)="onAction(action)" [disabled]="isActionDisabled(action)">
             {{ action }}
           </button>
           <small class="consequence">→ {{ getConsequence(action) }}</small>
@@ -37,8 +37,11 @@
     <hr class="divider" [class]="!data.actions.length ? 'last':''" />
 
     <div class="overlay-nav">
-      <button class="nav-btn" (click)="continue()">Continue</button>
-      <button class="nav-btn" (click)="quit()" [disabled]="data.eventChain?.[data.currentFloor!]?.disableQuit">Quit</button>
+      @if(data.isCompleted) {
+        <button class="nav-btn" (click)="quit()" [disabled]="disableQuit">Quit</button>
+      } @else {
+        <button class="nav-btn" (click)="continue()">Continue</button>
+      }
     </div>
   </div>
 </div>

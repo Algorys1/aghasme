@@ -51,7 +51,10 @@ export interface OverlayInstance extends OverlayTemplate {
   currentFloor?: string;
   nextFloor?: string;
   isCompleted?: boolean;
+  disabledActions?: ActionType[];
 }
+
+export const END_MARKER = '-end';
 
 // -----------------------------------------------------------------
 // Overlay biome pools (generation weights)

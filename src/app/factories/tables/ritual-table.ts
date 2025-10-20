@@ -72,6 +72,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
         description: 'The runes ignite in crimson light, and a spectral form begins to rise from the altar. The air shivers as the circle\'s true master stirs from slumber.',
         actions: [ActionType.Fight, ActionType.Flee],
         disableQuit: true,
+        uniqueChoice: true,
         encounter: {
           chance: 1,
           enemies: ['Skeleton', 'Disciple'],

@@ -103,7 +103,7 @@
         padding: 0.6rem 1.5rem;
         font-weight: 600;
         cursor: pointer;
-        transition: 0.2s ease;
+        transition: all 0.25s ease;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -114,6 +114,23 @@
 
         &:visited {
           background: #5b4b36;
+        }
+
+        &:active:not(:disabled) {
+          transform: scale(0.97);
+          opacity: 0.85;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          filter: grayscale(0.6);
+          transform: scale(0.95);
+          transition: all 0.3s ease-out;
+        }
+
+        &:not(:disabled).reactivated {
+          animation: pulse 0.4s ease-in-out;
         }
       }
 
@@ -159,7 +176,7 @@
 
 .overlay-nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 0.25rem;
   padding: 0 1rem 0.5rem;
 }
@@ -173,8 +190,16 @@
   color: #f6ebc8;
   cursor: pointer;
   transition: all 0.2s ease;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(0.6);
+  }
 }
 
-.nav-btn:disabled {
-  background: rgba(129, 125, 121, 0.7);
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.9; }
 }
