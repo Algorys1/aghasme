@@ -50,8 +50,7 @@ export interface OverlayInstance extends OverlayTemplate {
   level?: number;
   currentFloor?: string;
   nextFloor?: string;
-
-  returningFromCombat?: boolean;
+  isCompleted?: boolean;
 }
 
 // -----------------------------------------------------------------
@@ -132,26 +131,3 @@ export const OVERLAY_ICONS: Record<OverlayKind, string> = {
   [OverlayKind.Shrine]: 'assets/overlays/shrine.png',
   [OverlayKind.Portal]: 'assets/overlays/portal.png',
 }
-
-export const OVERLAY_BACKGROUNDS: Record<OverlayKind, string> = {
-  [OverlayKind.None]: 'assets/overlays/backgrounds/farm.png',
-  [OverlayKind.City]: 'assets/overlays/backgrounds/city.png',
-  [OverlayKind.Village]: 'assets/overlays/backgrounds/city.png',
-  [OverlayKind.Ruins]: 'assets/overlays/backgrounds/ruins.png',
-  [OverlayKind.Tower]: 'assets/overlays/backgrounds/tower.png',
-  [OverlayKind.Farm]: 'assets/overlays/backgrounds/farm.png',
-  [OverlayKind.Forest]: 'assets/overlays/backgrounds/forest.png',
-  [OverlayKind.Merchant]: 'assets/overlays/backgrounds/merchant.png',
-  [OverlayKind.Caravan]: 'assets/overlays/backgrounds/caravan.png',
-  [OverlayKind.Mine]: 'assets/overlays/backgrounds/mine.png',
-  [OverlayKind.Ritual]: 'assets/overlays/backgrounds/ritual.png',
-  [OverlayKind.Spirit]: 'assets/overlays/backgrounds/spirit.png',
-  [OverlayKind.Wanderer]: 'assets/overlays/backgrounds/wanderer.png',
-  [OverlayKind.Monster]: 'assets/overlays/backgrounds/monster.png',
-  [OverlayKind.Beast]: 'assets/overlays/backgrounds/beast.png',
-  [OverlayKind.Encounter]: 'assets/overlays/backgrounds/encounter.png',
-  [OverlayKind.Treasure]: 'assets/overlays/backgrounds/treasure.png',
-  [OverlayKind.Anomaly]: 'assets/overlays/backgrounds/anomaly.png',
-  [OverlayKind.Shrine]: 'assets/overlays/backgrounds/shrine.png',
-  [OverlayKind.Portal]: 'assets/overlays/backgrounds/portal.png',
-};

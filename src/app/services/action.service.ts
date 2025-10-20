@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { ActionType } from '../models/actions';
-import { OverlayInstance } from '../models/overlays.model';
-import { OverlayPhase, PassiveOverlayPhase } from '../models/overlay-phase.model';
-import { CharacterService } from './character.service';
-import { MapService } from './map.service';
-import { CombatService } from './combat.service';
-import { EnemyFactory } from '../factories/enemy.factory';
-import { Enemy } from '../models/enemy.model';
+import {Injectable} from '@angular/core';
+import {ActionType} from '../models/actions';
+import {OverlayInstance, OverlayKind} from '../models/overlays.model';
+import {OverlayPhase, PassiveOverlayPhase} from '../models/overlay-phase.model';
+import {CharacterService} from './character.service';
+import {CombatService} from './combat.service';
+import {EnemyFactory} from '../factories/enemy.factory';
+import {Enemy} from '../models/enemy.model';
 import {Subject} from 'rxjs';
 
 @Injectable({
@@ -20,9 +18,7 @@ export class ActionService {
   public passiveText$ = new Subject<string>();
 
   constructor(
-    private router: Router,
     private characterService: CharacterService,
-    private mapService: MapService,
     private combatService: CombatService
   ) {}
 
@@ -82,10 +78,10 @@ export class ActionService {
       }
     }
 
-    // if (overlay.nextFloor) {
-    //   this.triggerNextEvent(overlay);
-    //   return;
-    // }
+    if (overlay.nextFloor) {
+      this.triggerNextEvent(overlay);
+      return;
+    }
   }
 
   private startCombat(overlay: OverlayInstance) {
@@ -106,7 +102,6 @@ export class ActionService {
           console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
 
           this.combatService.startCombat(enemy);
-          overlay.returningFromCombat = true;
           this.startCombat$.next(enemy);
           return;
         } else {
@@ -116,27 +111,29 @@ export class ActionService {
       }
     }
 
-
     const player = this.characterService.getCharacter();
     if (!player) return;
 
-    const tile = this.mapService.getCurrentTile?.();
-    // const terrain = tile?.terrain ?? 'plain';
     const level = overlay.level ?? player.level;
-
     const enemy = EnemyFactory.createByName(overlay.name, level);
 
     console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
 
-    overlay.returningFromCombat = true;
     this.combatService.startCombat(enemy);
     this.startCombat$.next(enemy);
+    if(overlay.kind === OverlayKind.Beast || overlay.kind === OverlayKind.Monster) {
+      this.closeOverlay$.next();
+    }
   }
 
   // -----------------------------------------------------------------
   // 🔄 NextEvent system for multi-phase overlays
   // -----------------------------------------------------------------
   private triggerNextEvent(overlay: OverlayInstance) {
+    if (overlay.isCompleted) {
+      this.closeOverlay$.next();
+      return;
+    }
     if (!overlay.nextFloor || !overlay.eventChain) return;
 
     const phase = overlay.eventChain[overlay.nextFloor];
@@ -168,6 +165,7 @@ export class ActionService {
       description: phase.description,
       actions: phase.actions,
       nextFloor: undefined,
+      isCompleted: true,
       eventChain: overlay.eventChain,
     };
     this.nextOverlay$.next(finalOverlay);
@@ -230,12 +228,8 @@ export class ActionService {
     this.passiveText$.next(fullMessage);
   }
 
-  private buildNextOverlay(
-    overlay: OverlayInstance,
-    phase: OverlayPhase,
-    nextKey?: string
-  ): OverlayInstance {
-    const nextOverlay: OverlayInstance = {
+  private buildNextOverlay(overlay: OverlayInstance, phase: OverlayPhase, nextKey?: string): OverlayInstance {
+    return {
       ...overlay,
       id: overlay.id + '-' + (nextKey ?? 'end'),
       name: phase.title,
@@ -244,6 +238,5 @@ export class ActionService {
       nextFloor: nextKey,
       eventChain: overlay.eventChain
     };
-    return nextOverlay;
   }
 }

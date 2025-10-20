@@ -72,6 +72,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       }),
       this.mapService.overlayChange.subscribe(kind => {
         if (kind && kind !== OverlayKind.None) {
+          console.log('🧱 Creating overlay instance:', kind);
           this.activeOverlay = OverlayFactory.create(kind);
         } else {
           this.activeOverlay = null;
@@ -237,8 +238,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   onCombatClosed() {
     this.showCombat = false;
     this.isOverlayPaused = false;
-    // this.actionService.passiveText$.next('The fight is over. You catch your breath before continuing...');
-    // this.activeOverlay = null;
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,10 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnInit, OnDestroy, ViewChild, ElementRef, NgZone } from '@angular/core';
-import { OVERLAY_BACKGROUNDS, OverlayKind, OverlayInstance } from '../models/overlays.model';
-import {ActionType} from '../models/actions';
+import {
+  Component, EventEmitter, Input, Output,
+  OnChanges, SimpleChanges, OnInit, OnDestroy,
+  ViewChild, ElementRef, NgZone
+} from '@angular/core';
+import { OverlayKind, OverlayInstance } from '../models/overlays.model';
+import { ActionType } from '../models/actions';
 import { Subscription, take } from 'rxjs';
 import { ActionService } from '../services/action.service';
 
@@ -18,100 +22,146 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
 
   @ViewChild('bodyContainer') bodyContainer!: ElementRef<HTMLDivElement>;
 
-  mainTitle: string = '';
-  displayedTitle: string = '';
-  displayedDescription: string = '';
+  mainTitle = '';
+  displayedTitle = '';
+  displayedDescription = '';
+
   private titleIndex = 0;
   private descIndex = 0;
+
   public writingTitle = false;
   public writingDesc = false;
+
   private subs: Subscription[] = [];
+
+  private titleInterval?: ReturnType<typeof setInterval>;
+  private descInterval?: ReturnType<typeof setInterval>;
+  private passiveInterval?: ReturnType<typeof setInterval>;
+
+  private lastOverlayId?: string;
 
   constructor(private actionService: ActionService, private zone: NgZone) {}
 
   ngOnInit() {
     this.subs.push(
-      this.actionService.passiveText$.subscribe(msg => {
-        this.appendPassiveText(msg);
-      })
+      this.actionService.passiveText$.subscribe(msg => this.appendPassiveText(msg))
     );
   }
 
   ngOnDestroy() {
+    this.clearAllIntervals();
     this.subs.forEach(s => s.unsubscribe());
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['data'] && this.data) {
+    const newData = changes['data']?.currentValue as OverlayInstance | undefined;
+    if (!newData) return;
+
+    if (this.lastOverlayId === newData.id) return;
+    this.lastOverlayId = newData.id;
+
+    const hasEventChain = !!newData.eventChain && Object.keys(newData.eventChain).length > 0;
+    const hasBaseDescription = !!newData.description?.trim();
+
+    if (hasEventChain || hasBaseDescription) {
+      this.resetTyping();
       this.startTypingAnimation();
     }
   }
 
-  get backgroundUrl(): string {
-    return OVERLAY_BACKGROUNDS[this.kind] ?? 'assets/overlays/backgrounds/default.png';
-  }
-
-  onAction(action: ActionType) {
-    this.actionSelected.emit(action);
-  }
-
-  continue() {
-    this.onAction(ActionType.Explore)
-  }
-
-  quit() {
-    this.onAction(ActionType.Avoid)
-  }
-
-  private startTypingAnimation() {
-    if(!this.mainTitle) this.mainTitle = this.data.name;
-    const title = this.data.eventChain?.[this.data.currentFloor!]?.title || this.data.name;
-    const desc = this.data.eventChain?.[this.data.currentFloor!]?.description || this.data.description;
-
+  private resetTyping() {
+    this.clearActiveTypingIntervals();
     this.displayedTitle = '';
     this.displayedDescription = '';
     this.titleIndex = 0;
     this.descIndex = 0;
+    this.writingTitle = false;
+    this.writingDesc = false;
+  }
 
+  private startTypingAnimation() {
+    if (!this.mainTitle) this.mainTitle = this.data.name;
+
+    const current = this.data.eventChain?.[this.data.currentFloor ?? ''];
+    const title = current?.title || this.data.name;
+    const desc = current?.description || this.data.description || '';
+
+    if (!desc.trim() || this.writingTitle || this.writingDesc) return;
+
+    this.clearActiveTypingIntervals();
+    this.displayedTitle = '';
+    this.displayedDescription = '';
+    this.titleIndex = 0;
+    this.descIndex = 0;
     this.writingTitle = true;
     this.writingDesc = false;
 
-    const titleInterval = setInterval(() => {
+    this.titleInterval = setInterval(() => {
       if (this.titleIndex < title.length) {
         this.displayedTitle += title[this.titleIndex++];
       } else {
-        clearInterval(titleInterval);
-        this.writingTitle = false;
-        this.writingDesc = true;
-        setTimeout(() => this.typeDescription(desc), 400);
+        this.stopTyping('title');
+        this.typeDescription(desc);
       }
-    }, 60);
+    }, 45);
   }
 
   private typeDescription(desc: string) {
-    const descInterval = setInterval(() => {
+    this.stopTyping('desc'); // sécurité
+    this.writingDesc = true;
+    this.descInterval = setInterval(() => {
       if (this.descIndex < desc.length) {
         this.displayedDescription += desc[this.descIndex++];
         this.scrollToBottom();
       } else {
-        clearInterval(descInterval);
-        this.writingDesc = false;
+        this.stopTyping('desc');
       }
-    }, 60);
+    }, 50);
+  }
+
+  onSkipText() {
+    if (this.writingTitle) {
+      const fullTitle = this.data.eventChain?.[this.data.currentFloor ?? '']?.title || this.data.name;
+      this.displayedTitle += this.getRemainingText(this.displayedTitle, fullTitle);
+      this.stopTyping('title');
+
+      const desc = this.data.eventChain?.[this.data.currentFloor ?? '']?.description || this.data.description || '';
+      this.typeDescription(desc);
+    } else if (this.writingDesc) {
+      const fullDesc = this.data.eventChain?.[this.data.currentFloor ?? '']?.description || this.data.description || '';
+      this.displayedDescription += this.getRemainingText(this.displayedDescription, fullDesc);
+      this.stopTyping('desc');
+    }
+  }
+
+  private getRemainingText(current: string, full: string): string {
+    return full.slice(current.length);
   }
 
   private appendPassiveText(msg: string) {
-    const textToAdd = `\n\n${msg}`;
-    let i = 0;
+    const addText = () => {
+      const textToAdd = `\n\n${msg}`;
+      let i = 0;
+      this.passiveInterval = setInterval(() => {
+        if (i < textToAdd.length) {
+          this.displayedDescription += textToAdd[i++];
+          this.scrollToBottom();
+        } else {
+          this.stopTyping('passive');
+        }
+      }, 50);
+    };
 
-    const interval = setInterval(() => {
-      if (i < textToAdd.length) {
-        this.displayedDescription += textToAdd[i++];
-        this.scrollToBottom();
-      } else {
-        clearInterval(interval);
-      }
-    }, 60);
+    if (this.writingDesc) {
+      const wait = setInterval(() => {
+        if (!this.writingDesc) {
+          clearInterval(wait);
+          addText();
+        }
+      }, 100);
+    } else {
+      addText();
+    }
   }
 
   private scrollToBottom() {
@@ -123,8 +173,38 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  trackByAction(index: number, action: string) {
-    return action; // la valeur sert d'identifiant unique
+  private stopTyping(type: 'title' | 'desc' | 'passive') {
+    switch (type) {
+      case 'title': clearInterval(this.titleInterval); this.writingTitle = false; break;
+      case 'desc': clearInterval(this.descInterval); this.writingDesc = false; break;
+      case 'passive': clearInterval(this.passiveInterval); break;
+    }
+  }
+
+  private clearActiveTypingIntervals() {
+    clearInterval(this.titleInterval);
+    clearInterval(this.descInterval);
+  }
+
+  private clearAllIntervals() {
+    this.clearActiveTypingIntervals();
+    clearInterval(this.passiveInterval);
+  }
+
+  onAction(action: ActionType) {
+    this.actionSelected.emit(action);
+  }
+
+  continue() {
+    this.onAction(ActionType.Explore);
+  }
+
+  quit() {
+    this.onAction(ActionType.Avoid);
+  }
+
+  trackByAction(_index: number, action: string) {
+    return action;
   }
 
   getConsequence(action: string): string {

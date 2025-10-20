@@ -55,16 +55,16 @@ export class OverlayFactory {
       case OverlayKind.Monster:
         return this.createMonster(id, kind, playerLevel, terrain);
       case OverlayKind.Encounter:
-        return this.createEncounter(id, kind, playerLevel, terrain);
+        return this.createEncounter(id, playerLevel, terrain);
       default:
         const table = this.TABLES[kind];
         if (table) return this.createFromTable(id, kind, table);
-        return this.createFallback(id, kind);
+        return this.createFallback(id);
     }
   }
 
   // Fallback if no template found
-  private static createFallback(id: string, kind: OverlayKind): OverlayInstance {
+  private static createFallback(id: string): OverlayInstance {
     return {
       id,
       kind: OverlayKind.None,
@@ -114,7 +114,7 @@ export class OverlayFactory {
     };
   }
 
-  private static createEncounter(id: string, kind: OverlayKind, playerLevel: number, terrain: Terrain): OverlayInstance {
+  private static createEncounter(id: string, playerLevel: number, terrain: Terrain): OverlayInstance {
     const encounterKinds: OverlayKind[] = [
       OverlayKind.Beast,
       OverlayKind.Monster,
@@ -128,6 +128,6 @@ export class OverlayFactory {
     if (randomKind === OverlayKind.Monster) return this.createMonster(id, randomKind, playerLevel, terrain);
 
     const table = this.TABLES[randomKind];
-    return table ? this.createFromTable(id, randomKind, table) : this.createFallback(id, randomKind);
+    return table ? this.createFromTable(id, randomKind, table) : this.createFallback(id);
   }
 }
