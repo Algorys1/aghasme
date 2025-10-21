@@ -419,7 +419,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Talk, ActionType.Observe],
         actionPassive: {
           [ActionType.Talk]: {
-            description: 'You ask what it writes. The figure pauses: “Names of those who climb.”',
+            description: 'You ask what it writes. The figure pauses: "Names of those who climb."',
           },
           [ActionType.Observe]: {
             description: 'You find your own name, half-written.',
@@ -452,7 +452,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
       },
       floor_6: {
         title: 'The Master of the Spire',
-        description: 'At the summit stands a tall figure cloaked in shadow and light. “Welcome, reflection.”',
+        description: 'At the summit stands a tall figure cloaked in shadow and light. "Welcome, reflection."',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {

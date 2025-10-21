@@ -361,7 +361,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Talk, ActionType.Pray],
         actionPassive: {
           [ActionType.Talk]: {
-            description: 'You speak aloud. The rift repeats your words, then adds: “Come closer.”',
+            description: 'You speak aloud. The rift repeats your words, then adds: "Come closer."',
             effects: [{ stat: 'mp', value: -2 }],
           },
           [ActionType.Pray]: {
@@ -398,7 +398,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
             },
           },
           [ActionType.Inspect]: {
-            description: 'You note that the runes around the crystal represent “balance” and “memory.”',
+            description: 'You note that the runes around the crystal represent "balance" and "memory."',
           },
         },
         next: 'floor_4',

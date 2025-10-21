@@ -287,7 +287,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
             },
           },
           [ActionType.Inspect]: {
-            description: 'Runes spiral around the altar: “Unity through division. Harmony through pain.”',
+            description: 'Runes spiral around the altar: "Unity through division. Harmony through pain."',
           },
         },
         next: 'floor_3',

@@ -9,28 +9,29 @@ export enum OverlayKind {
   // Encounters
   Monster = 'monster',
   Beast = 'beast',
-  Spirit = 'spirit',
   Encounter = 'encounter',
 
-  // Civilization
-  Village = 'village',
-  City = 'city',
-  Farm = 'farm',
+  // Stories
+  Spirit = 'spirit',
   Tower = 'tower',
   Ruins = 'ruins',
-
-  // Events
   Anomaly = 'anomaly',
   Caravan = 'caravan',
   Wanderer = 'wanderer',
   Treasure = 'treasure',
   Ritual = 'ritual',
+  Shrine = 'shrine',
+
+  // Civilization
+  Village = 'village',
+  City = 'city',
+  Portal = 'portal',
+
 
   // Mystical / Resources
-  Shrine = 'shrine',
-  Portal = 'portal',
   Mine = 'mine',
-  Forest = 'forest'
+  Forest = 'forest',
+  Farm = 'farm',
 }
 
 // -----------------------------------------------------------------
@@ -61,61 +62,85 @@ export const END_MARKER = '-end';
 // -----------------------------------------------------------------
 export const OVERLAY_POOLS: Record<string, Partial<Record<OverlayKind, number>>> = {
     plain: {
-        [OverlayKind.None]: 30,
-        [OverlayKind.Farm]: 2,
-        [OverlayKind.Village]: 2,
-        [OverlayKind.Encounter]: 1,
-    },
-    forest: {
-        [OverlayKind.None]: 40,
+        [OverlayKind.None]: 70,
+        [OverlayKind.Farm]: 8,
+        [OverlayKind.Village]: 3,
+        [OverlayKind.City]: 3,
+        [OverlayKind.Encounter]: 8,
         [OverlayKind.Beast]: 2,
-        [OverlayKind.Spirit]: 1,
-        [OverlayKind.Ruins]: 1,
-        [OverlayKind.Forest]: 1,
-    },
-    desert: {
-        [OverlayKind.None]: 50,
-        [OverlayKind.Anomaly]: 1,
-        [OverlayKind.Caravan]: 2,
-        [OverlayKind.Beast]: 10,
-        [OverlayKind.Monster]: 15,
-        [OverlayKind.Encounter]: 1,
-    },
-    mountain: {
-        [OverlayKind.None]: 50,
-        [OverlayKind.Mine]: 2,
-        [OverlayKind.Ruins]: 1,
-        [OverlayKind.Tower]: 1,
-    },
-    volcano: {
-        [OverlayKind.None]: 60,
-        [OverlayKind.Anomaly]: 1,
-        [OverlayKind.Ruins]: 1,
-        [OverlayKind.Monster]: 1,
-    },
-    jungle: {
-        [OverlayKind.None]: 50,
-        [OverlayKind.Spirit]: 2,
-        [OverlayKind.Ruins]: 1,
-        [OverlayKind.Anomaly]: 1,
-    },
-    swamp: {
-        [OverlayKind.None]: 60,
-        [OverlayKind.Spirit]: 1,
-        [OverlayKind.Ritual]: 1,
-        [OverlayKind.Anomaly]: 1,
-    },
-    sea: {
+      },
+      forest: {
+        [OverlayKind.None]: 65,
+        [OverlayKind.Beast]: 5,
+        [OverlayKind.Spirit]: 3,
+        [OverlayKind.Ruins]: 5,
+        [OverlayKind.Forest]: 10,
+        [OverlayKind.City]: 3,
+        [OverlayKind.Village]: 3,
+        [OverlayKind.Farm]: 3,
+      },
+      desert: {
         [OverlayKind.None]: 80,
-        [OverlayKind.Caravan]: 1,
-        [OverlayKind.Wanderer]: 1,
-    },
+        [OverlayKind.Anomaly]: 4,
+        [OverlayKind.Caravan]: 4,
+        [OverlayKind.Beast]: 2,
+        [OverlayKind.Monster]: 2,
+        [OverlayKind.Encounter]: 2,
+        [OverlayKind.Village]: 3,
+        [OverlayKind.City]: 1,
+        [OverlayKind.Portal]: 1,
+      },
+      mountain: {
+        [OverlayKind.None]: 60,
+        [OverlayKind.Mine]: 10,
+        [OverlayKind.Ruins]: 3,
+        [OverlayKind.Tower]: 6,
+        [OverlayKind.Beast]: 3,
+        [OverlayKind.Monster]: 3,
+        [OverlayKind.Ritual]: 6,
+        [OverlayKind.Village]: 2,
+        [OverlayKind.City]: 1,
+      },
+      volcano: {
+        [OverlayKind.None]: 65,
+        [OverlayKind.Anomaly]: 4,
+        [OverlayKind.Ruins]: 6,
+        [OverlayKind.Beast]: 3,
+        [OverlayKind.Monster]: 6,
+        [OverlayKind.Ritual]: 6,
+        [OverlayKind.Portal]: 2,
+      },
+      jungle: {
+        [OverlayKind.None]: 75,
+        [OverlayKind.Spirit]: 3,
+        [OverlayKind.Ruins]: 8,
+        [OverlayKind.Beast]: 5,
+        [OverlayKind.Monster]: 5,
+        [OverlayKind.Village]: 2,
+        [OverlayKind.Forest]: 3,
+      },
+      swamp: {
+        [OverlayKind.None]: 75,
+        [OverlayKind.Spirit]: 6,
+        [OverlayKind.Ritual]: 6,
+        [OverlayKind.Beast]: 4,
+        [OverlayKind.Monster]: 4,
+        [OverlayKind.Village]: 1,
+      },
+      sea: {
+        [OverlayKind.None]: 80,
+        [OverlayKind.Wanderer]: 3,
+        [OverlayKind.Beast]: 3,
+        [OverlayKind.Monster]: 3,
+        [OverlayKind.Anomaly]: 8,
+        [OverlayKind.Portal]: 2,
+      },
 };
 
 export const OVERLAY_ICONS: Record<OverlayKind, string> = {
   [OverlayKind.None]: 'assets/overlays/farm.png',
   [OverlayKind.City]: 'assets/overlays/city.png',
-  [OverlayKind.Village]: 'assets/overlays/city.png',
+  [OverlayKind.Village]: 'assets/overlays/village.png',
   [OverlayKind.Ruins]: 'assets/overlays/ruins.png',
   [OverlayKind.Tower]: 'assets/overlays/tower.png',
   [OverlayKind.Farm]: 'assets/overlays/farm.png',

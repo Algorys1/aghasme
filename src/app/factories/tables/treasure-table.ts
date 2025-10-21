@@ -457,7 +457,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Rest],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'When it clears, the treasure remains, and a faint voice murmurs: “Take what you have earned.”',
+            description: 'When it clears, the treasure remains, and a faint voice murmurs: "Take what you have earned."',
             effects: [{ stat: 'xp', value: +20 }, { stat: 'gold', value: +100 }],
           },
           [ActionType.Rest]: {

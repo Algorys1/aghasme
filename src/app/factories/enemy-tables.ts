@@ -9,7 +9,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/rats.png',
     category: 'beast',
     subCategories: ['vermin'],
-    terrains: ['plain', 'swamp', 'sea'],
+    terrains: ['plain', 'swamp', 'sea', 'forest'],
     minLevel: 1,
     maxLevel: 5
   },
@@ -20,7 +20,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/wolf.png',
     category: 'beast',
     subCategories: [],
-    terrains: ['plain', 'forest'],
+    terrains: ['plain', 'forest', 'mountain'],
     minLevel: 1,
     maxLevel: 5
   },
@@ -31,7 +31,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/wild-boar.png',
     category: 'beast',
     subCategories: [],
-    terrains: ['plain'],
+    terrains: ['plain', 'forest', 'mountain', 'jungle'],
     minLevel: 1,
     maxLevel: 5
   },
@@ -42,7 +42,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/bear.png',
     category: 'beast',
     subCategories: [],
-    terrains: ['forest', 'mountain'],
+    terrains: ['forest', 'mountain', 'jungle'],
     minLevel: 3,
     maxLevel: 8
   },
@@ -53,7 +53,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/bandit.png',
     category: 'monster',
     subCategories: ['human'],
-    terrains: ['plain', 'desert', 'forest', 'mountain'],
+    terrains: ['plain', 'desert', 'forest', 'mountain', 'volcano'],
     minLevel: 1,
     maxLevel: 6
   },
@@ -64,7 +64,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/guard.png',
     category: 'monster',
     subCategories: ['human'],
-    terrains: ['plain', 'mountain'],
+    terrains: ['plain', 'mountain', 'forest'],
     minLevel: 1,
     maxLevel: 10
   },
@@ -75,7 +75,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/thief.png',
     category: 'monster',
     subCategories: ['human'],
-    terrains: ['plain', 'mountain', 'forest'],
+    terrains: ['plain', 'mountain', 'forest', 'swamp', 'volcano', 'jungle'],
     minLevel: 3,
     maxLevel: 15
   },
@@ -97,7 +97,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/corrupt-sorcerer.png',
     category: 'monster',
     subCategories: ['human'],
-    terrains: ['plain', 'forest', 'volcano'],
+    terrains: ['plain', 'forest', 'volcano', 'swamp'],
     minLevel: 1,
     maxLevel: 15
   },
@@ -119,7 +119,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/priest.png',
     category: 'monster',
     subCategories: ['human'],
-    terrains: ['volcano'],
+    terrains: ['volcano', 'mountain', 'plain', 'jungle'],
     minLevel: 8,
     maxLevel: 12
   },
@@ -152,7 +152,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/griffin-young.png',
     category: 'beast',
     subCategories: ['flying'],
-    terrains: ['plain', 'sea'],
+    terrains: ['plain', 'sea', 'forest'],
     minLevel: 4,
     maxLevel: 8
   },
@@ -174,7 +174,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/spider.png',
     category: 'beast',
     subCategories: ['vermin'],
-    terrains: ['forest', 'swamp', 'jungle'],
+    terrains: ['forest', 'swamp', 'jungle', 'plain'],
     minLevel: 1,
     maxLevel: 6
   },
@@ -185,7 +185,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/goblin-warrior.png',
     category: 'monster',
     subCategories: ['goblin'],
-    terrains: ['plain', 'mountain', 'forest'],
+    terrains: ['plain', 'mountain', 'forest', 'jungle'],
     minLevel: 1,
     maxLevel: 15
   },
@@ -196,7 +196,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/goblin-archer.png',
     category: 'monster',
     subCategories: ['goblin'],
-    terrains: ['plain', 'mountain', 'forest'],
+    terrains: ['plain', 'mountain', 'forest', 'jungle'],
     minLevel: 1,
     maxLevel: 15
   },
@@ -207,7 +207,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/goblin-shaman.png',
     category: 'monster',
     subCategories: ['goblin'],
-    terrains: ['plain', 'mountain', 'forest'],
+    terrains: ['plain', 'mountain', 'forest', 'jungle'],
     minLevel: 1,
     maxLevel: 15
   },
@@ -218,7 +218,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/harpy.png',
     category: 'beast',
     subCategories: ['flying'],
-    terrains: ['forest', 'sea'],
+    terrains: ['forest', 'sea', 'jungle'],
     minLevel: 5,
     maxLevel: 15
   },
@@ -229,7 +229,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/bat-giant.png',
     category: 'beast',
     subCategories: ['vermin', 'flying'],
-    terrains: ['forest', 'jungle'],
+    terrains: ['forest', 'jungle', 'mountain'],
     minLevel: 2,
     maxLevel: 10
   },
@@ -240,7 +240,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/snake.png',
     category: 'beast',
     subCategories: ['vermin'],
-    terrains: ['desert', 'jungle'],
+    terrains: ['desert', 'jungle', 'forest'],
     minLevel: 1,
     maxLevel: 5
   },
@@ -262,7 +262,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/beetle-sand.png',
     category: 'beast',
     subCategories: ['vermin'],
-    terrains: ['desert'],
+    terrains: ['desert', 'swamp'],
     minLevel: 1,
     maxLevel: 10
   },
@@ -284,7 +284,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/3-eyed-crow.png',
     category: 'beast',
     subCategories: ['flying'],
-    terrains: ['desert'],
+    terrains: ['desert', 'swamp', 'volcano'],
     minLevel: 1,
     maxLevel: 10
   },
@@ -295,7 +295,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/zombie.png',
     category: 'monster',
     subCategories: ['undead'],
-    terrains: ['forest', 'swamp'],
+    terrains: ['forest', 'swamp', 'mountain', 'plain'],
     minLevel: 3,
     maxLevel: 8
   },
@@ -306,7 +306,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/mummy.png',
     category: 'beast',
     subCategories: ['undead'],
-    terrains: ['desert'],
+    terrains: ['desert', 'jungle'],
     minLevel: 1,
     maxLevel: 15
   },
@@ -317,7 +317,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/mummy-royal.png',
     category: 'beast',
     subCategories: ['undead'],
-    terrains: ['desert'],
+    terrains: ['desert', 'jungle'],
     minLevel: 5,
     maxLevel: 20
   },
@@ -328,7 +328,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/lost-soul.png',
     category: 'monster',
     subCategories: ['undead'],
-    terrains: ['plain', 'swamp', 'sea'],
+    terrains: ['plain', 'swamp', 'sea', 'jungle'],
     minLevel: 3,
     maxLevel: 15
   },
@@ -339,9 +339,9 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/skeleton-warrior.png',
     category: 'monster',
     subCategories: ['undead'],
-    terrains: ['plain', 'mountain'],
+    terrains: ['plain', 'mountain', 'swamp'],
     minLevel: 1,
-    maxLevel: 8
+    maxLevel: 10
   },
   {
     id: 'skeleton-archer',
@@ -350,9 +350,20 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/skeleton-archer.png',
     category: 'monster',
     subCategories: ['undead'],
-    terrains: ['mountain'],
+    terrains: ['mountain', 'plain', 'swamp'],
     minLevel: 1,
-    maxLevel: 8
+    maxLevel: 10
+  },
+  {
+    id: 'skeleton-mage',
+    name: 'Skeleton Mage',
+    desc: 'An undead is already unusual, but a magical undead. In short, bones break!',
+    icon: 'assets/monsters/skeleton-mage.png',
+    category: 'monster',
+    subCategories: ['undead'],
+    terrains: ['mountain', 'volcano', 'swamp'],
+    minLevel: 3,
+    maxLevel: 15
   },
   {
     id: 'ghost',
@@ -361,9 +372,9 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/ghost.png',
     category: 'monster',
     subCategories: ['undead'],
-    terrains: ['swamp', 'sea'],
+    terrains: ['swamp', 'sea', 'volcano'],
     minLevel: 4,
-    maxLevel: 9
+    maxLevel: 15
   },
   {
     id: 'mechanical-spider',
@@ -372,7 +383,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/spider-mechanic.png',
     category: 'monster',
     subCategories: ['mechanical', 'vermin'],
-    terrains: ['mountain', 'volcano'],
+    terrains: ['mountain', 'volcano', 'desert'],
     minLevel: 6,
     maxLevel: 10
   },
@@ -394,7 +405,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/golem-mechanic.png',
     category: 'monster',
     subCategories: ['mechanical'],
-    terrains: ['mountain', 'volcano'],
+    terrains: ['mountain', 'volcano', 'desert'],
     minLevel: 10,
     maxLevel: 20
   },
@@ -405,7 +416,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/snake-crystal.png',
     category: 'monster',
     subCategories: ['vermin', 'elemental', 'mineral'],
-    terrains: ['mountain'],
+    terrains: ['mountain', 'desert', 'volcano'],
     minLevel: 5,
     maxLevel: 20
   },
@@ -416,7 +427,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/elemental-fire.png',
     category: 'monster',
     subCategories: ['elemental', 'fire'],
-    terrains: ['mountain', 'volcano'],
+    terrains: ['mountain', 'volcano', 'desert'],
     minLevel: 8,
     maxLevel: 25
   },
@@ -438,7 +449,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/elemental-water.png',
     category: 'monster',
     subCategories: ['elemental', 'mineral'],
-    terrains: ['mountain', 'volcano', 'desert'],
+    terrains: ['plain', 'sea'],
     minLevel: 8,
     maxLevel: 25
   },
@@ -449,7 +460,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/elemental-air.png',
     category: 'monster',
     subCategories: ['elemental', 'flying'],
-    terrains: ['mountain', 'volcano', 'desert'],
+    terrains: ['mountain', 'desert', 'plain', 'sea'],
     minLevel: 8,
     maxLevel: 25
   },
@@ -460,7 +471,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/wolf-mechanic.png',
     category: 'monster',
     subCategories: ['mechanical'],
-    terrains: ['mountain', 'volcano'],
+    terrains: ['mountain', 'volcano', 'desert'],
     minLevel: 5,
     maxLevel: 20
   },
@@ -515,7 +526,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/dragon-green-adult.png',
     category: 'monster',
     subCategories: ['dragon', 'plant'],
-    terrains: ['forest', 'jungle'],
+    terrains: ['forest', 'jungle', 'swamp'],
     minLevel: 20,
     maxLevel: 50
   },
@@ -526,7 +537,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/dragon-green-young.png',
     category: 'monster',
     subCategories: ['dragon', 'plant'],
-    terrains: ['forest', 'jungle'],
+    terrains: ['forest', 'jungle', 'swamp'],
     minLevel: 10,
     maxLevel: 30
   },
@@ -559,7 +570,7 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/toad.png',
     category: 'monster',
     subCategories: ['vermin', 'plant'],
-    terrains: ['swamp', 'jungle'],
+    terrains: ['swamp', 'jungle', 'forest'],
     minLevel: 2,
     maxLevel: 10
   },
@@ -570,9 +581,9 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/lizard-giant.png',
     category: 'monster',
     subCategories: ['vermin', 'plant'],
-    terrains: ['swamp', 'jungle'],
+    terrains: ['swamp', 'jungle', 'forest'],
     minLevel: 10,
-    maxLevel: 20
+    maxLevel: 30
   },
   {
     id: 'young-kraken',

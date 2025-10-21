@@ -361,7 +361,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
       },
       floor_2: {
         title: 'The Guardian of Reflection',
-        description: 'A spectral figure stands before a mirror pool. “This place shows not who you are, but who you hide.”',
+        description: 'A spectral figure stands before a mirror pool. "This place shows not who you are, but who you hide."',
         actions: [ActionType.Observe, ActionType.Interact, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
@@ -371,7 +371,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
             description: 'You kneel before the guardian, who extends a hand of light.',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'Your reflection bows in turn. The guardian fades, whispering: “Go deeper.”',
+              description: 'Your reflection bows in turn. The guardian fades, whispering: "Go deeper."',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
@@ -402,7 +402,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
       },
       floor_4: {
         title: 'Trial of the Twin',
-        description: 'Your mirror-self steps forward, eyes glowing silver. “One of us must fade.”',
+        description: 'Your mirror-self steps forward, eyes glowing silver. "One of us must fade."',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -498,7 +498,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
       },
       floor_4: {
         title: 'The Forest\'s Guardian',
-        description: 'A figure of bark and moss rises, holding a spear of roots. “You disturb sacred memory.”',
+        description: 'A figure of bark and moss rises, holding a spear of roots. "You disturb sacred memory."',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {

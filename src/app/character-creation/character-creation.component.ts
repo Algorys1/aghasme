@@ -21,7 +21,7 @@ export class CharacterCreationComponent {
   selectedGender: Gender = 'male';
   hasInitialized = false;
 
-  orbs: Orbs = { bestial: 7, elemental: 7, natural: 7, mechanic: 7 };
+  orbs: Orbs = { bestial: 8, elemental: 8, natural: 8, mechanic: 8 };
   orbKeys: (keyof Orbs)[] = ['bestial', 'elemental', 'natural', 'mechanic'];
   orbDefs = ORB_DEFINITIONS;
   orbModifiers: Partial<Orbs> = {};
@@ -61,7 +61,7 @@ export class CharacterCreationComponent {
     if (delta < 0 && current <= 0) return;
     if (delta > 0 && this.pointsLeft === 0) return;
     if (delta > 0 && current >= 16) return;
-  
+
     this.orbs[key] = current + delta;
     this.pointsLeft -= delta;
 
@@ -72,26 +72,26 @@ export class CharacterCreationComponent {
     if (!this.selectedArchetype) return;
     this.previewStats = this.characterService.previewStats(this.selectedArchetype, this.orbs);
   }
-  
+
   // === STEP 3 : BACKGROUND ===
   selectBackground(bg: CharacterBackground) {
     this.selectedBackground = bg;
-  }  
+  }
 
   // === STEP 4 : NAME & CONFIRMATION ===
   validateName(raw: string): string {
     if (!raw) return '';
-  
+
     let name = raw.trim();
-  
+
     name = name.replace(/[^a-zA-Z _-]/g, '');
     name = name.replace(/\s{2,}/g, ' ');
     name = name.slice(0, 12);
-  
+
     if (name.length > 0) {
       name = name[0].toUpperCase() + name.slice(1);
     }
-  
+
     return name;
   }
 
@@ -99,7 +99,7 @@ export class CharacterCreationComponent {
     if (!this.selectedArchetype || !this.name.trim()) return;
     const cleanName = this.validateName(this.name);
     if (!cleanName) return;
-  
+
     const newChar = this.characterService.createCharacter({
       name: cleanName,
       archetype: this.selectedArchetype,
@@ -107,11 +107,11 @@ export class CharacterCreationComponent {
       orbs: this.orbs,
       background: this.selectedBackground?.id
     });
-  
+
     this.router.navigate(['/game'], {
       state: { newGame: true }
     });
-  }  
+  }
 
   nextStep() {
     if (this.step < 4) this.step++;
@@ -128,8 +128,8 @@ export class CharacterCreationComponent {
   getSlideTransform(): string {
     return `translateX(${(this.step - 1) * -100}vw)`;
   }
-  
-  
+
+
   getPortrait(): string {
     if (!this.selectedArchetype) return 'assets/characters/default.png';
     return `assets/characters/${this.selectedArchetype}-${this.selectedGender}.png`;

@@ -2,7 +2,7 @@
   <div class="progress-bar">
     <div class="progress-fill" [style.width.%]="(step / 4) * 100"></div>
   </div>
-  
+
   <div class="container" [style.transform]="getSlideTransform()">
 
     <!-- === STEP 1 : ARCHETYPE & GENDER === -->
@@ -71,9 +71,9 @@
 
             <!-- ✅ Affichage du bonus/malus d'archetype -->
             @if (orbModifiers[key]) {
-              <span 
-                class="orb-modifier" 
-                [class.bonus]="orbModifiers[key]! > 0" 
+              <span
+                class="orb-modifier"
+                [class.bonus]="orbModifiers[key]! > 0"
                 [class.malus]="orbModifiers[key]! < 0"
               >
                 {{ orbModifiers[key]! > 0 ? '+' : '' }}{{ orbModifiers[key] }}
@@ -102,7 +102,7 @@
             {{ orbDefs[key].description }}
           </div>
         }
-      </div>      
+      </div>
 
       <div class="stats-preview">
         <div class="preview-title">Stats Preview</div>
@@ -133,7 +133,7 @@
     <!-- === STEP 3 : BACKGROUND === -->
     <section class="slide">
       <h2>Select Background</h2>
-    
+
       <div class="background-grid">
         @for (bg of backgrounds; track bg.id) {
           <div
@@ -143,7 +143,7 @@
           >
             <h3>{{ bg.name }}</h3>
             <p>{{ bg.description }}</p>
-    
+
             @if (bg.effects?.length) {
               <ul>
                 @for (eff of bg.effects; track eff.stat) {
@@ -159,22 +159,22 @@
           </div>
         }
       </div>
-    
+
       @if (selectedBackground?.flavor) {
-        <p class="flavor-text">“{{ selectedBackground?.flavor }}”</p>
+        <p class="flavor-text">"{{ selectedBackground?.flavor }}"</p>
       }
-    
+
       <div class="nav-buttons">
         <button (click)="prevStep()">◀ Back</button>
         <button (click)="nextStep()" [disabled]="!selectedBackground">Next ▶</button>
       </div>
-    </section>    
-    
+    </section>
+
     <!-- === STEP 4 : NAME === -->
     <section class="slide">
       <h2>During this adventure, what should we call you?</h2>
-      <input 
-        type="text" 
+      <input
+        type="text"
         [(ngModel)]="name"
         (ngModelChange)="name = validateName($event)"
         maxlength="12"

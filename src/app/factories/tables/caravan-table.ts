@@ -21,7 +21,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
             effects: [{ stat: 'gold', value: -5 }],
           },
           [ActionType.Talk]: {
-            description: 'The merchant grins, whispering about “something rare” hidden in his wagon.',
+            description: 'The merchant grins, whispering about "something rare" hidden in his wagon.',
           },
         },
         next: 'floor_2',
@@ -131,7 +131,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
               effects: [{ stat: 'xp', value: +4 }],
             },
             onFailure: {
-              description: 'He frowns. “Search the stranger.”',
+              description: 'He frowns. "Search the stranger."',
               next: 'floor_2',
             },
           },
@@ -342,7 +342,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
       },
       floor_3: {
         title: 'The Caravan’s Curse',
-        description: 'The other wagons are gone, only dunes remain. The merchant looks panicked. “This place repeats itself!”',
+        description: 'The other wagons are gone, only dunes remain. The merchant looks panicked. "This place repeats itself!"',
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
@@ -414,7 +414,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Pray],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'The sigil reads “Deliver Unto Dawn.” The wood is warm to the touch.',
+            description: 'The sigil reads "Deliver Unto Dawn." The wood is warm to the touch.',
             effects: [{ stat: 'xp', value: +4 }],
           },
           [ActionType.Pray]: {
@@ -425,7 +425,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
       },
       floor_3: {
         title: 'The Midnight Halt',
-        description: 'The convoy stops by a ruined bridge. The leader, hooded and ageless, turns to you and says: “Only the living may cross.”',
+        description: 'The convoy stops by a ruined bridge. The leader, hooded and ageless, turns to you and says: "Only the living may cross."',
         actions: [ActionType.Interact, ActionType.Pray],
         actionPassive: {
           [ActionType.Interact]: {
@@ -440,7 +440,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'The air chills, whispers fill your mind: “You are not one of us.”',
+              description: 'The air chills, whispers fill your mind: "You are not one of us."',
             },
           },
         },

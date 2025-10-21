@@ -29,15 +29,12 @@ export interface MapSnapshot {
 
 @Injectable({ providedIn: 'root' })
 export class MapService {
-  // --- PIXI Core ---
   private size = 80;
 
-  // --- Map Data ---
   private tiles: Record<string, { gfx: Container; terrain: Terrain; discovered: boolean, variant: string }> = {};
   private overlaySprites: Record<string, Sprite[]> = {};
   private overlayTypes: Record<string, OverlayKind[]> = {};
 
-  // --- Noise generation ---
   private noiseAltitude = createNoise2D();
   private noiseHumidity = createNoise2D();
   private scaleAltitude = 0.05;
@@ -45,12 +42,11 @@ export class MapService {
   private seed: number = Date.now();
   private randState = 1;
 
-  // --- Player ---
   private player!: Sprite;
   private playerPos = { q: 0, r: 0 };
 
-  // --- State / Events ---
   private mapRadius = 10;
+
   private activeOverlay: OverlayKind | null = null;
   overlayChange = new Subject<OverlayKind>();
   tileChange = new Subject<{ type: string; description?: string }>();
@@ -78,8 +74,8 @@ export class MapService {
     const humidity = (humRaw + 1) / 2;
 
     if (altitude < 0.3) return 'sea';
+    if (altitude > 0.9) return 'volcano';
     if (altitude > 0.7) return 'mountain';
-    if (altitude > 0.8) return 'volcano';
     if (humidity < 0.3) return 'desert';
     if (humidity < 0.5) return 'plain';
     if (humidity < 0.6) return 'forest';
@@ -124,7 +120,8 @@ export class MapService {
         }
       }
     }
-    this.forceOverlay();
+    this.enrichCivilizationZones();
+    this.logOverlayStats();
   }
 
   private createPlayer() {
@@ -217,6 +214,54 @@ export class MapService {
     }
     return OverlayKind.None;
   }
+
+  private enrichCivilizationZones(): void {
+    // 1️⃣ On récupère les villes déjà générées
+    const cityTiles = Object.entries(this.overlayTypes)
+      .filter(([_, kinds]) => kinds.includes(OverlayKind.City))
+      .map(([key]) => {
+        const [q, r] = key.split(',').map(Number);
+        return { q, r };
+      });
+
+    // 2️⃣ Pour chaque ville, on crée un halo de civilisation
+    for (const city of cityTiles) {
+      for (const [key, tileData] of Object.entries(this.tiles)) {
+        const [q, r] = key.split(',').map(Number);
+        const dist = this.hexDistance(city, { q, r });
+
+        // rayon de 3-4 cases max
+        if (dist > 0 && dist <= 4) {
+          const alreadyHas = this.overlayTypes[key]?.length;
+          if (alreadyHas) continue; // ⚠️ ne remplace rien
+
+          // petite probabilité d’ajout
+          const roll = Math.random();
+          if (roll < 0.10) this.addOverlay(q, r, OverlayKind.Farm);
+          else if (roll < 0.15) this.addOverlay(q, r, OverlayKind.Village);
+        }
+      }
+    }
+  }
+
+  private logOverlayStats(): void {
+    const counts: Record<string, number> = {};
+    for (const key in this.overlayTypes) {
+      const kinds = this.overlayTypes[key];
+      for (const kind of kinds) {
+        counts[kind] = (counts[kind] || 0) + 1;
+      }
+    }
+
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    console.groupCollapsed(`🧭 Overlay distribution (${total} total)`);
+    for (const [kind, count] of Object.entries(counts)) {
+      const pct = ((count / total) * 100).toFixed(1);
+      console.log(`${kind}: ${count} (${pct}%)`);
+    }
+    console.groupEnd();
+  }
+
 
   // === SAVE / LOAD ================================================================
   public serializeMap(): MapSnapshot {
@@ -378,10 +423,5 @@ export class MapService {
 
   public getPlayerPosition(): {q:number, r:number} {
     return this.playerPos;
-  }
-
-  forceOverlay() {
-    console.log('TEST : FORCE OVERLAY')
-    this.addOverlay(-2, 2, OverlayKind.Ritual);
   }
 }
