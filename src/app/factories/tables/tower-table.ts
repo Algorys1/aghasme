@@ -346,4 +346,247 @@ export const TOWER_TABLE: OverlayTemplate[] = [
       },
     },
   },
+  {
+    name: 'The Obsidian Spire',
+    description: 'A black spire pierces the sky, absorbing light instead of casting shadow. The air around it hums like a living thing.',
+    icon: 'assets/overlays/tower.png',
+    actions: [],
+    eventChain: {
+      floor_1: {
+        title: 'The Ashen Gate',
+        description: 'You stand before a doorway etched with runes that shift when you blink.',
+        actions: [ActionType.Inspect, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Inspect]: {
+            description: 'Each rune seems to whisper your name backwards.',
+          },
+          [ActionType.Interact]: {
+            description: 'You press your hand to the stone. It feels warm, almost alive.',
+            check: { orb: 'mechanic', difficulty: 10 },
+            onSuccess: {
+              description: 'The runes flare, the door opens, sighing like a beast.',
+              effects: [{ stat: 'xp', value: +5 }],
+            },
+            onFailure: {
+              description: 'A rune burns your palm, you smell scorched air.',
+              effects: [{ stat: 'hp', value: -3 }],
+            },
+          },
+        },
+        next: 'floor_2',
+      },
+      floor_2: {
+        title: 'Hall of Whispers',
+        description: 'Shelves filled with blackened books tower above you. The pages flutter, though there\'s no wind.',
+        actions: [ActionType.Observe, ActionType.Talk],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'A dozen voices argue softly inside your head, each claiming to be you.',
+          },
+          [ActionType.Talk]: {
+            description: 'You whisper a question, one book answers in your voice.',
+          },
+        },
+        next: 'floor_3',
+      },
+      floor_3: {
+        title: 'The Chamber of Mirrors',
+        description: 'You find a spiral stair surrounded by mirrors, each reflection older than you remember.',
+        actions: [ActionType.Interact, ActionType.Pray],
+        actionPassive: {
+          [ActionType.Interact]: {
+            description: 'You touch the mirror, your reflection grabs your wrist.',
+            check: { orb: 'elemental', difficulty: 12 },
+            onSuccess: {
+              description: 'You pull free, the reflection nods and fades.',
+              effects: [{ stat: 'xp', value: +8 }],
+            },
+            onFailure: {
+              description: 'You feel your strength drain, the reflection smiles as you stumble.',
+              effects: [{ stat: 'hp', value: -4 }],
+            },
+          },
+          [ActionType.Pray]: {
+            description: 'You focus your breath, stabilizing your thoughts.',
+            effects: [{ stat: 'mp', value: +4 }],
+          },
+        },
+        next: 'floor_4',
+      },
+      floor_4: {
+        title: 'The Silent Library',
+        description: 'Floating tomes encircle a broken lectern. A pale figure writes endlessly with invisible ink.',
+        actions: [ActionType.Talk, ActionType.Observe],
+        actionPassive: {
+          [ActionType.Talk]: {
+            description: 'You ask what it writes. The figure pauses: “Names of those who climb.”',
+          },
+          [ActionType.Observe]: {
+            description: 'You find your own name, half-written.',
+          },
+        },
+        next: 'floor_5',
+      },
+      floor_5: {
+        title: 'The Upper Hall',
+        description: 'Starlight leaks through cracks in the ceiling. The air tastes like lightning.',
+        actions: [ActionType.Interact, ActionType.Pray],
+        actionPassive: {
+          [ActionType.Interact]: {
+            description: 'You raise your hand, lightning curls around your fingers.',
+            check: { orb: 'elemental', difficulty: 13 },
+            onSuccess: {
+              description: 'The tower hums louder, you feel in tune with its pulse.',
+              effects: [{ stat: 'xp', value: +10 }, { stat: 'mp', value: +6 }],
+            },
+            onFailure: {
+              description: 'Your nerves ignite in pain, the hum becomes laughter.',
+              effects: [{ stat: 'hp', value: -6 }],
+            },
+          },
+          [ActionType.Pray]: {
+            description: 'You whisper for balance. The laughter quiets momentarily.',
+          },
+        },
+        next: 'floor_6',
+      },
+      floor_6: {
+        title: 'The Master of the Spire',
+        description: 'At the summit stands a tall figure cloaked in shadow and light. “Welcome, reflection.”',
+        actions: [ActionType.Fight, ActionType.Flee],
+        uniqueChoice: true,
+        encounter: {
+          chance: 1,
+          enemies: ['corrupt-sorcerer', 'dark-knight'],
+          random: true,
+        },
+        next: 'floor_7',
+      },
+      floor_7: {
+        title: 'The Breath of the Tower',
+        description: 'When the figure falls, the walls sigh. The entire spire exhales one final gust of starlight.',
+        actions: [ActionType.Observe, ActionType.Rest],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'The air sparkles, and for a moment, you hear your own heartbeat echo from above.',
+            effects: [{ stat: 'xp', value: +25 }, { stat: 'mp', value: +10 }],
+          },
+          [ActionType.Rest]: {
+            description: 'You rest against the warm stone, feeling it pulse like a heart.',
+            effects: [{ stat: 'hp', value: +10 }],
+          },
+        },
+      },
+    },
+  },
+  {
+    name: 'The Astral Tower',
+    description: 'You see it before you sleep, and awaken inside it. The walls shimmer like glass filled with galaxies.',
+    icon: 'assets/overlays/tower.png',
+    actions: [],
+    eventChain: {
+      floor_1: {
+        title: 'Dreaming Ascent',
+        description: 'You stand at the base of a staircase that winds upward endlessly. The steps hum under your feet.',
+        actions: [ActionType.Observe, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'Every step glows faintly, constellations rearranging as you move.',
+          },
+          [ActionType.Interact]: {
+            description: 'You take the first step. The stars shift around you like eyes.',
+            effects: [{ stat: 'xp', value: +3 }],
+          },
+        },
+        next: 'floor_2',
+      },
+      floor_2: {
+        title: 'The Chamber of Time',
+        description: 'Clocks hang suspended midair, their hands spinning backward. A faint melody keeps perfect tempo.',
+        actions: [ActionType.Inspect, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Inspect]: {
+            description: 'Each clock\'s glass reflects a different version of you.',
+          },
+          [ActionType.Interact]: {
+            description: 'You touch one clock, time slows, but only for you.',
+            check: { orb: 'mechanic', difficulty: 11 },
+            onSuccess: {
+              description: 'You move through the slowed moment effortlessly.',
+              effects: [{ stat: 'xp', value: +6 }],
+            },
+            onFailure: {
+              description: 'The clock cracks, your vision skips a beat.',
+              effects: [{ stat: 'hp', value: -3 }],
+            },
+          },
+        },
+        next: 'floor_3',
+      },
+      floor_3: {
+        title: 'The Observatory',
+        description: 'A vast room opens, filled with telescopes pointed inward, not outward.',
+        actions: [ActionType.Observe, ActionType.Inspect],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'Through the glass, you see yourself walking toward you from another angle.',
+          },
+          [ActionType.Inspect]: {
+            description: 'Each lens shows a star, but one shows your own heartbeat.',
+          },
+        },
+        next: 'floor_4',
+      },
+      floor_4: {
+        title: 'The Starwell',
+        description: 'A pit filled with liquid light glows at the center. Voices whisper from below.',
+        actions: [ActionType.Pray, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Pray]: {
+            description: 'You whisper a wish into the light.',
+            check: { orb: 'elemental', difficulty: 12 },
+            onSuccess: {
+              description: 'The light pulses, the whisper answers, granting understanding.',
+              effects: [{ stat: 'xp', value: +8 }],
+            },
+            onFailure: {
+              description: 'The voices argue, mocking your plea.',
+            },
+          },
+          [ActionType.Interact]: {
+            description: 'You dip your hand into the light, it feels cold and infinite.',
+            effects: [{ stat: 'mp', value: +5 }],
+          },
+        },
+        next: 'floor_5',
+      },
+      floor_5: {
+        title: 'Celestial Guardian',
+        description: 'A figure of glass and starlight descends, wings of constellation spread wide.',
+        actions: [ActionType.Fight, ActionType.Flee],
+        uniqueChoice: true,
+        encounter: {
+          chance: 1,
+          enemies: ['elemental-air', 'elemental-fire'],
+          random: true,
+        },
+        next: 'floor_6',
+      },
+      floor_6: {
+        title: 'The Final Step',
+        description: 'The stairs end at a door made of light. Beyond it, stars hum like a heartbeat.',
+        actions: [ActionType.Observe, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'You see the reflection of every place you\'ve been.',
+            effects: [{ stat: 'xp', value: +20 }, { stat: 'mp', value: +8 }],
+          },
+          [ActionType.Interact]: {
+            description: 'You step forward. The dream dissolves as you touch the threshold.',
+            effects: [{ stat: 'hp', value: +6 }],
+          },
+        },
+      },
+    },
+  },
 ];

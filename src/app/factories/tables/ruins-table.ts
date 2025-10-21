@@ -325,4 +325,218 @@ export const RUINS_TABLE: OverlayTemplate[] = [
       },
     },
   },
+  {
+    name: 'The Sunken Citadel',
+    description: 'The remains of a once-majestic city now lie buried beneath layers of stone and moss. The wind still hums through its collapsed towers.',
+    icon: 'assets/overlays/ruins.png',
+    actions: [],
+    eventChain: {
+      floor_1: {
+        title: 'Gates of Silence',
+        description: 'Massive archways lead into the dark. The air smells of wet limestone and old prayers.',
+        actions: [ActionType.Observe, ActionType.Inspect],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'Strange carvings depict the city\'s fall, swallowed by waves, yet far inland.',
+          },
+          [ActionType.Inspect]: {
+            description: 'The pillars bear fresh cracks. Something has moved here recently.',
+            effects: [{ stat: 'xp', value: +4 }],
+          },
+        },
+        next: 'floor_2',
+      },
+      floor_2: {
+        title: 'The Forgotten Plaza',
+        description: 'You arrive in a square dominated by a broken fountain. Water still trickles, glowing faintly blue.',
+        actions: [ActionType.Interact, ActionType.Observe],
+        actionPassive: {
+          [ActionType.Interact]: {
+            description: 'You dip your hand into the water.',
+            check: { orb: 'elemental', difficulty: 9 },
+            onSuccess: {
+              description: 'It tingles pleasantly, ancient magic lingers in the current.',
+              effects: [{ stat: 'mp', value: +5 }],
+            },
+            onFailure: {
+              description: 'Your hand goes numb briefly, the water whispers back a name.',
+              effects: [{ stat: 'hp', value: -2 }],
+            },
+          },
+          [ActionType.Observe]: {
+            description: 'Statues of nobles surround the square, all missing their heads.',
+          },
+        },
+        next: 'floor_3',
+      },
+      floor_3: {
+        title: 'Hall of Mirrors',
+        description: 'You step into a long corridor lined with shattered mirrors. Your reflection lags behind you.',
+        actions: [ActionType.Inspect, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Inspect]: {
+            description: 'You realize some mirrors still show a figure, but not yours.',
+            effects: [{ stat: 'xp', value: +6 }],
+          },
+          [ActionType.Interact]: {
+            description: 'You touch one of the unbroken panes.',
+            check: { orb: 'mechanic', difficulty: 11 },
+            onSuccess: {
+              description: 'The reflection bows. A faint light emerges, forming a key.',
+              effects: [{ stat: 'xp', value: +8 }],
+            },
+            onFailure: {
+              description: 'Your reflection lunges, the glass shatters in your face.',
+              next: 'floor_4',
+              effects: [{ stat: 'hp', value: -5 }],
+            },
+          },
+        },
+        next: 'floor_4',
+      },
+      floor_4: {
+        title: 'The Throne Below',
+        description: 'A grand chamber carved into the bedrock. A rusted throne sits empty, surrounded by bones in armor.',
+        actions: [ActionType.Observe, ActionType.Pray],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'The bones are positioned like an army bowing before the empty seat.',
+          },
+          [ActionType.Pray]: {
+            description: 'You bow as well. A single suit of armor stirs.',
+          },
+        },
+        next: 'floor_5',
+      },
+      floor_5: {
+        title: 'The Fallen King',
+        description: 'The skeleton on the throne rises, dust cascading from its ribs. A crown of tarnished gold gleams faintly.',
+        actions: [ActionType.Fight, ActionType.Flee],
+        uniqueChoice: true,
+        encounter: {
+          chance: 1,
+          enemies: ['skeleton-warrior', 'royal-mummy'],
+          random: true,
+        },
+        next: 'floor_6',
+      },
+      floor_6: {
+        title: 'Crown of Dust',
+        description: 'Silence returns. The air feels lighter, as if the city itself had exhaled.',
+        actions: [ActionType.Observe],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'The crown crumbles to ash in your hands, leaving behind a single gem.',
+            effects: [{ stat: 'gold', value: +70 }, { stat: 'xp', value: +15 }],
+          },
+        },
+      },
+    },
+  },
+  {
+    name: 'The Obsidian Bastion',
+    description: 'A towering black fortress stands on a cliff\'s edge, humming faintly with latent power. The walls ripple like oil under moonlight.',
+    icon: 'assets/overlays/ruins.png',
+    actions: [],
+    eventChain: {
+      floor_1: {
+        title: 'Gates of the Bastion',
+        description: 'The gates bear scars of old battles, yet the metal feels unnaturally smooth.',
+        actions: [ActionType.Inspect, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Inspect]: {
+            description: 'The doors are engraved with runes of loyalty and pain.',
+          },
+          [ActionType.Interact]: {
+            description: 'You push the gates open, they part with a sound like thunder.',
+            effects: [{ stat: 'xp', value: +3 }],
+          },
+        },
+        next: 'floor_2',
+      },
+      floor_2: {
+        title: 'Hall of Echoing Steps',
+        description: 'Every footstep repeats three times, once now, once later, once never.',
+        actions: [ActionType.Observe, ActionType.Talk],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'The walls hum faintly. There\'s no dust, someone still maintains this place.',
+          },
+          [ActionType.Talk]: {
+            description: 'You call out. Your voice comes back deeper, older.',
+          },
+        },
+        next: 'floor_3',
+      },
+      floor_3: {
+        title: 'The Armory',
+        description: 'Weapons line the walls, not rusted, but pristine. Each bears a different symbol.',
+        actions: [ActionType.Inspect, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Inspect]: {
+            description: 'You recognize sigils of fallen houses and unknown empires.',
+            effects: [{ stat: 'xp', value: +5 }],
+          },
+          [ActionType.Interact]: {
+            description: 'You lift a sword, it hums faintly, almost alive.',
+            check: { orb: 'mechanic', difficulty: 11 },
+            onSuccess: {
+              description: 'The blade accepts you, it glows faintly blue.',
+              effects: [{ stat: 'attack', value: +1 }],
+            },
+            onFailure: {
+              description: 'The weapon rejects your grasp violently.',
+              effects: [{ stat: 'hp', value: -3 }],
+            },
+          },
+        },
+        next: 'floor_4',
+      },
+      floor_4: {
+        title: 'The Inner Sanctum',
+        description: 'A circular chamber with a mirror-like floor. A black flame burns at its center.',
+        actions: [ActionType.Pray, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Pray]: {
+            description: 'You kneel, the flame bends toward you, whispering promises.',
+          },
+          [ActionType.Interact]: {
+            description: 'You reach toward the flame.',
+            check: { orb: 'elemental', difficulty: 12 },
+            onSuccess: {
+              description: 'It flares, consuming the shadows. You feel strength flow through you.',
+              effects: [{ stat: 'xp', value: +10 }],
+            },
+            onFailure: {
+              description: 'It burns cold, freezing your breath in your throat.',
+              effects: [{ stat: 'hp', value: -5 }],
+            },
+          },
+        },
+        next: 'floor_5',
+      },
+      floor_5: {
+        title: 'The Black Knight',
+        description: 'A towering figure steps from the shadows, armored, silent, blade dripping with darkness.',
+        actions: [ActionType.Fight, ActionType.Flee],
+        uniqueChoice: true,
+        encounter: {
+          chance: 1,
+          enemies: ['dark-knight'],
+        },
+        next: 'floor_6',
+      },
+      floor_6: {
+        title: 'The Bastion\'s Heart',
+        description: 'When the knight falls, the fortress groans, walls cracking like dry skin.',
+        actions: [ActionType.Observe],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'The flame in the sanctum extinguishes, leaving a glowing ember behind.',
+            effects: [{ stat: 'xp', value: +20 }, { stat: 'gold', value: +80 }],
+          },
+        },
+      },
+    },
+  },
 ];

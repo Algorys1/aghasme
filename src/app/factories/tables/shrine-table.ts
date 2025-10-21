@@ -80,7 +80,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Interact, ActionType.Pray],
         actionPassive: {
           [ActionType.Pray]: {
-            description: 'You raise your hands to the sky, invoking the moon’s blessing.',
+            description: 'You raise your hands to the sky, invoking the moon\'s blessing.',
             check: { orb: 'natural', difficulty: 8 },
             onSuccess: {
               description: 'A cool breeze wraps around you, refreshing your spirit.',
@@ -177,7 +177,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
       },
       floor_2: {
         title: 'The Resonance Heart',
-        description: 'At the chamber’s center, a massive prism hums like a heartbeat. Faint runes swirl within.',
+        description: 'At the chamber\'s center, a massive prism hums like a heartbeat. Faint runes swirl within.',
         actions: [ActionType.Pray, ActionType.Interact],
         encounter: {
           chance: 0.35,
@@ -185,7 +185,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         },
         actionPassive: {
           [ActionType.Pray]: {
-            description: 'You align your elemental essence with the shrine’s pulse.',
+            description: 'You align your elemental essence with the shrine\'s pulse.',
             check: { orb: 'elemental', difficulty: 13 },
             onSuccess: {
               description: 'The rhythm syncs perfectly, energy floods your veins.',
@@ -238,7 +238,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Trickster’s Jest',
+        title: 'The Trickster\'s Jest',
         description: 'A goblin effigy grins wide, a bowl of coins before it. You sense a trap and a challenge.',
         actions: [ActionType.Pray, ActionType.Interact],
         encounter: {
@@ -248,7 +248,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         },
         actionPassive: {
           [ActionType.Pray]: {
-            description: 'You recite the goblins’ blessing, half chant, half insult.',
+            description: 'You recite the goblins\' blessing, half chant, half insult.',
             check: { orb: 'bestial', difficulty: 9 },
             onSuccess: {
               description: 'The effigy snickers. A strange warmth fills your chest, confidence, or foolishness.',
@@ -333,6 +333,193 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
             onFailure: {
               description: 'Your words echo hollow. The darkness grows thicker.',
             },
+          },
+        },
+      },
+    },
+  },
+  {
+    name: 'The Moonlit Sanctuary',
+    description: 'A marble terrace appears where there was nothing moments before, bathed in pale lunar light.',
+    icon: 'assets/overlays/shrine.png',
+    actions: [],
+    eventChain: {
+      floor_1: {
+        title: 'The Silver Path',
+        description: 'The moonlight seems solid here, forming a glowing trail toward a gate of silver leaves.',
+        actions: [ActionType.Observe, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'You feel a strange calm, as if your footsteps made no sound.',
+          },
+          [ActionType.Interact]: {
+            description: 'You touch the gate; it hums like a heartbeat.',
+            effects: [{ stat: 'xp', value: +3 }],
+          },
+        },
+        next: 'floor_2',
+      },
+      floor_2: {
+        title: 'The Guardian of Reflection',
+        description: 'A spectral figure stands before a mirror pool. “This place shows not who you are, but who you hide.”',
+        actions: [ActionType.Observe, ActionType.Interact, ActionType.Pray],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'The pool reflects you perfectly, except your reflection is smiling.',
+          },
+          [ActionType.Interact]: {
+            description: 'You kneel before the guardian, who extends a hand of light.',
+            check: { orb: 'elemental', difficulty: 10 },
+            onSuccess: {
+              description: 'Your reflection bows in turn. The guardian fades, whispering: “Go deeper.”',
+              effects: [{ stat: 'xp', value: +6 }],
+            },
+            onFailure: {
+              description: 'The pool ripples, your reflection frowns, disappointed.',
+              effects: [{ stat: 'hp', value: -3 }],
+            },
+          },
+          [ActionType.Pray]: {
+            description: 'You close your eyes. The moonlight dims slightly, then returns stronger.',
+          },
+        },
+        next: 'floor_3',
+      },
+      floor_3: {
+        title: 'The Echo Hall',
+        description: 'Dozens of arches shimmer into being, each echoing your voice a fraction of a second late.',
+        actions: [ActionType.Inspect, ActionType.Observe],
+        actionPassive: {
+          [ActionType.Inspect]: {
+            description: 'Your echoes form sentences you never said.',
+            effects: [{ stat: 'xp', value: +4 }],
+          },
+          [ActionType.Observe]: {
+            description: 'In the last archway, you glimpse a figure identical to yourself, waiting.',
+          },
+        },
+        next: 'floor_4',
+      },
+      floor_4: {
+        title: 'Trial of the Twin',
+        description: 'Your mirror-self steps forward, eyes glowing silver. “One of us must fade.”',
+        actions: [ActionType.Fight, ActionType.Flee],
+        uniqueChoice: true,
+        encounter: {
+          chance: 1,
+          enemies: ['temple-guardian'],
+        },
+        next: 'floor_5',
+      },
+      floor_5: {
+        title: 'Moon\'s Blessing',
+        description: 'The air clears. The sanctuary dissolves back into starlight, only a faint crescent mark glows on your hand.',
+        actions: [ActionType.Observe, ActionType.Rest],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'The mark hums faintly when you close your eyes.',
+            effects: [{ stat: 'xp', value: +20 }, { stat: 'mp', value: +10 }],
+          },
+          [ActionType.Rest]: {
+            description: 'You rest under invisible stars. Your heartbeat aligns with the rhythm of the night.',
+            effects: [{ stat: 'hp', value: +6 }],
+          },
+        },
+      },
+    },
+  },
+  {
+    name: 'The Grove of Remembrance',
+    description: 'Ancient trees form a circle so perfect it feels deliberate. The air hums with the scent of forgotten rain.',
+    icon: 'assets/overlays/shrine.png',
+    actions: [],
+    eventChain: {
+      floor_1: {
+        title: 'The Singing Trees',
+        description: 'Leaves rustle though no wind blows. Each movement creates a faint musical tone.',
+        actions: [ActionType.Observe, ActionType.Interact],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'The grove hums like a choir, every branch tuned to the same rhythm.',
+          },
+          [ActionType.Interact]: {
+            description: 'You touch one of the trunks; its bark is warm, almost pulsing.',
+            effects: [{ stat: 'xp', value: +3 }],
+          },
+        },
+        next: 'floor_2',
+      },
+      floor_2: {
+        title: 'Roots Beneath',
+        description: 'The earth shifts beneath your feet. Something vast stirs below.',
+        actions: [ActionType.Inspect, ActionType.Pray],
+        actionPassive: {
+          [ActionType.Inspect]: {
+            description: 'You see faint light between the roots, veins of living magic.',
+          },
+          [ActionType.Pray]: {
+            description: 'You whisper thanks to the earth.',
+            check: { orb: 'natural', difficulty: 10 },
+            onSuccess: {
+              description: 'The ground sighs softly. You feel your heartbeat sync with the soil.',
+              effects: [{ stat: 'hp', value: +6 }],
+            },
+            onFailure: {
+              description: 'Roots tighten around your legs, the forest tests your sincerity.',
+              effects: [{ stat: 'hp', value: -3 }],
+            },
+          },
+        },
+        next: 'floor_3',
+      },
+      floor_3: {
+        title: 'The Wooden Heart',
+        description: 'A hollow tree stands before you, its trunk carved with runes of memory and grief.',
+        actions: [ActionType.Interact, ActionType.Observe],
+        actionPassive: {
+          [ActionType.Interact]: {
+            description: 'You reach into the hollow, something warm beats faintly inside.',
+            check: { orb: 'natural', difficulty: 12 },
+            onSuccess: {
+              description: 'You pull out a glowing seed, pulsing with gentle rhythm.',
+              effects: [{ stat: 'xp', value: +8 }],
+            },
+            onFailure: {
+              description: 'The bark snaps shut on your hand, the forest groans.',
+              next: 'floor_4',
+              effects: [{ stat: 'hp', value: -4 }],
+            },
+          },
+          [ActionType.Observe]: {
+            description: 'Names are carved into the bark, some glowing faintly, others fading.',
+          },
+        },
+        next: 'floor_4',
+      },
+      floor_4: {
+        title: 'The Forest\'s Guardian',
+        description: 'A figure of bark and moss rises, holding a spear of roots. “You disturb sacred memory.”',
+        actions: [ActionType.Fight, ActionType.Flee],
+        uniqueChoice: true,
+        encounter: {
+          chance: 1,
+          enemies: ['bear', 'elemental-earth'],
+          random: true,
+        },
+        next: 'floor_5',
+      },
+      floor_5: {
+        title: 'Gift of Growth',
+        description: 'When peace returns, the trees bloom in pale green light. The seed in your hand hardens into crystal.',
+        actions: [ActionType.Observe, ActionType.Rest],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'You feel the forest\'s gratitude, and its warning.',
+            effects: [{ stat: 'xp', value: +15 }, { stat: 'mp', value: +6 }],
+          },
+          [ActionType.Rest]: {
+            description: 'You rest among roots that hum softly beneath your body.',
+            effects: [{ stat: 'hp', value: +10 }],
           },
         },
       },

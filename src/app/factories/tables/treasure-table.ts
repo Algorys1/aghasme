@@ -20,7 +20,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
             description: 'You start clearing the dirt around the chest.',
             check: { orb: 'mechanic', difficulty: 9 },
             onSuccess: {
-              description: 'You pry the chest free with care, it’s intact!',
+              description: 'You pry the chest free with care, it\'s intact!',
               effects: [{ stat: 'gold', value: +20 }],
             },
             onFailure: {
@@ -58,7 +58,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
   },
   {
     name: 'Tomb of the Lost King',
-    description: 'An ancient stone doorway sealed with heavy runes. Legends say the king’s fortune lies within… and his curse too.',
+    description: 'An ancient stone doorway sealed with heavy runes. Legends say the king\'s fortune lies within… and his curse too.',
     icon: 'assets/overlays/treasure.png',
     actions: [],
     eventChain: {
@@ -148,7 +148,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
             description: 'You try to align the discs into a coherent symbol.',
             check: { orb: 'mechanic', difficulty: 12 },
             onSuccess: {
-              description: 'The mechanism clicks open, you’ve cracked the code.',
+              description: 'The mechanism clicks open, you\'ve cracked the code.',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
@@ -287,11 +287,11 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
               effects: [{ stat: 'xp', value: +4 }],
             },
             onFailure: {
-              description: 'You blink, for a second, the chest’s lid seems to twitch.',
+              description: 'You blink, for a second, the chest\'s lid seems to twitch.',
             },
           },
           [ActionType.Interact]: {
-            description: 'You pick up a handful of coins. They’re oddly warm, almost pulsing.',
+            description: 'You pick up a handful of coins. They\'re oddly warm, almost pulsing.',
             effects: [{ stat: 'gold', value: +10 }],
           },
         },
@@ -299,14 +299,14 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
       },
       floor_2: {
         title: 'The False Bounty',
-        description: 'Several other chests surround you now. You don’t recall seeing that many before.',
+        description: 'Several other chests surround you now. You don\'t recall seeing that many before.',
         actions: [ActionType.Inspect, ActionType.Interact],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'You lean closer to one of the smaller chests, the reflection in its metal doesn’t match your movement.',
+            description: 'You lean closer to one of the smaller chests, the reflection in its metal doesn\'t match your movement.',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'You realize they’re illusions projected by some magic.',
+              description: 'You realize they\'re illusions projected by some magic.',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
@@ -333,7 +333,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
         next: 'floor_4',
       },
       floor_4: {
-        title: 'The Imitation’s Core',
+        title: 'The Imitation\'s Core',
         description: 'The largest chest shudders violently. Inside, a crimson light pulses like a heartbeat.',
         actions: [ActionType.Interact, ActionType.Observe],
         actionPassive: {
@@ -356,7 +356,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
         next: 'floor_5',
       },
       floor_5: {
-        title: 'Greed’s Lesson',
+        title: 'Greed\'s Lesson',
         description: 'Only silence remains. The gold is gone, leaving behind a single tongue-shaped gem.',
         actions: [ActionType.Observe, ActionType.Rest],
         actionPassive: {
@@ -367,6 +367,190 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
           [ActionType.Rest]: {
             description: 'You sit among the empty floorboards, oddly relieved to have survived your own greed.',
             effects: [{ stat: 'hp', value: +4 }, { stat: 'xp', value: +6 }],
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "The Pharaoh's Vault",
+    description: 'Hidden beneath layers of sand lies a stone chamber humming with ancient power. Gold glints in the torchlight, too clean to be untouched.',
+    icon: 'assets/overlays/treasure.png',
+    actions: [],
+    eventChain: {
+      floor_1: {
+        title: 'The Entrance Hall',
+        description: 'Hieroglyphs cover every surface. The air smells of dust, resin, and quiet warnings.',
+        actions: [ActionType.Observe, ActionType.Inspect],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'The carvings depict slaves burying their king alive, smiling as they do it.',
+          },
+          [ActionType.Inspect]: {
+            description: 'One panel glows faintly beneath your fingers.',
+            effects: [{ stat: 'xp', value: +4 }],
+          },
+        },
+        next: 'floor_2',
+      },
+      floor_2: {
+        title: 'Hall of Statues',
+        description: 'Rows of golden statues flank the corridor, their eyes inlaid with gemstones that shimmer unnaturally.',
+        actions: [ActionType.Interact, ActionType.Observe],
+        actionPassive: {
+          [ActionType.Interact]: {
+            description: 'You take one of the jewels, its warmth feels almost like a pulse.',
+            check: { orb: 'mechanic', difficulty: 10 },
+            onSuccess: {
+              description: 'The eyes dim, you pocket the gem quickly.',
+              effects: [{ stat: 'gold', value: +25 }],
+            },
+            onFailure: {
+              description: 'The statue\'s hand twitches violently, dust spills from its mouth.',
+              effects: [{ stat: 'hp', value: -3 }],
+            },
+          },
+          [ActionType.Observe]: {
+            description: 'You swear you saw one statue turn its head.',
+          },
+        },
+        next: 'floor_3',
+      },
+      floor_3: {
+        title: 'Chamber of the Seal',
+        description: 'A golden sarcophagus rests on a dais. The lid bears the likeness of a smiling pharaoh.',
+        actions: [ActionType.Interact, ActionType.Pray],
+        actionPassive: {
+          [ActionType.Interact]: {
+            description: 'You pry at the lid, it refuses to move.',
+            check: { orb: 'mechanic', difficulty: 11 },
+            onSuccess: {
+              description: 'With a final push, the seal cracks open, stale air rushes out.',
+              effects: [{ stat: 'xp', value: +8 }],
+            },
+            onFailure: {
+              description: 'The lid shifts slightly, whispering in a language older than pain.',
+              effects: [{ stat: 'hp', value: -4 }],
+            },
+          },
+          [ActionType.Pray]: {
+            description: 'You whisper a respectful plea to the dead. Something inside stirs.',
+          },
+        },
+        next: 'floor_4',
+      },
+      floor_4: {
+        title: 'The Pharaoh Awakens',
+        description: 'The sarcophagus bursts open, bandaged arms rise, clutching a gleaming scepter.',
+        actions: [ActionType.Fight, ActionType.Flee],
+        uniqueChoice: true,
+        encounter: {
+          chance: 1,
+          enemies: ['royal-mummy', 'mummy'],
+          random: true,
+        },
+        next: 'floor_5',
+      },
+      floor_5: {
+        title: 'The Curse of Kings',
+        description: 'As the mummy falls, golden dust floods the room, you cough as it clings to your skin.',
+        actions: [ActionType.Observe, ActionType.Rest],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'When it clears, the treasure remains, and a faint voice murmurs: “Take what you have earned.”',
+            effects: [{ stat: 'xp', value: +20 }, { stat: 'gold', value: +100 }],
+          },
+          [ActionType.Rest]: {
+            description: 'You sit beside the fallen king, feeling oddly honored.',
+            effects: [{ stat: 'hp', value: +8 }],
+          },
+        },
+      },
+    },
+  },
+  {
+    name: "The Dragon's Tomb",
+    description: 'Deep within the mountain lies a cavern vast enough to hold a god. Bones as large as wagons rest atop piles of gold.',
+    icon: 'assets/overlays/treasure.png',
+    actions: [],
+    eventChain: {
+      floor_1: {
+        title: 'The Golden Field',
+        description: 'Coins crunch beneath your boots. The air smells faintly of ash and old dreams.',
+        actions: [ActionType.Observe, ActionType.Inspect],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'You notice scorch marks on the walls, recent ones.',
+          },
+          [ActionType.Inspect]: {
+            description: 'Among the bones, one claw twitches slightly.',
+            effects: [{ stat: 'xp', value: +4 }],
+          },
+        },
+        next: 'floor_2',
+      },
+      floor_2: {
+        title: 'The Silent Guardian',
+        description: 'A young drake statue stands in the center, perfectly carved, or perhaps perfectly still.',
+        actions: [ActionType.Interact, ActionType.Pray],
+        actionPassive: {
+          [ActionType.Interact]: {
+            description: 'You touch its snout, warm. A faint tremor runs through the stone.',
+            check: { orb: 'natural', difficulty: 11 },
+            onSuccess: {
+              description: 'Its eyes flicker open, molten gold within.',
+              effects: [{ stat: 'xp', value: +8 }],
+            },
+            onFailure: {
+              description: 'The scales crack, sparks fly, but it remains still.',
+              effects: [{ stat: 'hp', value: -4 }],
+            },
+          },
+          [ActionType.Pray]: {
+            description: 'You bow your head to the ancient guardian.',
+            effects: [{ stat: 'mp', value: +5 }],
+          },
+        },
+        next: 'floor_3',
+      },
+      floor_3: {
+        title: 'The Molten Heart',
+        description: 'You find a pit of magma at the chamber\'s core, the dragon\'s heartbeat echoes from below.',
+        actions: [ActionType.Interact, ActionType.Observe],
+        actionPassive: {
+          [ActionType.Interact]: {
+            description: 'You throw a coin into the lava. It melts instantly, and something moves beneath.',
+          },
+          [ActionType.Observe]: {
+            description: 'You see reflections, dozens of dragons sleeping beneath the molten surface.',
+          },
+        },
+        next: 'floor_4',
+      },
+      floor_4: {
+        title: 'The Awakening Flame',
+        description: 'The heat grows unbearable. The statue\'s wings unfurl, fire bursts from its mouth.',
+        actions: [ActionType.Fight, ActionType.Flee],
+        uniqueChoice: true,
+        encounter: {
+          chance: 1,
+          enemies: ['dragon-red-young', 'dragon-blue-young'],
+          random: true,
+        },
+        next: 'floor_5',
+      },
+      floor_5: {
+        title: 'Ashes of Majesty',
+        description: 'The dragon\'s body collapses into gold dust. A single scale remains, pulsing faintly.',
+        actions: [ActionType.Observe, ActionType.Rest],
+        actionPassive: {
+          [ActionType.Observe]: {
+            description: 'The scale hardens into a gemstone, heat radiates from your pack.',
+            effects: [{ stat: 'xp', value: +25 }, { stat: 'gold', value: +150 }],
+          },
+          [ActionType.Rest]: {
+            description: 'You sit beside the ashes, warmth filling your veins.',
+            effects: [{ stat: 'hp', value: +10 }],
           },
         },
       },
