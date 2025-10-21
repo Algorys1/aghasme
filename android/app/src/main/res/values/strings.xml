@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">aghasme</string>
+    <string name="title_activity_main">aghasme</string>
+    <string name="package_name">com.aghasme.game</string>
+    <string name="custom_url_scheme">com.aghasme.game</string>
+</resources>

@@ -43,3 +43,18 @@ Thumbs.db
 
 # Binaries
 *.zip
+
+# Angular build
+dist/
+www/
+
+# Android build outputs
+android/.gradle/
+android/.idea/
+android/local.properties
+android/app/build/
+android/build/
+
+# Capacitor backup files
+capacitor.config.json
+
