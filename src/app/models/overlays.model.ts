@@ -1,5 +1,6 @@
 import { OverlayPhase } from "./overlay-phase.model";
 import { ActionType } from "./actions";
+import {Enemy} from './enemy.model';
 
 // Each overlay in the game: events, encounters, locations, etc.
 export enum OverlayKind {
@@ -21,7 +22,6 @@ export enum OverlayKind {
   // Events
   Anomaly = 'anomaly',
   Caravan = 'caravan',
-  Merchant = 'merchant',
   Wanderer = 'wanderer',
   Treasure = 'treasure',
   Ritual = 'ritual',
@@ -47,11 +47,11 @@ export interface OverlayTemplate {
 export interface OverlayInstance extends OverlayTemplate {
   id: string;
   kind: OverlayKind;
-  level?: number;
   currentFloor?: string;
   nextFloor?: string;
   isCompleted?: boolean;
   disabledActions?: ActionType[];
+  ennemy?: Enemy
 }
 
 export const END_MARKER = '-end';
@@ -120,7 +120,6 @@ export const OVERLAY_ICONS: Record<OverlayKind, string> = {
   [OverlayKind.Tower]: 'assets/overlays/tower.png',
   [OverlayKind.Farm]: 'assets/overlays/farm.png',
   [OverlayKind.Forest]: 'assets/overlays/forest.png',
-  [OverlayKind.Merchant]: 'assets/overlays/merchant.png',
   [OverlayKind.Caravan]: 'assets/overlays/caravan.png',
   [OverlayKind.Mine]: 'assets/overlays/mine.png',
   [OverlayKind.Ritual]: 'assets/overlays/ritual.png',

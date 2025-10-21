@@ -1,17 +1,17 @@
-import { ActionType } from '../../models/actions';
-import { OverlayTemplate } from '../../models/overlays.model';
+import {ActionType} from '../../models/actions';
+import {OverlayTemplate} from '../../models/overlays.model';
 
 export const RUINS_TABLE: OverlayTemplate[] = [
   {
     name: 'Ancient Temple',
     description: 'The remains of a once-grand temple, now overgrown and forgotten. Some treasures may still hide within its broken halls.',
     icon: 'assets/overlays/ruins.png',
-    actions: [ActionType.Rest],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Main Hall',
         description: 'Vines creep along cracked pillars. The air is heavy with the scent of wet stone and dust.',
-        actions: [ActionType.Observe, ActionType.Interact],
+        actions: [ActionType.Observe, ActionType.Interact, ActionType.Rest],
         actionPassive: {
           [ActionType.Observe]: {
             description: 'You examine the faint carvings along the walls.',
@@ -61,7 +61,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact, ActionType.Pray],
         encounter: {
           chance: 0.3,
-          enemies: ['Mechanical Orb'],
+          enemies: ['orb-mechanic'],
         },
         actionPassive: {
           [ActionType.Interact]: {
@@ -87,12 +87,12 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'Forgotten Fortress',
     description: 'Crumbling walls and broken towers hint at a fortress long lost to time.',
     icon: 'assets/overlays/ruins.png',
-    actions: [ActionType.Rest],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Outer Walls',
         description: 'The stone battlements are covered in moss. A single banner fragment still flaps weakly in the wind.',
-        actions: [ActionType.Observe, ActionType.Interact],
+        actions: [ActionType.Observe, ActionType.Interact, ActionType.Rest],
         actionPassive: {
           [ActionType.Observe]: {
             description: 'You notice deep claw marks on the stones, something once attacked this place.',
@@ -117,7 +117,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Rest],
         encounter: {
           chance: 0.4,
-          enemies: ['Mechanical Golem'],
+          enemies: ['golem-mechanic'],
         },
         actionPassive: {
           [ActionType.Inspect]: {
@@ -136,7 +136,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'Sunken City',
     description: 'Ruins of a city partially submerged, with buildings jutting out of the water like broken teeth.',
     icon: 'assets/overlays/ruins.png',
-    actions: [ActionType.Interact],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Drowned Plaza',
@@ -167,7 +167,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Pray],
         encounter: {
           chance: 0.3,
-          enemies: ['Cursed Tentacle'],
+          enemies: ['tentacle-cursed'],
         },
         actionPassive: {
           [ActionType.Inspect]: {
@@ -193,7 +193,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact],
         encounter: {
           chance: 1.0,
-          enemies: ['Mechanical Orb'],
+          enemies: ['orb-mechanic'],
         },
         actionPassive: {
           [ActionType.Interact]: {
@@ -207,12 +207,12 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'Deserted Village',
     description: 'Empty streets and abandoned homes tell the story of a village left behind.',
     icon: 'assets/overlays/ruins.png',
-    actions: [ActionType.Rest],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Silent Square',
         description: 'The well in the center is dry. Ash stains mark the ground, something burned recently.',
-        actions: [ActionType.Observe, ActionType.Interact],
+        actions: [ActionType.Observe, ActionType.Interact, ActionType.Rest],
         actionPassive: {
           [ActionType.Observe]: {
             description: 'You find fresh footprints, too small for a human adult.',
@@ -229,8 +229,8 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         description: 'Broken furniture and scattered bones fill the room. A faint metallic glint hides under the rubble.',
         actions: [ActionType.Inspect, ActionType.Rest],
         encounter: {
-          chance: 0.25,
-          enemies: ['Rats', 'Spider'],
+          chance: 0.33,
+          enemies: ['rats', 'spider'],
           random: true,
         },
         actionPassive: {
@@ -268,13 +268,17 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'Mystic Circle',
     description: 'A circle of standing stones, their purpose and origin shrouded in mystery.',
     icon: 'assets/overlays/ruins.png',
-    actions: [ActionType.Pray],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Outer Ring',
         description: 'The runes carved into the stones pulse faintly as you approach. A faint whisper asks for your name.',
-        actions: [ActionType.Observe, ActionType.Interact],
+        actions: [ActionType.Observe, ActionType.Interact, ActionType.Pray],
         actionPassive: {
+          [ActionType.Pray]: {
+            description: 'You close your eyes and offer a prayer to the ancient spirits.',
+            effects: [{ stat: 'hp', value: +5 }],
+          },
           [ActionType.Observe]: {
             description: 'You listen closely to the wind between the stones. It carries fragmented words.',
           },
@@ -299,7 +303,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Interact],
         encounter: {
           chance: 0.5,
-          enemies: ['Ghost'],
+          enemies: ['lost-soul'],
         },
         actionPassive: {
           [ActionType.Pray]: {

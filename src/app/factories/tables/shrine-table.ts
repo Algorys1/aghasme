@@ -1,12 +1,12 @@
-import { ActionType } from '../../models/actions';
-import { OverlayTemplate } from '../../models/overlays.model';
+import {ActionType} from '../../models/actions';
+import {OverlayTemplate} from '../../models/overlays.model';
 
 export const SHRINE_TABLE: OverlayTemplate[] = [
   {
     name: 'Ancient Shrine',
     description: 'A weathered shrine dedicated to forgotten deities, still revered by locals.',
     icon: 'assets/overlays/shrine.png',
-    actions: [ActionType.Pray],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Whispering Stones',
@@ -45,7 +45,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Inspect],
         encounter: {
           chance: 0.25,
-          enemies: ['Mechanical Golem'],
+          enemies: ['golem-mechanic'],
           random: false,
         },
         actionPassive: {
@@ -72,13 +72,25 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'Moon Shrine',
     description: 'A shrine illuminated by moonlight, known for its mystical properties.',
     icon: 'assets/overlays/shrine.png',
-    actions: [ActionType.Pray],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Silver Descent',
         description: 'Moonlight cuts through the canopy, bathing the shrine in an ethereal glow. The air feels almost liquid.',
-        actions: [ActionType.Observe, ActionType.Interact],
+        actions: [ActionType.Observe, ActionType.Interact, ActionType.Pray],
         actionPassive: {
+          [ActionType.Pray]: {
+            description: 'You raise your hands to the sky, invoking the moon’s blessing.',
+            check: { orb: 'natural', difficulty: 8 },
+            onSuccess: {
+              description: 'A cool breeze wraps around you, refreshing your spirit.',
+              effects: [{ stat: 'mp', value: +5 }],
+            },
+            onFailure: {
+              description: 'The wind dies down, leaving a heavy stillness.',
+              effects: [{ stat: 'mp', value: -2 }],
+            },
+          },
           [ActionType.Observe]: {
             description: 'You tilt your head, the moonlight seems to bend around your body.',
             check: { orb: 'elemental', difficulty: 9 },
@@ -103,7 +115,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact, ActionType.Pray],
         encounter: {
           chance: 0.4,
-          enemies: ['Ghost'],
+          enemies: ['lost-soul'],
           random: true,
         },
         actionPassive: {
@@ -138,7 +150,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'Crystal Shrine',
     description: 'A shrine adorned with crystals, believed to enhance magical abilities.',
     icon: 'assets/overlays/shrine.png',
-    actions: [ActionType.Pray],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Prismatic Descent',
@@ -169,7 +181,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Interact],
         encounter: {
           chance: 0.35,
-          enemies: ['Orb Mechanic'],
+          enemies: ['orb-mechanic'],
         },
         actionPassive: {
           [ActionType.Pray]: {
@@ -195,12 +207,17 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'Gobelin Shrine',
     description: 'A small shrine built by goblins, dedicated to their trickster god.',
     icon: 'assets/overlays/shrine.png',
-    actions: [ActionType.Pray],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Totems of Mischief',
         description: 'Totems made from bones and rusted spoons spin in the wind, cackling faintly.',
         actions: [ActionType.Interact, ActionType.Observe],
+        encounter: {
+          chance: 0.5,
+          enemies: ['goblin-warrior', 'goblin-archer', 'goblin-shaman'],
+          random: true,
+        },
         actionPassive: {
           [ActionType.Interact]: {
             description: 'You poke one of the totems to stop its spinning.',
@@ -225,8 +242,8 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         description: 'A goblin effigy grins wide, a bowl of coins before it. You sense a trap and a challenge.',
         actions: [ActionType.Pray, ActionType.Interact],
         encounter: {
-          chance: 0.3,
-          enemies: ['Goblin Warrior'],
+          chance: 0.7,
+          enemies: ['goblin-warrior', 'goblin-archer', 'goblin-shaman'],
           random: true,
         },
         actionPassive: {
@@ -254,12 +271,17 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'Necromantic Shrine',
     description: 'A dark shrine used for necromantic rituals, emanating an eerie aura.',
     icon: 'assets/overlays/shrine.png',
-    actions: [ActionType.Pray],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Veins of Bone',
         description: 'Bones form the foundation of the altar. The earth pulses faintly beneath your boots.',
         actions: [ActionType.Observe, ActionType.Interact],
+        encounter: {
+          chance: 0.5,
+          enemies: ['skeleton-archer', 'skeleton-warrior', 'skeleton-mage'],
+          random: true,
+        },
         actionPassive: {
           [ActionType.Observe]: {
             description: 'You study the runes carved into femurs. They twitch under your gaze.',
@@ -284,8 +306,8 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
         description: 'A cracked sarcophagus stands upright, sealed by a bone key that glows faintly.',
         actions: [ActionType.Interact, ActionType.Pray],
         encounter: {
-          chance: 0.45,
-          enemies: ['Skeleton Archer', 'Ghost'],
+          chance: 0.8,
+          enemies: ['skeleton-archer', 'skeleton-warrior', 'skeleton-mage'],
           random: true,
         },
         actionPassive: {

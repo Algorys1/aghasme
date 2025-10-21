@@ -60,14 +60,15 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     const newData = changes['data']?.currentValue as OverlayInstance | undefined;
     if (!newData) return;
 
-    if (this.lastOverlayId === newData.id) return;
+    if (this.lastOverlayId === newData.id && this.data?.currentFloor === newData.currentFloor) {
+      return;
+    }
     this.lastOverlayId = newData.id;
 
     const hasEventChain = !!newData.eventChain && Object.keys(newData.eventChain).length > 0;
     const hasBaseDescription = !!newData.description?.trim();
 
     if (hasEventChain || hasBaseDescription) {
-      // this.clearAllIntervals();
       this.resetTyping();
       this.startTypingAnimation();
     }
@@ -238,12 +239,12 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
 
   continue() {
     this.clearAllIntervals();
-    this.onAction(ActionType.Explore);
+    this.onAction(ActionType.Continue);
   }
 
   quit() {
     this.clearAllIntervals();
-    this.onAction(ActionType.Avoid);
+    this.onAction(ActionType.Quit);
   }
 
   trackByAction(_index: number, action: string) {

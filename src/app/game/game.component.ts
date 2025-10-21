@@ -73,7 +73,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       this.mapService.overlayChange.subscribe(kind => {
         if (kind && kind !== OverlayKind.None) {
           console.log('🧱 Creating overlay instance:', kind);
-          this.activeOverlay = OverlayFactory.create(kind);
+          this.activeOverlay = OverlayFactory.create(kind, {terrain: this.mapService.getCurrentTile()?.terrain});
         } else {
           this.activeOverlay = null;
         }

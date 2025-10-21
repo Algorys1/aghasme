@@ -1,19 +1,19 @@
 export enum ActionType {
+  Continue = 'Continue',
+  Quit = 'Quit',
+
   Fight = 'Fight',
-  Flee = 'Flee',
-  Observe = 'Observe',
 
-  Explore = 'Explore',
-  Harvest = 'Harvest',
-
-  Talk = 'Talk',
   Trade = 'Trade',
 
-  Pray = 'Pray',
+  Harvest = 'Harvest',
 
   Rest = 'Rest',
 
-  Avoid = 'Avoid',
+  Flee = 'Flee',
+  Observe = 'Observe',
+  Talk = 'Talk',
+  Pray = 'Pray',
   Interact = 'Interact',
   Inspect = 'Inspect',
 }

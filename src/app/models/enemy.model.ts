@@ -1,5 +1,9 @@
 import { Effect } from "./effect.model";
 
+export type EnnemySubCategory =
+  'undead' | 'human' | 'goblin' | 'dragon' | 'elemental' | 'flying' | 'vermin' |
+  'mechanical' | 'aquatic' | 'mineral' | 'fire' | 'lightning' | 'plant';
+
 export interface EnemyData {
   name: string;
   desc: string;

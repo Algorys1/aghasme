@@ -7,12 +7,12 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: "Mage's Spire",
     description: 'The Mage\'s Spire pierces the clouds, its summit crackling with arcane energy and whispered secrets.',
     icon: 'assets/overlays/tower.png',
-    actions: [ActionType.Rest],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Spiral Ascent',
         description: 'The stairs twist endlessly upward. Wind whistles through cracks in the stone, carrying voices that sound almost human.',
-        actions: [ActionType.Observe, ActionType.Interact],
+        actions: [ActionType.Observe, ActionType.Interact, ActionType.Rest],
         actionPassive: {
           [ActionType.Observe]: {
             description: 'You look out through a broken window, clouds roll beneath you.',
@@ -38,7 +38,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Interact],
         encounter: {
           chance: 0.3,
-          enemies: ['3-Eyed Crow'],
+          enemies: ['3-eyed-crow'],
         },
         actionPassive: {
           [ActionType.Inspect]: {
@@ -64,7 +64,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: "Wizard's Keep",
     description: 'Wizard\'s Keep looms in eerie silence, its halls echoing with the remnants of long-forgotten spells.',
     icon: 'assets/overlays/tower.png',
-    actions: [ActionType.Pray],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'The Sealed Hall',
@@ -72,7 +72,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Interact],
         encounter: {
           chance: 0.25,
-          enemies: ['Disciple'],
+          enemies: ['disciple'],
         },
         actionPassive: {
           [ActionType.Observe]: {
@@ -100,7 +100,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Pray],
         encounter: {
           chance: 0.4,
-          enemies: ['Priest'],
+          enemies: ['priest'],
         },
         actionPassive: {
           [ActionType.Inspect]: {
@@ -127,7 +127,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: 'Arcane Tower',
     description: 'The Arcane Tower hums with unseen power, its runes glowing faintly in the twilight.',
     icon: 'assets/overlays/tower.png',
-    actions: [ActionType.Interact],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'The Lower Engine',
@@ -158,7 +158,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Interact],
         encounter: {
           chance: 0.45,
-          enemies: ['Disciple'],
+          enemies: ['disciple'],
         },
         actionPassive: {
           [ActionType.Pray]: {
@@ -184,7 +184,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe],
         encounter: {
           chance: 0.6,
-          enemies: ['Corrupt Sorcerer'],
+          enemies: ['corrupt-sorcerer', 'disciple'],
         },
         actionPassive: {
           [ActionType.Observe]: {
@@ -198,7 +198,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: "Sorcerer's Pinnacle",
     description: 'Sorcerer\'s Pinnacle rises like a shard of crystal, pulsing with the lifeblood of ancient magic.',
     icon: 'assets/overlays/tower.png',
-    actions: [ActionType.Pray],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Hall of Mirrors',
@@ -230,7 +230,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact],
         encounter: {
           chance: 0.5,
-          enemies: ['Snake Crystal'],
+          enemies: ['snake-crystal'],
         },
         actionPassive: {
           [ActionType.Interact]: {
@@ -244,12 +244,12 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: "Enchantress's Clock",
     description: 'A mysterious tower crowned by a colossal clock whose hands move in strange, uneven patterns. Time itself wavers here.',
     icon: 'assets/overlays/clock.png',
-    actions: [ActionType.Inspect],
+    actions: [],
     eventChain: {
       floor_1: {
         title: 'Entrance Hall',
         description: 'Dust hangs motionless in the air. Gears taller than houses rotate in impossible silence.',
-        actions: [ActionType.Observe, ActionType.Interact],
+        actions: [ActionType.Observe, ActionType.Interact, ActionType.Inspect],
         actionPassive: {
           [ActionType.Observe]: {
             description: 'You notice the gears do not mesh correctly, yet they still turn.',
@@ -266,6 +266,10 @@ export const TOWER_TABLE: OverlayTemplate[] = [
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
+          [ActionType.Inspect]: {
+            description: 'You find a small, intricately carved gear on the floor, still turning slowly.',
+            effects: [{ stat: 'gold', value: 20 }],
+          },
         },
         next: 'floor_2',
       },
@@ -275,7 +279,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Pray, ActionType.Inspect],
         encounter: {
           chance: 0.35,
-          enemies: ['Ghost'],
+          enemies: ['lost-soul', 'ghost'],
         },
         actionPassive: {
           [ActionType.Pray]: {
@@ -302,7 +306,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact],
         encounter: {
           chance: 0.5,
-          enemies: ['Mechanical Wolf'],
+          enemies: ['wolf-mechanic'],
         },
         actionPassive: {
           [ActionType.Interact]: {
@@ -317,7 +321,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Fight, ActionType.Flee],
         encounter: {
           chance: 1.0,
-          enemies: ['Priest'],
+          enemies: ['temple-guardian'],
         },
         actionPassive: {
           [ActionType.Fight]: {

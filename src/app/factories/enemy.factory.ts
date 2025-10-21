@@ -1,14 +1,17 @@
-import { Enemy } from '../models/enemy.model';
+// enemy.factory.ts
+import {Enemy, EnnemySubCategory} from '../models/enemy.model';
 import { Terrain } from './tile.factory';
-import { EnemyTables } from './enemy-tables';
+import { ENEMIES } from './enemy-tables';
 import { Effect } from '../models/effect.model';
 import { applyEffectsToEntity } from '../tools/effect-utils';
 
-export interface EnemyTemplate {
+export interface EnemyDefinition {
+  id: string;
   name: string;
   desc: string;
   icon: string;
   category: 'beast' | 'monster';
+  subCategories: EnnemySubCategory[];
   terrains: Terrain[];
   minLevel: number;
   maxLevel: number;
@@ -17,34 +20,44 @@ export interface EnemyTemplate {
 
 export class EnemyFactory {
   /**
-   * Génère un ennemi générique (catégorie optionnelle)
+   * Spawns an enemy adapted to the terrain, the player's level and possibly a category
    */
-  static generate(params: { playerLevel: number; terrain: Terrain; category?: 'beast' | 'monster' }): Enemy {
-    const { playerLevel, terrain, category } = params;
-    const biomeEnemies = EnemyTables[terrain] ?? [];
+  static generate(params: {
+    playerLevel: number;
+    terrain: Terrain;
+    category?: 'beast' | 'monster';
+    subCategories?: string[];
+  }): Enemy {
+    const { playerLevel, terrain, category, subCategories } = params;
 
-    // 1️⃣ Filtrage selon la catégorie et le niveau du joueur
-    const filtered = biomeEnemies.filter(e =>
-      (!category || e.category === category) &&
-      playerLevel >= e.minLevel - 2 &&
-      playerLevel <= e.maxLevel + 2
+    let pool = ENEMIES.filter(e => e.terrains.includes(terrain));
+
+    if (category) {
+      pool = pool.filter(e => e.category === category);
+    }
+
+    if (subCategories?.length) {
+      pool = pool.filter(e => e.subCategories.some(sub => subCategories.includes(sub)));
+    }
+
+    const levelFiltered = pool.filter(
+      e => playerLevel >= e.minLevel - 2 && playerLevel <= e.maxLevel + 2
     );
 
-    // 2️⃣ Si aucun résultat strict, on élargit la recherche
-    const pool = filtered.length ? filtered : biomeEnemies;
-    const pick = pool[Math.floor(Math.random() * pool.length)];
+    const candidates = levelFiltered.length ? levelFiltered : pool;
+    if (!candidates.length) throw new Error(`[EnemyFactory] No enemies found for terrain: ${terrain}`);
 
-    // 3️⃣ Calcul du niveau final avec petite variance
+    const pick = candidates[Math.floor(Math.random() * candidates.length)];
+
     const variance = Math.floor(Math.random() * 3) - 1; // [-1, 0, +1]
     const level = Math.max(pick.minLevel, Math.min(pick.maxLevel, playerLevel + variance));
 
-    // 4️⃣ Calcul des stats de base selon le niveau
+    // TODO refactor to define real formulas somewhere central
     let baseAttack = Math.min(20, 4 + Math.floor(level * 1.1));
     let baseDefense = Math.floor(level / 3);
     const hp = 8 + level * 5;
     const mp = 4 + level * 3;
 
-    // 5️⃣ Modificateurs selon la catégorie
     let attackMod = 0;
     let defenseMod = 0;
     if (pick.category === 'beast') {
@@ -53,9 +66,8 @@ export class EnemyFactory {
       defenseMod = +1;
     }
 
-    // 6️⃣ Variance légère pour individualité
     const attackVariance = Math.floor(Math.random() * 3) - 1; // [-1, 0, +1]
-    const defenseVariance = Math.floor(Math.random() * 3) - 1; // [-1, 0, +1]
+    const defenseVariance = Math.floor(Math.random() * 3) - 1;
 
     const finalAttack = Math.min(20, Math.max(5, baseAttack + attackMod + attackVariance));
     const finalDefense = Math.max(0, baseDefense + defenseMod + defenseVariance);
@@ -70,33 +82,31 @@ export class EnemyFactory {
       mp,
       attack: finalAttack,
       defense: finalDefense,
-      effects: pick.effects, // 👈 stockés sur le modèle
+      effects: pick.effects,
     });
-    
+
     return pick.effects?.length
       ? applyEffectsToEntity(baseEnemy, pick.effects)
       : baseEnemy;
   }
 
-  /** 🐾 Génère une bête adaptée au biome et au niveau du joueur */
   static generateBeast(playerLevel: number, terrain: Terrain): Enemy {
+    console.log("Ask beast for terrain:", terrain);
     return this.generate({ playerLevel, terrain, category: 'beast' });
   }
 
-  /** 👹 Génère un monstre adapté au biome et au niveau du joueur */
   static generateMonster(playerLevel: number, terrain: Terrain): Enemy {
+    console.log("Ask monster for terrain:", terrain);
     return this.generate({ playerLevel, terrain, category: 'monster' });
   }
 
-  /** 🔍 Génère un ennemi précis par nom */
-  static createByName(name: string, level: number): Enemy {
-    const all = Object.values(EnemyTables).flat();
-    const tpl = all.find(e => e.name.toLowerCase() === name.toLowerCase());
-    if (!tpl) throw new Error(`[EnemyFactory] Unknown enemy: ${name}`);
+  static createById(id: string, level: number): Enemy {
+    const tpl = ENEMIES.find(e => e.id === id);
+    if (!tpl) throw new Error(`[EnemyFactory] Unknown enemy ID: ${id}`);
 
     const finalLevel = Math.max(tpl.minLevel, Math.min(tpl.maxLevel, level));
 
-    // mêmes formules que ci-dessus
+    // TODO see above about formulas
     let baseAttack = Math.min(20, 4 + Math.floor(finalLevel * 1.1));
     let baseDefense = Math.floor(finalLevel / 3);
     const hp = 8 + finalLevel * 5;
@@ -118,16 +128,24 @@ export class EnemyFactory {
       desc: tpl.desc,
       icon: tpl.icon,
       category: tpl.category,
-      level,
+      level: finalLevel,
       hp,
       mp,
       attack: finalAttack,
       defense: finalDefense,
       effects: tpl.effects,
     });
-    
+
     return tpl.effects?.length
       ? applyEffectsToEntity(baseEnemy, tpl.effects)
       : baseEnemy;
+  }
+
+  static getTemplate(id: string): EnemyDefinition | undefined {
+    return ENEMIES.find(e => e.id === id);
+  }
+
+  static getEnemiesForTerrain(terrain: Terrain): EnemyDefinition[] {
+    return ENEMIES.filter(e => e.terrains.includes(terrain));
   }
 }

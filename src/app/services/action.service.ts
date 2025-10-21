@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ActionType} from '../models/actions';
 import {END_MARKER, OverlayInstance, OverlayKind} from '../models/overlays.model';
-import {OverlayPhase, PassiveOverlayPhase} from '../models/overlay-phase.model';
+import {PassiveOverlayPhase} from '../models/overlay-phase.model';
 import {CharacterService} from './character.service';
 import {CombatService} from './combat.service';
 import {EnemyFactory} from '../factories/enemy.factory';
@@ -40,7 +40,7 @@ export class ActionService {
     if (overlay.eventChain && overlay.currentFloor) {
       const passive = phase?.actionPassive?.[action];
       if (passive) {
-        this.handlePassivePhase(passive, overlay, phase);
+        this.handlePassivePhase(passive);
         return;
       }
     }
@@ -49,8 +49,8 @@ export class ActionService {
       case ActionType.Fight:
         this.startCombat(overlay);
         break;
-      case ActionType.Explore:
-        this.exploreLocation(overlay);
+      case ActionType.Continue:
+        this.continueOverlay(overlay);
         break;
       case ActionType.Flee:
       case ActionType.Harvest:
@@ -60,7 +60,7 @@ export class ActionService {
       case ActionType.Rest:
       case ActionType.Interact:
       case ActionType.Inspect:
-      case ActionType.Avoid:
+      case ActionType.Quit:
         this.skipOverlay(overlay);
         break;
       default:
@@ -74,8 +74,8 @@ export class ActionService {
     this.closeOverlay$.next();
   }
 
-  private exploreLocation(overlay: OverlayInstance) {
-    console.log(`🧭 Exploring ${overlay.name}...`);
+  private continueOverlay(overlay: OverlayInstance) {
+    console.log(`🧭 Continue to ${overlay.name}...`);
     if (overlay.eventChain && !overlay.nextFloor) {
       const firstKey = Object.keys(overlay.eventChain)[0];
       if (firstKey) {
@@ -102,7 +102,7 @@ export class ActionService {
         ? enemies[Math.floor(Math.random() * enemies.length)]
         : enemies[0];
 
-      const enemy = EnemyFactory.createByName(chosenEnemy, 1);
+      const enemy = EnemyFactory.createById(chosenEnemy, 1);
       const player = this.characterService.getCharacter();
       if (!player) return;
 
@@ -114,9 +114,13 @@ export class ActionService {
     }
 
     if (overlay.kind === OverlayKind.Beast || overlay.kind === OverlayKind.Monster) {
-      const level = overlay.level ?? player.level;
-      const enemy = EnemyFactory.createByName(overlay.name, level);
-
+      if(!overlay.ennemy) {
+        console.warn(`⚠️ No enemy found in overlay [${overlay.kind}]: ${overlay.name}`);
+        overlay.isCompleted = true;
+        this.closeOverlay$.next();
+        return;
+      }
+      const enemy = overlay.ennemy;
       console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
       this.combatService.startCombat(enemy);
       this.startCombat$.next(enemy);
@@ -172,7 +176,7 @@ export class ActionService {
     }
   }
 
-  private handlePassivePhase(passive: PassiveOverlayPhase, overlay: OverlayInstance, phase: OverlayPhase) {
+  private handlePassivePhase(passive: PassiveOverlayPhase) {
     console.log('🎲 Passive phase triggered:', passive.description ?? '(no description)');
 
     let msgParts: string[] = [];
@@ -215,28 +219,10 @@ export class ActionService {
         if (result.description){
           msgParts.push(result.description);
         }
-
-        if (result.next) {
-          const nextOverlay = this.buildNextOverlay(overlay, phase, result.next);
-          this.nextOverlay$.next(nextOverlay);
-          return;
-        }
       }
     }
 
     const fullMessage = msgParts.join('\n');
     this.passiveText$.next(fullMessage);
-  }
-
-  private buildNextOverlay(overlay: OverlayInstance, phase: OverlayPhase, nextKey?: string): OverlayInstance {
-    return {
-      ...overlay,
-      id: overlay.id + '-' + (nextKey ?? 'end'),
-      name: phase.title,
-      description: phase.description,
-      actions: phase.actions,
-      nextFloor: nextKey,
-      eventChain: overlay.eventChain
-    };
   }
 }

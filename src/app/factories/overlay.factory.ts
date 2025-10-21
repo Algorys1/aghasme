@@ -7,7 +7,6 @@ import { Terrain } from './tile.factory';
 import { RUINS_TABLE } from './tables/ruins-table';
 import { ANOMALY_TABLE } from './tables/anomaly-table';
 import { CARAVAN_TABLE } from './tables/caravan-table';
-import { MERCHANT_TABLE } from './tables/merchant-table';
 import { FARM_TABLE } from './tables/farm-table';
 import { FOREST_TABLE } from './tables/forest-table';
 import { MINE_TABLE } from './tables/mine-table';
@@ -27,7 +26,6 @@ export class OverlayFactory {
   private static readonly TABLES: Partial<Record<OverlayKind, OverlayTemplate[]>> = {
     [OverlayKind.Anomaly]: ANOMALY_TABLE,
     [OverlayKind.Caravan]: CARAVAN_TABLE,
-    [OverlayKind.Merchant]: MERCHANT_TABLE,
     [OverlayKind.Farm]: FARM_TABLE,
     [OverlayKind.Forest]: FOREST_TABLE,
     [OverlayKind.Mine]: MINE_TABLE,
@@ -71,7 +69,7 @@ export class OverlayFactory {
       name: 'Nothing here',
       description: 'This area seems quiet. Nothing of note catches your attention.',
       icon: 'assets/overlays/none.png',
-      actions: [ActionType.Avoid],
+      actions: [ActionType.Quit],
     };
   }
 
@@ -94,11 +92,11 @@ export class OverlayFactory {
     return {
       id,
       kind,
-      name: beast.name || 'Unknown Beast',
-      description: beast.desc || 'A wild creature roams nearby.',
-      icon: beast.icon || 'assets/overlays/beast.png',
+      name: beast.name,
+      description: beast.desc,
+      icon: beast.icon,
       actions: [ActionType.Fight, ActionType.Flee],
-      level: beast.level,
+      ennemy: beast,
       isCompleted: true,
     };
   }
@@ -109,11 +107,11 @@ export class OverlayFactory {
     return {
       id,
       kind,
-      name: monster.name || 'Unknown Monster',
-      description: monster.desc || 'Something monstrous stirs in the shadows...',
-      icon: monster.icon || 'assets/overlays/monster.png',
+      name: monster.name,
+      description: monster.desc,
+      icon: monster.icon,
       actions: [ActionType.Fight, ActionType.Flee],
-      level: monster.level,
+      ennemy: monster,
       isCompleted: true,
     };
   }
@@ -122,7 +120,7 @@ export class OverlayFactory {
     const encounterKinds: OverlayKind[] = [
       OverlayKind.Beast,
       OverlayKind.Monster,
-      OverlayKind.Merchant,
+      OverlayKind.Caravan,
       OverlayKind.Spirit,
       OverlayKind.Wanderer,
     ];
