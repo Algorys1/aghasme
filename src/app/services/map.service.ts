@@ -124,8 +124,9 @@ export class MapService {
       }
     }
 
-    this.placeNarrativeOverlays();
     this.placeCivilizationOverlays();
+    this.placeNarrativeOverlays();
+    this.placePortals();
     this.logOverlayStats();
     this.overlayRegistry.getRemainingStockSummary();
   }
@@ -224,18 +225,16 @@ export class MapService {
   private placeNarrativeOverlays(): void {
     console.group('🌀 Phase narrative: placement des overlays fixes');
 
-    // ✅ Plan de distribution
     const desired: Partial<Record<OverlayKind, number>> = {
       [OverlayKind.Ritual]: 4,
       [OverlayKind.Ruins]: 5,
       [OverlayKind.Tower]: 3,
       [OverlayKind.Spirit]: 3,
       [OverlayKind.Shrine]: 3,
-      [OverlayKind.City]: 1,
-      [OverlayKind.Village]: 3,
-      [OverlayKind.Farm]: 5,
-      [OverlayKind.Mine]: 2,
-      [OverlayKind.Forest]: 2,
+      [OverlayKind.Anomaly]: 4,
+      [OverlayKind.Caravan]: 3,
+      [OverlayKind.Wanderer]: 3,
+      [OverlayKind.Treasure]: 3,
     };
 
     let totalPlaced = 0;
@@ -269,7 +268,6 @@ export class MapService {
           continue;
         }
 
-        // ✅ Placement effectif
         this.overlayRegistry.register(id, typedKind, coords);
         this.addOverlay(coords.q, coords.r, typedKind);
         placed++;
@@ -309,6 +307,10 @@ export class MapService {
     console.groupEnd();
   }
 
+  private hasAnyCity(): boolean {
+    return Object.values(this.overlayTypes).some(kinds => kinds.includes(OverlayKind.City));
+  }
+
   private placeOverlayType(
     kind: OverlayKind,
     count: number,
@@ -329,8 +331,8 @@ export class MapService {
       const hasOverlay = this.overlayTypes[key]?.length;
       if (hasOverlay) continue;
 
+      if (maxDistanceFromCity && maxDistanceFromCity > 0 && !this.hasAnyCity() && nearCities) continue;
       if (minDistance > 0 && !this.isFarEnoughFromSameType(q, r, kind, minDistance)) continue;
-
       if (nearCities && maxDistanceFromCity && !this.isCloseEnoughToCity(q, r, maxDistanceFromCity)) continue;
       if (!nearCities && maxDistanceFromCity && this.isCloseEnoughToCity(q, r, maxDistanceFromCity)) continue;
 
@@ -359,29 +361,21 @@ export class MapService {
       const tile = this.tiles[key];
       if (!tile) continue;
 
-      // 🏞️ 1️⃣ Terrain compatible
       if (allowedTerrains.length && !allowedTerrains.includes(tile.terrain)) continue;
 
-      // 🏗️ 2️⃣ Case libre
       const hasOverlay = this.overlayTypes[key]?.length;
       if (hasOverlay) continue;
 
-      // 🧱 3️⃣ Distance minimale entre overlays du même type
       if (minDistance > 0 && !this.isFarEnoughFromSameType(q, r, kind, minDistance)) continue;
 
-      // 🏙️ 4️⃣ Proximité maximale d'une ville
       if (maxDistanceFromCity > 0 && !this.isCloseEnoughToCity(q, r, maxDistanceFromCity)) continue;
 
-      // ✅ Tuile valide trouvée
       return { q, r };
     }
 
     return null;
   }
 
-  // ------------------------------------------------------------------
-  // 🧮 Vérifie la distance minimale entre overlays du même type
-  // ------------------------------------------------------------------
   private isFarEnoughFromSameType(
     q: number,
     r: number,
@@ -398,9 +392,6 @@ export class MapService {
     return true;
   }
 
-  // ------------------------------------------------------------------
-  // 🏙️ Vérifie la proximité d'une ville existante
-  // ------------------------------------------------------------------
   private isCloseEnoughToCity(q: number, r: number, maxDist: number): boolean {
     for (const [key, kinds] of Object.entries(this.overlayTypes)) {
       if (kinds.includes(OverlayKind.City)) {
@@ -411,6 +402,48 @@ export class MapService {
     }
     return false;
   }
+
+  /**
+ * 🌀 Place exactement 4 portails mystiques sur la carte.
+ * Liés plus tard aux Orbes — toujours fixes et uniques.
+ */
+private placePortals(): void {
+  console.group('🌀 Phase Portals: placement des portails mystiques');
+
+  const desiredCount = 4;
+  let placed = 0;
+
+  // Terrains compatibles
+  const validTerrains: Terrain[] = ['plain', 'desert', 'mountain', 'forest', 'jungle'];
+
+  const allKeys = Object.keys(this.tiles).sort(() => Math.random() - 0.5);
+
+  for (const key of allKeys) {
+    if (placed >= desiredCount) break;
+
+    const [q, r] = key.split(',').map(Number);
+    const tile = this.tiles[key];
+    if (!tile || !validTerrains.includes(tile.terrain)) continue;
+
+    const hasOverlay = this.overlayTypes[key]?.length;
+    if (hasOverlay) continue;
+
+    const minPortalDistance = 6;
+    if (!this.isFarEnoughFromSameType(q, r, OverlayKind.Portal, minPortalDistance)) continue;
+
+    const id = this.overlayRegistry.getRandomAvailableId(OverlayKind.Portal);
+    if (!id) continue;
+
+    this.overlayRegistry.register(id, OverlayKind.Portal, { q, r });
+    this.addOverlay(q, r, OverlayKind.Portal);
+
+    placed++;
+  }
+
+  console.log(`✅ ${placed}/${desiredCount} Portals placed.`);
+  console.groupEnd();
+}
+
 
   // === SAVE / LOAD ================================================================
   public serializeMap(): MapSnapshot {

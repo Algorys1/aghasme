@@ -9,4 +9,25 @@ export const PORTAL_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/portal.png',
     actions: [ActionType.Quit],
   },
+  {
+    name: 'Garokt Portal',
+    id: 'garokt-portal',
+    description: 'TODO DESCRIPTION',
+    icon: 'assets/overlays/portal.png',
+    actions: [ActionType.Quit],
+  },
+  {
+    name: 'Nature Portal',
+    id: 'nature-portal',
+    description: 'TODO DESCRIPTION',
+    icon: 'assets/overlays/portal.png',
+    actions: [ActionType.Quit],
+  },
+  {
+    name: 'Time Portal',
+    id: 'time-portal',
+    description: 'TODO DESCRIPTION',
+    icon: 'assets/overlays/portal.png',
+    actions: [ActionType.Quit],
+  },
 ]
