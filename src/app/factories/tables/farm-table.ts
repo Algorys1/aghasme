@@ -62,4 +62,28 @@ export const FARM_TABLE: FarmTemplate[] = [
     icon: 'assets/overlays/farm.png',
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
+  {
+    name: 'The Blue Jays',
+    id: 'blue-jays',
+    description: 'TODO DESCRIPTION',
+    resources: 'food',
+    icon: 'assets/overlays/farm.png',
+    actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
+  },
+  {
+    name: 'Gold Fields',
+    id: 'gold-fields',
+    description: 'TODO DESCRIPTION',
+    resources: 'food:wood',
+    icon: 'assets/overlays/farm.png',
+    actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
+  },
+  {
+    name: 'Beyond Hill',
+    id: 'beyond-hill',
+    description: 'TODO DESCRIPTION',
+    resources: 'food:milk',
+    icon: 'assets/overlays/farm.png',
+    actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
+  },
 ]

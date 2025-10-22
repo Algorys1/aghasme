@@ -37,4 +37,18 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Trade, ActionType.Rest],
     id: 'brichfield',
   },
+  {
+    name: 'Darkroad',
+    description: 'TODO DESCRIPTION',
+    icon: 'assets/overlays/village.png',
+    actions: [ActionType.Trade, ActionType.Rest],
+    id: 'darkroad',
+  },
+  {
+    name: 'Woodenpale',
+    description: 'TODO DESCRIPTION',
+    icon: 'assets/overlays/village.png',
+    actions: [ActionType.Trade, ActionType.Rest],
+    id: 'woodenpale',
+  },
 ]

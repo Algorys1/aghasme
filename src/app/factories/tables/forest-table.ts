@@ -46,4 +46,20 @@ export const FOREST_TABLE: ForestTemplate[] = [
     icon: 'assets/overlays/forest.png',
     actions: [ActionType.Continue, ActionType.Harvest, ActionType.Rest],
   },
+  {
+    name: 'Singing Wood',
+    id: 'singing-wood',
+    description: 'TODO DESCRIPTION',
+    resources: 'wood',
+    icon: 'assets/overlays/forest.png',
+    actions: [ActionType.Continue, ActionType.Harvest, ActionType.Rest],
+  },
+  {
+    name: 'Whispering Forest',
+    id: 'sacred-forest',
+    description: 'TODO DESCRIPTION',
+    resources: 'wood:sacred_wood',
+    icon: 'assets/overlays/forest.png',
+    actions: [ActionType.Continue, ActionType.Harvest, ActionType.Rest],
+  },
 ]
