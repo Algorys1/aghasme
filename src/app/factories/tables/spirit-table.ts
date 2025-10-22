@@ -6,6 +6,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     name: 'Wandering Soul',
     description: 'A pale silhouette drifts through the fog, murmuring words you can\'t understand.',
     icon: 'assets/overlays/spirit.png',
+    id: 'wandering-soul',
     actions: [],
     eventChain: {
       floor_1: {
@@ -48,6 +49,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     name: 'Guardian Spirit',
     description: 'You sense reverence and authority here, the lingering echo of a protector bound to duty.',
     icon: 'assets/overlays/spirit.png',
+    id: 'guardian-spirit',
     actions: [],
     eventChain: {
       floor_1: {
@@ -99,6 +101,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     name: 'Bound Wraith',
     description: 'Chains rattle faintly, yet there is no wind. The air stinks of rust and regret.',
     icon: 'assets/overlays/spirit.png',
+    id: 'bound-wraith',
     actions: [],
     eventChain: {
       floor_1: {
@@ -152,6 +155,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     name: 'Forgotten Ancestor',
     description: 'An ancient burial mound whispers with old voices. The wind carries songs of a family long lost.',
     icon: 'assets/overlays/spirit.png',
+    id: 'forgotten-ancestror',
     actions: [],
     eventChain: {
       floor_1: {
@@ -203,6 +207,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     name: 'Whispering Shade',
     description: 'A chill runs through you, the shadows whisper names you\'ve never heard before.',
     icon: 'assets/overlays/spirit.png',
+    id: 'whispering-shade',
     actions: [],
     eventChain: {
       floor_1: {
@@ -256,6 +261,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     name: 'The Weeping Saint',
     description: 'In the ruins of a chapel, a marble statue weeps endless tears of light. The air hums with grief.',
     icon: 'assets/overlays/spirit.png',
+    id: 'weeping-saint',
     actions: [],
     eventChain: {
       floor_1: {
@@ -355,14 +361,11 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
       },
     },
   },
-
-  // ---------------------------------------------------------------------------
-  // 🕊 The Lantern Bearer, un esprit errant qui éclaire le passage des morts
-  // ---------------------------------------------------------------------------
   {
     name: 'The Lantern Bearer',
     description: 'A pale figure drifts along the marsh path, holding a lantern whose flame never flickers.',
     icon: 'assets/overlays/spirit.png',
+    id: 'lantern-bearer',
     actions: [],
     eventChain: {
       floor_1: {

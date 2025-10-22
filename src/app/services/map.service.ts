@@ -7,6 +7,7 @@ import { OverlayKind, OVERLAY_POOLS } from '../models/overlays.model';
 import { CharacterService } from './character.service';
 import { RendererService } from './renderer.service';
 import { Container, Sprite } from 'pixi.js';
+import { OverlayRegistryService } from './overlay-registry.service';
 
 export interface MapTileSnapshot {
   key: string;
@@ -25,6 +26,7 @@ export interface MapSnapshot {
   player: { q: number; r: number };
   overlays: { q: number; r: number; kind: OverlayKind }[];
   tiles: MapTileSnapshot[];
+  overlayRegistry: { id: string; kind: OverlayKind; q: number; r: number }[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -54,7 +56,8 @@ export class MapService {
 
   constructor(
     private characterService: CharacterService,
-    private renderer: RendererService
+    private renderer: RendererService,
+    private overlayRegistry: OverlayRegistryService
   ) {}
 
   get overlays() {
@@ -115,13 +118,25 @@ export class MapService {
             variant: (tile as any).variantKey ?? `${terrain}-1`
           };
 
-          const overlay = this.pickOverlayForTerrain(terrain);
-          if (overlay !== OverlayKind.None) this.addOverlay(q, r, overlay);
+          const overlayKind = this.pickOverlayForTerrain(terrain);
+          if (overlayKind !== OverlayKind.None) {
+            if (![OverlayKind.Monster, OverlayKind.Beast, OverlayKind.Portal].includes(overlayKind)) {
+              const id = this.overlayRegistry.getRandomAvailableId(overlayKind);
+              if (id) {
+                this.overlayRegistry.register(id, overlayKind, { q, r });
+                this.addOverlay(q, r, overlayKind);
+              } else {
+                continue;
+              }
+            } else {
+              this.addOverlay(q, r, overlayKind);
+            }
+          }
         }
       }
     }
-    this.enrichCivilizationZones();
     this.logOverlayStats();
+    this.overlayRegistry.getRemainingStockSummary();
   }
 
   private createPlayer() {
@@ -215,35 +230,6 @@ export class MapService {
     return OverlayKind.None;
   }
 
-  private enrichCivilizationZones(): void {
-    // 1️⃣ On récupère les villes déjà générées
-    const cityTiles = Object.entries(this.overlayTypes)
-      .filter(([_, kinds]) => kinds.includes(OverlayKind.City))
-      .map(([key]) => {
-        const [q, r] = key.split(',').map(Number);
-        return { q, r };
-      });
-
-    // 2️⃣ Pour chaque ville, on crée un halo de civilisation
-    for (const city of cityTiles) {
-      for (const [key, tileData] of Object.entries(this.tiles)) {
-        const [q, r] = key.split(',').map(Number);
-        const dist = this.hexDistance(city, { q, r });
-
-        // rayon de 3-4 cases max
-        if (dist > 0 && dist <= 4) {
-          const alreadyHas = this.overlayTypes[key]?.length;
-          if (alreadyHas) continue; // ⚠️ ne remplace rien
-
-          // petite probabilité d’ajout
-          const roll = Math.random();
-          if (roll < 0.10) this.addOverlay(q, r, OverlayKind.Farm);
-          else if (roll < 0.15) this.addOverlay(q, r, OverlayKind.Village);
-        }
-      }
-    }
-  }
-
   private logOverlayStats(): void {
     const counts: Record<string, number> = {};
     for (const key in this.overlayTypes) {
@@ -285,13 +271,21 @@ export class MapService {
       for (const kind of this.overlayTypes[key]) overlays.push({ q, r, kind });
     }
 
+    const overlayRegistryData = this.overlayRegistry.serialize().map(entry => ({
+      id: entry.id,
+      kind: entry.kind,
+      q: entry.coords.q,
+      r: entry.coords.r,
+    }));
+
     return {
       version: 1,
       size: this.mapRadius,
       seed: this.seed,
       player: { ...this.playerPos },
       overlays,
-      tiles
+      tiles,
+      overlayRegistry: overlayRegistryData
     };
   }
 
@@ -399,6 +393,17 @@ export class MapService {
 
       const tileGfx = tileContainer as any;
       if (tileGfx.fog) tileGfx.fog.visible = !tile.discovered;
+    }
+
+    if (snapshot.overlayRegistry?.length) {
+      this.overlayRegistry.deserialize(
+        snapshot.overlayRegistry.map(e => ({
+          id: e.id,
+          kind: e.kind,
+          coords: { q: e.q, r: e.r },
+        }))
+      );
+      console.log(`💾 OverlayRegistry restauré (${snapshot.overlayRegistry.length} entrées).`);
     }
 
     for (const o of snapshot.overlays ?? []) this.addOverlay(o.q, o.r, o.kind);

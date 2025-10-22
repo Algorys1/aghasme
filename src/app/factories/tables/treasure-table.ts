@@ -6,6 +6,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     name: 'Buried Cache',
     description: 'A pile of disturbed earth hints at a recently hidden stash. The marks are fresh, maybe too fresh.',
     icon: 'assets/overlays/treasure.png',
+    id: 'buried-cache',
     actions: [],
     eventChain: {
       floor_1: {
@@ -60,6 +61,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     name: 'Tomb of the Lost King',
     description: 'An ancient stone doorway sealed with heavy runes. Legends say the king\'s fortune lies within… and his curse too.',
     icon: 'assets/overlays/treasure.png',
+    id: 'tomb-of-the-lost-king',
     actions: [],
     eventChain: {
       floor_1: {
@@ -137,6 +139,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     name: "Mechanist's Vault",
     description: 'Hidden behind a cliff face lies a metal hatch engraved with arcane machinery. Someone built this to last.',
     icon: 'assets/overlays/treasure.png',
+    id: 'mechanic-vault',
     actions: [],
     eventChain: {
       floor_1: {
@@ -214,6 +217,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     name: "Dragon's Hoard",
     description: 'A cavern glittering with gold and bones. The air smells of sulfur and age.',
     icon: 'assets/overlays/treasure.png',
+    id: 'dragon-hoard',
     actions: [],
     eventChain: {
       floor_1: {
@@ -272,6 +276,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     name: "Mimic's Treasury",
     description: 'A pile of glittering gold lies abandoned in a hollow chamber. A dozen open chests seem to invite you closer.',
     icon: 'assets/overlays/treasure.png',
+    id: 'mimic-treasure',
     actions: [],
     eventChain: {
       floor_1: {
@@ -376,6 +381,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     name: "The Pharaoh's Vault",
     description: 'Hidden beneath layers of sand lies a stone chamber humming with ancient power. Gold glints in the torchlight, too clean to be untouched.',
     icon: 'assets/overlays/treasure.png',
+    id: 'pharao-vault',
     actions: [],
     eventChain: {
       floor_1: {
@@ -472,6 +478,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     name: "The Dragon's Tomb",
     description: 'Deep within the mountain lies a cavern vast enough to hold a god. Bones as large as wagons rest atop piles of gold.',
     icon: 'assets/overlays/treasure.png',
+    id: 'dragon-tomb',
     actions: [],
     eventChain: {
       floor_1: {

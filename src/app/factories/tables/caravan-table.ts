@@ -6,6 +6,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     name: 'Merchant Caravan',
     description: 'A bustling caravan of traders and merchants traveling between distant towns.',
     icon: 'assets/overlays/caravan.png',
+    id: 'merchant-caravan',
     actions: [],
     eventChain: {
       floor_1: {
@@ -67,6 +68,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     name: 'Nomadic Tribe',
     description: 'A group of nomads traveling with their livestock and ancient traditions.',
     icon: 'assets/overlays/caravan.png',
+    id: 'nomadic-tribe',
     actions: [],
     eventChain: {
       floor_1: {
@@ -116,6 +118,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     name: 'Military Convoy',
     description: 'A convoy of armored soldiers on patrol. Their eyes track your every move.',
     icon: 'assets/overlays/caravan.png',
+    id: 'military-convoy',
     actions: [],
     eventChain: {
       floor_1: {
@@ -183,6 +186,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     name: 'Pilgrim Group',
     description: 'A band of weary pilgrims journeying toward a distant shrine.',
     icon: 'assets/overlays/caravan.png',
+    id: 'pilgrim-group',
     actions: [],
     eventChain: {
       floor_1: {
@@ -242,6 +246,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     name: 'Exploration Party',
     description: 'A group of adventurers mapping uncharted lands and seeking fortune.',
     icon: 'assets/overlays/caravan.png',
+    id: 'exploration-party',
     actions: [],
     eventChain: {
       floor_1: {
@@ -299,6 +304,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     name: 'The Sandstorm Caravan',
     description: 'A caravan half-buried in dunes, flags torn to ribbons by the wind. A single horn sounds through the storm.',
     icon: 'assets/overlays/caravan.png',
+    id: 'sandstorm-caravan',
     actions: [],
     eventChain: {
       floor_1: {
@@ -390,6 +396,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
   },
   {
     name: 'The Night Convoy',
+    id: 'night-convoy',
     description: 'A column of wagons glides silently under a moonless sky. The torches burn blue, and the drivers do not blink.',
     icon: 'assets/overlays/caravan.png',
     actions: [],

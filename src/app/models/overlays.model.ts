@@ -42,6 +42,7 @@ export interface OverlayTemplate {
   icon: string;
   description: string;
   actions: ActionType[];
+  id: string;
   eventChain?: Record<string, OverlayPhase>;
 }
 

@@ -6,6 +6,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'Ancient Shrine',
     description: 'A weathered shrine dedicated to forgotten deities, still revered by locals.',
     icon: 'assets/overlays/shrine.png',
+    id: 'ancient-shrine',
     actions: [],
     eventChain: {
       floor_1: {
@@ -72,6 +73,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'Moon Shrine',
     description: 'A shrine illuminated by moonlight, known for its mystical properties.',
     icon: 'assets/overlays/shrine.png',
+    id: 'moon-shrine',
     actions: [],
     eventChain: {
       floor_1: {
@@ -150,6 +152,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'Crystal Shrine',
     description: 'A shrine adorned with crystals, believed to enhance magical abilities.',
     icon: 'assets/overlays/shrine.png',
+    id: 'crystal-shrine',
     actions: [],
     eventChain: {
       floor_1: {
@@ -207,6 +210,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'Gobelin Shrine',
     description: 'A small shrine built by goblins, dedicated to their trickster god.',
     icon: 'assets/overlays/shrine.png',
+    id: 'gobelin-shrine',
     actions: [],
     eventChain: {
       floor_1: {
@@ -271,6 +275,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'Necromantic Shrine',
     description: 'A dark shrine used for necromantic rituals, emanating an eerie aura.',
     icon: 'assets/overlays/shrine.png',
+    id: 'necromantic-shrine',
     actions: [],
     eventChain: {
       floor_1: {
@@ -342,6 +347,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'The Moonlit Sanctuary',
     description: 'A marble terrace appears where there was nothing moments before, bathed in pale lunar light.',
     icon: 'assets/overlays/shrine.png',
+    id: 'moonlit-sanctuary',
     actions: [],
     eventChain: {
       floor_1: {
@@ -432,6 +438,7 @@ export const SHRINE_TABLE: OverlayTemplate[] = [
     name: 'The Grove of Remembrance',
     description: 'Ancient trees form a circle so perfect it feels deliberate. The air hums with the scent of forgotten rain.',
     icon: 'assets/overlays/shrine.png',
+    id: 'grove-of-remembrance',
     actions: [],
     eventChain: {
       floor_1: {

@@ -132,4 +132,25 @@ export class OverlayFactory {
     const table = this.TABLES[randomKind];
     return table ? this.createFromTable(id, randomKind, table) : this.createFallback(id);
   }
+
+  static getTable(kind: OverlayKind): OverlayTemplate[] | undefined {
+    return this.TABLES[kind];
+  }
+
+  static createFromId(id: string, kind: OverlayKind): OverlayInstance | null {
+    const table = this.TABLES[kind];
+    if (!table) return null;
+    const template = table.find(t => t.id === id);
+    if (!template) return null;
+    return {
+      id,
+      kind,
+      name: template.name,
+      description: template.description,
+      icon: template.icon,
+      actions: template.actions,
+      eventChain: template.eventChain
+    };
+  }
+
 }

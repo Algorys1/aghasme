@@ -6,6 +6,7 @@ export const WANDERER_TABLE: OverlayTemplate[] = [
     name: 'The Tired Mage',
     description: 'A robed figure trudges through the dust, muttering to himself. His staff flickers with faint energy.',
     icon: 'assets/overlays/wanderer.png',
+    id: 'tired-mage',
     actions: [],
     eventChain: {
       floor_1: {
@@ -72,6 +73,7 @@ export const WANDERER_TABLE: OverlayTemplate[] = [
     name: 'The Goblin Pilgrim',
     description: 'A small goblin wrapped in rags drags a cart of stones and herbs. He looks up, startled but not hostile.',
     icon: 'assets/overlays/wanderer.png',
+    id: 'goblin-pilgrim',
     actions: [],
     eventChain: {
       floor_1: {
@@ -113,6 +115,7 @@ export const WANDERER_TABLE: OverlayTemplate[] = [
     name: 'The Exiled Drake',
     description: 'A wounded young dragon lies beneath a broken archway. Smoke curls weakly from its nostrils.',
     icon: 'assets/overlays/wanderer.png',
+    id: 'exiled-drake',
     actions: [],
     eventChain: {
       floor_1: {
@@ -168,6 +171,7 @@ export const WANDERER_TABLE: OverlayTemplate[] = [
     name: 'The Lost Disciple',
     description: 'A lone figure in tattered robes prays facing a cracked idol. His voice trembles as if arguing with himself.',
     icon: 'assets/overlays/wanderer.png',
+    id: 'lost-disciple',
     actions: [],
     eventChain: {
       floor_1: {
@@ -220,6 +224,7 @@ export const WANDERER_TABLE: OverlayTemplate[] = [
     name: 'The Elemental Vagabond',
     description: 'A translucent form drifts lazily through the clearing, shaped like wind made flesh.',
     icon: 'assets/overlays/wanderer.png',
+    id: 'elemental-vagabond',
     actions: [],
     eventChain: {
       floor_1: {
@@ -297,6 +302,7 @@ export const WANDERER_TABLE: OverlayTemplate[] = [
     name: 'The Nameless Pilgrim',
     description: 'A weary traveler sits by a dying fire. His face is familiar, though you\'ve never met him.',
     icon: 'assets/overlays/wanderer.png',
+    id: 'nameless-pilgrim',
     actions: [],
     eventChain: {
       floor_1: {
@@ -384,6 +390,7 @@ export const WANDERER_TABLE: OverlayTemplate[] = [
     name: 'The Goblin Philosopher',
     description: 'A goblin in tattered robes sits cross-legged atop a rock, muttering about "the futility of chewing."',
     icon: 'assets/overlays/wanderer.png',
+    id: 'goblin-philosopher',
     actions: [],
     eventChain: {
       floor_1: {

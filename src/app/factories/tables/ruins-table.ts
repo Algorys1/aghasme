@@ -6,6 +6,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'Ancient Temple',
     description: 'The remains of a once-grand temple, now overgrown and forgotten. Some treasures may still hide within its broken halls.',
     icon: 'assets/overlays/ruins.png',
+    id: 'ancient-temple',
     actions: [],
     eventChain: {
       floor_1: {
@@ -87,6 +88,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'Forgotten Fortress',
     description: 'Crumbling walls and broken towers hint at a fortress long lost to time.',
     icon: 'assets/overlays/ruins.png',
+    id: 'forgotten-fortress',
     actions: [],
     eventChain: {
       floor_1: {
@@ -136,6 +138,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'Sunken City',
     description: 'Ruins of a city partially submerged, with buildings jutting out of the water like broken teeth.',
     icon: 'assets/overlays/ruins.png',
+    id: 'sunken-city',
     actions: [],
     eventChain: {
       floor_1: {
@@ -207,6 +210,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'Deserted Village',
     description: 'Empty streets and abandoned homes tell the story of a village left behind.',
     icon: 'assets/overlays/ruins.png',
+    id: 'deserted-village',
     actions: [],
     eventChain: {
       floor_1: {
@@ -268,6 +272,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'Mystic Circle',
     description: 'A circle of standing stones, their purpose and origin shrouded in mystery.',
     icon: 'assets/overlays/ruins.png',
+    id: 'mystic-circle',
     actions: [],
     eventChain: {
       floor_1: {
@@ -329,6 +334,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'The Sunken Citadel',
     description: 'The remains of a once-majestic city now lie buried beneath layers of stone and moss. The wind still hums through its collapsed towers.',
     icon: 'assets/overlays/ruins.png',
+    id: 'sunken-citadel',
     actions: [],
     eventChain: {
       floor_1: {
@@ -437,6 +443,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     name: 'The Obsidian Bastion',
     description: 'A towering black fortress stands on a cliff\'s edge, humming faintly with latent power. The walls ripple like oil under moonlight.',
     icon: 'assets/overlays/ruins.png',
+    id: 'obsidian-bastion',
     actions: [],
     eventChain: {
       floor_1: {

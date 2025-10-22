@@ -7,6 +7,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: "Mage's Spire",
     description: 'The Mage\'s Spire pierces the clouds, its summit crackling with arcane energy and whispered secrets.',
     icon: 'assets/overlays/tower.png',
+    id: 'mage-spire',
     actions: [],
     eventChain: {
       floor_1: {
@@ -64,6 +65,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: "Wizard's Keep",
     description: 'Wizard\'s Keep looms in eerie silence, its halls echoing with the remnants of long-forgotten spells.',
     icon: 'assets/overlays/tower.png',
+    id: 'wizard-keep',
     actions: [],
     eventChain: {
       floor_1: {
@@ -127,6 +129,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: 'Arcane Tower',
     description: 'The Arcane Tower hums with unseen power, its runes glowing faintly in the twilight.',
     icon: 'assets/overlays/tower.png',
+    id: 'arcane-tower',
     actions: [],
     eventChain: {
       floor_1: {
@@ -198,6 +201,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: "Sorcerer's Pinnacle",
     description: 'Sorcerer\'s Pinnacle rises like a shard of crystal, pulsing with the lifeblood of ancient magic.',
     icon: 'assets/overlays/tower.png',
+    id: 'sorcerer-pinnacle',
     actions: [],
     eventChain: {
       floor_1: {
@@ -244,6 +248,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: "Enchantress's Clock",
     description: 'A mysterious tower crowned by a colossal clock whose hands move in strange, uneven patterns. Time itself wavers here.',
     icon: 'assets/overlays/clock.png',
+    id: 'enchantress-clock',
     actions: [],
     eventChain: {
       floor_1: {
@@ -350,6 +355,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: 'The Obsidian Spire',
     description: 'A black spire pierces the sky, absorbing light instead of casting shadow. The air around it hums like a living thing.',
     icon: 'assets/overlays/tower.png',
+    id: 'obsidian-spire',
     actions: [],
     eventChain: {
       floor_1: {
@@ -483,6 +489,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     name: 'The Astral Tower',
     description: 'You see it before you sleep, and awaken inside it. The walls shimmer like glass filled with galaxies.',
     icon: 'assets/overlays/tower.png',
+    id: 'astral-tower',
     actions: [],
     eventChain: {
       floor_1: {

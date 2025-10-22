@@ -17,6 +17,7 @@ import { CombatComponent } from '../combat/combat.component';
 import { InventoryPanelComponent } from '../inventory-panel/inventory-panel.component';
 import { LootPanelComponent } from "../loot-panel/loot-panel.component";
 import { LootService } from '../services/loot.service';
+import { OverlayRegistryService } from '../services/overlay-registry.service';
 
 @Component({
   selector: 'app-game',
@@ -59,7 +60,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private saveService: SaveService,
     private characterService: CharacterService,
     private actionService: ActionService,
-    private lootService: LootService
+    private lootService: LootService,
+    private overlayRegistry: OverlayRegistryService,
   ) {}
 
   ngOnInit(): void {
@@ -72,8 +74,19 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       }),
       this.mapService.overlayChange.subscribe(kind => {
         if (kind && kind !== OverlayKind.None) {
-          console.log('🧱 Creating overlay instance:', kind);
-          this.activeOverlay = OverlayFactory.create(kind, {terrain: this.mapService.getCurrentTile()?.terrain});
+          const current = this.mapService.getCurrentTile();
+          if (!current) return;
+
+          const { q, r, terrain } = current;
+          const entry = this.overlayRegistry.getByCoords(q, r);
+
+          if (entry) {
+            console.log(`🎬 Loading overlay instance: ${entry.kind}/${entry.id} at (${q},${r})`);
+            this.activeOverlay = OverlayFactory.createFromId(entry.id, entry.kind);
+          } else {
+            console.log('🧱 Creating random overlay instance:', kind);
+            this.activeOverlay = OverlayFactory.create(kind, { terrain });
+          }
         } else {
           this.activeOverlay = null;
         }

@@ -6,6 +6,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     name: 'Temporal Rift',
     description: 'A distortion in the air flickers like a wound in reality. The landscape bends and folds upon itself.',
     icon: 'assets/overlays/anomaly.png',
+    id: 'temporal-rift',
     actions: [],
     eventChain: {
       floor_1: {
@@ -47,6 +48,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     name: 'Infernal Surge',
     description: 'The air burns red; cracks in the ground emit faint screams. Something beneath the crust struggles to escape.',
     icon: 'assets/overlays/anomaly.png',
+    id: 'infernal-surge',
     actions: [],
     eventChain: {
       floor_1: {
@@ -88,6 +90,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     name: 'Mechanical Distortion',
     description: 'Ruins of ancient machines twist around a humming sphere. Sparks jump through the air with rhythmic precision.',
     icon: 'assets/overlays/anomaly.png',
+    id: 'mechanical-distorsion',
     actions: [],
     eventChain: {
       floor_1: {
@@ -129,6 +132,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     name: 'Corrupted Grove',
     description: 'Once serene, the forest here trembles under a dark influence. Trees twist unnaturally, sap runs black.',
     icon: 'assets/overlays/anomaly.png',
+    id: 'corrupted-grove',
     actions: [],
     eventChain: {
       floor_1: {
@@ -186,6 +190,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     name: 'Ancestral Echo',
     description: 'You stumble upon a stone circle half-buried in ash. Whispers rise with the wind, names of the forgotten.',
     icon: 'assets/overlays/anomaly.png',
+    id: 'ancestral-echo',
     actions: [],
     eventChain: {
       floor_1: {
@@ -228,6 +233,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     description: 'The sky above splits open, bleeding fire and smoke. The air trembles with the echo of ancient fury.',
     icon: 'assets/overlays/anomaly.png',
     actions: [],
+    id: 'ash-breach',
     eventChain: {
       floor_1: {
         title: 'Field of Cinders',
@@ -338,6 +344,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     name: 'Rift of Echoes',
     description: 'A trembling fissure hums in the air, like the resonance of an invisible bell. Sound seems twisted here.',
     icon: 'assets/overlays/anomaly.png',
+    id: 'rift-of-echoes',
     actions: [],
     eventChain: {
       floor_1: {
@@ -430,6 +437,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
   },
   {
     name: 'The Ashen Convergence',
+    id: 'ashen-convergence',
     description: 'The horizon folds in on itself, ash floats upward like reversed rain. You feel two worlds overlapping.',
     icon: 'assets/overlays/anomaly.png',
     actions: [],

@@ -6,6 +6,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     name: 'Sacred Ritual Site',
     description: 'A place where ancient rituals were performed, still radiating spiritual energy.',
     icon: 'assets/overlays/ritual.png',
+    id: 'sacred-ritual-site',
     actions: [],
     eventChain: {
       floor_1: {
@@ -56,6 +57,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     name: 'Dark Ritual Circle',
     description: 'A sinister site marked by dark symbols, hinting at forbidden practices. The ground itself seems to hum with lingering energy.',
     icon: 'assets/overlays/ritual.png',
+    id: 'dark-ritual-circle',
     actions: [],
     eventChain: {
       floor_1: {
@@ -126,6 +128,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     name: "Nature's Altar",
     description: 'An altar dedicated to nature spirits, surrounded by lush moss and flickering fireflies.',
     icon: 'assets/overlays/ritual.png',
+    id: 'nature-altar',
     actions: [],
     eventChain: {
       floor_1: {
@@ -153,7 +156,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Guardian’s Challenge',
+        title: 'The Guardian\'s Challenge',
         description: 'From the shadows emerges a massive boar spirit, eyes burning with primal defiance.',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
@@ -168,6 +171,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     name: 'Celestial Observatory',
     description: 'A site aligned with the stars, used for celestial rituals and ceremonies.',
     icon: 'assets/overlays/ritual.png',
+    id: 'celestial-observatory',
     actions: [],
     eventChain: {
       floor_1: {
@@ -211,6 +215,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     name: 'Elemental Shrine',
     description: 'A shrine dedicated to the elemental forces, with signs of recent activity.',
     icon: 'assets/overlays/ritual.png',
+    id: 'elemental-shrine',
     actions: [],
     eventChain: {
       floor_1: {
@@ -253,6 +258,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     name: 'The Eclipse Rite',
     description: 'A vast stone circle bathed in twilight, where the sun and moon share the same sky. Ancient chants echo from unseen throats.',
     icon: 'assets/overlays/ritual.png',
+    id: 'eclipse-rite',
     actions: [],
     eventChain: {
       floor_1: {
@@ -347,11 +353,12 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     name: 'The Thousand Hands Ceremony',
     description: 'An underground hall lined with statues of monks, each holding a candle. Their eyes gleam faintly in the dark.',
     icon: 'assets/overlays/ritual.png',
+    id: 'thousand-hands-ceremony',
     actions: [],
     eventChain: {
       floor_1: {
         title: 'Hall of Quiet Flame',
-        description: 'A low chant fills the chamber, but there’s no one here. The candles flicker in unison.',
+        description: 'A low chant fills the chamber, but there\'s no one here. The candles flicker in unison.',
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
@@ -361,7 +368,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
             description: 'You light a candle that has gone out.',
             check: { orb: 'elemental', difficulty: 9 },
             onSuccess: {
-              description: 'The nearest statue’s eyes brighten, it almost smiles.',
+              description: 'The nearest statue\'s eyes brighten, it almost smiles.',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
@@ -381,7 +388,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
             description: 'You bow instinctively, the whisper stops for a moment.',
           },
           [ActionType.Observe]: {
-            description: 'The statues’ hands have shifted slightly, all pointing toward the central dais.',
+            description: 'The statues\' hands have shifted slightly, all pointing toward the central dais.',
           },
         },
         next: 'floor_3',
@@ -402,7 +409,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
               effects: [{ stat: 'xp', value: +10 }],
             },
             onFailure: {
-              description: 'A crack splits the idol’s chest, dust pours out like blood.',
+              description: 'A crack splits the idol\'s chest, dust pours out like blood.',
               next: 'floor_4',
             },
           },
