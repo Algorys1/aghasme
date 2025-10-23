@@ -74,11 +74,9 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     canvas.addEventListener('touchstart', e => {
       if (e.touches.length === 1) {
-        // un seul doigt → drag
         this.isDragging = true;
         this.dragStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       } else if (e.touches.length === 2) {
-        // deux doigts → pinch
         isPinching = true;
         lastTouchDistance = this.getTouchDistance(e.touches);
       }
@@ -89,12 +87,12 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       if (isPinching && e.touches.length === 2) {
         const newDistance = this.getTouchDistance(e.touches);
         const delta = newDistance - lastTouchDistance;
-        this.zoom = Math.min(8, Math.max(0.5, this.zoom + delta * 0.005));
+        this.zoom = Math.min(8, Math.max(0.5, this.zoom + delta * 0.5));
         lastTouchDistance = newDistance;
         this.draw();
       } else if (this.isDragging && e.touches.length === 1) {
         const touch = e.touches[0];
-        const dragSpeed = Math.max(1, this.zoom * 0.5);
+        const dragSpeed = Math.max(1, this.zoom * 0.15);
         this.offsetX += (touch.clientX - this.dragStart.x) / dragSpeed;
         this.offsetY += (touch.clientY - this.dragStart.y) / dragSpeed;
         this.dragStart = { x: touch.clientX, y: touch.clientY };

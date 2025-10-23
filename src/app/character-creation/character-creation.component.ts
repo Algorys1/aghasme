@@ -19,7 +19,6 @@ export class CharacterCreationComponent {
   genders: Gender[] = ['male', 'female'];
   selectedArchetype: Archetype | null = null;
   selectedGender: Gender = 'male';
-  hasInitialized = false;
 
   orbs: Orbs = { bestial: 8, elemental: 8, natural: 8, mechanic: 8 };
   orbKeys: (keyof Orbs)[] = ['bestial', 'elemental', 'natural', 'mechanic'];
@@ -100,7 +99,7 @@ export class CharacterCreationComponent {
     const cleanName = this.validateName(this.name);
     if (!cleanName) return;
 
-    const newChar = this.characterService.createCharacter({
+    this.characterService.createCharacter({
       name: cleanName,
       archetype: this.selectedArchetype,
       gender: this.selectedGender,

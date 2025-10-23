@@ -44,7 +44,7 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
   turnOverlay: string | null = null;
   actionsRemaining = 2;
   showResultOverlay = false;
-  combatResult: { winner: 'player' | 'enemy'; xp: number; gold: number } | null = null;  
+  combatResult: { winner: 'player' | 'enemy'; xp: number; gold: number } | null = null;
 
   log: CombatLogEntry[] = [];
 
@@ -64,7 +64,7 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
     this.subs.push(
       this.combatService.combatEnded$.subscribe(winner => this.handleCombatEnd(winner))
     );
-    
+
   }
 
   // === BOARD GENERATION ============================================
@@ -131,7 +131,7 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
     const oldCell = this.grid[this.enemyPos.y][this.enemyPos.x];
     const newCell = this.grid[y][x];
     if (!newCell || newCell.type === 'block' || newCell.hasPlayer) return;
-  
+
     oldCell.hasEnemy = false;
     newCell.hasEnemy = true;
     this.enemyPos = { x, y };
@@ -142,36 +142,36 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
     const dy = Math.sign(this.enemyPos.y - this.playerPos.y);
     const nx = this.enemyPos.x + dx;
     const ny = this.enemyPos.y + dy;
-  
+
     if (nx < 0 || ny < 0 || nx >= this.gridSize || ny >= this.gridSize) return;
     const target = this.grid[ny][nx];
     if (target && target.type === 'empty' && !target.hasPlayer && !target.hasEnemy) {
       this.moveEnemyTo(nx, ny);
     }
-  }  
+  }
 
   private findPath(start: {x: number, y: number}, target: {x: number, y: number}): {x: number, y: number}[] | null {
     const queue = [{ ...start, path: [] as {x: number, y: number}[] }];
     const visited = new Set<string>();
     const key = (x: number, y: number) => `${x},${y}`;
     visited.add(key(start.x, start.y));
-  
+
     const dirs = [
       { x: 1, y: 0 }, { x: -1, y: 0 },
       { x: 0, y: 1 }, { x: 0, y: -1 }
     ];
-  
+
     while (queue.length) {
       const node = queue.shift()!;
       if (node.x === target.x && node.y === target.y) return node.path;
-  
+
       for (const d of dirs) {
         const nx = node.x + d.x;
         const ny = node.y + d.y;
         if (nx < 0 || ny < 0 || nx >= this.gridSize || ny >= this.gridSize) continue;
         const cell = this.grid[ny][nx];
         if (!cell || cell.type === 'block' || cell.hasEnemy) continue;
-  
+
         const k = key(nx, ny);
         if (visited.has(k)) continue;
         visited.add(k);
@@ -179,7 +179,7 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
       }
     }
     return null;
-  }  
+  }
 
   // === TURN MANAGMENT ================================================
   private consumeAction(): void {
@@ -195,7 +195,7 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
   public endTurn(): void {
     // séparation visuelle dans le log
     this.addLog('──────────────────────────────', 'info');
-  
+
     if (this.currentTurn === 'player') {
       this.currentTurn = 'enemy';
       this.actionsRemaining = 2;
@@ -214,8 +214,8 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
   private async enemyTurn(): Promise<void> {
     while (this.currentTurn === 'enemy' && this.actionsRemaining > 0) {
       const dist = Math.abs(this.enemyPos.x - this.playerPos.x) + Math.abs(this.enemyPos.y - this.playerPos.y);
-  
-      // ❤️ comportement défensif
+
+      // defensive behavior
       const enemyHpRatio = this.enemy.hp / (this.enemy.level * 10 + 20);
       if (enemyHpRatio <= 0.25 && Math.random() < 0.3) {
         this.addLog(`${this.enemy.name} looks hurt and backs away!`, 'enemy');
@@ -224,14 +224,14 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
         await this.delay(500);
         continue;
       }
-  
-      // ⚔️ attaque si adjacent
+
+      // Attack if besides player
       if (dist === 1) {
         const dmg = this.combatService.enemyAttack();
         this.addLog(`💢 ${this.enemy.name} hits you for ${dmg} damage!`, 'enemy');
         this.actionsRemaining--;
       }
-      // 🚶 approche intelligente
+      // Move towards player
       else {
         const path = this.findPath(this.enemyPos, this.playerPos);
         if (path && path.length > 0) {
@@ -243,12 +243,12 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
         }
         this.actionsRemaining--;
       }
-  
+
       await this.delay(900);
     }
     if (!this.enemy || this.enemy.hp <= 0 || !this.player || this.player.hp <= 0) return;
     this.endTurn();
-  }  
+  }
 
   private showTurnOverlay(text: string | null) {
     this.turnOverlay = text;
@@ -260,10 +260,10 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
     this.combatResult = result
       ? { winner: result.winner, xp: result.xpGained, gold: result.goldGained }
       : { winner, xp: 0, gold: 0 };
-  
+
     this.showResultOverlay = true;
     this.showTurnOverlay(null);
-  
+
     const msg =
       winner === 'player'
         ? `🏁 Victory! You defeated ${this.enemy.name}.`
@@ -274,7 +274,7 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
   closeResultOverlay(): void {
     this.showResultOverlay = false;
     this.combatEnded.emit(this.combatResult?.winner ?? 'player');
-  }  
+  }
 
   // === TOOLS ======================================================
   private isWalkable(cell: Cell): boolean {
@@ -294,24 +294,24 @@ export class CombatBoardComponent implements OnInit, OnDestroy {
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-  
+
   private addLog(msg: string, type: 'info' | 'player' | 'enemy' | 'action' = 'info'): void {
     const entry: CombatLogEntry = { id: crypto.randomUUID(), msg, type };
     this.log.push(entry); // ➕ on ajoute en bas, pas en haut
     setTimeout(() => this.scrollLogToBottom(), 50);
   }
-  
+
   private scrollLogToBottom(): void {
     const container = document.querySelector('.log-box .entries');
     if (container) container.scrollTop = container.scrollHeight;
-  }  
-  
+  }
+
   private scrollLogToTop(): void {
     const container = document.querySelector('.log-box .entries');
     if (container) container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
-  }  
+  }
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());
-  }  
+  }
 }
