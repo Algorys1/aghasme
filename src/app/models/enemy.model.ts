@@ -8,7 +8,6 @@ export interface EnemyData {
   name: string;
   desc: string;
   icon: string;
-  category: 'beast' | 'monster';
   level: number;
   hp: number;
   mp: number;
@@ -21,7 +20,6 @@ export class Enemy implements EnemyData {
   name: string;
   desc: string;
   icon: string;
-  category: 'beast' | 'monster';
   level: number;
   hp: number;
   mp: number;
@@ -33,7 +31,6 @@ export class Enemy implements EnemyData {
     this.name = data.name;
     this.desc = data.desc;
     this.icon = data.icon;
-    this.category = data.category;
     this.level = data.level;
     this.hp = data.hp;
     this.mp = data.mp;

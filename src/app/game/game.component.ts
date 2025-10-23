@@ -71,21 +71,30 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       this.mapService.playerMoved.subscribe(() => this.autoSave()),
       this.mapService.tileChange.subscribe(tile => {
         this.currentTile = tile;
+        const hasOverlay = this.mapService.hasActiveOverlay;
+        if (!hasOverlay) {
+          console.log('No overlay, possible encounter check');
+          this.mapService.checkForEncounter();
+        }
+      }),
+      this.mapService.startCombat$.subscribe(enemy => {
+        console.log(`🎯 Launching combat UI vs ${enemy.name}`);
+        this.showCombat = true;
+        this.isOverlayPaused = true;
       }),
       this.mapService.overlayChange.subscribe(kind => {
         if (kind && kind !== OverlayKind.None) {
           const current = this.mapService.getCurrentTile();
           if (!current) return;
 
-          const { q, r, terrain } = current;
+          const { q, r } = current;
           const entry = this.overlayRegistry.getByCoords(q, r);
 
           if (entry) {
             console.log(`🎬 Loading overlay instance: ${entry.kind}/${entry.id} at (${q},${r})`);
             this.activeOverlay = OverlayFactory.createFromId(entry.id, entry.kind);
           } else {
-            console.log('🧱 Creating random overlay instance:', kind);
-            this.activeOverlay = OverlayFactory.create(kind, { terrain });
+            console.warn(`⚠️ cannot find overlay at (${q},${r}), of kind ${kind}`);
           }
         } else {
           this.activeOverlay = null;
@@ -108,13 +117,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('🧹 Overlay closed via closeOverlay$');
         this.activeOverlay = null;
       }),
-      this.actionService.startCombat$.subscribe(enemy => {
-        console.log(`🎯 Launching combat UI vs ${enemy.name}`);
-        this.showCombat = true;
-        this.isOverlayPaused = true;
-      })
     );
-
     this.refreshOrbs();
   }
 

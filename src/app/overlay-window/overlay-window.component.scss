@@ -17,11 +17,17 @@
     width: 90vw;
     height: 92vh;
     padding: 12px;
-    background: #f6ebc8;
     overflow-y: auto;
     border-radius: 8px;
     font-family: 'Cinzel', serif;
     pointer-events: auto;
+
+    background-image: url('../../assets/ui/parchment-background.webp');
+    background-repeat: repeat;
+    background-size: 512px 512px;
+    background-position: center;
+
+    filter: brightness(1.02) contrast(0.98);
   }
 
   .overlay-top {
@@ -203,3 +209,26 @@
   50% { transform: scale(1.05); opacity: 1; }
   100% { transform: scale(1); opacity: 0.9; }
 }
+
+.rest-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: all;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: -1;
+  }
+}
+

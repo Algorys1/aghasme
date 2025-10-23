@@ -29,7 +29,7 @@
           <button class="action-btn" (click)="onAction(action)" [disabled]="isActionDisabled(action)">
             {{ action }}
           </button>
-          <small class="consequence">→ {{ getConsequence(action) }}</small>
+          <small class="consequence">{{ getConsequence(action) }}</small>
         </div>
       }
     </div>
@@ -37,11 +37,14 @@
     <hr class="divider" [class]="!data.actions.length ? 'last':''" />
 
     <div class="overlay-nav">
-      @if(data.isCompleted) {
+      @if(data.isCompleted || !isNarrativeType()) {
         <button class="nav-btn" (click)="quit()" [disabled]="disableQuit">Quit</button>
       } @else {
         <button class="nav-btn" (click)="continue()" [disabled]="disableContinue()">Continue</button>
       }
     </div>
   </div>
+  @if(showRestWindow) {
+    <app-rest-window (closed)="showRestWindow = false" class="rest-overlay"></app-rest-window>
+  }
 </div>

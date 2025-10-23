@@ -5,10 +5,16 @@
   width: 90vw;
   height: 85vh;
   padding: 12px;
-  background: #f6ebc8;
   overflow-y: auto;
   border-radius: 8px;
   font-family: 'Cinzel', serif;
+
+  background-image: url('../../assets/ui/parchment-background.webp');
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  background-position: center;
+
+  filter: brightness(1.02) contrast(0.98);
 }
 
 /* === GRILLE === */

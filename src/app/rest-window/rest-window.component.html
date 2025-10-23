@@ -1,0 +1,31 @@
+<div class="rest-window parchment">
+  <h2 class="title">Rest</h2>
+
+  @if(!isResting) {
+    <p class="desc">How many hours do you want to rest?</p>
+
+    <div class="slider-container">
+      <input type="range" min="1" max="8" [(ngModel)]="hours" />
+      <div class="slider-label">{{ hours }} h</div>
+    </div>
+
+    <p class="effect">
+      You will recover approximately
+      <b>{{ getHealPercent() | number: '1.0-0' }} %</b> of your HP and MP.
+    </p>
+
+    <div class="buttons">
+      <button class="btn confirm" (click)="startRest()">Rest</button>
+      <button class="btn cancel" (click)="cancel()">Cancel</button>
+    </div>
+  } @else {
+    <div class="resting">
+      @if (!interrupted) {
+        <p class="sleep-text">You sleep peacefully...</p>
+      } @else {
+        <p class="sleep-text danger">Your sleep is interrupted!</p>
+      }
+      <progress [value]="progress" max="100"></progress>
+    </div>
+  }
+</div>

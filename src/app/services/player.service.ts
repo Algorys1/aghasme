@@ -51,6 +51,7 @@ export class PlayerService {
   // --- TODO Delegate on CharacterService ---
   takeDamage(amount: number) { this.characterService.takeDamage(amount); this.refresh(); }
   heal(amount: number) { this.characterService.heal(amount); this.refresh(); }
+  restoreMana(amount: number) { this.characterService.restoreMana(amount); this.refresh(); }
   spendMP(amount: number) { const ok = this.characterService.spendMP(amount); this.refresh(); return ok; }
   gainXP(amount: number) { this.characterService.addXP(amount); this.refresh(); }
   gainGold(amount: number) { this.characterService.gainGold(amount); this.refresh(); }

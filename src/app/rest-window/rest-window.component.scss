@@ -1,0 +1,127 @@
+.rest-window {
+  width: 90vw;
+  max-width: 500px;
+  height: auto;
+  margin: auto;
+  padding: 12px 2px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #2b1a0f;
+  font-family: 'Cinzel', serif;
+
+  background-image: url('../../assets/ui/parchment-background.webp');
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  background-position: center;
+
+  filter: brightness(1.02) contrast(0.98);
+
+  .title {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    color: #3a2410;
+  }
+
+  .desc {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .slider-container {
+    width: 80%;
+    position: relative;
+    margin-bottom: 15px;
+
+    input[type='range'] {
+      width: 100%;
+      appearance: none;
+      height: 6px;
+      background: #c9a66b;
+      border-radius: 5px;
+
+      &::-webkit-slider-thumb {
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        background: #513218;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+    }
+
+    .slider-label {
+      position: absolute;
+      top: -25px;
+      right: 0;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+  }
+
+  .effect {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+
+    .btn {
+      background: #5b4b36;
+      color: #fff5d8;
+      border: 1px solid #3a2d20;
+      border-radius: 8px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s
+      ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+      &.cancel {
+        background: #555;
+
+        &:active {
+          background: #333;
+        }
+      }
+    }
+  }
+
+  .resting {
+    width: 100%;
+
+    .sleep-text {
+      font-size: 1rem;
+      margin-bottom: 15px;
+
+      &.danger {
+        color: #a62121;
+        font-weight: bold;
+      }
+    }
+
+    progress {
+      width: 100%;
+      height: 12px;
+      border-radius: 8px;
+      overflow: hidden;
+
+      &::-webkit-progress-bar {
+        background-color: #e0c79a;
+      }
+
+      &::-webkit-progress-value {
+        background-color: #8b5a2b;
+      }
+    }
+  }
+}

@@ -9,7 +9,6 @@ export type Terrain =
   | 'sea'
   | 'jungle'
   | 'swamp';
-export type AllTerrains = Terrain | 'fog';
 
 export interface TileOptions {
   x: number;

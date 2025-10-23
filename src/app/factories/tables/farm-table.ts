@@ -1,5 +1,5 @@
-import { ActionType } from '../../models/actions';
-import { OverlayTemplate } from '../../models/overlays.model';
+import {ActionType} from '../../models/actions';
+import {OverlayTemplate} from '../../models/overlays.model';
 
 export interface FarmTemplate extends OverlayTemplate {
   resources: string
@@ -65,7 +65,7 @@ export const FARM_TABLE: FarmTemplate[] = [
   {
     name: 'The Blue Jays',
     id: 'blue-jays',
-    description: 'TODO DESCRIPTION',
+    description: 'A quaint farm known for its vibrant blue crops and peaceful ambiance.',
     resources: 'food',
     icon: 'assets/overlays/farm.png',
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
@@ -73,7 +73,7 @@ export const FARM_TABLE: FarmTemplate[] = [
   {
     name: 'Gold Fields',
     id: 'gold-fields',
-    description: 'TODO DESCRIPTION',
+    description: 'A fertile farm known for its abundant grain production and its golden hues.',
     resources: 'food:wood',
     icon: 'assets/overlays/farm.png',
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
@@ -81,9 +81,33 @@ export const FARM_TABLE: FarmTemplate[] = [
   {
     name: 'Beyond Hill',
     id: 'beyond-hill',
-    description: 'TODO DESCRIPTION',
+    description: 'The farm is located just past a gentle hill, offering stunning views of the surrounding countryside.',
     resources: 'food:milk',
     icon: 'assets/overlays/farm.png',
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
+  {
+    name: 'Sunny Acres',
+    id: 'sunny-acres',
+    description: 'This farm is bathed in sunlight throughout the day, making it an ideal location for growing a variety of crops.',
+    resources: 'food:potion',
+    icon: 'assets/overlays/farm.png',
+    actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
+  },
+  {
+    name: 'Riverbend Farm',
+    id: 'riverbend-farm',
+    description: 'Situated along a gentle river bend, this farm benefits from rich soil and ample water supply.',
+    resources: 'food',
+    icon: 'assets/overlays/farm.png',
+    actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
+  },
+  {
+    name: 'Meadowview Farm',
+    id: 'meadowview-farm',
+    description: 'Overlooking a picturesque meadow, this farm is known for its scenic beauty and bountiful harvests.',
+    resources: 'food:wood',
+    icon: 'assets/overlays/farm.png',
+    actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
+  }
 ]

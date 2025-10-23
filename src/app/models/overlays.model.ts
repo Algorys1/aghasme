@@ -7,11 +7,6 @@ import { Terrain } from "../factories/tile.factory";
 export enum OverlayKind {
   None = 'None',
 
-  // Encounters
-  Monster = 'monster',
-  Beast = 'beast',
-  Encounter = 'encounter',
-
   // Stories
   Spirit = 'spirit',
   Tower = 'tower',
@@ -26,13 +21,14 @@ export enum OverlayKind {
   // Civilization
   Village = 'village',
   City = 'city',
-  Portal = 'portal',
+  Farm = 'farm',
 
-
-  // Mystical / Resources
+  // Resources
   Mine = 'mine',
   Forest = 'forest',
-  Farm = 'farm',
+
+  // Special
+  Portal = 'portal',
 }
 
 // -----------------------------------------------------------------
@@ -81,9 +77,6 @@ export const OVERLAY_ICONS: Record<OverlayKind, string> = {
   [OverlayKind.Ritual]: 'assets/overlays/ritual.png',
   [OverlayKind.Spirit]: 'assets/overlays/spirit.png',
   [OverlayKind.Wanderer]: 'assets/overlays/wanderer.png',
-  [OverlayKind.Monster]: 'assets/overlays/monster.png',
-  [OverlayKind.Beast]: 'assets/overlays/beast.png',
-  [OverlayKind.Encounter]: 'assets/overlays/encounter.png',
   [OverlayKind.Treasure]: 'assets/overlays/treasure.png',
   [OverlayKind.Anomaly]: 'assets/overlays/anomaly.png',
   [OverlayKind.Shrine]: 'assets/overlays/shrine.png',

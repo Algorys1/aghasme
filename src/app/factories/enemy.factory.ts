@@ -10,7 +10,6 @@ export interface EnemyDefinition {
   name: string;
   desc: string;
   icon: string;
-  category: 'beast' | 'monster';
   subCategories: EnnemySubCategory[];
   terrains: Terrain[];
   minLevel: number;
@@ -25,16 +24,11 @@ export class EnemyFactory {
   static generate(params: {
     playerLevel: number;
     terrain: Terrain;
-    category?: 'beast' | 'monster';
     subCategories?: string[];
   }): Enemy {
-    const { playerLevel, terrain, category, subCategories } = params;
+    const { playerLevel, terrain, subCategories } = params;
 
     let pool = ENEMIES.filter(e => e.terrains.includes(terrain));
-
-    if (category) {
-      pool = pool.filter(e => e.category === category);
-    }
 
     if (subCategories?.length) {
       pool = pool.filter(e => e.subCategories.some(sub => subCategories.includes(sub)));
@@ -58,25 +52,16 @@ export class EnemyFactory {
     const hp = 8 + level * 5;
     const mp = 4 + level * 3;
 
-    let attackMod = 0;
-    let defenseMod = 0;
-    if (pick.category === 'beast') {
-      attackMod = +2;
-    } else if (pick.category === 'monster') {
-      defenseMod = +1;
-    }
-
     const attackVariance = Math.floor(Math.random() * 3) - 1; // [-1, 0, +1]
     const defenseVariance = Math.floor(Math.random() * 3) - 1;
 
-    const finalAttack = Math.min(20, Math.max(5, baseAttack + attackMod + attackVariance));
-    const finalDefense = Math.max(0, baseDefense + defenseMod + defenseVariance);
+    const finalAttack = Math.min(20, Math.max(5, baseAttack + attackVariance));
+    const finalDefense = Math.max(0, baseDefense + defenseVariance);
 
     const baseEnemy = new Enemy({
       name: pick.name,
       desc: pick.desc,
       icon: pick.icon,
-      category: pick.category,
       level,
       hp,
       mp,
@@ -88,16 +73,6 @@ export class EnemyFactory {
     return pick.effects?.length
       ? applyEffectsToEntity(baseEnemy, pick.effects)
       : baseEnemy;
-  }
-
-  static generateBeast(playerLevel: number, terrain: Terrain): Enemy {
-    console.log("Ask beast for terrain:", terrain);
-    return this.generate({ playerLevel, terrain, category: 'beast' });
-  }
-
-  static generateMonster(playerLevel: number, terrain: Terrain): Enemy {
-    console.log("Ask monster for terrain:", terrain);
-    return this.generate({ playerLevel, terrain, category: 'monster' });
   }
 
   static createById(id: string, level: number): Enemy {
@@ -112,22 +87,13 @@ export class EnemyFactory {
     const hp = 8 + finalLevel * 5;
     const mp = 4 + finalLevel * 3;
 
-    let attackMod = 0;
-    let defenseMod = 0;
-    if (tpl.category === 'beast') {
-      attackMod = +2;
-    } else if (tpl.category === 'monster') {
-      defenseMod = +1;
-    }
-
-    const finalAttack = Math.min(20, baseAttack + attackMod);
-    const finalDefense = Math.max(0, baseDefense + defenseMod);
+    const finalAttack = Math.min(20, baseAttack);
+    const finalDefense = Math.max(0, baseDefense);
 
     const baseEnemy = new Enemy({
       name: tpl.name,
       desc: tpl.desc,
       icon: tpl.icon,
-      category: tpl.category,
       level: finalLevel,
       hp,
       mp,
@@ -139,13 +105,5 @@ export class EnemyFactory {
     return tpl.effects?.length
       ? applyEffectsToEntity(baseEnemy, tpl.effects)
       : baseEnemy;
-  }
-
-  static getTemplate(id: string): EnemyDefinition | undefined {
-    return ENEMIES.find(e => e.id === id);
-  }
-
-  static getEnemiesForTerrain(terrain: Terrain): EnemyDefinition[] {
-    return ENEMIES.filter(e => e.terrains.includes(terrain));
   }
 }

@@ -7,10 +7,14 @@ import { OverlayKind, OverlayInstance } from '../models/overlays.model';
 import { ActionType } from '../models/actions';
 import { Subscription, take } from 'rxjs';
 import { ActionService } from '../services/action.service';
+import {RestWindowComponent} from '../rest-window/rest-window.component';
 
 @Component({
   selector: 'app-overlay-window',
   templateUrl: './overlay-window.component.html',
+  imports: [
+    RestWindowComponent
+  ],
   styleUrls: ['./overlay-window.component.scss']
 })
 export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
@@ -42,12 +46,15 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   disabledActions = new Set<ActionType>();
   disableQuit = true;
 
+  showRestWindow = false;
+
   constructor(private actionService: ActionService, private zone: NgZone) {}
 
   ngOnInit() {
     this.subs.push(
       this.actionService.passiveText$.subscribe(msg => this.appendPassiveText(msg)),
       this.actionService.enableQuit$.subscribe(() => this.disableQuit = false),
+      this.actionService.restRequested$.subscribe(() => this.showRestWindow = true)
     );
   }
 
@@ -72,6 +79,10 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
       this.resetTyping();
       this.startTypingAnimation();
     }
+  }
+
+  isNarrativeType(): boolean {
+    return ![OverlayKind.City, OverlayKind.Village, OverlayKind.Farm, OverlayKind.Forest, OverlayKind.Mine, OverlayKind.Portal].includes(this.kind);
   }
 
   isActionDisabled(action: ActionType): boolean {
@@ -100,7 +111,7 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     this.writingDesc = false;
     this.disabledActions.clear();
     this.data.disabledActions = [];
-    this.disableQuit = true;
+    this.disableQuit = this.isNarrativeType();
   }
 
   private startTypingAnimation() {
@@ -257,6 +268,11 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
       case 'flee': return 'Try to escape the danger.';
       case 'trade': return 'Open a shop interface.';
       case 'rest': return 'Recover HP and MP.';
+      case 'pray': return 'Seek blessings or favors.';
+      case 'talk': return 'Engage in conversation.';
+      case 'harvest': return 'Gather resources.';
+      case 'interact': return 'Interact with the environment.';
+      case 'inspect': return 'Examine closely.';
       default: return 'Take this action.';
     }
   }

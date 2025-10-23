@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActionType} from '../models/actions';
-import {END_MARKER, OverlayInstance, OverlayKind} from '../models/overlays.model';
+import {END_MARKER, OverlayInstance } from '../models/overlays.model';
 import {PassiveOverlayPhase} from '../models/overlay-phase.model';
 import {CharacterService} from './character.service';
 import {CombatService} from './combat.service';
@@ -13,6 +13,7 @@ import {Subject} from 'rxjs';
 })
 export class ActionService {
   public nextOverlay$ = new Subject<OverlayInstance>();
+  public restRequested$ = new Subject<void>();
   public startCombat$ = new Subject<Enemy>();
   public closeOverlay$ = new Subject<void>();
   public passiveText$ = new Subject<string>();
@@ -52,12 +53,14 @@ export class ActionService {
       case ActionType.Continue:
         this.continueOverlay(overlay);
         break;
+      case ActionType.Rest:
+        this.handleRest();
+        break;
       case ActionType.Flee:
       case ActionType.Harvest:
       case ActionType.Trade:
       case ActionType.Talk:
       case ActionType.Pray:
-      case ActionType.Rest:
       case ActionType.Interact:
       case ActionType.Inspect:
       case ActionType.Quit:
@@ -91,6 +94,12 @@ export class ActionService {
     }
   }
 
+  private handleRest(): void {
+    console.log('💤 Rest action triggered');
+    // Émet un signal pour que l’OverlayWindow affiche la fenêtre Rest
+    this.restRequested$.next();
+  }
+
   private startCombat(overlay: OverlayInstance): void {
     const player = this.characterService.getCharacter();
     if (!player) return;
@@ -112,24 +121,6 @@ export class ActionService {
       this.startCombat$.next(enemy);
       return;
     }
-
-    if (overlay.kind === OverlayKind.Beast || overlay.kind === OverlayKind.Monster) {
-      if(!overlay.ennemy) {
-        console.warn(`⚠️ No enemy found in overlay [${overlay.kind}]: ${overlay.name}`);
-        overlay.isCompleted = true;
-        this.closeOverlay$.next();
-        return;
-      }
-      const enemy = overlay.ennemy;
-      console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
-      this.combatService.startCombat(enemy);
-      this.startCombat$.next(enemy);
-
-      overlay.isCompleted = true;
-      this.closeOverlay$.next();
-      return;
-    }
-    console.warn('[startCombat] No encounter or combat context found for overlay:', overlay.name);
   }
 
   private triggerNextEvent(overlay: OverlayInstance) {

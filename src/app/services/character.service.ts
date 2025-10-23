@@ -15,40 +15,40 @@ export class CharacterService {
     const level = data.level ?? 1;
     let orbs: Orbs = { ...DEFAULT_ORBS, ...(data.orbs ?? {}) };
     const archetype = data.archetype ?? 'beast';
-  
+
     const mods = ARCHETYPE_ORB_MODIFIERS[archetype];
     for (const key of Object.keys(mods) as (keyof Orbs)[]) {
       orbs[key] = Math.max(0, (orbs[key] ?? 0) + (mods[key] ?? 0));
     }
-  
+
     // --- HP & MP
     const baseMaxHp = Math.floor((orbs.natural + orbs.mechanic) / 2);
     const baseMaxMp = Math.floor((orbs.elemental + orbs.natural) / 2);
-  
+
     // --- ATTACK calculation
     const baseAttack = Math.floor((orbs.bestial + orbs.elemental) / 2);
     let attackBonus = 0;
-  
+
     if (baseAttack >= 5 && baseAttack <= 7) attackBonus = -1;
     else if (baseAttack >= 8 && baseAttack <= 11) attackBonus = 0;
     else if (baseAttack >= 12 && baseAttack <= 14) attackBonus = 1;
     else if (baseAttack >= 15 && baseAttack <= 17) attackBonus = 2;
     else if (baseAttack >= 18 && baseAttack <= 20) attackBonus = 3;
-  
+
     const finalAttack = baseAttack + attackBonus;
-  
+
     // --- DEFENSE calculation (palier-based)
     const baseDefense = Math.floor((orbs.mechanic + orbs.natural) / 2);
     let defenseBonus = 0;
-  
+
     if (baseDefense >= 5 && baseDefense <= 7) defenseBonus = -1;
     else if (baseDefense >= 8 && baseDefense <= 11) defenseBonus = 0;
     else if (baseDefense >= 12 && baseDefense <= 14) defenseBonus = 1;
     else if (baseDefense >= 15 && baseDefense <= 17) defenseBonus = 2;
     else if (baseDefense >= 18 && baseDefense <= 20) defenseBonus = 3;
-  
+
     const finalDefense = defenseBonus;
-  
+
     // --- Create & finalize
     this.character = {
       name: data.name,
@@ -66,7 +66,7 @@ export class CharacterService {
       inventory: data.inventory ?? [],
       attack: finalAttack,
       defense: finalDefense,
-  
+
       baseStats: {
         attack: finalAttack,
         defense: finalDefense,
@@ -92,18 +92,18 @@ export class CharacterService {
               break;
           }
         });
-    
+
         // Equipment
         if (bg.startingItemIds?.length) {
           this.character!.inventory.push(...bg.startingItemIds);
         }
       }
     }
-  
+
     this.characterSubject.next(this.character);
-    
+
     return this.character;
-  }  
+  }
 
   /** Lecture (mémoire uniquement) */
   getCharacter(): Character | null {
@@ -136,7 +136,7 @@ export class CharacterService {
     this.character.attack = (this.character.attack ?? 5) + 2;
     this.character.defense = (this.character.defense ?? 3) + 1;
   }
-  
+
   spendMP(amount: number): boolean {
     if (!this.character || this.character.mp < amount) return false;
     this.character.mp -= amount;
@@ -146,6 +146,11 @@ export class CharacterService {
   heal(amount: number) {
     if (!this.character) return;
     this.character.hp = Math.min(this.character.maxHp, this.character.hp + amount);
+    this.characterSubject.next(this.character);
+  }
+  restoreMana(amount: number) {
+    if (!this.character) return;
+    this.character.mp = Math.min(this.character.maxMp, this.character.mp + amount);
     this.characterSubject.next(this.character);
   }
   takeDamage(amount: number) {
@@ -173,25 +178,25 @@ export class CharacterService {
     for (const key of Object.keys(mods) as (keyof Orbs)[]) {
       adjusted[key] = Math.max(0, adjusted[key] + (mods[key] ?? 0));
     }
-  
+
     // --- même logique que pour le createCharacter ---
     const baseAttack = Math.floor((adjusted.bestial + adjusted.elemental) / 2);
     const baseDefense = Math.floor((adjusted.mechanic + adjusted.natural) / 2);
-  
+
     let attackBonus = 0;
     if (baseAttack >= 5 && baseAttack <= 7) attackBonus = -1;
     else if (baseAttack >= 8 && baseAttack <= 11) attackBonus = 0;
     else if (baseAttack >= 12 && baseAttack <= 14) attackBonus = 1;
     else if (baseAttack >= 15 && baseAttack <= 17) attackBonus = 2;
     else if (baseAttack >= 18 && baseAttack <= 20) attackBonus = 3;
-  
+
     let defenseBonus = 0;
     if (baseDefense >= 5 && baseDefense <= 7) defenseBonus = -1;
     else if (baseDefense >= 8 && baseDefense <= 11) defenseBonus = 0;
     else if (baseDefense >= 12 && baseDefense <= 14) defenseBonus = 1;
     else if (baseDefense >= 15 && baseDefense <= 17) defenseBonus = 2;
     else if (baseDefense >= 18 && baseDefense <= 20) defenseBonus = 3;
-  
+
     return {
       attack: baseAttack + attackBonus,
       defense: defenseBonus,

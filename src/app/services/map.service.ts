@@ -9,6 +9,9 @@ import { RendererService } from './renderer.service';
 import { Container, Sprite } from 'pixi.js';
 import { OverlayRegistryService } from './overlay-registry.service';
 import { OverlayFactory } from '../factories/overlay.factory';
+import { EnemyFactory } from '../factories/enemy.factory';
+import { CombatService } from './combat.service';
+import { Enemy } from '../models/enemy.model';
 
 export interface MapTileSnapshot {
   key: string;
@@ -55,14 +58,29 @@ export class MapService {
   tileChange = new Subject<{ type: string; description?: string }>();
   playerMoved = new BehaviorSubject<{ q: number; r: number }>(this.playerPos);
 
+  private encounterMeter = 0;
+  private baseIncrease = 5;
+  private baseThreshold = 30;
+  private cooldown = 0;
+  public startCombat$ = new Subject<Enemy>();
+
   constructor(
     private characterService: CharacterService,
     private renderer: RendererService,
-    private overlayRegistry: OverlayRegistryService
+    private overlayRegistry: OverlayRegistryService,
+    private combatService: CombatService
   ) {}
 
   get overlays() {
     return this.overlayTypes;
+  }
+
+  get hasActiveOverlay(): boolean {
+    return this.activeOverlay !== null && this.activeOverlay !== OverlayKind.None;
+  }
+
+  get currentOverlay(): OverlayKind | null {
+    return this.activeOverlay;
   }
 
   private nextRand(): number {
@@ -403,12 +421,8 @@ export class MapService {
     return false;
   }
 
-  /**
- * 🌀 Place exactement 4 portails mystiques sur la carte.
- * Liés plus tard aux Orbes — toujours fixes et uniques.
- */
 private placePortals(): void {
-  console.group('🌀 Phase Portals: placement des portails mystiques');
+  console.group('🌀 Phase Portals: place portals');
 
   const desiredCount = 4;
   let placed = 0;
@@ -443,7 +457,51 @@ private placePortals(): void {
   console.log(`✅ ${placed}/${desiredCount} Portals placed.`);
   console.groupEnd();
 }
+  checkForEncounter() {
+    if (this.cooldown > 0) {
+      this.cooldown--;
+      return;
+    }
 
+    this.encounterMeter += this.baseIncrease;
+    let terrain = this.getCurrentTile()?.terrain;
+    if (!terrain) return;
+    const terrainFactor = this.getTerrainRiskFactor(terrain);
+    const roll = Math.random() * 100;
+
+    if (roll < this.baseThreshold * terrainFactor + this.encounterMeter) {
+      this.triggerRandomEncounter();
+      this.encounterMeter = 0;
+      this.cooldown = 2;
+    }
+  }
+
+  private getTerrainRiskFactor(terrain: Terrain): number {
+    switch (terrain) {
+      case "forest":
+      case "mountain":
+        return 1.4;
+      case "desert":
+        return 1.2;
+      case "plain":
+        return 0.8;
+      default:
+        return 1.0;
+    }
+  }
+
+  triggerRandomEncounter() {
+    const terrain = this.getCurrentTile()?.terrain;
+    if (!terrain) return;
+    const char = this.characterService.getCharacter();
+    if(!char) return;
+
+    const playerLevel = char.level;
+    const enemy = EnemyFactory.generate({ playerLevel, terrain });
+
+    this.combatService.startCombat(enemy);
+    this.startCombat$.next(enemy);
+  }
 
   // === SAVE / LOAD ================================================================
   public serializeMap(): MapSnapshot {

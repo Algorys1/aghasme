@@ -39,14 +39,14 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
   },
   {
     name: 'Darkroad',
-    description: 'TODO DESCRIPTION',
+    description: 'Darkroad sits at the edge of shadowed woods, where travelers find refuge from the encroaching night.',
     icon: 'assets/overlays/village.png',
     actions: [ActionType.Trade, ActionType.Rest],
     id: 'darkroad',
   },
   {
     name: 'Woodenpale',
-    description: 'TODO DESCRIPTION',
+    description: 'Woodenpale is a quiet village of timber homes, its streets lined with lanterns that glow softly at dusk.',
     icon: 'assets/overlays/village.png',
     actions: [ActionType.Trade, ActionType.Rest],
     id: 'woodenpale',
