@@ -2,6 +2,7 @@ import { OverlayPhase } from "./overlay-phase.model";
 import { ActionType } from "./actions";
 import {Enemy} from './enemy.model';
 import { Terrain } from "../factories/tile.factory";
+import { HarvestResource } from "./items";
 
 // Each overlay in the game: events, encounters, locations, etc.
 export enum OverlayKind {
@@ -45,6 +46,7 @@ export interface OverlayTemplate {
   allowedTerrains?: Terrain[];
   minDistance?: number;
   maxDistanceFromCity?: number;
+  resources?: HarvestResource[];
 }
 
 export interface OverlayInstance extends OverlayTemplate {

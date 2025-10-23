@@ -457,7 +457,29 @@ export const RESOURCE_ITEMS: Item[] = [
     type: ItemType.Resource,
     icon: 'assets/items/resources/bones.png',
     stackable: true,
+    baseValue: 5,
+    rarity: RarityType.Normal,
+    effects: []
+  },
+  {
+    id: 'berries',
+    name: 'Berries',
+    description: 'Eating berries from time to time doesn\'t hurt.',
+    type: ItemType.Resource,
+    icon: 'assets/items/resources/berries.png',
+    stackable: true,
     baseValue: 10,
+    rarity: RarityType.Normal,
+    effects: []
+  },
+  {
+    id: 'wheat',
+    name: 'Wheat',
+    description: 'With wheat we make bread, bread is the basis!',
+    type: ItemType.Resource,
+    icon: 'assets/items/resources/wheat.png',
+    stackable: true,
+    baseValue: 5,
     rarity: RarityType.Normal,
     effects: []
   },
@@ -568,6 +590,72 @@ export const RESOURCE_ITEMS: Item[] = [
     icon: 'assets/items/resources/wood.png',
     stackable: true,
     baseValue: 10,
+    rarity: RarityType.Normal,
+    effects: []
+  },
+  {
+    id: 'dark-wood',
+    name: 'Wood',
+    description: 'Dark wood can be used for many things, but you still need to know its effects.',
+    type: ItemType.Resource,
+    icon: 'assets/items/resources/wood-dark.png',
+    stackable: true,
+    baseValue: 14,
+    rarity: RarityType.Normal,
+    effects: []
+  },
+  {
+    id: 'sacred-wood',
+    name: 'Sacred Wood',
+    description: 'Sacred wood... Used well, it can work miracles.',
+    type: ItemType.Resource,
+    icon: 'assets/items/resources/wood-sacred.png',
+    stackable: true,
+    baseValue: 50,
+    rarity: RarityType.Rare,
+    effects: []
+  },
+  {
+    id: 'crystal',
+    name: 'Crystal',
+    description: 'This crystal emanates magic, it is at the same time fascinating and frightening.',
+    type: ItemType.Resource,
+    icon: 'assets/items/resources/crystal.png',
+    stackable: true,
+    baseValue: 50,
+    rarity: RarityType.Rare,
+    effects: []
+  },
+  {
+    id: 'gem',
+    name: 'Gem',
+    description: 'A gem that is still raw. It will need to be cut with precision.',
+    type: ItemType.Resource,
+    icon: 'assets/items/resources/gem.png',
+    stackable: true,
+    baseValue: 40,
+    rarity: RarityType.Rare,
+    effects: []
+  },
+  {
+    id: 'soul-stone',
+    name: 'Soul Stone',
+    description: 'A Soul Stone as the ancients said... What was its origin?',
+    type: ItemType.Resource,
+    icon: 'assets/items/resources/stone-soul.png',
+    stackable: true,
+    baseValue: 50,
+    rarity: RarityType.Rare,
+    effects: []
+  },
+  {
+    id: 'magic-dust',
+    name: 'Magic Dust',
+    description: 'This powder makes children very happy. If only they knew...',
+    type: ItemType.Resource,
+    icon: 'assets/items/resources/dust-magic.png',
+    stackable: true,
+    baseValue: 20,
     rarity: RarityType.Normal,
     effects: []
   },

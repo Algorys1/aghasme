@@ -60,3 +60,12 @@ export type ItemSubtype =
   | 'helmet' | 'robe' | 'armor' | 'boots' | 'shield' | 'ring' | 'amulet'
   | 'book' | 'key' | 'torch' | 'resource' | 'potion' | 'food'
   | 'generic';
+
+export interface HarvestResource {
+  id: string;
+  type: string;
+  orb: 'natural' | 'bestial' | 'mechanic' | 'elemental';
+  difficulty: number;
+  xpReward: number;
+  exhausted?: boolean;
+}

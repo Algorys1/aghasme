@@ -273,6 +273,7 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
       case 'harvest': return 'Gather resources.';
       case 'interact': return 'Interact with the environment.';
       case 'inspect': return 'Examine closely.';
+      case 'observe': return 'Observe quietly';
       default: return 'Take this action.';
     }
   }
