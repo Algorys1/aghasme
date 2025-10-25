@@ -6,6 +6,7 @@ import { RESOURCE_ITEMS } from '../factories/item-tables';
 import { PlayerService } from '../services/player.service';
 import { MapService } from '../services/map.service';
 import { HarvestRegenerationService } from '../services/harvest-regeneration.service';
+import { ItemFactory } from '../factories/item.factory';
 
 @Component({
   selector: 'app-harvest-window',
@@ -24,14 +25,15 @@ export class HarvestWindowComponent implements OnInit {
     private characterService: CharacterService,
     private mapService: MapService,
     private lootService: LootService,
-    private harvestRegenService: HarvestRegenerationService
+    private harvestRegenService: HarvestRegenerationService,
+    private itemFactory: ItemFactory
   ) {}
 
   ngOnInit() {
     const pos = this.mapService.getPlayerPosition();
 
     this.resources.forEach(res => {
-      const item = RESOURCE_ITEMS.find(i => i.id === res.id);
+      const item = this.itemFactory.getById(res.id);
       if (item) res.item = item;
 
       const remaining = this.harvestRegenService.getRemainingSteps(res.id, pos);
@@ -79,8 +81,6 @@ export class HarvestWindowComponent implements OnInit {
       minQty = 1;
       maxQty = 2;
     }
-
-    const qty = this.randomBetween(minQty, maxQty);
 
     if (success) {
       const qty = this.randomBetween(minQty, maxQty);

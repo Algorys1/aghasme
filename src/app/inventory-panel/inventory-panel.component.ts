@@ -36,7 +36,6 @@ export class InventoryPanelComponent {
     });
 
     this.character = this.characterService.getCharacter();
-    // FOR TESTING PURPOSE
     if (!this.inventory.getItems().length) {
       this.loadtestInventory();
     }
