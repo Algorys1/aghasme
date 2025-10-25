@@ -8,13 +8,16 @@ import { ActionType } from '../models/actions';
 import { Subscription, take } from 'rxjs';
 import { ActionService } from '../services/action.service';
 import {RestWindowComponent} from '../rest-window/rest-window.component';
+import { HarvestWindowComponent } from "../harvest-window/harvest-window.component";
+import { HarvestResource } from '../models/items';
 
 @Component({
   selector: 'app-overlay-window',
   templateUrl: './overlay-window.component.html',
   imports: [
-    RestWindowComponent
-  ],
+    RestWindowComponent,
+    HarvestWindowComponent
+],
   styleUrls: ['./overlay-window.component.scss']
 })
 export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
@@ -47,6 +50,9 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   disableQuit = true;
 
   showRestWindow = false;
+  showHarvestWindow = false;
+
+  res: HarvestResource[] = [];
 
   constructor(private actionService: ActionService, private zone: NgZone) {}
 
@@ -54,7 +60,13 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     this.subs.push(
       this.actionService.passiveText$.subscribe(msg => this.appendPassiveText(msg)),
       this.actionService.enableQuit$.subscribe(() => this.disableQuit = false),
-      this.actionService.restRequested$.subscribe(() => this.showRestWindow = true)
+      this.actionService.restRequested$.subscribe(() => this.showRestWindow = true),
+      this.actionService.harvestRequested$.subscribe((overlay) => {
+        console.log('🌾 Harvest requested for overlay:', this.data);
+        console.log('🔹 Resources found:', this.data?.resources);
+        this.res = overlay.resources || [];
+        this.showHarvestWindow = true
+      }),
     );
   }
 

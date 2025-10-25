@@ -18,6 +18,7 @@ import { InventoryPanelComponent } from '../inventory-panel/inventory-panel.comp
 import { LootPanelComponent } from "../loot-panel/loot-panel.component";
 import { LootService } from '../services/loot.service';
 import { OverlayRegistryService } from '../services/overlay-registry.service';
+import { HarvestRegenerationService } from '../services/harvest-regeneration.service';
 
 @Component({
   selector: 'app-game',
@@ -62,13 +63,17 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private actionService: ActionService,
     private lootService: LootService,
     private overlayRegistry: OverlayRegistryService,
+    private harvestRegenService: HarvestRegenerationService
   ) {}
 
   ngOnInit(): void {
     this.character = this.player.getCharacter();
 
     this.subs.push(
-      this.mapService.playerMoved.subscribe(() => this.autoSave()),
+      this.mapService.playerMoved.subscribe(() => {
+        this.harvestRegenService.onPlayerMove();
+        this.autoSave()
+      }),
       this.mapService.tileChange.subscribe(tile => {
         this.currentTile = tile;
         const hasOverlay = this.mapService.hasActiveOverlay;
@@ -127,8 +132,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       console.error('❌ Impossible to find canvas');
       return;
     }
-
-    this.characterService.clearLegacyStorage();
 
     const nav = history.state ?? {};
     const chosenSlot: string | undefined = nav.slot;

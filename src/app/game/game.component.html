@@ -95,10 +95,12 @@
         </div>
         <hr class="common-separator" />
         <div class="pause-menu">
-          <h2>Pause</h2>
-          <button (click)="closePauseMenu()">Continue</button>
-          <button (click)="saveGameManual()">Save Game</button>
-          <button (click)="goHome()">Back to home</button>
+          <div class="pause-nav">
+            <button class="pause-btn" (click)="closePauseMenu()">Continue</button>
+            <button class="pause-btn"  (click)="saveGameManual()">Save Game</button>
+            <button class="pause-btn"  (click)="goHome()">Back to home</button>
+          </div>
+
         </div>
       </div>
     </div>

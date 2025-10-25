@@ -5,10 +5,15 @@
       @for (g of groundItems; track g.id) {
         <div
           class="loot-slot"
-          [class.selected]="selectedItem?.id === g.id"
+          [ngClass]="[selectedItem?.id === g.id ? 'selected' : '', g.item.rarity.toLowerCase()]"
           (click)="selectItem(g)"
         >
           <img [src]="g.item.icon" [alt]="g.item.name" />
+
+          <!-- Affiche la quantité si > 1 -->
+          @if (g.count && g.count > 1) {
+            <span class="stack-qty">×{{ g.count }}</span>
+          }
         </div>
       }
     } @else {
@@ -54,10 +59,30 @@
       <img src="assets/ui/action-take.png" alt="Take" />
     </button>
 
-    @if (groundItems.length > 1) {
+    @if (groundItems.length > 1 || selectedItem?.item?.stackable) {
       <button class="action-btn" title="Take All" (click)="takeAll()">
         <img src="assets/ui/action-takeall.png" alt="Take All" />
       </button>
     }
   </div>
+
+  @if (showQuantitySelector && itemPendingTake) {
+    <div class="quantity-popup">
+      <div class="popup-inner">
+        <h4>Take how many?</h4>
+        <input
+          type="range"
+          min="1"
+          [max]="maxQuantity"
+          [(ngModel)]="quantityToTake"
+        />
+        <div class="quantity-display">×{{ quantityToTake }}</div>
+        <div class="popup-buttons">
+          <button class="confirm-btn" (click)="confirmTake()">Confirm</button>
+          <button class="cancel-btn" (click)="showQuantitySelector = false">Cancel</button>
+        </div>
+      </div>
+    </div>
+  }
+
 </div>

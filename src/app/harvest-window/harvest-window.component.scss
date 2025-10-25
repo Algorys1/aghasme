@@ -1,0 +1,181 @@
+.harvest-window {
+  width: 90vw;
+  max-width: 500px;
+  height: 90%;
+  margin: auto;
+  padding: 12px 2px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #2b1a0f;
+  font-family: 'Cinzel', serif;
+
+  background-image: url('../../assets/ui/parchment-background.webp');
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  background-position: center;
+
+  filter: brightness(1.02) contrast(0.98);
+
+  .title {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    color: #3a2410;
+  }
+
+  .progress-bar.global {
+    width: 80%;
+    margin: 0.5rem auto 1rem;
+    height: 8px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+
+    .bar {
+      height: 100%;
+      background: linear-gradient(90deg, #66411e, #3a2410);
+      transition: width 0.05s linear;
+    }
+  }
+
+  .resources-list {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+
+    .resource-card {
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid #a78956;
+      border-radius: 12px;
+      padding: 0.6rem;
+      margin-bottom: 0.8rem;
+      transition: all 0.2s;
+
+      .cooldown {
+        font-size: 0.8rem;
+        color: #4b3a23;
+        margin: 0.4rem 0 0.2rem;
+        font-style: italic;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.6rem;
+
+        .icon {
+          width: 40px;
+          height: 40px;
+          background-color: #eddcbe;
+          border: 1px solid #a78956;
+          border-radius: .3rem;
+        }
+
+        .description {
+          font-size: .8rem;
+          font-style: italic;
+        }
+
+        h3 {
+          margin: 0;
+          font-size: 1.1rem;
+        }
+
+        small {
+          font-size: 0.8rem;
+          color: #2b1a0f;
+          font-weight: 600;
+        }
+
+        .orb {
+          width: 48px;
+          height: 48px;
+        }
+
+        .difficulty {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      .action-btn {
+        background: #2f2e2c;
+        color: #fff5d8;
+        border: 1px solid #af6113;
+        border-radius: 8px;
+        padding: 0.6rem 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s
+        ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+        &:hover:not(:disabled) {
+          background: rgba(220, 180, 90, 0.25);
+        }
+
+        &:disabled {
+          opacity: 0.5;
+        }
+      }
+    }
+
+    .depleted {
+      opacity: 0.6;
+      filter: grayscale(0.6);
+    }
+  }
+
+  .footer {
+    text-align: center;
+    .message {
+      min-height: 1.5rem;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .nav-btn {
+      background: #5b4b36;
+      color: #fff5d8;
+      border: 1px solid #3a2d20;
+      border-radius: 8px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s
+      ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+.message {
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  text-align: center;
+  font-size: 0.9rem;
+  min-height: 1.4rem;
+  margin-top: 0.5rem;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+    animation: fadeOutMessage 2s 1.5s forwards;
+  }
+}
+
+@keyframes fadeOutMessage {
+  to {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}

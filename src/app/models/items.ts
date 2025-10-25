@@ -68,4 +68,6 @@ export interface HarvestResource {
   difficulty: number;
   xpReward: number;
   exhausted?: boolean;
+  remainingSteps?: number;
+  item?: Item;
 }

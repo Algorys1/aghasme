@@ -47,4 +47,7 @@
   @if(showRestWindow) {
     <app-rest-window (closed)="showRestWindow = false" class="rest-overlay"></app-rest-window>
   }
+  @if(showHarvestWindow) {
+    <app-harvest-window (closed)="showHarvestWindow = false" [resources]="res" class="rest-overlay"></app-harvest-window>
+  }
 </div>

@@ -1,4 +1,4 @@
-<div class="inventory-mobile">
+<div class="inventory">
   <!-- === EQUIPMENT + STATS === -->
   <section class="equipment-section">
     <!-- === Stats === -->
@@ -7,40 +7,40 @@
         <strong>{{ character.name }}</strong>
         <span class="char-level">Lv {{ character.level }}</span>
       </div>
-  
+
       <div class="stats-grid">
         <div class="char-stat">
           <img src="assets/ui/hp.png" alt="HP" />
           <span>{{ character.hp }} / {{ character.maxHp }}</span>
         </div>
-  
+
         <div class="char-stat">
           <img src="assets/ui/mana.png" alt="MP" />
           <span>{{ character.mp }} / {{ character.maxMp }}</span>
         </div>
-  
+
         <div class="char-stat">
           <span>Attack:</span>
           <span>{{ character.attack }}</span>
         </div>
-  
+
         <div class="char-stat">
           <span>Defense:</span>
           <span>{{ character.defense }}</span>
         </div>
-  
+
         <div class="char-stat">
           <span>XP:</span>
           <span>{{ character.xp }}</span>
         </div>
-  
+
         <div class="char-stat">
           <span>Gold:</span>
           <span>{{ character.gold }}</span>
         </div>
       </div>
     </div>
-  
+
     <!-- === ÉQUIPEMENT === -->
     <div class="equip-grid">
       @for (slot of equipSlots; track $index) {
@@ -57,7 +57,7 @@
         </div>
       }
     </div>
-  </section>  
+  </section>
 
   <!-- === INVENTAIRE DU JOUEUR === -->
   <section class="inventory-grid">
@@ -85,9 +85,9 @@
         </h3>
         <span class="rarity-label">{{ selectedItem.rarity }}</span>
       </div>
-    
+
       <p class="item-text">{{ selectedItem.description }}</p>
-    
+
       @if (selectedItem.effects.length) {
         <ul class="item-effects">
           @for (eff of selectedItem.effects; track eff.stat + '-' + eff.value) {
@@ -101,13 +101,13 @@
           }
         </ul>
       }
-    
+
       <div class="item-value">
         <img src="assets/ui/gold.png" alt="Gold" />
         <span>{{ selectedItem.computedValue ?? selectedItem.baseValue }}</span>
       </div>
     </section>
-    
+
 
     <section class="item-actions">
       @if (selectedItem) {
@@ -118,7 +118,7 @@
         >
           <img src="assets/ui/action-use.png" alt="Use" />
         </button>
-    
+
         @if (selectedItem.equipSlot?.length) {
           <button
             class="action-btn"
@@ -128,7 +128,7 @@
             <img src="assets/ui/action-equip.png" alt="Equip" />
           </button>
         }
-    
+
         <button
           class="action-btn"
           title="Throw"
@@ -136,7 +136,7 @@
         >
           <img src="assets/ui/action-throw.png" alt="Throw" />
         </button>
-    
+
         <button
           class="action-btn"
           title="Delete"
@@ -145,6 +145,6 @@
           <img src="assets/ui/action-delete.png" alt="Delete" />
         </button>
       }
-    </section>     
+    </section>
   }
 </div>

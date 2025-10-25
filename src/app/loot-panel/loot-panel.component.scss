@@ -40,6 +40,21 @@
   align-items: center;
   transition: all 0.15s ease;
   cursor: pointer;
+  position: relative;
+
+  .stack-qty {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 3px #000, 0 0 5px #000;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1px 4px;
+    border-radius: 4px;
+    pointer-events: none;
+  }
 
   img {
     width: 50px;
@@ -62,9 +77,33 @@
     box-shadow: 0 0 8px #c0863c;
     transform: scale(1.05);
   }
+
+  &.common {
+    border-color: #a29b8f;
+  }
+
+  &.rare {
+    border-color: #4a90e2;
+    box-shadow: 0 0 6px rgba(74, 144, 226, 0.6);
+  }
+
+  &.epic {
+    border-color: #9b59b6;
+    box-shadow: 0 0 6px rgba(155, 89, 182, 0.6);
+  }
+
+  &.legendary {
+    border-color: #f39c12;
+    box-shadow: 0 0 6px rgba(243, 156, 18, 0.6);
+  }
+
+  &.artefact {
+    border-color: #b22222;
+    box-shadow: 0 0 6px rgba(178, 34, 34, 0.6);
+  }
+
 }
 
-/* === DESCRIPTION === */
 .item-description {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 8px;
@@ -157,3 +196,67 @@
   font-style: italic;
   color: #5a3a1b;
 }
+
+.quantity-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: url('../../assets/ui/parchment-background.webp');
+  background-size: cover;
+  border: 2px solid #6e4a20;
+  border-radius: 12px;
+  padding: 16px;
+  width: 220px;
+  text-align: center;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+  .popup-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: 'Cinzel', serif;
+    color: #2b1b0f;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  input[type='range'] {
+    width: 100%;
+    accent-color: #8b5a2b;
+  }
+
+  .quantity-display {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+
+    .confirm-btn,
+    .cancel-btn {
+      flex: 1;
+      margin: 0 4px;
+      padding: 4px 8px;
+      font-family: 'Cinzel', serif;
+      border: 2px solid #6e4a20;
+      border-radius: 6px;
+      background: #f7e7c4;
+      cursor: pointer;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: #f5d78b;
+      }
+    }
+  }
+}
+

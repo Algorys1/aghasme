@@ -1,4 +1,4 @@
-.inventory-mobile {
+.inventory {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -17,23 +17,21 @@
   filter: brightness(1.02) contrast(0.98);
 }
 
-/* === ÉQUIPEMENT === */
 .equipment-section {
   display: flex;
-  flex-direction: row; /* ⬅️ Equipements à gauche, stats à droite */
+  flex-direction: row;
   justify-content: center;
   align-items: flex-start;
   gap: 20px;
   width: 100%;
 
-  /* Grille des équipements */
   .equip-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
 
     .equip-slot {
-      width: 50px;  /* ⬅️ plus petit qu’avant (70 → 60) */
+      width: 50px;
       height: 50px;
       background: #e3d2a3;
       border: 2px solid #6e4a20;
@@ -53,14 +51,13 @@
     }
   }
 
-  /* Stats du joueur */
   .player-stats-grid {
     background: rgba(255, 255, 255, 0.75);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 10px 14px;
-    flex-shrink: 0; /* évite que ça se tasse */
-    width: 85px; /* largeur fixe raisonnable */
+    flex-shrink: 0;
+    width: 85px;
     color: #2b1b0f;
     font-size: 0.8rem;
 
@@ -100,7 +97,6 @@
   }
 }
 
-/* === INVENTAIRE === */
 .inventory-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -189,7 +185,6 @@
   }
 }
 
-/* === DESCRIPTION & ACTIONS === */
 .item-description {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 8px;
@@ -216,7 +211,6 @@
       opacity: 0.8;
     }
 
-    /* Couleurs par rareté */
     .common { color: #3b3b3b; }
     .uncommon { color: #228b22; }
     .rare { color: #4169e1; }

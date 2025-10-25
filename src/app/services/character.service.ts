@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Archetype, ARCHETYPE_ORB_MODIFIERS, Character, NewCharacterInput, Orbs } from '../models/character.model';
+import { Archetype, ARCHETYPE_ORB_MODIFIERS, Character, NewCharacterInput, OrbKey, Orbs } from '../models/character.model';
 import { BACKGROUNDS } from '../models/background.model';
 
 const DEFAULT_ORBS: Orbs = { bestial: 0, elemental: 0, natural: 0, mechanic: 0 };
@@ -116,7 +116,10 @@ export class CharacterService {
     this.characterSubject.next(this.character);
   }
 
-  // --- Mutations simples (toujours mémoire) ---
+  getOrbPower(orb: OrbKey) {
+    return this.character?.orbs[orb];
+  }
+
   addXP(amount: number) {
     if (!this.character) return;
     this.character.xp += Math.max(0, amount);
@@ -126,7 +129,6 @@ export class CharacterService {
     }
   }
   private levelUp() {
-    // TODO to improve before release
     if (!this.character) return;
     this.character.level += 1;
     this.character.maxHp += 10;
@@ -179,7 +181,6 @@ export class CharacterService {
       adjusted[key] = Math.max(0, adjusted[key] + (mods[key] ?? 0));
     }
 
-    // --- même logique que pour le createCharacter ---
     const baseAttack = Math.floor((adjusted.bestial + adjusted.elemental) / 2);
     const baseDefense = Math.floor((adjusted.mechanic + adjusted.natural) / 2);
 
@@ -214,13 +215,7 @@ export class CharacterService {
     }));
   }
 
-  /** Nettoyage mémoire */
   clearCharacter() {
     this.character = null;
-  }
-
-  /** 🔥 One-shot : supprime l’ancienne persistance globale héritée */
-  clearLegacyStorage() {
-    try { localStorage.removeItem('character'); } catch {}
   }
 }

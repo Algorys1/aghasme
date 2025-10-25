@@ -18,7 +18,7 @@ export class InventoryService {
 
   private itemsSubject = new BehaviorSubject<(Item & { count: number })[]>([]);
   public items$ = this.itemsSubject.asObservable();
-  
+
   private equippedItemsSubject = new BehaviorSubject<Record<EquipSlot, Item | null>>({
     [EquipSlot.Head]: null,
     [EquipSlot.Torso]: null,
@@ -60,12 +60,14 @@ export class InventoryService {
     return this.items.length;
   }
 
-  addItem(newItem: Item): boolean {
+  addItem(newItem: Item & { count?: number }): boolean {
     newItem.instanceId = crypto.randomUUID();
+    const quantity = newItem.count && newItem.count > 0 ? newItem.count : 1;
+
     if (newItem.stackable) {
       const existing = this.items.find((i) => i.id === newItem.id);
       if (existing) {
-        existing.count += 1;
+        existing.count += quantity;
         this.itemsSubject.next(this.getItems());
         return true;
       } else {
@@ -73,18 +75,21 @@ export class InventoryService {
           this.errorSubject.next('Inventaire plein');
           return false;
         }
-        this.items.push({ ...newItem, count: 1 });
+        this.items.push({ ...newItem, count: quantity });
         this.itemsSubject.next(this.getItems());
         return true;
       }
     }
 
-    if (this.usedSlots >= this.maxSlots) {
-      this.errorSubject.next('Inventaire plein');
-      return false;
+    for (let i = 0; i < quantity; i++) {
+      if (this.usedSlots >= this.maxSlots) {
+        this.errorSubject.next('Inventaire plein');
+        if (i === 0) return false;
+        break;
+      }
+      this.items.push({ ...newItem, count: 1, instanceId: crypto.randomUUID() });
     }
 
-    this.items.push({ ...newItem, count: 1 });
     this.itemsSubject.next(this.getItems());
     return true;
   }
@@ -92,12 +97,12 @@ export class InventoryService {
   dropItem(item: Item): boolean {
     const removed = this.removeItem(item.id);
     if (!removed) return false;
-  
+
     const pos = this.mapService.getPlayerPosition();
     this.lootService.dropItem(item, pos, 'player');
     return true;
   }
-  
+
 
   removeItem(itemId: string): boolean {
     const index = this.items.findIndex((i) => i.id === itemId);
@@ -119,7 +124,7 @@ export class InventoryService {
   useItem(itemId: string): string | null {
     const item = this.items.find((i) => i.id === itemId);
     if (!item) {
-      this.errorSubject.next('Cannot find item'); 
+      this.errorSubject.next('Cannot find item');
       return null;
     }
 
@@ -129,7 +134,7 @@ export class InventoryService {
       effectMessage = `${item.effects}` || `${item.name} used.`;
       this.removeItem(itemId);
     } else {
-      this.errorSubject.next(`Item non utilisable: ${item.name}`);
+      this.errorSubject.next(`Item no usable: ${item.name}`);
     }
 
     return effectMessage;
@@ -143,8 +148,7 @@ export class InventoryService {
   equipItem(item: Item) {
     if (!item.equipSlot) return;
     const current = { ...this.equippedItemsSubject.value };
-  
-    // on tente de placer l’objet dans le premier slot disponible
+
     let equipped = false;
     for (const slot of item.equipSlot) {
       if (!current[slot]) {
@@ -153,79 +157,70 @@ export class InventoryService {
         break;
       }
     }
-  
+
     if (!equipped) {
       this.errorSubject.next(`No available slot for ${item.name}`);
       return;
     }
-  
-    // mise à jour propre de l’état
+
     this.equippedItemsSubject.next(current);
     this.removeItem(item.id);
-  
-    // recalcul complet des stats
+
     this.recalculateCharacterStats();
-  
+
     return `Equipped ${item.name}`;
   }
-  
+
   unequipItem(slot: EquipSlot) {
     const current = { ...this.equippedItemsSubject.value };
     const item = current[slot];
     if (!item) return;
-  
-    // on retire du slot, puis on le remet dans l’inventaire
+
     current[slot] = null;
     this.equippedItemsSubject.next(current);
     this.addItem(item);
-  
-    // recalcul complet après la mise à jour
+
     this.recalculateCharacterStats();
-  
+
     return `Unequipped ${item.name}`;
   }
 
   recalculateCharacterStats() {
     const char = this.characterService.getCharacter();
     if (!char || !char.baseStats) return;
-  
+
     const equipped = this.equippedItemsSubject.value;
-  
-    // 1️⃣ Récupère tous les effets actifs
+
     const effects: Effect[] = [];
     Object.values(equipped).forEach(item => {
       if (item?.effects?.length) {
         effects.push(...item.effects);
       }
     });
-  
-    // 2️⃣ Repart de la base
+
     const base = {
       attack: char.baseStats.attack,
       defense: char.baseStats.defense,
       maxHp: char.baseStats.maxHp,
       maxMp: char.baseStats.maxMp,
     };
-  
-    // 3️⃣ Applique les effets
+
     const modified = applyEffectsToEntity(base, effects);
-  
-    // 4️⃣ Clamp des jauges
+
     const newHp = Math.min(char.hp, modified.maxHp);
     const newMp = Math.min(char.mp, modified.maxMp);
 
     console.log('💥 Base stats:', char.baseStats);
     console.log('💥 Modified stats:', modified);
-  
-    // 5️⃣ Met à jour le CharacterService
+
     this.characterService.setCharacter({
       ...char,
       ...modified,
       hp: newHp,
       mp: newMp,
     });
-  }  
-  
+  }
+
   expandInventory(): void {
     this.rows += 1;
     this.sizeSubject.next({ rows: this.rows, cols: this.cols });

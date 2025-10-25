@@ -52,7 +52,8 @@ export class OverlayFactory {
       description: template.description,
       icon: template.icon,
       actions: template.actions,
-      eventChain: template.eventChain
+      eventChain: template.eventChain,
+      resources: template.resources
     };
   }
 

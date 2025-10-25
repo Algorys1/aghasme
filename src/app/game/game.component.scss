@@ -47,6 +47,7 @@
   align-items: center;
   border-bottom: 1px solid #48361d;
   padding-bottom: .5rem;
+  margin-top: 8px;
 }
 
 .hud-bottom-row {
@@ -282,10 +283,6 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* ======================================================
-   TRANSITIONS D’OVERLAY (fade + fond cinématique)
-   ====================================================== */
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -297,7 +294,6 @@
   }
 }
 
-/** COMMON OVERLAY DESIGN **/
 .common-overlay {
   position: fixed;
   inset: 0;
@@ -353,4 +349,47 @@
 .hidden {
   visibility: hidden;
   pointer-events: none;
+}
+
+.pause-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 90vw;
+  height: 85vh;
+  padding: 12px;
+  overflow-y: auto;
+  border-radius: 8px;
+  font-family: 'Cinzel', serif;
+
+  background-image: url('../../assets/ui/parchment-background.webp');
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  background-position: center;
+
+  filter: brightness(1.02) contrast(0.98);
+
+  .pause-nav {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    flex-direction: column;
+    gap: 10px;
+
+    .pause-btn {
+      width: 80%;
+      background: #5b4b36;
+      color: #fff5d8;
+      border: 1px solid #3a2d20;
+      border-radius: 8px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+  }
 }

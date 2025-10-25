@@ -4,7 +4,8 @@ import { Item } from '../models/items';
 
 export interface GroundItem {
   id: string;
-  item: Item;
+  item: Item & { count?: number };
+  count: number;
   pos: { q: number; r: number };
   source?: 'enemy' | 'player';
 }
@@ -19,20 +20,38 @@ export class LootService {
 
   constructor() {}
 
-  dropItem(item: Item, pos: { q: number; r: number }, source: 'enemy' | 'player' = 'player'): void {
-    const dropped: GroundItem = {
-      id: crypto.randomUUID(),
-      item,
-      pos,
-      source,
-    };
-    this.ground.push(dropped);
+  dropItem(
+    item: Item,
+    pos: { q: number; r: number },
+    source: 'enemy' | 'player' = 'player',
+    quantity: number = 1
+  ): void {
+    const existing = this.ground.find(
+      g =>
+        g.pos.q === pos.q &&
+        g.pos.r === pos.r &&
+        g.item.id === item.id &&
+        item.stackable
+    );
+
+    if (existing) {
+      existing.count += quantity;
+    } else {
+      const dropped: GroundItem = {
+        id: crypto.randomUUID(),
+        item: { ...item },
+        count: quantity,
+        pos,
+        source,
+      };
+      this.ground.push(dropped);
+    }
+
     this.emitChange();
-    console.log(`💎 Item dropped: ${item.name} at (${pos.q}, ${pos.r})`);
   }
 
   pickupItem(groundId: string): Item | null {
-    const index = this.ground.findIndex((g) => g.id === groundId);
+    const index = this.ground.findIndex(g => g.id === groundId);
     if (index === -1) return null;
 
     const [picked] = this.ground.splice(index, 1);
@@ -40,21 +59,35 @@ export class LootService {
     return picked.item;
   }
 
+  reduceGroundItemCount(groundId: string, amount: number): void {
+    const groundItem = this.ground.find(g => g.id === groundId);
+    if (!groundItem) return;
+
+    groundItem.count -= amount;
+    if (groundItem.count <= 0) {
+      this.ground = this.ground.filter(g => g.id !== groundId);
+    }
+
+    this.emitChange();
+  }
+
   getItemsAt(pos: { q: number; r: number }): GroundItem[] {
-    return this.ground.filter((g) => g.pos.q === pos.q && g.pos.r === pos.r);
+    return this.ground.filter(g => g.pos.q === pos.q && g.pos.r === pos.r);
   }
 
   getAllGroundItems(): GroundItem[] {
     return [...this.ground];
   }
-  
+
   restoreGroundItems(items: GroundItem[]): void {
     this.ground = [...items];
-    this.groundSubject.next(this.ground);
+    this.emitChange();
   }
 
   clearAt(pos: { q: number; r: number }): void {
-    this.ground = this.ground.filter((g) => !(g.pos.q === pos.q && g.pos.r === pos.r));
+    this.ground = this.ground.filter(
+      g => !(g.pos.q === pos.q && g.pos.r === pos.r)
+    );
     this.emitChange();
   }
 

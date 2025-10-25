@@ -156,6 +156,17 @@ export const ARMOR_ITEMS: Item[] = [
     effects: [{stat: 'defense', value: 4}]
   },
   {
+    id: 'boots-mechanic',
+    name: 'Mechanical Boots',
+    description: 'These boots are beautiful, you almost feel like you are floating when you walk in them.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/boots-travel.png',
+    baseValue: 80,
+    equipSlot: [EquipSlot.Feet],
+    rarity: RarityType.Rare,
+    effects: [{stat: 'flee', value: 1}]
+  },
+  {
     id: 'boots-travel',
     name: 'Travel Boots',
     description: 'Good walking boots can make all the difference.',
@@ -176,6 +187,17 @@ export const ARMOR_ITEMS: Item[] = [
     equipSlot: [EquipSlot.Hand1],
     rarity: RarityType.Normal,
     effects: [{stat: 'attack', value: 1}]
+  },
+  {
+    id: 'gloves-mechanic',
+    name: 'Mechanical Gloves',
+    description: 'These gloves are incredibly comfortable. They feel like they adjust themselves.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/gloves-mechanic.png',
+    baseValue: 120,
+    equipSlot: [EquipSlot.Hand1],
+    rarity: RarityType.Rare,
+    effects: []
   },
   {
     id: 'helmet-echo',
@@ -212,6 +234,28 @@ export const ARMOR_ITEMS: Item[] = [
     effects: [{stat: 'defense', value: 1}]
   },
   {
+    id: 'helmet-mechanic',
+    name: 'Mechanical Helmet',
+    description: 'You might think this helmet would hinder your vision, but it doesn\'t!',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/helmet-mechanic.png',
+    baseValue: 130,
+    equipSlot: [EquipSlot.Head],
+    rarity: RarityType.Rare,
+    effects: [{stat: 'defense', value: 1}]
+  },
+  {
+    id: 'helmet-iron-mechanic',
+    name: 'Improved Mechanical Helmet',
+    description: 'The first time you put on this helmet, you\'re a little confused. But then you can\'t live without it.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/helmet-mechanic.png',
+    baseValue: 130,
+    equipSlot: [EquipSlot.Head],
+    rarity: RarityType.Rare,
+    effects: [{stat: 'defense', value: 1}]
+  },
+  {
     id: 'hat-magician',
     name: 'Wizard Hat',
     description: 'A crooked hat, allowing you to avoid being dazzled by the sun when casting a spell.',
@@ -244,6 +288,30 @@ export const ARMOR_ITEMS: Item[] = [
     subtype: 'robe',
     equipSlot: [EquipSlot.Torso],
     effects: [{ stat: 'maxHp', value: 5 }],
+  },
+  {
+    id: 'shield-mechanic-long',
+    name: 'Long Mechanical Shield',
+    description: 'This ancient shield still seems to work, at least it makes noise.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/shield-mechanic-long.png',
+    baseValue: 400,
+    rarity: RarityType.Rare,
+    subtype: 'shield',
+    equipSlot: [EquipSlot.Weapon2],
+    effects: [],
+  },
+  {
+    id: 'shield-mechanic-small',
+    name: 'Mechanical Shield',
+    description: 'This ancient shield still seems to work, or at least vibrates.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/shield-mechanic-small.png',
+    baseValue: 300,
+    rarity: RarityType.Rare,
+    subtype: 'shield',
+    equipSlot: [EquipSlot.Weapon2],
+    effects: [],
   },
   {
     id: 'shield-mirror',
@@ -404,14 +472,36 @@ export const CONSUMABLE_ITEMS: Item[] = [
     rarity: RarityType.Normal
   },
   {
+    id: 'potion-heal',
+    name: 'Healing Potion',
+    description: 'A reddish liquid that heals small wounds (+30 HP)',
+    type: ItemType.Consumable,
+    icon: 'assets/items/consumables/potion-heal.png',
+    stackable: true,
+    baseValue: 50,
+    effects: [{ stat: 'hp', value: 30 }],
+    rarity: RarityType.Normal
+  },
+  {
     id: 'potion-mana-small',
     name: 'Minor Mana Potion',
-    description: 'A blue liquid that heals small wounds (+10 MP)',
+    description: 'A blue liquid that invigorates the magical flow a little (+10 MP)',
     type: ItemType.Consumable,
     icon: 'assets/items/consumables/potion-mana-small.png',
     stackable: true,
     baseValue: 35,
     effects: [{ stat: 'mp', value: 10 }],
+    rarity: RarityType.Normal
+  },
+  {
+    id: 'potion-mana',
+    name: 'Mana Potion',
+    description: 'A blue liquid that invigorates the magical flow (+30 MP)',
+    type: ItemType.Consumable,
+    icon: 'assets/items/consumables/potion-mana.png',
+    stackable: true,
+    baseValue: 60,
+    effects: [{ stat: 'mp', value: 30 }],
     rarity: RarityType.Normal
   },
   {
@@ -434,18 +524,6 @@ export const CONSUMABLE_ITEMS: Item[] = [
     baseValue: 5,
     effects: [{ stat: 'hp', value: 3 }],
     rarity: RarityType.Normal
-  },
-  {
-    id: 'scroll-fading',
-    name: 'Scroll of Fading Light',
-    description: 'Once opened, the letters vanish, but something inside you changes.',
-    type: ItemType.Consumable,
-    icon: 'assets/items/consumables/scroll-fading.png',
-    baseValue: 310,
-    rarity: RarityType.Rare,
-    subtype: 'potion',
-    stackable: false,
-    effects: [{ stat: 'maxMp', value: 10 }, { stat: 'xp', value: 25 }],
   },
 ];
 
@@ -663,6 +741,16 @@ export const RESOURCE_ITEMS: Item[] = [
 
 export const UTILITY_ITEMS: Item[] = [
   {
+    id: 'axe-lumberjack',
+    name: 'Lumberjac\'s Axe',
+    description: 'It\'s still more practical for cutting wood!',
+    type: ItemType.Utility,
+    icon: 'assets/items/utility/axe-lumberjack.png',
+    baseValue: 60,
+    effects: [],
+    rarity: RarityType.Normal
+  },
+  {
     id: 'key-iron',
     name: 'Iron Key',
     description: 'A simple iron key, which must certainly open something... but what?',
@@ -680,6 +768,26 @@ export const UTILITY_ITEMS: Item[] = [
     icon: 'assets/items/utility/tools.png',
     effects: [{ stat: 'tool', value: 1 }],
     baseValue: 25,
+    rarity: RarityType.Normal
+  },
+  {
+    id: 'pickaxe',
+    name: 'Pickaxe',
+    description: 'A pickaxe, as the old man used to say, always lets you find things!',
+    type: ItemType.Utility,
+    icon: 'assets/items/utility/pickaxe.png',
+    baseValue: 60,
+    effects: [],
+    rarity: RarityType.Normal
+  },
+  {
+    id: 'sickle',
+    name: 'Sickle',
+    description: 'We don\'t know, we might need to harvest some herbs.',
+    type: ItemType.Utility,
+    icon: 'assets/items/utility/sickle.png',
+    effects: [{ stat: 'tool', value: 1 }],
+    baseValue: 50,
     rarity: RarityType.Normal
   },
   {
