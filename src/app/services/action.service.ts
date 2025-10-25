@@ -15,6 +15,7 @@ export class ActionService {
   public nextOverlay$ = new Subject<OverlayInstance>();
   public restRequested$ = new Subject<void>();
   public harvestRequested$ = new Subject<OverlayInstance>();
+  public tradeRequested$ = new Subject<OverlayInstance>();
   public startCombat$ = new Subject<Enemy>();
   public closeOverlay$ = new Subject<void>();
   public passiveText$ = new Subject<string>();
@@ -22,7 +23,7 @@ export class ActionService {
 
   constructor(
     private characterService: CharacterService,
-    private combatService: CombatService
+    private combatService: CombatService,
   ) {}
 
   /**
@@ -33,7 +34,6 @@ export class ActionService {
     if(overlay.id.includes(END_MARKER) && overlay.isCompleted) {
       this.enableQuit$.next();
     }
-    console.log('test ', overlay)
 
     const phase = overlay.currentFloor ? overlay.eventChain?.[overlay.currentFloor] : undefined;
     if (phase?.uniqueChoice) {
@@ -62,10 +62,8 @@ export class ActionService {
         this.handleHarvest(overlay);
         break;
       case ActionType.Trade:
-      case ActionType.Talk:
-      case ActionType.Pray:
-      case ActionType.Interact:
-      case ActionType.Inspect:
+        this.handleTrade(overlay);
+        break;
       case ActionType.Flee:
       case ActionType.Quit:
         this.skipOverlay(overlay);
@@ -106,6 +104,11 @@ export class ActionService {
   private handleHarvest(overlay: OverlayInstance): void {
     console.log('🌿 Harvest action triggered');
     this.harvestRequested$.next(overlay);
+  }
+
+  private handleTrade(overlay: OverlayInstance): void {
+    console.log('🌿 Trade action triggered');
+    this.tradeRequested$.next(overlay);
   }
 
   private startCombat(overlay: OverlayInstance): void {

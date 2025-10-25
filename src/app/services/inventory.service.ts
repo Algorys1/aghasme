@@ -47,12 +47,11 @@ export class InventoryService {
     private mapService: MapService
   ) {}
 
-  /** Retourne les items actuels */
   getItems(): (Item & { count: number })[] {
     return [...this.items];
   }
 
-  private get maxSlots(): number {
+  get maxSlots(): number {
     return this.rows * this.cols;
   }
 

@@ -10,13 +10,18 @@ import { ActionService } from '../services/action.service';
 import {RestWindowComponent} from '../rest-window/rest-window.component';
 import { HarvestWindowComponent } from "../harvest-window/harvest-window.component";
 import { HarvestResource } from '../models/items';
+import { TradeWindowComponent } from "../trade-window/trade-window.component";
+import { OverlayShopMap, ShopType, TradeService } from '../services/trade.service';
+import { MapService } from '../services/map.service';
+import { CharacterService } from '../services/character.service';
 
 @Component({
   selector: 'app-overlay-window',
   templateUrl: './overlay-window.component.html',
   imports: [
     RestWindowComponent,
-    HarvestWindowComponent
+    HarvestWindowComponent,
+    TradeWindowComponent
 ],
   styleUrls: ['./overlay-window.component.scss']
 })
@@ -51,18 +56,34 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
 
   showRestWindow = false;
   showHarvestWindow = false;
+  showTradeWindow = false;
 
   res: HarvestResource[] = [];
 
-  constructor(private actionService: ActionService, private zone: NgZone) {}
+  constructor(
+    private actionService: ActionService,
+    private tradeService: TradeService,
+    private mapService: MapService,
+    private characterService: CharacterService,
+    private zone: NgZone
+  ) {}
 
   ngOnInit() {
     this.subs.push(
       this.actionService.passiveText$.subscribe(msg => this.appendPassiveText(msg)),
       this.actionService.enableQuit$.subscribe(() => this.disableQuit = false),
       this.actionService.restRequested$.subscribe(() => this.showRestWindow = true),
+      this.actionService.tradeRequested$.subscribe((overlay) => {
+        const level = this.characterService.getCharacter()?.level ?? 1;
+
+        const shopTypes = OverlayShopMap[overlay.kind] ?? [];
+        const shop = shopTypes.length ? shopTypes[0] : ShopType.General;
+
+        this.tradeService.openTrade(shop, overlay.kind, level);
+
+        this.showTradeWindow = true;
+      }),
       this.actionService.harvestRequested$.subscribe((overlay) => {
-        console.log('🌾 Harvest requested for overlay:', this.data);
         console.log('🔹 Resources found:', this.data?.resources);
         this.res = overlay.resources || [];
         this.showHarvestWindow = true

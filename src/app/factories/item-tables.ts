@@ -396,7 +396,7 @@ export const ARMOR_ITEMS: Item[] = [
     name: 'Long Shield',
     description: 'A long, somewhat bulky shield. However, it is very effective against archers or anything else that comes your way.',
     type: ItemType.Armor,
-    icon: 'assets/items/armors/shield-epic.png',
+    icon: 'assets/items/armors/shield-long.png',
     baseValue: 500,
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Rare,

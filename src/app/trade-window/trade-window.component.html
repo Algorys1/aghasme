@@ -1,0 +1,78 @@
+<div class="trade-window parchment">
+  <h2 class="title">Trade</h2>
+  <p class="gold">💰 Gold: {{ gold }}</p>
+  @if(logMessage) {
+    <div class="trade-log">{{ logMessage }}</div>
+  }
+
+  <div class="tabs">
+    <button class="tab" [class.active]="tab === 'shop'" (click)="setTab('shop')">Shop</button>
+    <button class="tab" [class.active]="tab === 'inventory'" (click)="setTab('inventory')">Inventory</button>
+  </div>
+
+  <div class="list">
+    <div
+      class="item-row"
+      *ngFor="let item of tab === 'shop' ? merchantItems : playerItems"
+      [class.selected]="item === selectedItem"
+      (click)="selectItem(item)"
+    >
+      <img class="icon" [src]="item.icon" [alt]="item.name" />
+      <div class="meta">
+        <div class="name">{{ item.name }}</div>
+        <div class="count" *ngIf="item.stackable">x{{ item.count }}</div>
+        @if(tab === 'shop') {
+          <div class="price">Price: {{ buyPrice(item) }}g</div>
+        }
+        @if(tab === 'inventory') {
+          <div class="price">Sell: {{ sellPrice(item) }}g</div>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if(selectedItem) {
+    <div class="detail">
+      <h3>{{ selectedItem.name }}</h3>
+      <p>{{ selectedItem.description }}</p>
+      <div class="buttons">
+        @if(tab === 'shop') {
+          <button class="btn" (click)="buy()" [disabled]="!canBuy()">Buy</button>
+        }
+        @if(tab === 'inventory') {
+          <button class="btn" (click)="sell()" [disabled]="!canSell()">Sell</button>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="footer">
+    <button class="btn cancel" (click)="close()">Quit</button>
+  </div>
+
+  @if(qtyPopup) {
+    <div class="popup-backdrop">
+      <div class="popup">
+        <h4>Quantité à {{ qtyMode === 'buy' ? 'acheter' : 'vendre' }}</h4>
+        <div class="qty-controls">
+          <button (click)="dec()">-</button>
+          <span>{{ qty }}</span>
+          <button (click)="inc()">+</button>
+        </div>
+        <div class="total">
+          Total:
+          @if(qtyMode === 'buy') {
+            <b>{{ tradeService.getTotalBuy(selectedItem!, qty) }}g</b>
+          }
+          @if(qtyMode === 'sell') {
+            <b>{{ tradeService.getTotalSell(selectedItem!, qty) }}g</b>
+          }
+        </div>
+        <div class="popup-buttons">
+          <button class="btn" (click)="cancelQty()">Cancel</button>
+          <button class="btn confirm" (click)="confirmQty()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

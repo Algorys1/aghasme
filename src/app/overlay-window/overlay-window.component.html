@@ -50,4 +50,7 @@
   @if(showHarvestWindow) {
     <app-harvest-window (closed)="showHarvestWindow = false" [resources]="res" class="rest-overlay"></app-harvest-window>
   }
+  @if(showTradeWindow) {
+    <app-trade-window (closed)="showTradeWindow = false" class="rest-overlay"></app-trade-window>
+  }
 </div>
