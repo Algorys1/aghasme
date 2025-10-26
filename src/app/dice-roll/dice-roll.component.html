@@ -1,0 +1,25 @@
+<div class="dice-roll-overlay" *ngIf="visible">
+  <div class="dice-roll-window">
+    <h2 class="title">Roll the {{ orb | titlecase }} Die</h2>
+
+    <canvas #diceCanvas></canvas>
+
+    <div class="controls">
+      <button *ngIf="!rolled && !rolling" (click)="roll()">🎲 Roll</button>
+      <div *ngIf="rolling" class="rolling-text">Rolling...</div>
+
+      <div *ngIf="rolled" class="result-block">
+        <div class="result-value">{{ result }}</div>
+        <div class="result-verdict" [ngClass]="verdict">
+          @switch (verdict) {
+            @case ('criticalFail') { ❌ Critical Fail! }
+            @case ('fail') { Fail }
+            @case ('success') { ✅ Success }
+            @case ('criticalSuccess') { 🌟 Critical Success! }
+          }
+        </div>
+        <button class="close-btn" (click)="close()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

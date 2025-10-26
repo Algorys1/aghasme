@@ -117,7 +117,11 @@ export class CharacterService {
   }
 
   getOrbPower(orb: OrbKey) {
-    return this.character?.orbs[orb];
+    if(!this.character) {
+      console.warn(`⚠️ cannot find orb ${orb} cause character is undefined`);
+      return 1;
+    }
+    return this.character.orbs[orb];
   }
 
   addXP(amount: number) {

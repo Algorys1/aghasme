@@ -1,0 +1,78 @@
+.dice-roll-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+}
+
+.dice-roll-window {
+  border: 3px solid #cbb27d;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  width: 80%;
+  max-width: 320px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+  color: #f5f2e8;
+}
+
+.title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #ffe9a9;
+  text-shadow: 1px 1px 2px #000;
+}
+
+canvas {
+  width: 150px;
+  height: 150px;
+  margin: 0.5rem auto;
+  display: block;
+}
+
+.controls {
+  margin-top: 0.5rem;
+
+  button {
+    background: #70593d;
+    color: #fdf6e3;
+    border: 2px solid #cbb27d;
+    border-radius: 8px;
+    padding: 0.4rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+    &:hover {
+      background: #8b6e4c;
+    }
+  }
+}
+
+.rolling-text {
+  color: #cbb27d;
+  font-style: italic;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.5; }
+}
+
+.result-block {
+  margin-top: 0.5rem;
+  .result-value {
+    font-size: 2.5rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .result-verdict {
+    font-weight: bold;
+    &.criticalFail { color: #ff4b4b; }
+    &.fail { color: #e38a6d; }
+    &.success { color: #6df176; }
+    &.criticalSuccess { color: #67c9ff; }
+  }
+}

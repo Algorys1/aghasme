@@ -19,16 +19,19 @@ import { LootPanelComponent } from "../loot-panel/loot-panel.component";
 import { LootService } from '../services/loot.service';
 import { OverlayRegistryService } from '../services/overlay-registry.service';
 import { HarvestRegenerationService } from '../services/harvest-regeneration.service';
+import { DiceRollComponent } from "../dice-roll/dice-roll.component";
+import { DiceService } from '../services/dice.service';
 
 @Component({
   selector: 'app-game',
   standalone: true,
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
-  imports: [MinimapComponent, OverlayWindowComponent, CombatComponent, InventoryPanelComponent, LootPanelComponent]
+  imports: [MinimapComponent, OverlayWindowComponent, CombatComponent, InventoryPanelComponent, LootPanelComponent, DiceRollComponent]
 })
 export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('diceRoll') diceRoll!: DiceRollComponent;
 
   character: Character | null = null;
   orbs: { key: OrbKey; name: string; icon: string; value: number }[] = [];
@@ -63,7 +66,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private actionService: ActionService,
     private lootService: LootService,
     private overlayRegistry: OverlayRegistryService,
-    private harvestRegenService: HarvestRegenerationService
+    private harvestRegenService: HarvestRegenerationService,
+    private diceService: DiceService
   ) {}
 
   ngOnInit(): void {
@@ -178,6 +182,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       console.warn('⚠️ No character found, back to menu');
       await this.router.navigate(['/start']);
     }
+
+    this.diceService.registerComponent(this.diceRoll);
   }
 
   private waitForCanvas(): Promise<HTMLCanvasElement | null> {

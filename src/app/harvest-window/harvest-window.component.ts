@@ -7,6 +7,7 @@ import { PlayerService } from '../services/player.service';
 import { MapService } from '../services/map.service';
 import { HarvestRegenerationService } from '../services/harvest-regeneration.service';
 import { ItemFactory } from '../factories/item.factory';
+import { DiceService } from '../services/dice.service';
 
 @Component({
   selector: 'app-harvest-window',
@@ -26,7 +27,8 @@ export class HarvestWindowComponent implements OnInit {
     private mapService: MapService,
     private lootService: LootService,
     private harvestRegenService: HarvestRegenerationService,
-    private itemFactory: ItemFactory
+    private itemFactory: ItemFactory,
+    private diceService: DiceService
   ) {}
 
   ngOnInit() {
@@ -57,7 +59,7 @@ export class HarvestWindowComponent implements OnInit {
     this.progress = 0;
     this.setMessage(`⛏️ You are trying to harvest ${res.id}...`);
 
-    const duration = 1000 + (res.difficulty * 150);
+    const duration = 1000 + res.difficulty * 150;
     const step = 50;
     const increment = (step / duration) * 100;
 
@@ -66,9 +68,13 @@ export class HarvestWindowComponent implements OnInit {
       this.progress = Math.min(100, this.progress + increment);
     }
 
-    const roll = this.characterService.getOrbPower(res.orb) ?? 1;
-    const success = roll >= res.difficulty;
+    const { value, verdict } = await this.diceService.askPlayerRoll(
+      res.orb, this.characterService.getOrbPower(res.orb)
+    );
+    const orbPower = this.characterService.getOrbPower(res.orb) ?? 0;
 
+    const total = value + orbPower;
+    const success = total >= res.difficulty;
     let minQty: number;
     let maxQty: number;
     if (res.difficulty <= 3) {
@@ -92,9 +98,19 @@ export class HarvestWindowComponent implements OnInit {
       );
 
       this.characterService.addXP(res.xpReward);
-      this.setMessage(`✨ +${qty} ${res.id} (+${res.xpReward} XP)`);
+
+      if (verdict === 'criticalSuccess') {
+        this.setMessage(`🌟 Critical success! +${qty + 1} ${res.id} (+${res.xpReward} XP)`);
+        this.lootService.dropItem(item, this.mapService.getPlayerPosition(), 'player', 1);
+      } else {
+        this.setMessage(`✨ +${qty} ${res.id} (+${res.xpReward} XP)`);
+      }
     } else {
-      this.setMessage(`❌ You fail to extract ${res.id}.`);
+      if (verdict === 'criticalFail') {
+        this.setMessage(`💥 Critical fail! You damaged the ${res.id}.`);
+      } else {
+        this.setMessage(`❌ You fail to extract ${res.id}.`);
+      }
     }
 
     res.exhausted = true;
@@ -102,6 +118,7 @@ export class HarvestWindowComponent implements OnInit {
     this.isProcessing = false;
     this.progress = 0;
   }
+
 
   quit() {
     this.closed.emit();
