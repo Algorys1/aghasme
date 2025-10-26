@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Application, Sprite, Texture, Rectangle, Assets } from 'pixi.js';
+import { Application, Sprite, Texture, Rectangle, Assets, Text, TextStyle } from 'pixi.js';
 import { Haptics } from '@capacitor/haptics';
 
 type OrbType = 'bestial' | 'elemental' | 'natural' | 'mechanic';
@@ -55,10 +55,10 @@ export class DiceRollComponent {
       height: 200,
     });
 
-    const base = await Assets.load<Texture>(`assets/ui/dice/dice-${this.orb}-d20.png`);
+    const base = await Assets.load<Texture>(`assets/ui/dice/dice-${this.orb}-sheet.png`);
     this.frameTextures = [];
 
-    const frameCols = 4;
+    const frameCols = 5;
     const frameRows = 4;
     const frameWidth = Math.floor(base.width / frameCols);
     const frameHeight = Math.floor(base.height / frameRows);
@@ -89,29 +89,62 @@ export class DiceRollComponent {
     this.animateRoll(result);
   }
 
-
   private animateRoll(finalResult: number) {
     if (!this.app) return;
-    let frame = 0;
+
+    const sprite = this.sprite!;
+    const baseScale = 0.7;
     const start = performance.now();
     const duration = 2500;
+    const totalFrames = 20;
+
+    let frame = 0;
+    let lastChange = 0;
 
     const ticker = this.app.ticker;
+
     ticker.add(() => {
       const elapsed = performance.now() - start;
       const progress = elapsed / duration;
-      const interval = Math.max(40, 200 * progress);
 
-      if (elapsed % interval < 20) {
-        frame = (frame + 1) % 20;
-        this.sprite!.texture = this.frameTextures[frame];
+      const interval = 40 + 300 * Math.pow(progress, 2.3);
+
+      const totalRotation = Math.PI * 2 * 3;
+      sprite.rotation = totalRotation * progress;
+
+      const scalePulse = baseScale + Math.sin(progress * Math.PI * 6) * 0.03 * (1 - progress);
+      sprite.scale.set(scalePulse);
+
+      if (elapsed - lastChange >= interval) {
+        frame = (frame + 1) % totalFrames;
+        sprite.texture = this.frameTextures[frame];
+        lastChange = elapsed;
       }
 
       if (elapsed >= duration) {
         ticker.stop();
-        const finalIndex = (finalResult - 1) % 20;
-        this.sprite!.texture = this.frameTextures[finalIndex];
-        this.onRollComplete(finalResult);
+
+        const finalIndex = (finalResult - 1) % totalFrames;
+        sprite.texture = this.frameTextures[finalIndex];
+
+        const settleStart = performance.now();
+        const settleDuration = 400;
+        const settleTicker = this.app!.ticker;
+
+        settleTicker.add(() => {
+          const t = Math.min((performance.now() - settleStart) / settleDuration, 1);
+          const damping = Math.pow(1 - t, 2);
+
+          sprite.rotation = Math.sin(t * 10) * 0.15 * damping;
+          sprite.scale.set(baseScale + 0.04 * damping);
+
+          if (t >= 1) {
+            settleTicker.stop();
+            sprite.rotation = 0;
+            sprite.scale.set(baseScale);
+          }
+          this.onRollComplete(finalResult);
+        });
       }
     });
   }

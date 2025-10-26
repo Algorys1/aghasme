@@ -42,7 +42,6 @@ export class RendererService {
     window.addEventListener('resize', () => this.centerCamera());
   }
 
-  /** 🔥 Nouvelle version clean : auto-chargement des variantes terrain-n.png */
   async loadTileTextures(): Promise<void> {
     this.tileTextures = {}; // reset complet
 
@@ -87,7 +86,6 @@ export class RendererService {
     console.log(`🧩 ${Object.keys(this.tileTextures).length} tile textures loaded.`);
   }
 
-  /** Overlays (inchangé) */
   async loadOverlayTextures(): Promise<void> {
     this.overlayTextures = {};
     for (const [key, icon] of Object.entries(OVERLAY_ICONS)) {
@@ -101,7 +99,6 @@ export class RendererService {
     console.log(`🧿 ${Object.keys(this.overlayTextures).length} overlay textures loaded.`);
   }
 
-  /** Player */
   async loadPlayerTexture(gender: string, archetype: Archetype): Promise<Texture> {
     const path = CHARACTER_ASSETS[gender][archetype];
     if (!path) throw new Error(`No asset for archetype "${archetype}"`);

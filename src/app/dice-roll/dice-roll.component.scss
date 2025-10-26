@@ -70,6 +70,7 @@ canvas {
 
   .result-verdict {
     font-weight: bold;
+    margin-bottom: .5rem;
     &.criticalFail { color: #ff4b4b; }
     &.fail { color: #e38a6d; }
     &.success { color: #6df176; }

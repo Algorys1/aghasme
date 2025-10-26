@@ -62,10 +62,6 @@ export interface OverlayInstance extends OverlayTemplate {
 
 export const END_MARKER = '-end';
 
-// -----------------------------------------------------------------
-// Overlay biomes
-// -----------------------------------------------------------------
-
 export const OVERLAY_ICONS: Record<OverlayKind, string> = {
   [OverlayKind.None]: 'assets/overlays/farm.png',
   [OverlayKind.City]: 'assets/overlays/city.png',

@@ -9,7 +9,6 @@
       <div *ngIf="rolling" class="rolling-text">Rolling...</div>
 
       <div *ngIf="rolled" class="result-block">
-        <div class="result-value">{{ result }}</div>
         <div class="result-verdict" [ngClass]="verdict">
           @switch (verdict) {
             @case ('criticalFail') { ❌ Critical Fail! }
