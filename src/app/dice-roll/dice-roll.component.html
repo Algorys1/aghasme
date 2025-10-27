@@ -5,20 +5,26 @@
     <canvas #diceCanvas></canvas>
 
     <div class="controls">
-      <button *ngIf="!rolled && !rolling" (click)="roll()">🎲 Roll</button>
-      <div *ngIf="rolling" class="rolling-text">Rolling...</div>
+      @if(!rolled && !rolling) {
+        <button (click)="roll()">🎲 Roll</button>
+      }
+      @if(rolling) {
+        <div class="rolling-text">Rolling...</div>
+      }
 
-      <div *ngIf="rolled" class="result-block">
-        <div class="result-verdict" [ngClass]="verdict">
-          @switch (verdict) {
-            @case ('criticalFail') { ❌ Critical Fail! }
-            @case ('fail') { Fail }
-            @case ('success') { ✅ Success }
-            @case ('criticalSuccess') { 🌟 Critical Success! }
-          }
+      @if(rolled) {
+        <div class="result-block">
+          <div class="result-verdict" [ngClass]="verdict">
+            @switch (verdict) {
+              @case ('criticalFail') { ❌ Critical Fail! }
+              @case ('fail') { Fail }
+              @case ('success') { ✅ Success }
+              @case ('criticalSuccess') { 🌟 Critical Success! }
+            }
+          </div>
+          <button class="close-btn" (click)="close()">Close</button>
         </div>
-        <button class="close-btn" (click)="close()">Close</button>
-      </div>
+      }
     </div>
   </div>
 </div>

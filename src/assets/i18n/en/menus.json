@@ -1,0 +1,14 @@
+{
+  "MENU": {
+    "TITLE": "Aghasme",
+    "NEW_GAME": "New Game",
+    "CONTINUE": "Continue",
+    "LOAD_GAME": "Load Game",
+    "BACK": "Back to Home",
+    "SETTINGS": "Settings",
+    "LANGUAGE": "Language",
+    "MUSIC_VOLUME": "Music Volume",
+    "SFX_VOLUME": "Sound Effects Volume",
+    "CLOSE": "Close"
+  }
+}

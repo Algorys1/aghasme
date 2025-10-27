@@ -2,13 +2,17 @@
   <div class="overlay"></div>
 
   <div class="menu">
-    <h1 class="title">Aghasme</h1>
+    <h1 class="title">{{ 'MENU.TITLE' | translate }}</h1>
 
-    <button class="menu-btn" (click)="newGame()">New Game</button>
+    <button class="menu-btn" (click)="newGame()">{{ 'MENU.NEW_GAME' | translate }}</button>
     @if (hasSave) {
-      <button class="menu-btn" (click)="continueGame()">Continue</button>
+      <button class="menu-btn" (click)="continueGame()">{{ 'MENU.CONTINUE' | translate }}</button>
     }
-    <button class="menu-btn" (click)="loadGame()">Load game</button>
-    <button class="menu-btn" (click)="back()">Back to home</button>
+    <button class="menu-btn" (click)="loadGame()">{{ 'MENU.LOAD_GAME' | translate }}</button>
+    <button class="menu-btn" (click)="back()">{{ 'MENU.BACK' | translate }}</button>
+
+    <app-settings-menu [visible]="showSettings" (closed)="showSettings = false"></app-settings-menu>
+    <button  class="menu-btn" (click)="showSettings = true">{{ 'MENU.SETTINGS' | translate }}</button>
+
   </div>
 </div>

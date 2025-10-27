@@ -3,22 +3,28 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CharacterService } from '../services/character.service';
 import {SaveService} from '../services/save.service';
+import { SettingsMenuComponent } from "../settings-menu/settings-menu.component";
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-start-game',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SettingsMenuComponent, TranslateModule],
   templateUrl: './start-game.component.html',
   styleUrls: ['./start-game.component.scss']
 })
 export class StartGameComponent implements OnInit {
   hasSave = false;
+  showSettings = false;
 
   constructor(
     private router: Router,
     private characterService: CharacterService,
-    private saveService: SaveService
-  ) {}
+    private saveService: SaveService,
+    private translate: TranslateService
+  ) {
+    this.translate.use('en');
+  }
 
   ngOnInit() {
     this.hasSave = this.saveService.hasAutoSave();
