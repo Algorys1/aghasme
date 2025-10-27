@@ -4,13 +4,18 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.Nullable;
 import com.getcapacitor.BridgeActivity;
+import com.capacitorjs.plugins.haptics.HapticsPlugin;
+import android.webkit.WebView;
 
 public class MainActivity extends BridgeActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        registerPlugin(HapticsPlugin.class);
         enterImmersiveMode();
+
+      WebView.setWebContentsDebuggingEnabled(true);
     }
 
     private void enterImmersiveMode() {

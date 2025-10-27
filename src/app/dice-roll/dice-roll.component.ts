@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Application, Sprite, Texture, Rectangle, Assets, Text, TextStyle } from 'pixi.js';
+import { Application, Sprite, Texture, Rectangle, Assets } from 'pixi.js';
 import { Haptics } from '@capacitor/haptics';
 
 type OrbType = 'bestial' | 'elemental' | 'natural' | 'mechanic';

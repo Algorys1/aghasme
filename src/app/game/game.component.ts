@@ -131,11 +131,13 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async ngAfterViewInit() {
+    await new Promise(r => setTimeout(r, 100));
     const canvas = await this.waitForCanvas();
     if (!canvas) {
       console.error('❌ Impossible to find canvas');
       return;
     }
+    this.diceService.registerComponent(this.diceRoll);
 
     const nav = history.state ?? {};
     const chosenSlot: string | undefined = nav.slot;
@@ -182,8 +184,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       console.warn('⚠️ No character found, back to menu');
       await this.router.navigate(['/start']);
     }
-
-    this.diceService.registerComponent(this.diceRoll);
   }
 
   private waitForCanvas(): Promise<HTMLCanvasElement | null> {

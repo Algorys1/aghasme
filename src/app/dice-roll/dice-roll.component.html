@@ -1,4 +1,4 @@
-<div class="dice-roll-overlay" *ngIf="visible">
+<div class="dice-roll-overlay" [hidden]="!visible">
   <div class="dice-roll-window">
     <h2 class="title">Roll the {{ orb | titlecase }} Die</h2>
 
