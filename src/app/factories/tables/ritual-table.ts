@@ -3,49 +3,49 @@ import { OverlayTemplate } from '../../models/overlays.model';
 
 export const RITUAL_TABLE: OverlayTemplate[] = [
   {
-    name: 'Sacred Ritual Site',
-    description: 'A place where ancient rituals were performed, still radiating spiritual energy.',
+    name: 'OVERLAY.SACRED_RITUAL_SITE.NAME',
+    description: 'OVERLAY.SACRED_RITUAL_SITE.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'sacred-ritual-site',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Circle of Stones',
-        description: 'A ring of carved stones forms a perfect circle. Flowers grow between the cracks, untouched by time.',
+        title: 'OVERLAY.SACRED_RITUAL_SITE.F1.TITLE',
+        description: 'OVERLAY.SACRED_RITUAL_SITE.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You walk the perimeter, noticing faint inscriptions.',
+            description: 'OVERLAY.SACRED_RITUAL_SITE.F1.OBSERVE.DESCRIPTION',
             check: { orb: 'natural', difficulty: 8 },
             onSuccess: {
-              description: 'The markings glow softly, revealing a blessing of vitality.',
+              description: 'OVERLAY.SACRED_RITUAL_SITE.F1.OBSERVE.SUCCESS',
               effects: [{ stat: 'hp', value: +4 }],
             },
             onFailure: {
-              description: 'You trip over a root, snapping a flower stem. The air cools disapprovingly.',
+              description: 'OVERLAY.SACRED_RITUAL_SITE.F1.OBSERVE.FAILURE',
             },
           },
           [ActionType.Pray]: {
-            description: 'You kneel among the stones and whisper a simple prayer.',
+            description: 'OVERLAY.SACRED_RITUAL_SITE.F1.PRAY.DESCRIPTION',
             effects: [{ stat: 'mp', value: +3 }],
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Heart of the Grove',
-        description: 'A soft hum fills the air. In the center lies an ancient bowl filled with clear water.',
+        title: 'OVERLAY.SACRED_RITUAL_SITE.F2.TITLE',
+        description: 'OVERLAY.SACRED_RITUAL_SITE.F2.DESCRIPTION',
         actions: [ActionType.Interact],
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You drink a handful of the sacred water.',
+            description: 'OVERLAY.SACRED_RITUAL_SITE.F2.INTERACT.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'Warmth spreads through you, your spirit feels renewed.',
+              description: 'OVERLAY.SACRED_RITUAL_SITE.F2.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'The water tastes bitter, something inside you trembles briefly.',
+              description: 'OVERLAY.SACRED_RITUAL_SITE.F2.INTERACT.FAILURE',
               effects: [{ stat: 'hp', value: -3 }],
             },
           },
@@ -54,15 +54,15 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Dark Ritual Circle',
-    description: 'A sinister site marked by dark symbols, hinting at forbidden practices. The ground itself seems to hum with lingering energy.',
+    name: 'OVERLAY.DARK_RITUAL_CIRCLE.NAME',
+    description: 'OVERLAY.DARK_RITUAL_CIRCLE.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'dark-ritual-circle',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Outer Ring',
-        description: 'Candles flicker though no wind blows. The scent of burnt incense fills the air, and faint chanting echoes as if from beneath the earth.',
+        title: 'OVERLAY.DARK_RITUAL_CIRCLE.F1.TITLE',
+        description: 'OVERLAY.DARK_RITUAL_CIRCLE.F1.DESCRIPTION',
         actions: [ActionType.Observe],
         encounter: {
           chance: 1,
@@ -71,49 +71,49 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
         },
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You kneel by the runes. They pulse faintly, resonating with your heartbeat...',
+            description: 'OVERLAY.DARK_RITUAL_CIRCLE.F1.OBSERVE.DESCRIPTION',
             effects: [{ stat: 'hp', value: -2 }],
             onSuccess: {
-              description: 'The whisper grows clearer, not hostile, merely curious. You sense awareness within the stones.',
+              description: 'OVERLAY.DARK_RITUAL_CIRCLE.F1.OBSERVE.SUCCESS',
             },
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Blood Altar',
-        description: 'A stone altar stands at the center, stained with ancient blood. Strange runes glow faintly as you approach. You hear a whisper-soft, pleading, or perhaps tempting.',
+        title: 'OVERLAY.DARK_RITUAL_CIRCLE.F2.TITLE',
+        description: 'OVERLAY.DARK_RITUAL_CIRCLE.F2.DESCRIPTION',
         actions: [ActionType.Interact, ActionType.Pray],
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You place your hand upon the altar. It feels warm, alive.',
+            description: 'OVERLAY.DARK_RITUAL_CIRCLE.F2.INTERACT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 11, modifier: 1 },
             onSuccess: {
-              description: 'The blood sigils flare, then fade. A whisper thanks you before vanishing.',
+              description: 'OVERLAY.DARK_RITUAL_CIRCLE.F2.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: 10 }],
             },
             onFailure: {
-              description: 'A searing pain shoots up your arm! The altar rejects you.',
+              description: 'OVERLAY.DARK_RITUAL_CIRCLE.F2.INTERACT.FAILURE',
               effects: [{ stat: 'hp', value: -5 }],
             },
           },
           [ActionType.Pray]: {
-            description: 'You close your eyes and pray. The air hums with strange energy...',
+            description: 'OVERLAY.DARK_RITUAL_CIRCLE.F2.PRAY.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 9 },
             onSuccess: {
-              description: 'You feel harmony with the forces here. Something within you strengthens.',
+              description: 'OVERLAY.DARK_RITUAL_CIRCLE.F2.PRAY.SUCCESS',
               effects: [{ stat: 'xp', value: 5 }],
             },
             onFailure: {
-              description: 'Your prayer is swallowed by silence. The circle grows cold and still.',
+              description: 'OVERLAY.DARK_RITUAL_CIRCLE.F2.PRAY.FAILURE',
             },
           },
         },
         next: 'floor_3',
       },
       floor_3: {
-        title: 'Awakening',
-        description: 'The runes ignite in crimson light, and a spectral form begins to rise from the altar.',
+        title: 'OVERLAY.DARK_RITUAL_CIRCLE.F3.TITLE',
+        description: 'OVERLAY.DARK_RITUAL_CIRCLE.F3.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -125,30 +125,30 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: "Nature's Altar",
-    description: 'An altar dedicated to nature spirits, surrounded by lush moss and flickering fireflies.',
+    name: 'OVERLAY.NATURE_ALTAR.NAME',
+    description: 'OVERLAY.NATURE_ALTAR.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'nature-altar',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Whispering Grove',
-        description: 'A wind stirs the leaves though the air is still. The scent of earth and sap overwhelms your senses.',
+        title: 'OVERLAY.NATURE_ALTAR.F1.TITLE',
+        description: 'OVERLAY.NATURE_ALTAR.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You notice claw marks on the altar, something wild has been here recently.',
+            description: 'OVERLAY.NATURE_ALTAR.F1.OBSERVE.DESCRIPTION',
             effects: [{ stat: 'xp', value: 3 }],
           },
           [ActionType.Pray]: {
-            description: 'You place your hands on the bark-carved runes and speak softly.',
+            description: 'OVERLAY.NATURE_ALTAR.F1.PRAY.DESCRIPTION',
             check: { orb: 'natural', difficulty: 9 },
             onSuccess: {
-              description: 'The ground trembles slightly, vines curl protectively around you.',
+              description: 'OVERLAY.NATURE_ALTAR.F1.PRAY.SUCCESS',
               effects: [{ stat: 'hp', value: +5 }],
             },
             onFailure: {
-              description: 'Thorns prick your palms, nature rejects your touch.',
+              description: 'OVERLAY.NATURE_ALTAR.F1.PRAY.FAILURE',
               effects: [{ stat: 'hp', value: -3 }],
             },
           },
@@ -156,8 +156,8 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Guardian\'s Challenge',
-        description: 'From the shadows emerges a massive boar spirit, eyes burning with primal defiance.',
+        title: 'OVERLAY.NATURE_ALTAR.F2.TITLE',
+        description: 'OVERLAY.NATURE_ALTAR.F2.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -168,39 +168,39 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Celestial Observatory',
-    description: 'A site aligned with the stars, used for celestial rituals and ceremonies.',
+    name: 'OVERLAY.CELESTIAL_OBSERVATORY.NAME',
+    description: 'OVERLAY.CELESTIAL_OBSERVATORY.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'celestial-observatory',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Starlit Terrace',
-        description: 'Massive mirrors and lenses point toward the heavens. A faint hum echoes as the stars align.',
+        title: 'OVERLAY.CELESTIAL_OBSERVATORY.F1.TITLE',
+        description: 'OVERLAY.CELESTIAL_OBSERVATORY.F1.DESCRIPTION',
         actions: [ActionType.Inspect, ActionType.Pray],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'You look through one of the cracked lenses.',
+            description: 'OVERLAY.CELESTIAL_OBSERVATORY.F1.INSPECT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 10 },
             onSuccess: {
-              description: 'You glimpse constellations shifting, revealing a hidden sigil in the stars.',
+              description: 'OVERLAY.CELESTIAL_OBSERVATORY.F1.INSPECT.SUCCESS',
               effects: [{ stat: 'xp', value: 8 }],
             },
             onFailure: {
-              description: 'The lens flares blinding light, your eyes sting painfully.',
+              description: 'OVERLAY.CELESTIAL_OBSERVATORY.F1.INSPECT.FAILURE',
               effects: [{ stat: 'hp', value: -3 }],
             },
           },
           [ActionType.Pray]: {
-            description: 'You whisper a vow to the sky.',
+            description: 'OVERLAY.CELESTIAL_OBSERVATORY.F1.PRAY.DESCRIPTION',
             effects: [{ stat: 'mp', value: +4 }],
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Astral Rift',
-        description: 'The ground cracks, and light pours upward, something descends instead of rising.',
+        title: 'OVERLAY.CELESTIAL_OBSERVATORY.F2.TITLE',
+        description: 'OVERLAY.CELESTIAL_OBSERVATORY.F2.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -212,38 +212,38 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Elemental Shrine',
-    description: 'A shrine dedicated to the elemental forces, with signs of recent activity.',
+    name: 'OVERLAY.ELEMENTAL_SHRINE.NAME',
+    description: 'OVERLAY.ELEMENTAL_SHRINE.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'elemental-shrine',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Ritual of Balance',
-        description: 'Four braziers burn in different colors, red, blue, green, and gold. One flickers weakly.',
+        title: 'OVERLAY.ELEMENTAL_SHRINE.F1.TITLE',
+        description: 'OVERLAY.ELEMENTAL_SHRINE.F1.DESCRIPTION',
         actions: [ActionType.Interact, ActionType.Observe],
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You adjust the golden brazier.',
+            description: 'OVERLAY.ELEMENTAL_SHRINE.F1.INTERACT.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'The flames synchronize, forming a perfect circle of light.',
+              description: 'OVERLAY.ELEMENTAL_SHRINE.F1.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: 6 }],
             },
             onFailure: {
-              description: 'The flames roar up suddenly, singing your hair!',
+              description: 'OVERLAY.ELEMENTAL_SHRINE.F1.INTERACT.FAILURE',
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
           [ActionType.Observe]: {
-            description: 'The colors twist like serpents, beautiful and threatening.',
+            description: 'OVERLAY.ELEMENTAL_SHRINE.F1.OBSERVE.DESCRIPTION',
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Unstable Core',
-        description: 'The air grows hot. Cracks of lightning flash across the stones. The shrine trembles violently.',
+        title: 'OVERLAY.ELEMENTAL_SHRINE.F2.TITLE',
+        description: 'OVERLAY.ELEMENTAL_SHRINE.F2.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -255,74 +255,74 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'The Eclipse Rite',
-    description: 'A vast stone circle bathed in twilight, where the sun and moon share the same sky. Ancient chants echo from unseen throats.',
+    name: 'OVERLAY.ECLIPSE_RITE.NAME',
+    description: 'OVERLAY.ECLIPSE_RITE.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'eclipse-rite',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'The Twilight Gathering',
-        description: 'Dozens of hooded silhouettes sway in rhythm. The horizon glows faintly purple, neither dawn nor dusk.',
+        title: 'OVERLAY.ECLIPSE_RITE.F1.TITLE',
+        description: 'OVERLAY.ECLIPSE_RITE.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Talk],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You feel pulled by two forces, warmth from one side, chill from the other.',
+            description: 'OVERLAY.ECLIPSE_RITE.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Talk]: {
-            description: 'You whisper to one of the figures, but they chant in unison, ignoring you.',
+            description: 'OVERLAY.ECLIPSE_RITE.F1.TALK.DESCRIPTION',
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Altar of Duality',
-        description: 'At the center lies an obsidian altar split in two halves, one scorched black, one pale as bone.',
+        title: 'OVERLAY.ECLIPSE_RITE.F2.TITLE',
+        description: 'OVERLAY.ECLIPSE_RITE.F2.DESCRIPTION',
         actions: [ActionType.Interact, ActionType.Inspect],
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You place your hand between light and shadow.',
+            description: 'OVERLAY.ECLIPSE_RITE.F2.INTERACT.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 12 },
             onSuccess: {
-              description: 'Both sides pulse, your body vibrates with opposing energy.',
+              description: 'OVERLAY.ECLIPSE_RITE.F2.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'A jolt surges through you, your vision blurs in white and black.',
+              description: 'OVERLAY.ECLIPSE_RITE.F2.INTERACT.FAILURE',
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
           [ActionType.Inspect]: {
-            description: 'Runes spiral around the altar: "Unity through division. Harmony through pain."',
+            description: 'OVERLAY.ECLIPSE_RITE.F2.INSPECT.DESCRIPTION',
           },
         },
         next: 'floor_3',
       },
       floor_3: {
-        title: 'The Eclipse Approaches',
-        description: 'The air darkens unnaturally fast. The hooded figures raise their arms, the sun trembles.',
+        title: 'OVERLAY.ECLIPSE_RITE.F3.TITLE',
+        description: 'OVERLAY.ECLIPSE_RITE.F3.DESCRIPTION',
         actions: [ActionType.Pray, ActionType.Interact],
         actionPassive: {
           [ActionType.Pray]: {
-            description: 'You whisper a plea to the heavens, the sky does not answer.',
+            description: 'OVERLAY.ECLIPSE_RITE.F3.PRAY.DESCRIPTION',
           },
           [ActionType.Interact]: {
-            description: 'You mirror their gesture, something stirs inside you.',
+            description: 'OVERLAY.ECLIPSE_RITE.F3.INTERACT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 11 },
             onSuccess: {
-              description: 'A perfect eclipse forms overhead, a halo of fire around darkness.',
+              description: 'OVERLAY.ECLIPSE_RITE.F3.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +10 }],
             },
             onFailure: {
-              description: 'You feel faint, reality seems to stretch like fabric.',
+              description: 'OVERLAY.ECLIPSE_RITE.F3.INTERACT.FAILURE',
             },
           },
         },
         next: 'floor_4',
       },
       floor_4: {
-        title: 'The Avatar of Balance',
-        description: 'The figures collapse. From the altar rises a being of pure twilight, half light, half shadow.',
+        title: 'OVERLAY.ECLIPSE_RITE.F4.TITLE',
+        description: 'OVERLAY.ECLIPSE_RITE.F4.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -333,16 +333,16 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
         next: 'floor_5',
       },
       floor_5: {
-        title: 'Afterglow of the Eclipse',
-        description: 'The sky clears. A faint, shimmering ring lingers in the heavens, marking the spot where day and night once kissed.',
+        title: 'OVERLAY.ECLIPSE_RITE.F5.TITLE',
+        description: 'OVERLAY.ECLIPSE_RITE.F5.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'The ring hums softly, you feel calm and sharp all at once.',
+            description: 'OVERLAY.ECLIPSE_RITE.F5.OBSERVE.DESCRIPTION',
             effects: [{ stat: 'xp', value: +20 }, { stat: 'mp', value: +8 }],
           },
           [ActionType.Pray]: {
-            description: 'You thank the silent heavens, and feel them briefly answer.',
+            description: 'OVERLAY.ECLIPSE_RITE.F5.PRAY.DESCRIPTION',
             effects: [{ stat: 'hp', value: +6 }],
           },
         },
@@ -350,29 +350,29 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'The Thousand Hands Ceremony',
-    description: 'An underground hall lined with statues of monks, each holding a candle. Their eyes gleam faintly in the dark.',
+    name: 'OVERLAY.THOUSAND_HANDS_CEREMONY.NAME',
+    description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'thousand-hands-ceremony',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Hall of Quiet Flame',
-        description: 'A low chant fills the chamber, but there\'s no one here. The candles flicker in unison.',
+        title: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F1.TITLE',
+        description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You realize every statue has a unique expression, sorrow, rage, fear.',
+            description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Interact]: {
-            description: 'You light a candle that has gone out.',
+            description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F1.INTERACT.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 9 },
             onSuccess: {
-              description: 'The nearest statue\'s eyes brighten, it almost smiles.',
+              description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F1.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'Wax melts across your hand, the flame hisses angrily.',
+              description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F1.INTERACT.FAILURE',
               effects: [{ stat: 'hp', value: -2 }],
             },
           },
@@ -380,36 +380,36 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Whisper of Stone',
-        description: 'A murmur runs through the hall, hundreds of lips carved in marble whisper your name.',
+        title: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F2.TITLE',
+        description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F2.DESCRIPTION',
         actions: [ActionType.Pray, ActionType.Observe],
         actionPassive: {
           [ActionType.Pray]: {
-            description: 'You bow instinctively, the whisper stops for a moment.',
+            description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F2.PRAY.DESCRIPTION',
           },
           [ActionType.Observe]: {
-            description: 'The statues\' hands have shifted slightly, all pointing toward the central dais.',
+            description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F2.OBSERVE.DESCRIPTION',
           },
         },
         next: 'floor_3',
       },
       floor_3: {
-        title: 'The Central Idol',
-        description: 'A towering figure with a thousand arms rises before you, each hand holding a tool, a flame, or a weapon.',
+        title: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F3.TITLE',
+        description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F3.DESCRIPTION',
         actions: [ActionType.Inspect, ActionType.Interact],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'You count the hands. When you look back, the number has changed.',
+            description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F3.INSPECT.DESCRIPTION',
           },
           [ActionType.Interact]: {
-            description: 'You touch the base of the statue, the entire hall trembles.',
+            description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F3.INTERACT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 12 },
             onSuccess: {
-              description: 'The idol lowers one hand and offers a glowing pearl.',
+              description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F3.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +10 }],
             },
             onFailure: {
-              description: 'A crack splits the idol\'s chest, dust pours out like blood.',
+              description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F3.INTERACT.FAILURE',
               next: 'floor_4',
             },
           },
@@ -417,8 +417,8 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
         next: 'floor_4',
       },
       floor_4: {
-        title: 'The Hand of Judgement',
-        description: 'The statues rise from their pedestals, moving with creaking grace, silent, purposeful.',
+        title: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F4.TITLE',
+        description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F4.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -429,16 +429,16 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
         next: 'floor_5',
       },
       floor_5: {
-        title: 'The Last Candle',
-        description: 'Only one flame remains, burning atop the shattered idol. The air smells of stone and incense.',
+        title: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F5.TITLE',
+        description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F5.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Rest],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'The flame folds inward, forming a pearl of wax. You pocket it.',
+            description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F5.OBSERVE.DESCRIPTION',
             effects: [{ stat: 'xp', value: +18 }, { stat: 'mp', value: +6 }],
           },
           [ActionType.Rest]: {
-            description: 'You breathe calmly, feeling watched, but at peace.',
+            description: 'OVERLAY.THOUSAND_HANDS_CEREMONY.F5.REST.DESCRIPTION',
             effects: [{ stat: 'hp', value: +8 }],
           },
         },

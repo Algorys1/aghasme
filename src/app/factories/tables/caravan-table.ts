@@ -3,33 +3,33 @@ import { OverlayTemplate } from '../../models/overlays.model';
 
 export const CARAVAN_TABLE: OverlayTemplate[] = [
   {
-    name: 'Merchant Caravan',
-    description: 'A bustling caravan of traders and merchants traveling between distant towns.',
+    name: 'OVERLAY.MERCHANT_CARAVAN.NAME',
+    description: 'OVERLAY.MERCHANT_CARAVAN.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'merchant-caravan',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'The Roadside Market',
-        description: 'Colorful tents and wagons form a small bazaar. Merchants shout prices, children run between crates of spice and cloth.',
+        title: 'OVERLAY.MERCHANT_CARAVAN.F1.TITLE',
+        description: 'OVERLAY.MERCHANT_CARAVAN.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Trade, ActionType.Talk],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You scan the stalls, the goods range from exotic fruits to rusty blades.',
+            description: 'OVERLAY.MERCHANT_CARAVAN.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Trade]: {
-            description: 'You approach a merchant offering talismans of dubious power.',
+            description: 'OVERLAY.MERCHANT_CARAVAN.F1.TRADE.DESCRIPTION',
             effects: [{ stat: 'gold', value: -5 }],
           },
           [ActionType.Talk]: {
-            description: 'The merchant grins, whispering about "something rare" hidden in his wagon.',
+            description: 'OVERLAY.MERCHANT_CARAVAN.F1.TALK.DESCRIPTION',
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Hidden Wagon',
-        description: 'Behind the main caravan, a covered wagon creaks quietly. The merchant waves you closer, glancing around nervously.',
+        title: 'OVERLAY.MERCHANT_CARAVAN.F2.TITLE',
+        description: 'OVERLAY.MERCHANT_CARAVAN.F2.DESCRIPTION',
         actions: [ActionType.Interact, ActionType.Inspect],
         encounter: {
           chance: 0.4,
@@ -37,24 +37,24 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
         },
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You peek under the tarp...',
+            description: 'OVERLAY.MERCHANT_CARAVAN.F2.INTERACT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 10 },
             onSuccess: {
-              description: 'You find a small chest, inside, a handful of silver coins.',
+              description: 'OVERLAY.MERCHANT_CARAVAN.F2.INTERACT.SUCCESS',
               effects: [{ stat: 'gold', value: +15 }],
             },
             onFailure: {
-              description: 'A knife glints, someone was waiting for you.',
+              description: 'OVERLAY.MERCHANT_CARAVAN.F2.INTERACT.FAILURE',
             },
           },
           [ActionType.Inspect]: {
-            description: 'You notice faint footprints leading away into the brush.',
+            description: 'OVERLAY.MERCHANT_CARAVAN.F2.INSPECT.DESCRIPTION',
           },
         },
       },
       floor_3: {
-        title: 'Ambushed!',
-        description: 'The merchant\'s smile fades, shadows move behind the wagons.',
+        title: 'OVERLAY.MERCHANT_CARAVAN.F3.TITLE',
+        description: 'OVERLAY.MERCHANT_CARAVAN.F3.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -65,30 +65,30 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Nomadic Tribe',
-    description: 'A group of nomads traveling with their livestock and ancient traditions.',
+    name: 'OVERLAY.NOMADIC_TRIBE.NAME',
+    description: 'OVERLAY.NOMADIC_TRIBE.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'nomadic-tribe',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Campfire Gathering',
-        description: 'A ring of tents surrounds a central fire. The air smells of roasted herbs and sand.',
+        title: 'OVERLAY.NOMADIC_TRIBE.F1.TITLE',
+        description: 'OVERLAY.NOMADIC_TRIBE.F1.DESCRIPTION',
         actions: [ActionType.Talk, ActionType.Observe, ActionType.Trade],
         actionPassive: {
           [ActionType.Talk]: {
-            description: 'An elder invites you to share tea and stories.',
+            description: 'OVERLAY.NOMADIC_TRIBE.F1.TALK.DESCRIPTION',
             effects: [{ stat: 'hp', value: +3 }],
           },
           [ActionType.Observe]: {
-            description: 'Children play with small carved idols. They watch you curiously.',
+            description: 'OVERLAY.NOMADIC_TRIBE.F1.OBSERVE.DESCRIPTION',
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Sacred Beast',
-        description: 'A massive beast rests nearby, half-camel, half-serpent. Its scales shimmer faintly.',
+        title: 'OVERLAY.NOMADIC_TRIBE.F2.TITLE',
+        description: 'OVERLAY.NOMADIC_TRIBE.F2.DESCRIPTION',
         actions: [ActionType.Inspect, ActionType.Pray],
         encounter: {
           chance: 0.3,
@@ -96,83 +96,83 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
         },
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'You study the creature carefully.',
+            description: 'OVERLAY.NOMADIC_TRIBE.F2.INSPECT.DESCRIPTION',
             check: { orb: 'natural', difficulty: 9 },
             onSuccess: {
-              description: 'It snorts softly, you feel accepted in its presence.',
+              description: 'OVERLAY.NOMADIC_TRIBE.F2.INSPECT.SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'It hisses and shifts, clearly displeased.',
+              description: 'OVERLAY.NOMADIC_TRIBE.F2.INSPECT.FAILURE',
               effects: [{ stat: 'hp', value: -3 }],
             },
           },
           [ActionType.Pray]: {
-            description: 'You bow your head, offering silent respect.',
+            description: 'OVERLAY.NOMADIC_TRIBE.F2.PRAY.DESCRIPTION',
           },
         },
       },
     },
   },
   {
-    name: 'Military Convoy',
-    description: 'A convoy of armored soldiers on patrol. Their eyes track your every move.',
+    name: 'OVERLAY.MILITARY_CONVOY.NAME',
+    description: 'OVERLAY.MILITARY_CONVOY.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'military-convoy',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Checkpoint Inspection',
-        description: 'Soldiers block the road with spears and banners. Their captain steps forward.',
+        title: 'OVERLAY.MILITARY_CONVOY.F1.TITLE',
+        description: 'OVERLAY.MILITARY_CONVOY.F1.DESCRIPTION',
         actions: [ActionType.Talk, ActionType.Interact, ActionType.Trade],
         actionPassive: {
           [ActionType.Talk]: {
-            description: 'You explain your presence. The captain listens with suspicion.',
+            description: 'OVERLAY.MILITARY_CONVOY.F1.TALK.DESCRIPTION',
             check: { orb: 'bestial', difficulty: 9 },
             onSuccess: {
-              description: 'He nods reluctantly and allows you to pass.',
+              description: 'OVERLAY.MILITARY_CONVOY.F1.TALK.SUCCESS',
               effects: [{ stat: 'xp', value: +4 }],
             },
             onFailure: {
-              description: 'He frowns. "Search the stranger."',
+              description: 'OVERLAY.MILITARY_CONVOY.F1.TALK.FAILURE',
               next: 'floor_2',
             },
           },
           [ActionType.Interact]: {
-            description: 'You hand over your travel papers, keeping your tone steady.',
+            description: 'OVERLAY.MILITARY_CONVOY.F1.INTERACT.DESCRIPTION',
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Search and Suspicion',
-        description: 'The soldiers rummage through your pack. One of them smirks, pocketing a coin.',
-        actions: [ActionType.Interact, ActionType.Talk],
+        title: 'OVERLAY.MILITARY_CONVOY.F2.TITLE',
+        description: 'OVERLAY.MILITARY_CONVOY.F2.DESCRIPTION',
+        actions: [ActionType.Interact, ActionType.Observe],
         encounter: {
           chance: 0.3,
           enemies: ['guard'],
         },
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You try to protest calmly.',
+            description: 'OVERLAY.MILITARY_CONVOY.F2.INTERACT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 10 },
             onSuccess: {
-              description: 'The captain intervenes, scolding his men. You\'re free to go.',
+              description: 'OVERLAY.MILITARY_CONVOY.F2.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'The soldiers laugh, one shoves you roughly.',
+              description: 'OVERLAY.MILITARY_CONVOY.F2.INTERACT.FAILURE',
               effects: [{ stat: 'hp', value: -2 }],
             },
           },
-          [ActionType.Talk]: {
-            description: 'You remain silent, meeting their gaze until they look away.',
+          [ActionType.Observe]: {
+            description: 'OVERLAY.MILITARY_CONVOY.F2.OBSERVE.DESCRIPTION',
           },
         },
       },
       floor_3: {
-        title: 'If Looks Could Kill',
-        description: 'The situation escalates, blades are drawn.',
+        title: 'OVERLAY.MILITARY_CONVOY.F3.TITLE',
+        description: 'OVERLAY.MILITARY_CONVOY.F3.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -183,30 +183,30 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Pilgrim Group',
-    description: 'A band of weary pilgrims journeying toward a distant shrine.',
+    name: 'OVERLAY.PILGRIM_GROUP.NAME',
+    description: 'OVERLAY.PILGRIM_GROUP.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'pilgrim-group',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Song of the Road',
-        description: 'Pilgrims march in rhythm, humming an old hymn. A soft peace fills the air.',
-        actions: [ActionType.Pray, ActionType.Observe],
+        title: 'OVERLAY.PILGRIM_GROUP.F1.TITLE',
+        description: 'OVERLAY.PILGRIM_GROUP.F1.DESCRIPTION',
+        actions: [ActionType.Interact, ActionType.Observe],
         actionPassive: {
-          [ActionType.Pray]: {
-            description: 'You join in their chant. The melody carries your worries away.',
+          [ActionType.Interact]: {
+            description: 'OVERLAY.PILGRIM_GROUP.F1.INTERACT.DESCRIPTION',
             effects: [{ stat: 'mp', value: +4 }],
           },
           [ActionType.Observe]: {
-            description: 'One pilgrim stumbles, the others help him without a word.',
+            description: 'OVERLAY.PILGRIM_GROUP.F1.OBSERVE.DESCRIPTION',
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Relic\'s Burden',
-        description: 'They carry a small chest bound in silver wire. Its glow leaks faintly from the seams.',
+        title: 'OVERLAY.PILGRIM_GROUP.F2.TITLE',
+        description: 'OVERLAY.PILGRIM_GROUP.F2.DESCRIPTION',
         actions: [ActionType.Interact, ActionType.Inspect],
         encounter: {
           chance: 0.5,
@@ -214,25 +214,25 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
         },
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You reach toward the chest.',
+            description: 'OVERLAY.PILGRIM_GROUP.F2.INTERACT.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'The relic hums, filling you with tranquil warmth.',
+              description: 'OVERLAY.PILGRIM_GROUP.F2.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'Your hand burns. The relic rejects you.',
+              description: 'OVERLAY.PILGRIM_GROUP.F2.INTERACT.FAILURE',
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
           [ActionType.Inspect]: {
-            description: 'You notice a sigil, protection or imprisonment?',
+            description: 'OVERLAY.PILGRIM_GROUP.F2.INSPECT.DESCRIPTION',
           },
         },
       },
       floor_3: {
-        title: 'The Relic Stirs',
-        description: 'The chest shakes violently, something awakens within.',
+        title: 'OVERLAY.PILGRIM_GROUP.F3.TITLE',
+        description: 'OVERLAY.PILGRIM_GROUP.F3.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -243,29 +243,29 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Exploration Party',
-    description: 'A group of adventurers mapping uncharted lands and seeking fortune.',
+    name: 'OVERLAY.EXPLORATION_PARTY.NAME',
+    description: 'OVERLAY.EXPLORATION_PARTY.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'exploration-party',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Camp on the Frontier',
-        description: 'Tents and crates are scattered near a small campfire. Maps and compasses litter a makeshift table.',
+        title: 'OVERLAY.EXPLORATION_PARTY.F1.TITLE',
+        description: 'OVERLAY.EXPLORATION_PARTY.F1.DESCRIPTION',
         actions: [ActionType.Talk, ActionType.Observe, ActionType.Trade],
         actionPassive: {
           [ActionType.Talk]: {
-            description: 'One of the explorers brags about finding an ancient ruin nearby.',
+            description: 'OVERLAY.EXPLORATION_PARTY.F1.TALK.DESCRIPTION',
           },
           [ActionType.Observe]: {
-            description: 'You notice one adventurer slipping something into his bag, quietly.',
+            description: 'OVERLAY.EXPLORATION_PARTY.F1.OBSERVE.DESCRIPTION',
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Missing Supplies',
-        description: 'Tension rises, a crate of provisions is missing, and suspicions abound.',
+        title: 'OVERLAY.EXPLORATION_PARTY.F2.TITLE',
+        description: 'OVERLAY.EXPLORATION_PARTY.F2.DESCRIPTION',
         actions: [ActionType.Interact, ActionType.Inspect],
         encounter: {
           chance: 0.4,
@@ -273,24 +273,24 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
         },
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You question the group, trying to mediate.',
+            description: 'OVERLAY.EXPLORATION_PARTY.F2.INTERACT.DESCRIPTION',
             check: { orb: 'bestial', difficulty: 9 },
             onSuccess: {
-              description: 'You calm them down before things turn violent.',
+              description: 'OVERLAY.EXPLORATION_PARTY.F2.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'Your tone irritates one of them. He taps the hilt of his blade.',
+              description: 'OVERLAY.EXPLORATION_PARTY.F2.INTERACT.FAILURE',
             },
           },
           [ActionType.Inspect]: {
-            description: 'You look inside the tents, traces of struggle, a torn map...',
+            description: 'OVERLAY.EXPLORATION_PARTY.F2.INSPECT.DESCRIPTION',
           },
         },
       },
       floor_3: {
-        title: 'Betrayal in the Dark',
-        description: 'A figure lunges from the shadows, one of the explorers, eyes wild with greed.',
+        title: 'OVERLAY.EXPLORATION_PARTY.F3.TITLE',
+        description: 'OVERLAY.EXPLORATION_PARTY.F3.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -301,45 +301,45 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'The Sandstorm Caravan',
-    description: 'A caravan half-buried in dunes, flags torn to ribbons by the wind. A single horn sounds through the storm.',
+    name: 'OVERLAY.SANDSTORM_CARAVAN.NAME',
+    description: 'OVERLAY.SANDSTORM_CARAVAN.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'sandstorm-caravan',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Echoes in the Wind',
-        description: 'You can barely see through the swirling sand. Shapes of wagons loom and vanish like ghosts.',
+        title: 'OVERLAY.SANDSTORM_CARAVAN.F1.TITLE',
+        description: 'OVERLAY.SANDSTORM_CARAVAN.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'Through the haze, you spot figures waving, or are they just shadows?',
+            description: 'OVERLAY.SANDSTORM_CARAVAN.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Interact]: {
-            description: 'You press forward, shielding your eyes. The wind screams louder as if alive.',
+            description: 'OVERLAY.SANDSTORM_CARAVAN.F1.INTERACT.DESCRIPTION',
             effects: [{ stat: 'hp', value: -2 }],
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Stranded Merchant',
-        description: 'You find a wagon overturned. A merchant coughs under his scarf, clutching a locked chest.',
+        title: 'OVERLAY.SANDSTORM_CARAVAN.F2.TITLE',
+        description: 'OVERLAY.SANDSTORM_CARAVAN.F2.DESCRIPTION',
         actions: [ActionType.Talk, ActionType.Interact],
         actionPassive: {
           [ActionType.Talk]: {
-            description: '"Sand took my guards," he gasps. "Help me reclaim the goods, I’ll reward you."',
+            description: 'OVERLAY.SANDSTORM_CARAVAN.F2.TALK.DESCRIPTION',
             effects: [{ stat: 'xp', value: +3 }],
           },
           [ActionType.Interact]: {
-            description: 'You help him lift the chest. It’s far heavier than gold should be.',
+            description: 'OVERLAY.SANDSTORM_CARAVAN.F2.INTERACT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 10 },
             onSuccess: {
-              description: 'You heave the chest up, it hums faintly. Strange energy pulses inside.',
+              description: 'OVERLAY.SANDSTORM_CARAVAN.F2.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'You drop it, the lock hisses, emitting heat.',
+              description: 'OVERLAY.SANDSTORM_CARAVAN.F2.INTERACT.FAILURE',
               effects: [{ stat: 'hp', value: -3 }],
             },
           },
@@ -347,31 +347,31 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
         next: 'floor_3',
       },
       floor_3: {
-        title: 'The Caravan’s Curse',
-        description: 'The other wagons are gone, only dunes remain. The merchant looks panicked. "This place repeats itself!"',
+        title: 'OVERLAY.SANDSTORM_CARAVAN.F3.TITLE',
+        description: 'OVERLAY.SANDSTORM_CARAVAN.F3.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You notice the same rocks and bones around you, again and again. The desert loops.',
+            description: 'OVERLAY.SANDSTORM_CARAVAN.F3.OBSERVE.DESCRIPTION',
           },
           [ActionType.Pray]: {
-            description: 'You close your eyes and try to ground yourself in reality.',
+            description: 'OVERLAY.SANDSTORM_CARAVAN.F3.PRAY.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 11 },
             onSuccess: {
-              description: 'The horizon shifts, the loop falters for a moment.',
+              description: 'OVERLAY.SANDSTORM_CARAVAN.F3.PRAY.SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'You feel dizzy, the world folds in again.',
-              next: 'floor_4',
+              description: 'OVERLAY.SANDSTORM_CARAVAN.F3.PRAY.FAILURE',
+              effects: [{ stat: 'xp', value: -10 }],
             },
           },
         },
         next: 'floor_4',
       },
       floor_4: {
-        title: 'Guardians of the Dune',
-        description: 'From beneath the sand rise enormous shapes, eyes glowing amber, like molten glass.',
+        title: 'OVERLAY.SANDSTORM_CARAVAN.F4.TITLE',
+        description: 'OVERLAY.SANDSTORM_CARAVAN.F4.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -382,12 +382,12 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
         next: 'floor_5',
       },
       floor_5: {
-        title: 'Treasures Beneath the Sand',
-        description: 'As the storm dies, you find yourself among ruined wagons, the chest split open, revealing radiant shards.',
+        title: 'OVERLAY.SANDSTORM_CARAVAN.F5.TITLE',
+        description: 'OVERLAY.SANDSTORM_CARAVAN.F5.DESCRIPTION',
         actions: [ActionType.Observe],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You pocket one glowing shard, it hums faintly in your pack.',
+            description: 'OVERLAY.SANDSTORM_CARAVAN.F5.OBSERVE.DESCRIPTION',
             effects: [{ stat: 'xp', value: +15 }, { stat: 'gold', value: +60 }],
           },
         },
@@ -395,67 +395,68 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'The Night Convoy',
-    id: 'night-convoy',
-    description: 'A column of wagons glides silently under a moonless sky. The torches burn blue, and the drivers do not blink.',
+    name: 'OVERLAY.NIGHT_CONVOY.NAME',
+    description: 'OVERLAY.NIGHT_CONVOY.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     actions: [],
+    id: 'night-convoy',
     eventChain: {
       floor_1: {
-        title: 'The Silent March',
-        description: 'You walk beside the wagons. The wheels leave no tracks. One rider gestures for you to join without a word.',
+        title: 'OVERLAY.NIGHT_CONVOY.F1.TITLE',
+        description: 'OVERLAY.NIGHT_CONVOY.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Talk],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You realize their faces are pale as marble, frozen expressions of peace.',
+            description: 'OVERLAY.NIGHT_CONVOY.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Talk]: {
-            description: 'You whisper a greeting. No one replies, but the nearest driver tilts his head slightly toward you.',
+            description: 'OVERLAY.NIGHT_CONVOY.F1.TALK.DESCRIPTION',
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Nameless Cargo',
-        description: 'You peek into one wagon, inside, coffins stacked neatly, all with the same sigil burned into them.',
+        title: 'OVERLAY.NIGHT_CONVOY.F2.TITLE',
+        description: 'OVERLAY.NIGHT_CONVOY.F2.DESCRIPTION',
         actions: [ActionType.Inspect, ActionType.Pray],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'The sigil reads "Deliver Unto Dawn." The wood is warm to the touch.',
+            description: 'OVERLAY.NIGHT_CONVOY.F2.INSPECT.DESCRIPTION',
             effects: [{ stat: 'xp', value: +4 }],
           },
           [ActionType.Pray]: {
-            description: 'You mutter a quiet blessing. One of the torches flickers purple for a moment.',
+            description: 'OVERLAY.NIGHT_CONVOY.F2.PRAY.DESCRIPTION',
           },
         },
         next: 'floor_3',
       },
       floor_3: {
-        title: 'The Midnight Halt',
-        description: 'The convoy stops by a ruined bridge. The leader, hooded and ageless, turns to you and says: "Only the living may cross."',
+        title: 'OVERLAY.NIGHT_CONVOY.F3.TITLE',
+        description: 'OVERLAY.NIGHT_CONVOY.F3.DESCRIPTION',
         actions: [ActionType.Interact, ActionType.Pray],
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You step forward, uncertain. The bridge creaks but holds.',
+            description: 'OVERLAY.NIGHT_CONVOY.F3.INTERACT.DESCRIPTION',
             effects: [{ stat: 'hp', value: -2 }],
           },
           [ActionType.Pray]: {
-            description: 'You bow your head, invoking passage.',
+            description: 'OVERLAY.NIGHT_CONVOY.F3.PRAY.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'The leader nods, the convoy fades slightly, as if turning translucent.',
+              description: 'OVERLAY.NIGHT_CONVOY.F3.PRAY.SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'The air chills, whispers fill your mind: "You are not one of us."',
+              description: 'OVERLAY.NIGHT_CONVOY.F3.PRAY.FAILURE',
+              effects: [{ stat: 'xp', value: -10 }],
             },
           },
         },
         next: 'floor_4',
       },
       floor_4: {
-        title: 'The Wailing Driver',
-        description: 'One of the wagons tips, the driver falls, shrieking. His body hits the ground, dissolving into smoke. Something crawls out from the wreck.',
+        title: 'OVERLAY.NIGHT_CONVOY.F4.TITLE',
+        description: 'OVERLAY.NIGHT_CONVOY.F4.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -466,12 +467,12 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
         next: 'floor_5',
       },
       floor_5: {
-        title: 'Dawn on the Other Side',
-        description: 'The bridge ends abruptly, no convoy behind you, no wagons ahead. Only a single lantern remains, still burning blue.',
+        title: 'OVERLAY.NIGHT_CONVOY.F5.TITLE',
+        description: 'OVERLAY.NIGHT_CONVOY.F5.DESCRIPTION',
         actions: [ActionType.Observe],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'Inside the lantern’s glass, a small sigil glows faintly, the mark of safe passage.',
+            description: 'OVERLAY.NIGHT_CONVOY.F5.OBSERVE.DESCRIPTION',
             effects: [{ stat: 'xp', value: +18 }, { stat: 'mp', value: +6 }],
           },
         },

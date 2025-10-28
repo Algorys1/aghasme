@@ -1,0 +1,250 @@
+{
+  "OVERLAY": {
+    "MECHANT_CARAVAN": {
+      "NAME": "Caravane de Marchands",
+      "DESCRIPTION": "Une caravane animée de commerçants et de marchands voyageant entre des villes éloignées.",
+      "F1": {
+        "TITLE": "Le marché au bord de la route",
+        "DESCRIPTION": "Des tentes et des chariots colorés forment un petit bazar. Les marchands crient leurs prix, les enfants courent entre les caisses d'épices et de tissus.",
+        "OBSERVE": {
+          "DESCRIPTION": "Vous scrutez les étals, les marchandises vont des fruits exotiques aux lames rouillées."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Vous vous approchez d'un marchand proposant des talismans au pouvoir douteux."
+        },
+        "TALK": {
+          "DESCRIPTION": "Le marchand sourit, murmurant qu'il y a « quelque chose de rare » caché dans son chariot."
+        }
+      },
+      "F2": {
+        "TITLE": "Le chariot caché",
+        "DESCRIPTION": "Derrière la caravane principale, un chariot couvert grince doucement. Le marchand vous fait signe d'approcher, jetant un regard nerveux autour de lui.",
+        "INTERACT": {
+          "DESCRIPTION": "Tu jettes un œil sous la bâche...",
+          "SUCCESS": "Vous trouvez un petit coffre, à l'intérieur, une poignée de pièces d'argent.",
+          "FAILURE": "Le marchand vous demande d'être patient, le temps qu'il prépare l'objet."
+        },
+
+        "INSPECT": {
+          "DESCRIPTION": "Vous remarquez de faibles empreintes de pas qui s'éloignent dans les broussailles."
+        }
+      },
+      "F3": {
+        "TITLE": "Embuscade !",
+        "DESCRIPTION": "Le sourire du marchand s'estompe, des ombres se déplacent derrière les chariots."
+      }
+    },
+    "NOMADIC_TRIBE": {
+      "NAME": "La Tribu des Nomades",
+      "DESCRIPTION": "Un groupe de nomades voyageant avec leur bétail et leurs traditions ancestrales.",
+      "F1": {
+        "TITLE": "Rassemblement autour du feu de camp",
+        "DESCRIPTION": "Un cercle de tentes entoure un feu central. L'air embaume les herbes grillées et le sable.",
+        "TALK": {
+          "DESCRIPTION": "Un aîné vous invite à partager du thé et des histoires."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "Des enfants jouent avec de petites idoles sculptées. Ils vous observent avec curiosité."
+        }
+      },
+      "F2": {
+        "TITLE": "La Bête Sacrée",
+        "DESCRIPTION": "Une bête massive repose non loin de là, mi-chameau, mi-serpent. Ses écailles scintillent faiblement.",
+        "INSPECT": {
+          "DESCRIPTION": "Vous vous approchez de la bête avec précaution, remarquant des motifs complexes sur ses écailles.",
+          "SUCCESS": "La bête baisse la tête, vous permettant de la toucher doucement.",
+          "FAILURE": "Il siffle et bouge, clairement mécontent, vous fouettant avec sa queue"
+        },
+        "PRAY": {
+          "DESCRIPTION": "Vous inclinez la tête, offrant un respect silencieux."
+        }
+      }
+    },
+    "MILITARY_CONVOY": {
+      "NAME": "Convoi militaire",
+      "DESCRIPTION": "Un convoi de soldats en armure qui patrouille. Leurs yeux se tournent vers vus dès qu'ils vous aperçoivent, traquant chacun de vos mouvements.",
+      "F1": {
+        "TITLE": "Un simple contrôle",
+        "DESCRIPTION": "Les soldats vous bloquent la route avec des lances et des bannières. Leur capitaine s'avance.",
+        "TALK": {
+          "DESCRIPTION": "Vous expliquez votre présence. Le capitaine écoute avec suspicion.",
+          "SUCCESS": "Il hoche la tête à contrecœur et veut fouiller dans ton sac.",
+          "FAILURE": "Il fronce les sourcils. \"Fouillez l'étranger !\""
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Vous lui remettez vos documents de voyage d'un ton posé."
+        }
+      },
+      "F2": {
+        "TITLE": "Recherche et suspicion",
+        "DESCRIPTION": "Les soldats fouillent dans votre sac. L'un d'eux esquisse un sourire narquois et empoche une pièce.",
+        "INTERACT": {
+          "DESCRIPTION": "Vous essayez de protester calmement.",
+          "SUCCESS": "Le capitaine intervient et vous intime de vous laisser fouiller.",
+          "FAILURE": "Les soldats rient, l'un d'eux vous bouscule brutalement."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "Vous restez silencieux, soutenant leur regard jusqu'à ce qu'ils détournent le regard."
+        }
+      },
+      "F3": {
+        "TITLE": "Si les regards pouvaient tuer",
+        "DESCRIPTION": "Les yeux du capitaine se rétrécissent alors qu'il s'approche, sa main posée sur la poignée de son épée."
+      }
+    },
+    "PILGRIM_GROUP": {
+      "NAME": "Les Pèlerins",
+      "DESCRIPTION": "Un groupe de pèlerins se rendant sur un site sacré, leurs visages sont marqués par la dévotion et la fatigue.",
+      "F1": {
+        "TITLE": "Une route en musique",
+        "DESCRIPTION": "Les pèlerins marchent en rythme, fredonnant un vieil hymne. Une douce paix emplit l'air.",
+        "PRAY": {
+          "DESCRIPTION": "Vous vous joignez à leur chant. La mélodie emporte vos soucis."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "Un des pèlerins trébuche, les autres l'aident sans un mot."
+        }
+      },
+      "F2": {
+        "TITLE": "Le fardeau de la relique",
+        "DESCRIPTION": "Ils portent un petit coffre entouré de fil d'argent. Une lueur s'échappe faiblement des coutures.",
+        "INTERACT": {
+          "DESCRIPTION": "Vous approchez votre main du coffre...",
+          "SUCCESS": "La relique bourdonne, vous remplissant d'une chaleur tranquille.",
+          "FAILURE": "Ta main brûle comme par magie. La relique te rejette."
+        },
+        "INSPECT": {
+          "DESCRIPTION": "Vous remarquez un sceau sur le coffre. Sortilège de protection ou d'emprisonnement ?"
+        }
+      },
+      "F3": {
+        "TITLE": "La Relique Remue",
+        "DESCRIPTION": "Le coffre tremble violemment, quelque chose s'éveille à l'intérieur..."
+      }
+    },
+    "EXPLORATION_PARTY": {
+      "NAME": "Le Groupe des Explorateurs",
+      "DESCRIPTION": "Un groupe d'aventuriers cartographiant des terres inexplorées et en quête de fortune.",
+      "F1": {
+        "TITLE": "Camp à la frontière",
+        "DESCRIPTION": "Des tentes et des caisses sont éparpillées près d'un petit feu de camp. Des cartes et des boussoles jonchent une table improvisée.",
+        "TALK": {
+          "DESCRIPTION": "L’un des explorateurs se vante d’avoir trouvé une ruine antique à proximité."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "Vous remarquez qu'un aventurier glisse discrètement quelque chose dans son sac."
+        }
+      },
+      "F2": {
+        "TITLE": "Fournitures manquantes",
+        "DESCRIPTION": "Une personne du groupe crie au scandale : une caisse de provisions a disparue et les soupçons abondent. La tension monte...",
+        "INTERACT": {
+          "DESCRIPTION": "Vous interrogez le groupe, en essayant de jouer un rôle de médiateur.",
+          "SUCCESS": "Vous les calmez avant que les choses tournent mal.",
+          "FAILURE": "Votre ton irrite l'un d'eux qui tapote la poignée de sa lame..."
+        },
+        "INSPECT": {
+          "DESCRIPTION": "Vous regardez à l'intérieur des tentes, et vous trouvez des traces de lutte et une carte déchirée..."
+        }
+      },
+      "F3": {
+        "TITLE": "Trahison dans les rangs",
+        "DESCRIPTION": "Vous vous apprêtiez à prévenir les autres, quand soudain on vous attaque !"
+      }
+    },
+    "SANDSTORM_CARAVAN": {
+      "NAME": "La Caravane de la Tempête",
+      "DESCRIPTION": "Une caravane à moitié ensevelie sous les dunes, les drapeaux déchirés par le vent. Un cor retentit dans la tempête.",
+      "F1": {
+        "TITLE": "Échos dans le vent",
+        "DESCRIPTION": "On y voit à peine à travers le sable tourbillonnant. Des silhouettes de chariots apparaissent et disparaissent comme des fantômes.",
+        "OBSERVE": {
+          "DESCRIPTION": "À travers la brume, vous apercevez des silhouettes qui ondulent, ou sont-elles simplement des ombres ?"
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Vous avancez en vous protégeant les yeux. Le vent hurle plus fort, comme s'il était vivant."
+        }
+      },
+      "F2": {
+        "TITLE": "Le dernier marchand",
+        "DESCRIPTION": "Vous trouvez un chariot renversé. Un marchand tousse sous son écharpe, serrant un coffre verrouillé.",
+        "TALK": {
+          "DESCRIPTION": "\"Le sable a pris mes gardes\", halète-t-il. \"Aidez-moi à récupérer mes biens, je vous récompenserai.\""
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Vous l'aidez à soulever le coffre. Il est bien plus lourd que l'or ne devrait l'être.",
+          "SUCCESS": "Vous soulevez le coffre, il bourdonne faiblement. Une étrange énergie pulse à l'intérieur.",
+          "FAILURE": "Vous le laissez tomber, la serrure siffle, émettant de la chaleur."
+        }
+      },
+      "F3": {
+        "TITLE": "La malédiction de la caravane",
+        "DESCRIPTION": "Les autres chariots ont disparu, il ne reste que les dunes. Le marchand semble paniqué. \"Cet endroit se répète !\"",
+        "OBSERVE": {
+          "DESCRIPTION": "Vous remarquez les mêmes rochers et les mêmes os autour de vous, encore et encore. Le désert tourne en boucle."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Vous fermez les yeux et essayez de vous ancrer dans la réalité.",
+          "SUCCESS": "L'horizon se déplace, la boucle vacille un instant.",
+          "FAILURE": "Vous vous sentez confu, le monde se replie à nouveau."
+        }
+      },
+      "F4": {
+        "TITLE": "Les Gardiens de la Dune",
+        "DESCRIPTION": "Sous le sable s'élèvent d'énormes formes, les yeux brillants d'ambre, comme du verre en fusion."
+      },
+      "F5": {
+        "TITLE": "Trésors sous le sable",
+        "DESCRIPTION": "Alors que la tempête s'éteint, vous vous retrouvez parmi des wagons en ruine, le coffre ouvert, révélant des éclats radieux.",
+        "OBSERVE": {
+          "DESCRIPTION": "Vous mettez dans votre poche un éclat lumineux, il bourdonne faiblement dans votre sac."
+        }
+      }
+    },
+    "NIGHT_CONVOY": {
+      "NAME": "Le Convoi Nocturne",
+      "DESCRIPTION": "Une colonne de chariots glisse silencieusement sous un ciel sans lune. Les torches sont bleues et ses voyageurs ne clignent pas des yeux.",
+      "F1": {
+        "TITLE": "La marche silencieuse",
+        "DESCRIPTION": "Vous marchez à côté des chariots. Les roues ne laissent aucune trace. Un cavalier vous fait signe de les rejoindre sans un mot.",
+        "OBSERVE": {
+          "DESCRIPTION": "Vous réalisez que leurs visages sont pâles comme du marbre, des expressions figées de paix."
+        },
+        "TALK": {
+          "DESCRIPTION": "Vous murmurez une salutation. Personne ne répond, mais le conducteur le plus proche incline légèrement la tête vers vous."
+        }
+      },
+      "F2": {
+        "TITLE": "Le Chariot Sans Nom",
+        "DESCRIPTION": "Vous jetez un œil à l'intérieur d'un chariot, à l'intérieur, des cercueils soigneusement empilés, tous avec le même sceau gravé dessus.",
+        "INSPECT": {
+          "DESCRIPTION": "Le sceau porte l'inscription \"Livrer à l'aube\". Le bois est chaud au toucher."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Vous murmurez une douce bénédiction. L'une des torches scintille un instant d'une lumière violette."
+        }
+      },
+      "F3": {
+        "TITLE": "La halte de minuit",
+        "DESCRIPTION": "Le convoi s'arrête près d'un pont en ruine. Le chef, encapuchonné et sans âge, se tourne vers vous et déclare : \"Seuls les vivants peuvent traverser.\"",
+        "INTERACT": "Vous avancez, incertain. Le pont craque, mais tient bon.",
+        "PRAY": {
+          "DESCRIPTION": "Vous priez pour la sécurité du passage.",
+          "SUCCESS": "Le chef hoche la tête, le convoi s'estompe légèrement, comme s'il devenait translucide.",
+          "FAILURE": "L'air se rafraîchit, des murmures emplissent votre esprit : \"Tu n'es pas l'un des nôtres.\""
+        }
+      },
+      "F4": {
+        "TITLE": "Le conducteur qui pleure",
+        "DESCRIPTION": "L'un des chariots bascule, le conducteur tombe en hurlant. Son corps heurte le sol et se dissout en fumée. Quelque chose sort de l'épave."
+      },
+      "F5": {
+        "TITLE": "L'aube de l'autre côté",
+        "DESCRIPTION": "Le pont s'arrête brusquement, pas de convoi derrière vous, pas de chariots devant. Seule une lanterne subsiste, toujours allumée en bleu.",
+        "OBSERVE": {
+          "DESCRIPTION": "À l’intérieur du verre de la lanterne, un petit sceau brille faiblement, signe d’un passage sûr."
+        }
+      }
+    }
+  }
+}

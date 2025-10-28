@@ -1,0 +1,249 @@
+{
+  "OVERLAY": {
+    "MECHANT_CARAVAN": {
+      "NAME": "Merchant Caravan",
+      "DESCRIPTION": "A bustling caravan of traders and merchants traveling between distant towns.",
+      "F1": {
+        "TITLE": "The Roadside Market",
+        "DESCRIPTION": "Colorful tents and wagons form a small bazaar. Merchants shout prices, children run between crates of spice and cloth.",
+        "OBSERVE": {
+          "DESCRIPTION": "You scan the stalls, the goods range from exotic fruits to rusty blades."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "You approach a merchant offering talismans of dubious power."
+        },
+        "TALK": {
+          "DESCRIPTION": "The merchant grins, whispering about \"something rare\" hidden in his wagon."
+        }
+      },
+      "F2": {
+        "TITLE": "The Hidden Wagon",
+        "DESCRIPTION": "Behind the main caravan, a covered wagon creaks quietly. The merchant waves you closer, glancing around nervously.",
+        "INTERACT": {
+          "DESCRIPTION": "You peek under the tarp...",
+          "SUCCESS": "You find a small chest, inside, a handful of silver coins.",
+          "FAIL": "The merchant slams the tarp down, warning you to mind your own business."
+        },
+        "INSPECT": {
+          "DESCRIPTION": "You notice faint footprints leading away into the brush."
+        }
+      },
+      "F3": {
+        "TITLE": "Ambushed!",
+        "DESCRIPTION": "The merchant's smile fades, shadows move behind the wagons."
+      }
+    },
+    "NOMADIC_TRIBE": {
+      "TITLE": "Nomadic Tribe",
+      "DESCRIPTION": "A group of nomads traveling with their livestock and ancient traditions.",
+      "F1": {
+        "TITLE": "Campfire gathering",
+        "DESCRIPTION": "A ring of tents surrounds a central fire. The air smells of roasted herbs and sand.",
+        "TALK": {
+          "DESCRIPTION": "An elder invites you to share tea and stories."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "Children play with small carved idols. They watch you curiously."
+        }
+      },
+      "F2": {
+        "TITLE": "The Sacred Beast",
+        "DESCRIPTION": "A massive beast rests nearby, half-camel, half-serpent. Its scales shimmer faintly.",
+        "INSPECT": {
+          "DESCRIPTION": "You approach the beast cautiously, noticing intricate patterns on its scales.",
+          "SUCCESS": "The beast lowers its head, allowing you to touch it gently.",
+          "FAIL": "It hisses and shifts, clearly displeased."
+        },
+        "PRAY": "You bow your head, offering silent respect."
+      }
+    },
+    "MILITARY_CONVOY": {
+      "TITLE": "Military Convoy",
+      "DESCRIPTION": "A convoy of armored soldiers on patrol. Their eyes track your every move.",
+      "F1": {
+        "TITLE": "Checkpoint Inspection",
+        "DESCRIPTION": "Soldiers block the road with spears and banners. Their captain steps forward.",
+        "TALK": {
+          "DESCRIPTION": "You explain your presence. The captain listens with suspicion.",
+          "SUCCESS": "He nods reluctantly and want to search in your bag.",
+          "FAIL": "He frowns. \"Search the stranger.\""
+        },
+        "INTERACT": {
+          "DESCRIPTION": "You hand over your travel papers, keeping your tone steady."
+        }
+      },
+      "F2": {
+        "TITLE": "Search and Suspicion",
+        "DESCRIPTION": "The soldiers rummage through your pack. One of them smirks, pocketing a coin.",
+        "INTERACT": {
+          "DESCRIPTION": "You try to protest calmly.",
+          "SUCCESS": "The captain intervenes, scolding his men. You're free to go.",
+          "FAIL": "The soldiers laugh, one shoves you roughly."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "You remain silent, meeting their gaze until they look away."
+        }
+      },
+      "F3": {
+        "TITLE": "If Looks Could Kill",
+        "DESCRIPTION": "The captain's eyes narrow as he steps closer, his hand resting on his sword hilt."
+      }
+    },
+    "PILGRIM_GROUP": {
+      "TITLE": "Pilgrim Group",
+      "DESCRIPTION": "A group of pilgrims journeying to a sacred site, their faces marked by devotion and fatigue.",
+      "F1": {
+        "TITLE": "Song of the Road",
+        "DESCRIPTION": "Pilgrims march in rhythm, humming an old hymn. A soft peace fills the air.",
+        "PRAY": {
+          "DESCRIPTION": "You join in their chant. The melody carries your worries away."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "One pilgrim stumbles, the others help him without a word."
+        }
+      },
+      "F2": {
+        "TITLE": "The Relic's Burden",
+        "DESCRIPTION": "They carry a small chest bound in silver wire. Its glow leaks faintly from the seams.",
+        "INTERACT": {
+          "DESCRIPTION": "You reach toward the chest.",
+          "SUCCESS": "The relic hums, filling you with tranquil warmth.",
+          "FAIL": "Your hand burns. The relic rejects you."
+        },
+        "INSPECT": {
+          "DESCRIPTION": "You notice a sigil, protection or imprisonment?"
+        }
+      },
+      "F3": {
+        "TITLE": "The Relic Stirs",
+        "DESCRIPTION": "The chest shakes violently, something awakens within..."
+      }
+    },
+    "EXPLORATION_PARTY": {
+      "TITLE": "Exploration Party",
+      "DESCRIPTION": "A group of adventurers mapping uncharted lands and seeking fortune.",
+      "F1": {
+        "TITLE": "Camp on the Frontier",
+        "DESCRIPTION": "Tents and crates are scattered near a small campfire. Maps and compasses litter a makeshift table.",
+        "TALK": {
+          "DESCRIPTION": "One of the explorers brags about finding an ancient ruin nearby."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "You notice one adventurer slipping something into his bag, quietly."
+        }
+      },
+      "F2": {
+        "TITLE": "Missing Supplies",
+        "DESCRIPTION": "YTension rises, a crate of provisions is missing, and suspicions abound.",
+        "INTERACT": {
+          "DESCRIPTION": "You question the group, trying to mediate.",
+          "SUCCESS": "You calm them down before things turn violent.",
+          "FAIL": "Your tone irritates one of them. He taps the hilt of his blade."
+        },
+        "INSPECT": {
+          "DESCRIPTION": "You look inside the tents, traces of struggle, a torn map..."
+        }
+      },
+      "F3": {
+        "TITLE": "Betrayal in the Ranks",
+        "DESCRIPTION": "Accusations fly, and one adventurer draws his weapon, eyes wild with desperation."
+      }
+    },
+    "SANDSTORM_CARAVAN": {
+      "TITLE": "The Sandstorm Caravan",
+      "DESCRIPTION": "A caravan half-buried in dunes, flags torn to ribbons by the wind. A single horn sounds through the storm.",
+      "F1": {
+        "TITLE": "Echoes in the Wind",
+        "DESCRIPTION": "You can barely see through the swirling sand. Shapes of wagons loom and vanish like ghosts.",
+        "OBSERVE": {
+          "DESCRIPTION": "Through the haze, you spot figures waving, or are they just shadows?"
+        },
+        "INTERACT": {
+          "DESCRIPTION": "You press forward, shielding your eyes. The wind screams louder as if alive."
+        }
+      },
+      "F2": {
+        "TITLE": "The Stranded Merchant",
+        "DESCRIPTION": "You find a wagon overturned. A merchant coughs under his scarf, clutching a locked chest.",
+        "TALK": {
+          "DESCRIPTION": "\"Sand took my guards,\" he gasps. \"Help me reclaim the goods, I’ll reward you.\""
+        },
+        "INTERACT": {
+          "DESCRIPTION": "You help him lift the chest. It’s far heavier than gold should be.",
+          "SUCCESS": "You heave the chest up, it hums faintly. Strange energy pulses inside.",
+          "FAIL": "You drop it, the lock hisses, emitting heat."
+        }
+      },
+      "F3": {
+        "TITLE": "The Caravan’s Curse",
+        "DESCRIPTION": "The other wagons are gone, only dunes remain. The merchant looks panicked. \"This place repeats itself!\"",
+        "OBSERVE": {
+          "DESCRIPTION": "You notice the same rocks and bones around you, again and again. The desert loops."
+        },
+        "PRAY": {
+          "DESCRIPTION": "You close your eyes and try to ground yourself in reality.",
+          "SUCCESS": "The horizon shifts, the loop falters for a moment.",
+          "FAIL": "ou feel dizzy, the world folds in again."
+        }
+      },
+      "F4": {
+        "TITLE": "Guardians of the Dune",
+        "DESCRIPTION": "From beneath the sand rise enormous shapes, eyes glowing amber, like molten glass."
+      },
+      "F5": {
+        "TITLE": "Treasures Beneath the Sand",
+        "DESCRIPTION": "As the storm dies, you find yourself among ruined wagons, the chest split open, revealing radiant shards.",
+        "OBSERVE": {
+          "DESCRIPTION": "You pocket one glowing shard, it hums faintly in your pack."
+        }
+      }
+    },
+    "NIGHT_CONVOY": {
+      "TITLE": "The Night Convoy",
+      "DESCRIPTION": "A column of wagons glides silently under a moonless sky. The torches burn blue, and the drivers do not blink.",
+      "F1": {
+        "TITLE": "The Silent March",
+        "DESCRIPTION": "You walk beside the wagons. The wheels leave no tracks. One rider gestures for you to join without a word.",
+        "OBSERVE": {
+          "DESCRIPTION": "You realize their faces are pale as marble, frozen expressions of peace."
+        },
+        "TALK": {
+          "DESCRIPTION": "You whisper a greeting. No one replies, but the nearest driver tilts his head slightly toward you."
+        }
+      },
+      "F2": {
+        "TITLE": "The Nameless Cargo",
+        "DESCRIPTION": "You peek into one wagon, inside, coffins stacked neatly, all with the same sigil burned into them.",
+        "INSPECT": {
+          "DESCRIPTION": "The sigil reads \"Deliver Unto Dawn.\" The wood is warm to the touch."
+        },
+        "PRAY": {
+          "DESCRIPTION": "You mutter a quiet blessing. One of the torches flickers purple for a moment."
+        }
+      },
+      "F3": {
+        "TITLE": "The Midnight Halt",
+        "DESCRIPTION": "The convoy stops by a ruined bridge. The leader, hooded and ageless, turns to you and says: \"Only the living may cross.\"",
+        "INTERACT": {
+          "DESCRIPTION": "You step forward, uncertain. The bridge creaks but holds."
+        },
+        "PRAY": {
+          "DESCRIPTION": "You bow your head, invoking passage.",
+          "SUCCESS": "The leader nods, the convoy fades slightly, as if turning translucent.",
+          "FAIL": "The air chills, whispers fill your mind: \"You are not one of us.\""
+        }
+      },
+      "F4": {
+        "TITLE": "The Wailing Driver",
+        "DESCRIPTION": "One of the wagons tips, the driver falls, shrieking. His body hits the ground, dissolving into smoke. Something crawls out from the wreck."
+      },
+      "F5": {
+        "TITLE": "Dawn on the Other Side",
+        "DESCRIPTION": "The bridge ends abruptly, no convoy behind you, no wagons ahead. Only a single lantern remains, still burning blue.",
+        "OBSERVE": {
+          "DESCRIPTION": "Inside the lantern’s glass, a small sigil glows faintly, the mark of safe passage."
+        }
+      }
+    }
+  }
+}

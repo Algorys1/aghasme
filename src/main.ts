@@ -25,6 +25,8 @@ bootstrapApplication(AppComponent, {
             'menus',
             'character',
             'overlay.anomaly',
+            'overlay.caravan',
+            'overlay.ritual',
             'items',
             'actions'
           ]),

@@ -1,0 +1,223 @@
+{
+  "OVERLAY": {
+    "SACRED_RITUAL_SITE": {
+      "NAME": "Site Rituel Sacré",
+      "DESCRIPTION": "Un lieu où furent pratiqués d’anciens rituels, vibrant encore d’une énergie spirituelle.",
+      "F1": {
+        "TITLE": "Cercle de Pierres",
+        "DESCRIPTION": "Un anneau de pierres sculptées forme un cercle parfait. Des fleurs poussent entre les fissures, intactes malgré le temps.",
+        "OBSERVE": {
+          "DESCRIPTION": "Tu fais le tour du cercle, remarquant d’étranges inscriptions effacées.",
+          "SUCCESS": "Les marques s’illuminent doucement, révélant une bénédiction de vitalité.",
+          "FAILURE": "Tu trébuches sur une racine et brises une fleur. L’air se refroidit avec désapprobation."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Tu t’agenouilles parmi les pierres et murmures une simple prière."
+        }
+      },
+      "F2": {
+        "TITLE": "Cœur du Bosquet",
+        "DESCRIPTION": "Un bourdonnement doux emplit l’air. Au centre repose un ancien bol rempli d’eau claire.",
+        "INTERACT": {
+          "DESCRIPTION": "Tu bois une poignée de cette eau sacrée.",
+          "SUCCESS": "Une chaleur se répand en toi, ton esprit se sent régénéré.",
+          "FAILURE": "L’eau a un goût amer, quelque chose en toi vacille un instant."
+        }
+      }
+    },
+    "DARK_RITUAL_CIRCLE": {
+      "NAME": "Cercle Rituel Obscur",
+      "DESCRIPTION": "Un site sinistre marqué de symboles ténébreux, témoignant de pratiques interdites. Le sol lui-même semble vibrer d’une énergie persistante.",
+      "F1": {
+        "TITLE": "Anneau Extérieur",
+        "DESCRIPTION": "Des bougies vacillent sans vent. L’air sent l’encens brûlé, et un chant lointain semble venir des entrailles de la terre.",
+        "OBSERVE": {
+          "DESCRIPTION": "Tu t’accroupis près des runes. Elles palpitent faiblement, synchronisées avec ton cœur...",
+          "SUCCESS": "Le murmure devient plus clair, non hostile, simplement curieux. Tu ressens une conscience dans les pierres."
+        }
+      },
+      "F2": {
+        "TITLE": "Autel de Sang",
+        "DESCRIPTION": "Un autel de pierre se dresse au centre, taché d’un sang ancien. D’étranges runes luisent faiblement alors que tu t’approches. Tu entends un murmure, suppliant ou tentateur.",
+        "INTERACT": {
+          "DESCRIPTION": "Tu poses ta main sur l’autel. Il est chaud, presque vivant.",
+          "SUCCESS": "Les symboles de sang s’enflamment, puis s’éteignent. Une voix te remercie avant de disparaître.",
+          "FAILURE": "Une douleur fulgurante remonte ton bras ! L’autel te rejette violemment."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Tu fermes les yeux et pries. L’air vibre d’une énergie étrange...",
+          "SUCCESS": "Tu ressens une harmonie avec les forces du lieu. Quelque chose en toi se renforce.",
+          "FAILURE": "Ta prière se perd dans le silence. Le cercle devient froid et immobile."
+        }
+      },
+      "F3": {
+        "TITLE": "Éveil",
+        "DESCRIPTION": "Les runes s’embrasent d’une lumière cramoisie, et une forme spectrale s’élève lentement de l’autel."
+      }
+    },
+    "NATURE_ALTAR": {
+      "NAME": "Autel de la Nature",
+      "DESCRIPTION": "Un autel dédié aux esprits de la nature, entouré de mousse et de lucioles dansantes.",
+      "F1": {
+        "TITLE": "Bosquet Murmurant",
+        "DESCRIPTION": "Un vent agite les feuilles bien que l’air soit immobile. Le parfum de la terre et de la sève emplit tes sens.",
+        "OBSERVE": {
+          "DESCRIPTION": "Tu remarques des traces de griffes sur l’autel, certainement laissées par une créature sauvage passée récemment."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Tu poses tes mains sur les runes gravées dans l’écorce et murmures doucement.",
+          "SUCCESS": "Le sol tremble légèrement, des lianes s’enroulent autour de toi avec bienveillance.",
+          "FAILURE": "Des épines percent tes paumes, la nature repousse ton contact."
+        }
+      },
+      "F2": {
+        "TITLE": "Défi du Gardien",
+        "DESCRIPTION": "Des ombres émerge un esprit de sanglier gigantesque, les yeux brûlant d’une défiance primale."
+      }
+    },
+    "CELESTIAL_OBSERVATORY": {
+      "NAME": "Observatoire Céleste",
+      "DESCRIPTION": "Un lieu aligné sur les étoiles, jadis utilisé pour des rituels et cérémonies célestes.",
+      "F1": {
+        "TITLE": "Terrasse Étoilée",
+        "DESCRIPTION": "De grands miroirs et lentilles sont tournés vers le ciel. Un faible bourdonnement résonne alors que les astres s’alignent.",
+        "INSPECT": {
+          "DESCRIPTION": "Tu regardes à travers l’une des lentilles fissurées.",
+          "SUCCESS": "Tu aperçois les constellations se déplacer, révélant un sigil caché dans les étoiles.",
+          "FAILURE": "La lentille s’embrase d’une lumière aveuglante, tes yeux te brûlent de douleur."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Tu murmures un vœu vers le ciel."
+        }
+      },
+      "F2": {
+        "TITLE": "Faille Astrale",
+        "DESCRIPTION": "Le sol se fissure, et une lumière jaillit vers le haut… pourtant, quelque chose descend au lieu de monter."
+      }
+    },
+    "ELEMENTAL_SHRINE": {
+      "NAME": "Sanctuaire Élémentaire",
+      "DESCRIPTION": "Un sanctuaire dédié aux forces élémentaires, montrant des signes d’activité récente.",
+      "F1": {
+        "TITLE": "Rituel de l’Équilibre",
+        "DESCRIPTION": "Quatre brasiers brûlent dans des couleurs différentes : rouge, bleu, vert et or. L’un d’eux vacille faiblement.",
+        "INTERACT": {
+          "DESCRIPTION": "Tu ajustes le brasier doré.",
+          "SUCCESS": "Les flammes s’harmonisent, formant un cercle parfait de lumière.",
+          "FAILURE": "Les flammes rugissent soudainement, brûlant tes cheveux !"
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "Les couleurs se tordent comme des serpents, à la fois magnifiques et menaçantes."
+        }
+      },
+      "F2": {
+        "TITLE": "Cœur Instable",
+        "DESCRIPTION": "L’air devient brûlant. Des éclairs traversent les pierres, le sanctuaire tremble violemment."
+      }
+    },
+    "ECLIPSE_RITE": {
+      "NAME": "Rite de l’Éclipse",
+      "DESCRIPTION": "Un vaste cercle de pierre baigné dans la pénombre, où le soleil et la lune partagent le même ciel. De vieux chants résonnent, portés par des voix invisibles.",
+      "F1": {
+        "TITLE": "Rassemblement du Crépuscule",
+        "DESCRIPTION": "Des silhouettes encapuchonnées se balancent en rythme. L’horizon brille d’une lueur violette, ni aube ni crépuscule.",
+        "OBSERVE": {
+          "DESCRIPTION": "Tu ressens deux forces contraires t’attirer, chaleur d’un côté, froid de l’autre."
+        },
+        "TALK": {
+          "DESCRIPTION": "Tu t’adresses à l’une des figures, mais elles psalmodient d’une seule voix, t’ignorant complètement."
+        }
+      },
+      "F2": {
+        "TITLE": "Autel de la Dualité",
+        "DESCRIPTION": "Au centre repose un autel d’obsidienne fendu en deux. Une moitié est noircie et brûlée, l’autre pâle comme de l’os.",
+        "INTERACT": {
+          "DESCRIPTION": "Tu poses ta main entre la lumière et l’ombre.",
+          "SUCCESS": "Les deux côtés vibrent, ton corps s’imprègne d’une énergie opposée et troublante.",
+          "FAILURE": "Une décharge traverse ton bras, ta vision se brouille en noir et blanc."
+        },
+        "INSPECT": {
+          "DESCRIPTION": "Des runes s’enroulent autour de l’autel : « L’unité par la division. L’harmonie par la douleur. »"
+        }
+      },
+      "F3": {
+        "TITLE": "L’Éclipse Approche",
+        "DESCRIPTION": "L’air s’assombrit à une vitesse surnaturelle. Les silhouettes lèvent les bras, et le soleil tremble.",
+        "PRAY": {
+          "DESCRIPTION": "Tu murmures une supplique vers le ciel, qui reste muet."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Tu reproduis leur geste, quelque chose s’éveille en toi.",
+          "SUCCESS": "Une éclipse parfaite se forme au-dessus, un halo de feu encerclant les ténèbres.",
+          "FAILURE": "Tu te sens faiblir, la réalité se déforme comme un tissu trop tendu."
+        }
+      },
+      "F4": {
+        "TITLE": "Avatar de l’Équilibre",
+        "DESCRIPTION": "Les silhouettes s’effondrent. De l’autel surgit un être de pure pénombre et de lumière mêlées."
+      },
+      "F5": {
+        "TITLE": "Clarté Après l’Éclipse",
+        "DESCRIPTION": "Le ciel s’éclaircit. Un anneau irisé persiste dans les cieux, marquant l’endroit où le jour et la nuit se sont unis.",
+        "OBSERVE": {
+          "DESCRIPTION": "L’anneau vibre doucement, tu te sens à la fois apaisé et lucide."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Tu remercies les cieux silencieux et ressens brièvement leur réponse."
+        }
+      }
+    },
+    "THOUSAND_HANDS_CEREMONY": {
+      "NAME": "Cérémonie des Mille Mains",
+      "DESCRIPTION": "Une salle souterraine bordée de statues de moines, chacune tenant une bougie. Leurs yeux luisent faiblement dans l’obscurité.",
+      "F1": {
+        "TITLE": "Salle de la Flamme Silencieuse",
+        "DESCRIPTION": "Une psalmodie basse emplit la pièce, bien que nul ne soit présent. Les flammes vacillent à l’unisson.",
+        "OBSERVE": {
+          "DESCRIPTION": "Tu remarques que chaque statue possède une expression différente : de la tristesse, de la rage et de la peur."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Tu rallumes une bougie éteinte.",
+          "SUCCESS": "Les yeux de la statue la plus proche s’illuminent, esquissant presque un sourire.",
+          "FAILURE": "La cire fond sur ta main, la flamme siffle avec colère."
+        }
+      },
+      "F2": {
+        "TITLE": "Le Murmure de la Pierre",
+        "DESCRIPTION": "Un murmure parcourt la salle... des centaines de lèvres de marbre murmurent ton nom.",
+        "PRAY": {
+          "DESCRIPTION": "Tu t’inclines instinctivement, le murmure cesse un instant."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "Les mains des statues ont bougé, toutes pointent désormais vers l’estrade centrale."
+        }
+      },
+      "F3": {
+        "TITLE": "L’Idole Centrale",
+        "DESCRIPTION": "Une figure gigantesque aux mille bras s’élève devant toi, chaque main tenant un outil, une flamme ou une arme.",
+        "INSPECT": {
+          "DESCRIPTION": "Tu comptes les bras. Lorsque tu regardes de nouveau, le nombre a changé."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Tu touches la base de la statue, la salle entière se met à trembler.",
+          "SUCCESS": "L’idole abaisse une main et t’offre une perle lumineuse.",
+          "FAILURE": "Une fissure se forme sur sa poitrine, de la poussière s’en écoule comme du sang."
+        }
+      },
+      "F4": {
+        "TITLE": "La Main du Jugement",
+        "DESCRIPTION": "Les statues descendent de leurs socles et avancent avec une grâce grinçante, silencieuses mais déterminées."
+      },
+      "F5": {
+        "TITLE": "La Dernière Bougie",
+        "DESCRIPTION": "Il ne reste qu’une flamme, brûlant au sommet de l’idole brisée. L’air sent la pierre et l’encens.",
+        "OBSERVE": {
+          "DESCRIPTION": "La flamme se replie sur elle-même, formant une perle de cire que tu empoches."
+        },
+        "REST": {
+          "DESCRIPTION": "Tu respires calmement, te sentant observé, mais apaisé."
+        }
+      }
+    }
+  }
+}
