@@ -1,0 +1,32 @@
+{
+  "CITY": {
+    "AGHASME": {
+      "NAME": "Aghasme",
+      "DESCRIPTION": "Aghasme, la capitale animée, est un melting-pot de cultures, où les marchands de pays lointains convergent pour échanger des produits exotiques."
+    },
+    "RIVERTOWN": {
+      "NAME": "Villerive",
+      "DESCRIPTION": "Villerive s'étend paisiblement le long des rives argentées, son port résonnant de chants de marins et du clapotis des eaux."
+    },
+    "ELDERGATE": {
+      "NAME": "La Porte des Anciens",
+      "DESCRIPTION": "La Porte des Anciens se dresse comme une ancienne forteresse, où des pierres usées murmurent des histoires de rois oubliés."
+    },
+    "STORMHOLD": {
+      "NAME": "Fort Tempête",
+      "DESCRIPTION": "Fort Tempête s'élève contre les vents violents, ses tours défiant le tonnerre et le temps."
+    },
+    "IRONVALE": {
+      "NAME": "Val d'Argent",
+      "DESCRIPTION": "Val d'Argent prospère à l'ombre des montagnes, ses forges brûlant jour et nuit avec un objectif inflexible."
+    },
+    "HIGHWALL": {
+      "NAME": "Hautefort",
+      "DESCRIPTION": "Hautefort couronne les falaises au-dessus de la vallée, ses grands remparts surveillant les terres en contrebas."
+    },
+    "MECHANICA": {
+      "NAME": "Mechanica",
+      "DESCRIPTION": "Mechanica est une relique du passé, un mystère non résolu. Dans cette ville, on trouve de tout."
+    }
+  }
+}
