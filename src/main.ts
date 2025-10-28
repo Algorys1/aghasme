@@ -24,8 +24,9 @@ bootstrapApplication(AppComponent, {
           new MultiTranslateHttpLoader(http, [
             'menus',
             'character',
-            'overlays',
-            'items'
+            'overlay.anomaly',
+            'items',
+            'actions'
           ]),
         deps: [HttpClient]
       }

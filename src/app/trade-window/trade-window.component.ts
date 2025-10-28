@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -16,6 +16,8 @@ import { Item } from '../models/items';
   styleUrls: ['./trade-window.component.scss']
 })
 export class TradeWindowComponent implements OnInit, OnDestroy {
+  @Output() closed = new EventEmitter<void>();
+
   show = false;
   tab: 'shop' | 'inventory' = 'shop';
   selectedItem: (Item & { count: number }) | null = null;
@@ -69,6 +71,7 @@ export class TradeWindowComponent implements OnInit, OnDestroy {
   close(): void {
     this.tradeService.closeTrade();
     this.actionService.closeOverlay$.next();
+    this.closed.emit();
   }
 
   setTab(tab: 'shop' | 'inventory'): void {

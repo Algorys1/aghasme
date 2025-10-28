@@ -1,0 +1,29 @@
+{
+  "ACTIONS": {
+    "OBSERVE": "Observe",
+    "INTERACT": "Interact",
+    "FIGHT": "Fight",
+    "FLEE": "Flee",
+    "PRAY": "Pray",
+    "TALK": "Talk",
+    "INSPECT": "Inspect",
+    "HARVEST": "Harvest",
+    "TRADE": "Trade",
+    "REST": "Rest",
+    "AVOID": "Avoid",
+    "CONTINUE": "Continue",
+    "QUIT": "Quit",
+    "DESCRIPTIONS": {
+      "FIGHT": "Engage in combat.",
+      "FLEE": "Try to escape danger.",
+      "TRADE": "Visit the shop.",
+      "REST": "Recover your HP and MP.",
+      "PRAY": "Seek blessings or favors.",
+      "TALK": "Engage in conversation.",
+      "HARVEST": "Collect resources.",
+      "INTERACT": "Interact with the environment.",
+      "INSPECT": "Examine closely.",
+      "OBSERVE": "Observe the scene."
+    }
+  }
+}

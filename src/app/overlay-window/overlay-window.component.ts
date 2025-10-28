@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output,
   OnChanges, SimpleChanges, OnInit, OnDestroy,
-  ViewChild, ElementRef, NgZone
+  ViewChild, ElementRef, NgZone, ChangeDetectorRef
 } from '@angular/core';
 import { OverlayKind, OverlayInstance } from '../models/overlays.model';
 import { ActionType } from '../models/actions';
@@ -12,8 +12,9 @@ import { HarvestWindowComponent } from "../harvest-window/harvest-window.compone
 import { HarvestResource } from '../models/items';
 import { TradeWindowComponent } from "../trade-window/trade-window.component";
 import { OverlayShopMap, ShopType, TradeService } from '../services/trade.service';
-import { MapService } from '../services/map.service';
 import { CharacterService } from '../services/character.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {UpperCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-overlay-window',
@@ -21,8 +22,10 @@ import { CharacterService } from '../services/character.service';
   imports: [
     RestWindowComponent,
     HarvestWindowComponent,
-    TradeWindowComponent
-],
+    TradeWindowComponent,
+    TranslateModule,
+    UpperCasePipe
+  ],
   styleUrls: ['./overlay-window.component.scss']
 })
 export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
@@ -63,10 +66,17 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private actionService: ActionService,
     private tradeService: TradeService,
-    private mapService: MapService,
+    private translate: TranslateService,
     private characterService: CharacterService,
+    private cdRef: ChangeDetectorRef,
     private zone: NgZone
-  ) {}
+  ) {
+    this.translate.use('fr');
+    this.translate.onLangChange.subscribe(() => {
+      // 🔹 Force la mise à jour visuelle une fois la langue effectivement prête
+      this.cdRef.detectChanges();
+    });
+  }
 
   ngOnInit() {
     this.subs.push(
@@ -151,8 +161,11 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     if (!this.mainTitle) this.mainTitle = this.data.name;
 
     const current = this.data.eventChain?.[this.data.currentFloor ?? ''];
-    const title = current?.title || this.data.name;
-    const desc = current?.description || this.data.description || '';
+    const titleKey = current?.title || this.data.name;
+    const descKey = current?.description || this.data.description || '';
+
+    const title = this.translate.instant(titleKey);
+    const desc = this.translate.instant(descKey);
 
     if (!desc.trim() || this.writingTitle || this.writingDesc) return;
 
@@ -197,15 +210,18 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onSkipText() {
+    const current = this.data.eventChain?.[this.data.currentFloor ?? ''];
+    const titleKey = current?.title || this.data.name;
+    const descKey = current?.description || this.data.description || '';
+
+    const fullTitle = this.translate.instant(titleKey);
+    const fullDesc = this.translate.instant(descKey);
+
     if (this.writingTitle) {
-      const fullTitle = this.data.eventChain?.[this.data.currentFloor ?? '']?.title || this.data.name;
       this.displayedTitle += this.getRemainingText(this.displayedTitle, fullTitle);
       this.stopTyping('title');
-
-      const desc = this.data.eventChain?.[this.data.currentFloor ?? '']?.description || this.data.description || '';
-      this.typeDescription(desc);
+      this.typeDescription(fullDesc);
     } else if (this.writingDesc) {
-      const fullDesc = this.data.eventChain?.[this.data.currentFloor ?? '']?.description || this.data.description || '';
       this.displayedDescription += this.getRemainingText(this.displayedDescription, fullDesc);
       this.stopTyping('desc');
     }
@@ -296,18 +312,10 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   getConsequence(action: string): string {
-    switch (action.toLowerCase()) {
-      case 'fight': return 'Engage in combat.';
-      case 'flee': return 'Try to escape the danger.';
-      case 'trade': return 'Open a shop interface.';
-      case 'rest': return 'Recover HP and MP.';
-      case 'pray': return 'Seek blessings or favors.';
-      case 'talk': return 'Engage in conversation.';
-      case 'harvest': return 'Gather resources.';
-      case 'interact': return 'Interact with the environment.';
-      case 'inspect': return 'Examine closely.';
-      case 'observe': return 'Observe quietly';
-      default: return 'Take this action.';
+    const translated = this.translate.instant(`ACTIONS.DESCRIPTIONS.${action.toUpperCase()}`);
+    if(translated === `ACTIONS.DESCRIPTIONS.${action.toUpperCase()}`) {
+      return 'Take this action.';
     }
+    return translated;
   }
 }

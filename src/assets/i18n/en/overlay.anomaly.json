@@ -1,0 +1,168 @@
+{
+  "OVERLAY": {
+    "TEMPORAL_RIFT": {
+      "NAME": "Temporal Rift",
+      "DESCRIPTION": "A distortion in the air flickers like a wound in reality. The landscape bends and folds upon itself.",
+      "F1": {
+        "TITLE": "Frozen Moment",
+        "DESCRIPTION": "Birds hang motionless midair. Even your heartbeat seems delayed. The world moves a half-second too slow.",
+        "OBSERVE": "You watch a raindrop suspended before your eyes.",
+        "OBSERVE_SUCCESS": "Time resumes for a heartbeat, you see glimpses of yourself standing elsewhere.",
+        "OBSERVE_FAIL": "The distortion flares, your mind reels from the paradox.",
+        "INTERACT": "You reach toward the ripple, the air resists your hand like thick glass."
+      },
+      "F2": {
+        "TITLE": "Echo of the Past",
+        "DESCRIPTION": "A familiar figure stands before you — yourself, or rather, a version that shouldn't exist."
+      }
+    },
+    "INFERNAL_SURGE": {
+      "NAME": "Infernal Surge",
+      "DESCRIPTION": "The air burns red; cracks in the ground emit faint screams. Something beneath the crust struggles to escape.",
+      "F1": {
+        "TITLE": "Blistered Ground",
+        "DESCRIPTION": "The earth pulses with molten veins. You can almost hear a heartbeat under the soil.",
+        "OBSERVE": "You study the fissures closely, the glow responds to your movement.",
+        "PRAY": "You whisper a warding chant.",
+        "PRAY_SUCCESS": "The air cools momentarily, the anomaly weakens.",
+        "PRAY_FAIL": "A burst of heat sears your arm. Something stirs below."
+      },
+      "F2": {
+        "TITLE": "Infernal Gate",
+        "DESCRIPTION": "A tear opens, revealing shifting shadows and a smile of fire."
+      }
+    },
+    "MECHANICAL_DISTORTION": {
+      "NAME": "Mechanical Distortion",
+      "DESCRIPTION": "Ruins of ancient machines twist around a humming sphere. Sparks jump through the air with rhythmic precision.",
+      "F1": {
+        "TITLE": "Echoing Halls",
+        "DESCRIPTION": "Broken gears and bronze pillars hum with a life of their own. The air smells of ozone and oil.",
+        "OBSERVE": "You notice patterns in the hum — it’s almost musical.",
+        "INTERACT": "You approach the core fragment cautiously.",
+        "INTERACT_SUCCESS": "You stabilize a fragment of power, energy flows in reverse, harmlessly dissipating.",
+        "INTERACT_FAIL": "Sparks leap to your fingers, leaving a painful burn."
+      },
+      "F2": {
+        "TITLE": "Core Awakening",
+        "DESCRIPTION": "The machine’s heart flickers; the orb reactivates, scanning for threats."
+      }
+    },
+    "CORRUPTED_GROVE": {
+      "NAME": "Corrupted Grove",
+      "DESCRIPTION": "Once serene, the forest trembles under a dark influence. Trees twist unnaturally, sap runs black.",
+      "F1": {
+        "TITLE": "Black Roots",
+        "DESCRIPTION": "You step over roots that pulse faintly like veins. The air smells of rot and incense.",
+        "OBSERVE": "You see runes carved into tree bark, oozing sap like blood.",
+        "INTERACT": "You touch the nearest root — it twitches violently!"
+      },
+      "F2": {
+        "TITLE": "Heart of Corruption",
+        "DESCRIPTION": "At the grove’s center, a pulsating cocoon of vines throbs with malign light.",
+        "INSPECT": "You study the cocoon’s rhythm — it beats like a heart.",
+        "PRAY": "You call on the forest’s true spirit to resist the corruption.",
+        "PRAY_SUCCESS": "A burst of green light pierces the cocoon, the forest gasps in relief.",
+        "PRAY_FAIL": "The vines tighten around your feet, the corruption answers instead."
+      },
+      "F3": {
+        "TITLE": "The Twisted Spirit",
+        "DESCRIPTION": "From the cocoon bursts a massive, moss-covered spider screeching with hatred."
+      }
+    },
+    "ANCESTRAL_ECHO": {
+      "NAME": "Ancestral Echo",
+      "DESCRIPTION": "You stumble upon a stone circle half-buried in ash. Whispers rise with the wind, names of the forgotten.",
+      "F1": {
+        "TITLE": "Circle of Names",
+        "DESCRIPTION": "The stones hum softly. Every step you take echoes twice — once in sound, once in memory.",
+        "OBSERVE": "You study the symbols. They belong to no known language.",
+        "PRAY": "You repeat one of the whispered names.",
+        "PRAY_SUCCESS": "A warmth fills your chest — the spirit acknowledges you briefly.",
+        "PRAY_FAIL": "The air freezes, a shadow stirs behind the stones."
+      },
+      "F2": {
+        "TITLE": "Spirit Manifestation",
+        "DESCRIPTION": "A translucent form coalesces, eyes empty but full of intent."
+      }
+    },
+    "ASH_BREACH": {
+      "NAME": "Ash Breach",
+      "DESCRIPTION": "The sky above splits open, bleeding fire and smoke. The air trembles with ancient fury.",
+      "F1": {
+        "TITLE": "Field of Cinders",
+        "DESCRIPTION": "Black ash covers the ground. Each step releases a puff of smoke that smells of burnt iron.",
+        "OBSERVE": "You kneel, scooping a handful of ash. It glows faintly between your fingers.",
+        "OBSERVE_SUCCESS": "The ash reacts to your essence, forming glowing sigils before fading.",
+        "OBSERVE_FAIL": "The ash seeps into your skin, burning with a whisper of pain.",
+        "INTERACT": "You press your hand to the warm ground — it beats faintly, like a living heart."
+      },
+      "F2": {
+        "TITLE": "Crumbling Sanctum",
+        "DESCRIPTION": "Remnants of an old temple glow faintly red beneath soot. Heat distorts your vision.",
+        "INSPECT": "You examine the runes, tracing their shapes through the dust.",
+        "INSPECT_SUCCESS": "You decipher the pattern — a seal restraining something below.",
+        "INSPECT_FAIL": "The rune flashes and cracks violently, your vision blurs.",
+        "PRAY": "You attempt a purification prayer to reinforce the seal.",
+        "PRAY_SUCCESS": "The hum stabilizes, the heat lessens for a brief moment.",
+        "PRAY_FAIL": "Your words twist into smoke, the seal begins to fracture."
+      },
+      "F3": {
+        "TITLE": "The Breach Opens",
+        "DESCRIPTION": "A violent tremor splits the floor. Lava spills from the cracks, screams echo from below."
+      },
+      "F4": {
+        "TITLE": "Infernal Descent",
+        "DESCRIPTION": "From the molten breach rises a creature of flame and shadow, scales dripping molten tears."
+      },
+      "F5": {
+        "TITLE": "Ashes and Silence",
+        "DESCRIPTION": "The breach cools to stone. The air still hums faintly, as if the world itself remembers."
+      }
+    },
+    "RIFT_OF_ECHOES": {
+      "NAME": "Rift of Echoes",
+      "DESCRIPTION": "A trembling fissure hums in the air, like the resonance of an invisible bell.",
+      "F1": {
+        "TITLE": "The Shattered Silence",
+        "DESCRIPTION": "The ground vibrates faintly. Every step echoes a second later, not in space, but in time."
+      },
+      "F2": {
+        "TITLE": "Voice of the Rift",
+        "DESCRIPTION": "A whisper echoes from within — your own voice, answering questions you never asked."
+      },
+      "F3": {
+        "TITLE": "The Resonant Field",
+        "DESCRIPTION": "You find a circular platform of floating stones, humming in perfect harmony."
+      },
+      "F4": {
+        "TITLE": "Manifestation of the Rift",
+        "DESCRIPTION": "A luminous being forms from vibrating shards of sound, alive and unfinished."
+      },
+      "F5": {
+        "TITLE": "Harmony Restored",
+        "DESCRIPTION": "The echoes fade. The fissure closes with a deep, final note that resonates through your bones."
+      }
+    },
+    "ASHEN_CONVERGENCE": {
+      "NAME": "The Ashen Convergence",
+      "DESCRIPTION": "The horizon folds in on itself, ash floats upward like reversed rain. You feel two worlds overlapping.",
+      "F1": {
+        "TITLE": "The Burning Sky",
+        "DESCRIPTION": "The light is wrong. Shadows burn brighter than the fire itself."
+      },
+      "F2": {
+        "TITLE": "The Twin Suns",
+        "DESCRIPTION": "Two glowing orbs float overhead, their light bending and merging into a spiral."
+      },
+      "F3": {
+        "TITLE": "The Rift Guardian",
+        "DESCRIPTION": "A colossal silhouette emerges — a being of fire and cinder with ember eyes."
+      },
+      "F4": {
+        "TITLE": "Collapse of the Convergence",
+        "DESCRIPTION": "The suns collide, shattering into showers of burning glass. The world goes white."
+      }
+    }
+  }
+}

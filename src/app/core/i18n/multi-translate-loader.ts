@@ -3,7 +3,13 @@ import { TranslateLoader } from '@ngx-translate/core';
 import { forkJoin, map, Observable } from 'rxjs';
 
 export class MultiTranslateHttpLoader implements TranslateLoader {
-  constructor(private http: HttpClient, private resources: string[]) {}
+  constructor(private http: HttpClient, private resources: string[]) {
+    let t = this.getTranslation('fr');
+
+    t.subscribe((r) => {
+      console.log('MultiTranslateHttpLoader initialized with resources:', r);
+    });
+  }
 
   getTranslation(lang: string): Observable<Record<string, any>> {
     return forkJoin(

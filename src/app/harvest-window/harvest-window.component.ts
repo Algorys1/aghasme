@@ -117,7 +117,6 @@ export class HarvestWindowComponent implements OnInit {
     this.progress = 0;
   }
 
-
   quit() {
     this.closed.emit();
   }

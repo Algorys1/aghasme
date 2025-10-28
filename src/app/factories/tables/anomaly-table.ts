@@ -3,14 +3,14 @@ import { OverlayTemplate } from '../../models/overlays.model';
 
 export const ANOMALY_TABLE: OverlayTemplate[] = [
   {
-    name: 'Temporal Rift',
-    description: 'A distortion in the air flickers like a wound in reality. The landscape bends and folds upon itself.',
+    name: 'OVERLAY.TEMPORAL_RIFT.NAME',
+    description: 'OVERLAY.TEMPORAL_RIFT.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'temporal-rift',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Frozen Moment',
+        title: 'OVERLAY.TEMPORAL_RIFT.F1.TITLE',
         description: 'Birds hang motionless midair. Even your heartbeat seems delayed. The world moves a half-second too slow.',
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
@@ -45,29 +45,29 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Infernal Surge',
-    description: 'The air burns red; cracks in the ground emit faint screams. Something beneath the crust struggles to escape.',
+    name: 'OVERLAY.INFERNAL_SURGE.NAME',
+    description: 'OVERLAY.INFERNAL_SURGE.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'infernal-surge',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Blistered Ground',
-        description: 'The earth pulses with molten veins. You can almost hear a heartbeat under the soil.',
+        title: 'OVERLAY.INFERNAL_SURGE.F1.TITLE',
+        description: 'OVERLAY.INFERNAL_SURGE.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You study the fissures closely, the glow responds to your movement.',
+            description: 'OVERLAY.INFERNAL_SURGE.F1.OBSERVE',
           },
           [ActionType.Pray]: {
-            description: 'You whisper a warding chant.',
+            description: 'OVERLAY.INFERNAL_SURGE.F1.PRAY',
             check: { orb: 'elemental', difficulty: 11 },
             onSuccess: {
-              description: 'The air cools momentarily, the anomaly weakens.',
+              description: 'OVERLAY.INFERNAL_SURGE.F1.PRAY_SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'A burst of heat sears your arm. Something stirs below.',
+              description: 'OVERLAY.INFERNAL_SURGE.F1.PRAY_FAIL',
               effects: [{ stat: 'hp', value: -5 }],
             },
           },
@@ -75,8 +75,8 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Infernal Gate',
-        description: 'A tear opens, revealing shifting shadows and a smile of fire.',
+        title: 'OVERLAY.INFERNAL_SURGE.F2.TITLE',
+        description: 'OVERLAY.INFERNAL_SURGE.F2.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -87,29 +87,29 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Mechanical Distortion',
-    description: 'Ruins of ancient machines twist around a humming sphere. Sparks jump through the air with rhythmic precision.',
+    name: 'OVERLAY.MECHANICAL_DISTORSION.NAME',
+    description: 'OVERLAY.MECHANICAL_DISTORSION.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'mechanical-distorsion',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Echoing Halls',
-        description: 'Broken gears and bronze pillars hum with a life of their own. The air smells of ozone and oil.',
+        title: 'OVERLAY.MECHANICAL_DISTORSION.F1.TITLE',
+        description: 'OVERLAY.MECHANICAL_DISTORSION.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You notice patterns in the hum, it’s almost musical.',
+            description: 'OVERLAY.MECHANICAL_DISTORSION.F1.OBSERVE',
           },
           [ActionType.Interact]: {
-            description: 'You approach the core fragment cautiously.',
+            description: 'OVERLAY.MECHANICAL_DISTORSION.F1.INTERACT',
             check: { orb: 'mechanic', difficulty: 10 },
             onSuccess: {
-              description: 'You stabilize a fragment of power, energy flows in reverse, harmlessly dissipating.',
+              description: 'OVERLAY_MECHANICAL_DISTORSION.F1.INTERACT_SUCCESS',
               effects: [{ stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'Sparks leap to your fingers, leaving a painful burn.',
+              description: 'OVERLAY_MECHANICAL_DISTORSION.F1.INTERACT_FAIL',
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
@@ -117,8 +117,8 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Core Awakening',
-        description: 'The machine’s heart flickers, the orb reactivates, scanning for threats.',
+        title: 'OVERLAY.MECHANICAL_DISTORSION.F2.TITLE',
+        description: 'OVERLAY.MECHANICAL_DISTORSION.F2.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -129,45 +129,45 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Corrupted Grove',
-    description: 'Once serene, the forest here trembles under a dark influence. Trees twist unnaturally, sap runs black.',
+    name: 'OVERLAY.CORRUPTED_GROVE.NAME',
+    description: 'OVERLAY.CORRUPTED_GROVE.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'corrupted-grove',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Black Roots',
-        description: 'You step over roots that pulse faintly like veins. The air smells of rot and incense.',
+        title: 'OVERLAY.CORRUPTED_GROVE.F1.TITLE',
+        description: 'OVERLAY.CORRUPTED_GROVE.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You see runes carved into tree bark, oozing sap like blood.',
+            description: 'OVERLAY.CORRUPTED_GROVE.F1.OBSERVE',
             effects: [{ stat: 'xp', value: +4 }],
           },
           [ActionType.Interact]: {
-            description: 'You touch the nearest root, it twitches violently!',
+            description: 'OVERLAY.CORRUPTED_GROVE.F1.INTERACT',
             effects: [{ stat: 'hp', value: -2 }],
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Heart of Corruption',
-        description: 'At the grove’s center, a pulsating cocoon of vines throbs with malign light.',
+        title: 'OVERLAY.CORRUPTED_GROVE.F2.TITLE',
+        description: 'OVERLAY.CORRUPTED_GROVE.F2.DESCRIPTION',
         actions: [ActionType.Inspect, ActionType.Pray],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'You study the cocoon’s rhythm, it beats like a heart.',
+            description: 'OVERLAY.CORRUPTED_GROVE.F2.INSPECT',
           },
           [ActionType.Pray]: {
-            description: 'You call on the forest’s true spirit to resist the corruption.',
+            description: 'OVERLAY.CORRUPTED_GROVE.F2.PRAY',
             check: { orb: 'natural', difficulty: 10 },
             onSuccess: {
-              description: 'A burst of green light pierces the cocoon, the forest gasps in relief.',
+              description: 'OVERLAY.CORRUPTED_GROVE.F2.PRAY_SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'The vines tighten around your feet, the corruption answers instead.',
+              description: 'OVERLAY.CORRUPTED_GROVE.F2.PRAY_FAIL',
               effects: [{ stat: 'hp', value: -5 }],
             },
           },
@@ -175,8 +175,8 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_3',
       },
       floor_3: {
-        title: 'The Twisted Spirit',
-        description: 'From the cocoon bursts a massive, moss-covered spider screeching with hatred.',
+        title: 'OVERLAY.CORRUPTED_GROVE.F3.TITLE',
+        description: 'OVERLAY.CORRUPTED_GROVE.F3.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -187,37 +187,37 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Ancestral Echo',
-    description: 'You stumble upon a stone circle half-buried in ash. Whispers rise with the wind, names of the forgotten.',
+    name: 'OVERLAY.ANCESTRAL_ECHO.NAME',
+    description: 'OVERLAY.ANCESTRAL_ECHO.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'ancestral-echo',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'Circle of Names',
-        description: 'The stones hum softly. Every step you take echoes twice, once in sound, once in memory.',
+        title: 'OVERLAY.ANCESTRAL_ECHO.F1.TITLE',
+        description: 'OVERLAY.ANCESTRAL_ECHO.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You study the symbols. They belong to no known language.',
+            description: 'OVERLAY.ANCESTRAL_ECHO.F1.OBSERVE',
           },
           [ActionType.Pray]: {
-            description: 'You repeat one of the whispered names.',
+            description: 'OVERLAY.ANCESTRAL_ECHO.F1.PRAY',
             check: { orb: 'elemental', difficulty: 11 },
             onSuccess: {
-              description: 'A warmth fills your chest, the spirit acknowledges you briefly.',
+              description: 'OVERLAY.ANCESTRAL_ECHO.F1.PRAY_SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'The air freezes, a shadow stirs behind the stones.',
+              description: 'OVERLAY.ANCESTRAL_ECHO.F1.PRAY_FAIL',
             },
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Spirit Manifestation',
-        description: 'A translucent form coalesces, eyes empty but full of intent.',
+        title: 'OVERLAY.ANCESTRAL_ECHO.F2.TITLE',
+        description: 'OVERLAY.ANCESTRAL_ECHO.F2.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -229,60 +229,60 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'Ash Breach',
-    description: 'The sky above splits open, bleeding fire and smoke. The air trembles with the echo of ancient fury.',
+    name: 'OVERLAY.ASH_BREACH.NAME',
+    description: 'OVERLAY.ASH_BREACH.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     actions: [],
     id: 'ash-breach',
     eventChain: {
       floor_1: {
-        title: 'Field of Cinders',
-        description: 'Black ash covers the ground. Each step releases a puff of smoke that smells of burnt iron.',
+        title: 'OVERLAY.ASH_BREACH.F1.TITLE',
+        description: 'OVERLAY.ASH_BREACH.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You kneel, scooping a handful of ash, it glows faintly between your fingers.',
+            description: 'OVERLAY.ASH_BREACH.F1.OBSERVE',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'The ash reacts to your essence, forming glowing sigils before fading.',
+              description: 'OVERLAY.ASH_BREACH.F1.OBSERVE_SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'The ash seeps into your skin, it burns with a whisper of pain.',
+              description: 'OVERLAY.ASH_BREACH.F1.OBSERVE_FAIL',
               effects: [{ stat: 'hp', value: -3 }],
             },
           },
           [ActionType.Interact]: {
-            description: 'You press your hand to the warm ground; it beats faintly, like a living heart.',
+            description: 'OVERLAY.ASH_BREACH.F1.INTERACT',
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Crumbling Sanctum',
-        description: 'You find remnants of an old temple, its runes glowing faintly red beneath the soot. Heat distorts your vision.',
+        title: 'OVERLAY.ASH_BREACH.F2.TITLE',
+        description: 'OVERLAY.ASH_BREACH.F2.DESCRIPTION',
         actions: [ActionType.Inspect, ActionType.Pray],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'You examine the runes, tracing their shapes through the dust.',
+            description: 'OVERLAY.ASH_BREACH.F2.INSPECT',
             check: { orb: 'mechanic', difficulty: 11 },
             onSuccess: {
-              description: 'You decipher the pattern, it’s a seal, restraining something below.',
+              description: 'OVERLAY.ASH_BREACH.F2.INSPECT_SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'The rune flashes and cracks violently, your vision blurs.',
+              description: 'OVERLAY.ASH_BREACH.F2.INSPECT_FAIL',
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
           [ActionType.Pray]: {
-            description: 'You attempt a purification prayer to reinforce the seal.',
+            description: 'OVERLAY.ASH_BREACH.F2.PRAY',
             check: { orb: 'elemental', difficulty: 12 },
             onSuccess: {
-              description: 'The hum stabilizes, the heat lessens for a brief moment.',
+              description: 'OVERLAY.ASH_BREACH.F2.PRAY_SUCCESS',
             },
             onFailure: {
-              description: 'Your words twist into smoke, the seal begins to fracture.',
+              description: 'OVERLAY.ASH_BREACH.F2.PRAY_FAIL',
               next: 'floor_3',
             },
           },
@@ -290,22 +290,22 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_3',
       },
       floor_3: {
-        title: 'The Breach Opens',
-        description: 'A violent tremor splits the floor. Lava spills from the cracks, and screams echo from below.',
+        title: 'OVERLAY.ASH_BREACH.F3.TITLE',
+        description: 'OVERLAY.ASH_BREACH.F3.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You glimpse forms writhing within the molten flow, shapes of things that shouldn’t live.',
+            description: 'OVERLAY.ASH_BREACH.F3.OBSERVE',
           },
           [ActionType.Interact]: {
-            description: 'You try to stabilize the seal by pouring your energy into the breach.',
+            description: 'OVERLAY.ASH_BREACH.F3.INTERACT',
             check: { orb: 'elemental', difficulty: 13 },
             onSuccess: {
-              description: 'The crack seals partially, but the power backlash throws you backward.',
+              description: 'OVERLAY.ASH_BREACH.F3.INTERACT_SUCCESS',
               effects: [{ stat: 'hp', value: -2 }, { stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'Your body convulses as the infernal surge overwhelms you.',
+              description: 'OVERLAY.ASH_BREACH.F3.INTERACT_FAIL',
               effects: [{ stat: 'hp', value: -6 }],
             },
           },
@@ -313,8 +313,8 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_4',
       },
       floor_4: {
-        title: 'Infernal Descent',
-        description: 'From the molten breach rises a creature of flame and shadow, scales dripping molten tears.',
+        title: 'OVERLAY.ASH_BREACH.F4.TITLE',
+        description: 'OVERLAY.ASH_BREACH.F4.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -325,61 +325,61 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_5',
       },
       floor_5: {
-        title: 'Ashes and Silence',
-        description: 'The breach cools to stone. The air still hums faintly, as if the world itself remembers.',
+        title: 'OVERLAY.ASH_BREACH.F5.TITLE',
+        description: 'OVERLAY.ASH_BREACH.F5.DESCRIPTION',
         actions: [ActionType.Rest, ActionType.Observe],
         actionPassive: {
           [ActionType.Rest]: {
-            description: 'You sit among the blackened stones, the heat slowly leaving your skin.',
+            description: 'OVERLAY.ASH_BREACH.F5.REST',
             effects: [{ stat: 'hp', value: +5 }, { stat: 'xp', value: +6 }],
           },
           [ActionType.Observe]: {
-            description: 'You stare into the still-red cracks, for a moment, they pulse again.',
+            description: 'OVERLAY.ASH_BREACH.F5.OBSERVE',
           },
         },
       },
     },
   },
   {
-    name: 'Rift of Echoes',
-    description: 'A trembling fissure hums in the air, like the resonance of an invisible bell. Sound seems twisted here.',
+    name: 'OVERLAY.RIFT_OF_ECHOES.NAME',
+    description: 'OVERLAY.RIFT_OF_ECHOES.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'rift-of-echoes',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'The Shattered Silence',
-        description: 'The ground vibrates faintly. Every step echoes a second later, not in space, but in time.',
+        title: 'OVERLAY.RIFT_OF_ECHOES.F1.TITLE',
+        description: 'OVERLAY.RIFT_OF_ECHOES.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Inspect],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You hold your breath, even silence has weight here.',
+            description: 'OVERLAY.RIFT_OF_ECHOES.F1.OBSERVE',
           },
           [ActionType.Inspect]: {
-            description: 'The fissure responds to your movement, widening slightly.',
+            description: 'OVERLAY.RIFT_OF_ECHOES.F1.INSPECT',
             effects: [{ stat: 'xp', value: +4 }],
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Voice of the Rift',
-        description: 'A whisper echoes from within, your own voice, answering questions you never asked.',
+        title: 'OVERLAY.RIFT_OF_ECHOES.F2.TITLE',
+        description: 'OVERLAY.RIFT_OF_ECHOES.F2.DESCRIPTION',
         actions: [ActionType.Talk, ActionType.Pray],
         actionPassive: {
           [ActionType.Talk]: {
-            description: 'You speak aloud. The rift repeats your words, then adds: "Come closer."',
+            description: 'OVERLAY.RIFT_OF_ECHOES.F2.TALK',
             effects: [{ stat: 'mp', value: -2 }],
           },
           [ActionType.Pray]: {
-            description: 'You close your eyes, focusing your mind to resist the pull.',
+            description: 'OVERLAY.RIFT_OF_ECHOES.F2.PRAY',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'The vibration calms, the echo fades slightly.',
+              description: 'OVERLAY.RIFT_OF_ECHOES.F2.PRAY_SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'Your head rings painfully, you stumble forward.',
+              description: 'OVERLAY.RIFT_OF_ECHOES.F2.PRAY_FAIL',
               next: 'floor_3',
             },
           },
@@ -387,32 +387,32 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_3',
       },
       floor_3: {
-        title: 'The Resonant Field',
-        description: 'You find a circular platform of floating stones, humming in perfect harmony. A crystal pulsates at its center.',
+        title: 'OVERLAY.RIFT_OF_ECHOES.F3.TITLE',
+        description: 'OVERLAY.RIFT_OF_ECHOES.F3.DESCRIPTION',
         actions: [ActionType.Interact, ActionType.Inspect],
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'You reach for the crystal, your reflection vibrates before touching it.',
+            description: 'OVERLAY.RIFT_OF_ECHOES.F3.INTERACT',
             check: { orb: 'mechanic', difficulty: 12 },
             onSuccess: {
-              description: 'You stabilize the resonance, the platform stops spinning.',
+              description: 'OVERLAY.RIFT_OF_ECHOES.F3.INTERACT_SUCCESS',
               effects: [{ stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'The platform collapses, you fall through light.',
+              description: 'OVERLAY.RIFT_OF_ECHOES.F3.INTERACT_FAIL',
               effects: [{ stat: 'hp', value: -5 }],
               next: 'floor_4',
             },
           },
           [ActionType.Inspect]: {
-            description: 'You note that the runes around the crystal represent "balance" and "memory."',
+            description: 'OVERLAY.RIFT_OF_ECHOES.F3.INSPECT',
           },
         },
         next: 'floor_4',
       },
       floor_4: {
-        title: 'Manifestation of the Rift',
-        description: 'A luminous being forms from vibrating shards of sound, it looks both alive and unfinished.',
+        title: 'OVERLAY.RIFT_OF_ECHOES.F4.TITLE',
+        description: 'OVERLAY.RIFT_OF_ECHOES.F4.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -423,12 +423,12 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_5',
       },
       floor_5: {
-        title: 'Harmony Restored',
-        description: 'The echoes fade. The fissure closes with a deep, final note that resonates through your bones.',
+        title: 'OVERLAY.RIFT_OF_ECHOES.F5.TITLE',
+        description: 'OVERLAY.RIFT_OF_ECHOES.F5.DESCRIPTION',
         actions: [ActionType.Observe],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'A faint tone lingers in your ears, the sound of the world, healed.',
+            description: 'OVERLAY.RIFT_OF_ECHOES.F5.OBSERVE',
             effects: [{ stat: 'xp', value: +15 }, { stat: 'mp', value: +8 }],
           },
         },
@@ -436,29 +436,29 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'The Ashen Convergence',
-    id: 'ashen-convergence',
-    description: 'The horizon folds in on itself, ash floats upward like reversed rain. You feel two worlds overlapping.',
+    name: 'OVERLAY.ASHEN_CONVERGENCE.NAME',
+    description: 'OVERLAY.ASHEN_CONVERGENCE.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
+    id: 'ashen-convergence',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'The Burning Sky',
-        description: 'The light is wrong. Shadows burn brighter than the fire itself.',
+        title: 'OVERLAY.ASHEN_CONVERGENCE.F1.TITLE',
+        description: 'OVERLAY.ASHEN_CONVERGENCE.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You look around, even your own outline flickers like smoke.',
+            description: 'OVERLAY.ASHEN_CONVERGENCE.F1.OBSERVE',
           },
           [ActionType.Pray]: {
-            description: 'You kneel and whisper a plea to whatever still listens here.',
+            description: 'OVERLAY.ASHEN_CONVERGENCE.F1.PRAY',
             check: { orb: 'elemental', difficulty: 11 },
             onSuccess: {
-              description: 'The air responds, the heat momentarily lessens.',
+              description: 'OVERLAY.ASHEN_CONVERGENCE.F1.PRAY_SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'A gust of fire swirls, the dust scorches your face.',
+              description: 'OVERLAY.ASHEN_CONVERGENCE.F1.PRAY_FAIL',
               effects: [{ stat: 'hp', value: -3 }],
             },
           },
@@ -466,22 +466,22 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_2',
       },
       floor_2: {
-        title: 'The Twin Suns',
-        description: 'Two glowing orbs float overhead, their light bending and merging into a spiral.',
+        title: 'OVERLAY.ASHEN_CONVERGENCE.F2.TITLE',
+        description: 'OVERLAY.ASHEN_CONVERGENCE.F2.DESCRIPTION',
         actions: [ActionType.Inspect, ActionType.Interact],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'You realize one sun casts warmth, the other cold. They’re fighting for dominance.',
+            description: 'OVERLAY.ASHEN_CONVERGENCE.F2.INSPECT',
           },
           [ActionType.Interact]: {
-            description: 'You raise your hand, caught between heat and frost.',
+            description: 'OVERLAY.ASHEN_CONVERGENCE.F2.INTERACT',
             check: { orb: 'mechanic', difficulty: 12 },
             onSuccess: {
-              description: 'You balance their pull, the spiral stabilizes.',
+              description: 'OVERLAY.ASHEN_CONVERGENCE.F2.INTERACT_SUCCESS',
               effects: [{ stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'The suns flare violently, you’re thrown backward.',
+              description: 'OVERLAY.ASHEN_CONVERGENCE.F2.INTERACT_FAIL',
               next: 'floor_3',
               effects: [{ stat: 'hp', value: -5 }],
             },
@@ -490,8 +490,8 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_3',
       },
       floor_3: {
-        title: 'The Rift Guardian',
-        description: 'A colossal silhouette emerges from the spiral, a being of fire and cinder with ember eyes.',
+        title: 'OVERLAY.ASHEN_CONVERGENCE.F3.TITLE',
+        description: 'OVERLAY.ASHEN_CONVERGENCE.F3.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -502,12 +502,12 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_4',
       },
       floor_4: {
-        title: 'Collapse of the Convergence',
-        description: 'The suns collide, shattering into showers of burning glass. The world goes white.',
+        title: 'OVERLAY.ASHEN_CONVERGENCE.F4.TITLE',
+        description: 'OVERLAY.ASHEN_CONVERGENCE.F4.DESCRIPTION',
         actions: [ActionType.Observe],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You awaken among cooling embers. The ground glows faintly beneath your feet.',
+            description: 'OVERLAY.ASHEN_CONVERGENCE.F4.OBSERVE',
             effects: [{ stat: 'xp', value: +20 }, { stat: 'hp', value: +10 }],
           },
         },

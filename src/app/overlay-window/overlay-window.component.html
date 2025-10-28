@@ -2,7 +2,7 @@
   <div class="overlay-content">
     <div class="overlay-top">
       <img class="overlay-icon" [src]="data.icon" [alt]="mainTitle" />
-      <h2 class="overlay-name">{{ mainTitle }}</h2>
+      <h2 class="overlay-name">{{ mainTitle | translate }}</h2>
     </div>
 
     <hr class="divider" />
@@ -27,7 +27,7 @@
       @for (action of data.actions; track trackByAction($index, action)) {
         <div class="overlay-action-block">
           <button class="action-btn" (click)="onAction(action)" [disabled]="isActionDisabled(action)">
-            {{ action }}
+            {{ 'ACTIONS.' + (action | uppercase) | translate }}
           </button>
           <small class="consequence">{{ getConsequence(action) }}</small>
         </div>
@@ -38,9 +38,9 @@
 
     <div class="overlay-nav">
       @if(data.isCompleted || !isNarrativeType()) {
-        <button class="nav-btn" (click)="quit()" [disabled]="disableQuit">Quit</button>
+        <button class="nav-btn" (click)="quit()" [disabled]="disableQuit">{{ 'ACTIONS.QUIT' | translate }}</button>
       } @else {
-        <button class="nav-btn" (click)="continue()" [disabled]="disableContinue()">Continue</button>
+        <button class="nav-btn" (click)="continue()" [disabled]="disableContinue()">{{ 'ACTIONS.CONTINUE' | translate }}</button>
       }
     </div>
   </div>

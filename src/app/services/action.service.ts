@@ -7,6 +7,7 @@ import {CombatService} from './combat.service';
 import {EnemyFactory} from '../factories/enemy.factory';
 import {Enemy} from '../models/enemy.model';
 import {Subject} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class ActionService {
   constructor(
     private characterService: CharacterService,
     private combatService: CombatService,
+    private translate: TranslateService,
   ) {}
 
   /**
@@ -184,7 +186,7 @@ export class ActionService {
     let msgParts: string[] = [];
 
     if (passive.description) {
-      let base = passive.description;
+      let base = this.translate.instant(passive.description);
       if (passive.effects?.length) {
         const effects = passive.effects.map(e =>
           `${e.value > 0 ? '+' : ''}${e.value} ${e.stat.toUpperCase()}`
@@ -219,7 +221,8 @@ export class ActionService {
           msgParts.push(`🌀 Effect(s): ${eff}`);
         }
         if (result.description){
-          msgParts.push(result.description);
+          let resDesc = this.translate.instant(result.description);
+          msgParts.push(resDesc);
         }
       }
     }
