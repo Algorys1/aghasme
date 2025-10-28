@@ -53,4 +53,8 @@ export class SettingsService {
   getVolume(type: 'music' | 'sfx') {
     return type === 'music' ? this.settings.musicVolume : this.settings.sfxVolume;
   }
+
+  get language() {
+    return this.settings.language;
+  }
 }

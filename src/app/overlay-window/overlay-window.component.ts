@@ -14,7 +14,7 @@ import { TradeWindowComponent } from "../trade-window/trade-window.component";
 import { OverlayShopMap, ShopType, TradeService } from '../services/trade.service';
 import { CharacterService } from '../services/character.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {UpperCasePipe} from '@angular/common';
+import { SettingsService } from '../services/settings.service';
 
 @Component({
   selector: 'app-overlay-window',
@@ -23,8 +23,7 @@ import {UpperCasePipe} from '@angular/common';
     RestWindowComponent,
     HarvestWindowComponent,
     TradeWindowComponent,
-    TranslateModule,
-    UpperCasePipe
+    TranslateModule
   ],
   styleUrls: ['./overlay-window.component.scss']
 })
@@ -68,14 +67,11 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     private tradeService: TradeService,
     private translate: TranslateService,
     private characterService: CharacterService,
-    private cdRef: ChangeDetectorRef,
+    private settings: SettingsService,
     private zone: NgZone
   ) {
-    this.translate.use('fr');
-    this.translate.onLangChange.subscribe(() => {
-      // 🔹 Force la mise à jour visuelle une fois la langue effectivement prête
-      this.cdRef.detectChanges();
-    });
+    const lang = this.settings.language || 'en';
+    this.translate.use(lang);
   }
 
   ngOnInit() {
@@ -119,8 +115,10 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     const hasBaseDescription = !!newData.description?.trim();
 
     if (hasEventChain || hasBaseDescription) {
-      this.resetTyping();
-      this.startTypingAnimation();
+      setTimeout(() => {
+        this.resetTyping();
+        this.startTypingAnimation()
+      }, 0);
     }
   }
 
@@ -157,7 +155,7 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
     this.disableQuit = this.isNarrativeType();
   }
 
-  private startTypingAnimation() {
+  private async startTypingAnimation() {
     if (!this.mainTitle) this.mainTitle = this.data.name;
 
     const current = this.data.eventChain?.[this.data.currentFloor ?? ''];
@@ -188,7 +186,7 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private typeDescription(desc: string) {
-    this.stopTyping('desc'); // sécurité
+    this.stopTyping('desc');
     this.writingDesc = true;
     this.descInterval = setInterval(() => {
       if (this.descIndex < desc.length) {
@@ -312,9 +310,9 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   getConsequence(action: string): string {
-    const translated = this.translate.instant(`ACTIONS.DESCRIPTIONS.${action.toUpperCase()}`);
-    if(translated === `ACTIONS.DESCRIPTIONS.${action.toUpperCase()}`) {
-      return 'Take this action.';
+    const translated = this.translate.instant(`ACTIONS.${action.toUpperCase()}`);
+    if(translated === `ACTIONS.${action.toUpperCase()}`) {
+      return this.translate.instant('ACTIONS.DEFAULT');
     }
     return translated;
   }

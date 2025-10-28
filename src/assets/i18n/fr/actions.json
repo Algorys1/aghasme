@@ -1,29 +1,17 @@
 {
   "ACTIONS": {
-    "OBSERVE": "Observer",
-    "INTERACT": "Interagir",
-    "FIGHT": "Combattre",
-    "FLEE": "Fuir",
-    "PRAY": "Prier",
-    "TALK": "Parler",
-    "INSPECT": "Examiner",
-    "HARVEST": "Récolter",
-    "TRADE": "Marchander",
-    "REST": "Se reposer",
-    "AVOID": "Éviter",
+    "FIGHT": "Engager le combat.",
+    "FLEE": "Essayer d'échapper au danger.",
+    "TRADE": "Voir le magasin.",
+    "REST": "Vous reposer.",
+    "PRAY": "Chercher des faveurs.",
+    "TALK": "Engager la conversation.",
+    "HARVEST": "Collecter des ressources.",
+    "INTERACT": "Intéragir avec l'environnement.",
+    "INSPECT": "Examiner de près.",
+    "OBSERVE": "Observer la scène.",
     "CONTINUE": "Continuer",
-    "QUIT": "Quitter",
-    "DESCRIPTIONS": {
-      "FIGHT": "Engager le combat.",
-      "FLEE": "Essayer d’échapper au danger.",
-      "TRADE": "Voir le magasin.",
-      "REST": "Récupérer vos PV et vos PM.",
-      "PRAY": "Chercher des bénédictions ou des faveurs.",
-      "TALK": "Engager la conversation.",
-      "HARVEST": "Collecter des ressources.",
-      "INTERACT": "Intéragir avec l’environnement.",
-      "INSPECT": "Examiner de près.",
-      "OBSERVE": "Observer la scène."
-    }
+    "QUIT": "S'en aller",
+    "DEFAULT": "Choisir cette action"
   }
 }

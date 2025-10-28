@@ -100,19 +100,20 @@
 
     .overlay-action-block {
       text-align: center;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      width: 25%;
 
       .action-btn {
-        background: #5b4b36;
-        color: #fff5d8;
-        border: 1px solid #3a2d20;
+        background: none;
+        border: none;
         border-radius: 8px;
-        padding: 0.6rem 1.5rem;
-        font-weight: 600;
         cursor: pointer;
-        transition: all 0.25s ease;
+        transition: all 0.25s
+    ease;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
         &:hover {
           background: #5c4a32;
@@ -137,6 +138,11 @@
 
         &:not(:disabled).reactivated {
           animation: pulse 0.4s ease-in-out;
+        }
+
+        .action-img {
+          height: 64px;
+          width: 64px;
         }
       }
 

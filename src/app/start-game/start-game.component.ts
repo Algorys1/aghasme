@@ -5,6 +5,7 @@ import { CharacterService } from '../services/character.service';
 import {SaveService} from '../services/save.service';
 import { SettingsMenuComponent } from "../settings-menu/settings-menu.component";
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SettingsService } from '../services/settings.service';
 
 @Component({
   selector: 'app-start-game',
@@ -21,9 +22,11 @@ export class StartGameComponent implements OnInit {
     private router: Router,
     private characterService: CharacterService,
     private saveService: SaveService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private settings: SettingsService
   ) {
-    this.translate.use('en');
+    const lang = this.settings.language || 'en';
+    this.translate.use(lang);
   }
 
   ngOnInit() {

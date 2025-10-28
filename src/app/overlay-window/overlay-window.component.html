@@ -27,7 +27,7 @@
       @for (action of data.actions; track trackByAction($index, action)) {
         <div class="overlay-action-block">
           <button class="action-btn" (click)="onAction(action)" [disabled]="isActionDisabled(action)">
-            {{ 'ACTIONS.' + (action | uppercase) | translate }}
+            <img class="action-img" src='assets/ui/hud-{{ action.toLowerCase() }}.png' />
           </button>
           <small class="consequence">{{ getConsequence(action) }}</small>
         </div>

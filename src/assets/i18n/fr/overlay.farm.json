@@ -1,0 +1,56 @@
+{
+  "FARM": {
+    "HOOKWOOD_FARM": {
+      "NAME": "Ferme de Boiscrochet",
+      "DESCRIPTION": "Une vaste ferme avec des champs de blé doré se balançant dans la brise."
+    },
+    "DAIRY_FARM": {
+      "NAME": "la Ferme Blanche",
+      "DESCRIPTION": "Une ferme en bois toute blanche, plutôt animée avec des vaches paissant paisiblement."
+    },
+    "POULTRY_FARM": {
+      "NAME": "Les Vieilles Poutres",
+      "DESCRIPTION": "Une vieille ferme composée de quatres batisses reposant elles-même sur quatres poutres. Au milieu se trouve un vieux puit."
+    },
+    "GOLDEN_GLANS": {
+      "NAME": "Au Gland Doré",
+      "DESCRIPTION": "Une ferme dynamique cultivant une variété de légumes frais."
+    },
+    "IMON_ORCHARD": {
+      "NAME": "Verger Imon",
+      "DESCRIPTION": "Un verger luxuriant rempli d'arbres fruitiers. Chaque fruit est une invitation à croquer !"
+    },
+    "MEUH_FARM": {
+      "NAME": "La Ferme Meuh",
+      "DESCRIPTION": "Une ferme qui a choisi de laisser vivre ses animaux comme bon leur semble."
+    },
+    "FLOWERS_YLISS": {
+      "NAME": "Les Fleurs d'Yliss",
+      "DESCRIPTION": "Une ferme colorée cultivant de belles fleurs et herbes. Yliss ne laisse rien au hasard !"
+    },
+    "BLUE_JAYS": {
+      "NAME": "Le Geai Bleu",
+      "DESCRIPTION": "Une ferme pittoresque connue pour ses cultures bleues vibrantes et son ambiance paisible."
+    },
+    "GOLD_FIELDS": {
+      "NAME": "Les Champs D'Or",
+      "DESCRIPTION": "Une ferme fertile connue pour sa production céréalière abondante et ses teintes dorées."
+    },
+    "BEYOND_HILL": {
+      "NAME": "La Colline",
+      "DESCRIPTION": "La ferme est située juste après une douce colline, offrant une vue imprenable sur la campagne environnante."
+    },
+    "SUNNY_ACRES": {
+      "NAME": "Les Acres du Soleil",
+      "DESCRIPTION": "Cette ferme est baignée de soleil tout au long de la journée, ce qui en fait un endroit idéal pour cultiver tout ce qu'on veut."
+    },
+    "RIVERBEND_FARM": {
+      "NAME": "La Ferme de la Rivière",
+      "DESCRIPTION": "Située le long d'un doux méandre de la rivière, cette ferme bénéficie d'un sol riche et d'un approvisionnement en eau abondant."
+    },
+    "MEADOWVIEW_FARM": {
+      "NAME": "Ferme sur Prairie",
+      "DESCRIPTION": "Surplombant une prairie pittoresque, cette ferme est connue pour sa beauté pittoresque et ses récoltes abondantes."
+    }
+  }
+}

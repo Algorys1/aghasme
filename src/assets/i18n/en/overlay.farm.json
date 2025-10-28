@@ -1,0 +1,56 @@
+{
+  "FARM": {
+    "HOOKWOOD_FARM": {
+      "NAME": "Hookwood Farm",
+      "DESCRIPTION": "A sprawling farm with golden wheat fields swaying in the breeze."
+    },
+    "DAIRY_FARM": {
+      "NAME": "White Farm",
+      "DESCRIPTION": "A rather lively, all-white wooden farmhouse with cows grazing peacefully."
+    },
+    "POULTRY_FARM": {
+      "NAME": "The Old Beams",
+      "DESCRIPTION": "An old farmhouse consisting of four buildings, each supported by four beams. In the middle is an old well."
+    },
+    "GOLDEN_GLANS": {
+      "NAME": "Golden Glans",
+      "DESCRIPTION": "A vibrant farm growing a variety of fresh vegetables."
+    },
+    "IMON_ORCHARD": {
+      "NAME": "Imon Orchard",
+      "DESCRIPTION": "A lush orchard filled with fruit trees. Each fruit is an invitation to bite into!"
+    },
+    "MEUH_FARM": {
+      "NAME": "Meuh's Farm",
+      "DESCRIPTION": "A farm that has chosen to let its animals live as they see fit."
+    },
+    "FLOWERS_YLISS": {
+      "NAME": "Flowers of Yliss",
+      "DESCRIPTION": "A colorful farm growing beautiful flowers and herbs. Yliss leaves nothing to chance!"
+    },
+    "BLUE_JAYS": {
+      "NAME": "The Blue Jays",
+      "DESCRIPTION": "A quaint farm known for its vibrant blue crops and peaceful ambiance."
+    },
+    "GOLD_FIELDS": {
+      "NAME": "Gold Fiels",
+      "DESCRIPTION": "A fertile farm known for its abundant grain production and its golden hues."
+    },
+    "BEYOND_HILL": {
+      "NAME": "Beyond Hill",
+      "DESCRIPTION": "The farm is located just past a gentle hill, offering stunning views of the surrounding countryside."
+    },
+    "SUNNY_ACRES": {
+      "NAME": "Sunny Acres",
+      "DESCRIPTION": "This farm is bathed in sunlight throughout the day, making it an ideal place to grow anything you want."
+    },
+    "RIVERBEND_FARM": {
+      "NAME": "Riverbend Farm",
+      "DESCRIPTION": "Situated along a gentle river bend, this farm benefits from rich soil and ample water supply."
+    },
+    "MEADOWVIEW_FARM": {
+      "NAME": "Meadowview Farm",
+      "DESCRIPTION": "Overlooking a picturesque meadow, this farm is known for its scenic beauty and bountiful harvests."
+    }
+  }
+}

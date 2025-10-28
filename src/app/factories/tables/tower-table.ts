@@ -247,7 +247,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
   {
     name: "Enchantress's Clock",
     description: 'A mysterious tower crowned by a colossal clock whose hands move in strange, uneven patterns. Time itself wavers here.',
-    icon: 'assets/overlays/clock.png',
+    icon: 'assets/overlays/tower.png',
     id: 'enchantress-clock',
     actions: [],
     eventChain: {

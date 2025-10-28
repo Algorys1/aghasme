@@ -3,8 +3,8 @@ import {OverlayTemplate} from '../../models/overlays.model';
 
 export const FARM_TABLE: OverlayTemplate[] = [
   {
-    name: 'Hookwood Farm',
-    description: 'A sprawling farm with golden wheat fields swaying in the breeze.',
+    name: 'FARM.HOOKWOOD_FARM.NAME',
+    description: 'FARM.HOOKWOOD_FARM.DESCRIPTION',
     resources: [
       {
         id: 'herbs',
@@ -33,9 +33,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Dairy Farm',
+    name: 'FARM.DAIRY_FARM.NAME',
     id: 'dairy-farm',
-    description: 'A bustling dairy farm with cows grazing peacefully.',
+    description: 'FARM.DAIRY_FARM.DESCRIPTION',
     resources: [
       {
         id: 'wheat',
@@ -63,9 +63,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Poultry Farm',
+    name: 'FARM.POULTRY_FARM.NAME',
     id: 'poultry-farm',
-    description: 'A lively farm filled with chickens, ducks, and other fowl.',
+    description: 'FARM.POULTRY_FARM.DESCRIPTION',
     resources: [
       {
         id: 'wheat',
@@ -93,9 +93,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Glans House',
+    name: 'FARM.GOLDEN_GLANS.NAME',
     id: 'glans-house',
-    description: 'A vibrant farm growing a variety of fresh vegetables.',
+    description: 'FARM.GOLDEN_GLANS.DESCRIPTION',
     resources: [
       {
         id: 'wheat',
@@ -123,9 +123,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Imon Orchard',
-    id: 'imon-orchad',
-    description: 'A lush orchard filled with fruit-bearing trees.',
+    name: 'FARM.IMON_ORCHARD.NAME',
+    id: 'imon-orchard',
+    description: 'FARM.IMON_ORCHARD.DESCRIPTION',
     resources: [
       {
         id: 'herbs',
@@ -146,9 +146,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Meuh\'s Farm',
+    name: 'FARM.MEUH_FARM.NAME',
     id: 'meuh-farm',
-    description: 'A farm raising cattle, sheep, and other livestock.',
+    description: 'FARM.MEUH_FARM.NAME',
     resources: [
       {
         id: 'fibers',
@@ -176,9 +176,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Flowers of Yliss',
+    name: 'FARM.FLOWERS_YLISS.NAME',
     id: 'flowers-yliss',
-    description: 'A colorful farm cultivating beautiful flowers and herbs.',
+    description: 'FARM.FLOWERS_YLISS.DESCRIPTION',
     resources: [
       {
         id: 'herbs',
@@ -199,9 +199,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'The Blue Jays',
+    name: 'FARM.BLUE_JAYS.NAME',
     id: 'blue-jays',
-    description: 'A quaint farm known for its vibrant blue crops and peaceful ambiance.',
+    description: 'FARM.BLUE_JAYS.DESCRIPTION',
     resources: [
       {
         id: 'berries',
@@ -215,9 +215,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Gold Fields',
+    name: 'FARM.GOLD_FIELDS.NAME',
     id: 'gold-fields',
-    description: 'A fertile farm known for its abundant grain production and its golden hues.',
+    description: 'FARM.GOLD_FIELDS.DESCRIPTION',
     resources: [
       {
         id: 'wheat',
@@ -238,9 +238,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Beyond Hill',
+    name: 'FARM.BEYOND_HILL.NAME',
     id: 'beyond-hill',
-    description: 'The farm is located just past a gentle hill, offering stunning views of the surrounding countryside.',
+    description: 'FARM.BEYOND_HILL.DESCRIPTION',
     resources: [
       {
         id: 'wheat',
@@ -254,9 +254,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Sunny Acres',
+    name: 'FARM.SUNNY_ACRES.NAME',
     id: 'sunny-acres',
-    description: 'This farm is bathed in sunlight throughout the day, making it an ideal location for growing a variety of crops.',
+    description: 'FARM.SUNNY_ACRES.DESCRIPTION',
     resources: [
       {
         id: 'wheat',
@@ -277,9 +277,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Riverbend Farm',
+    name: 'FARM.RIVERBEND_FARM.NAME',
     id: 'riverbend-farm',
-    description: 'Situated along a gentle river bend, this farm benefits from rich soil and ample water supply.',
+    description: 'FARM.RIVERBEND.DESCRIPTION',
     resources: [
       {
         id: 'fibers',
@@ -300,9 +300,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'Meadowview Farm',
+    name: 'FARM.MEADOW_VIEW.NAME',
     id: 'meadowview-farm',
-    description: 'Overlooking a picturesque meadow, this farm is known for its scenic beauty and bountiful harvests.',
+    description: 'FARM.MEADOW_VIEW.DESCRIPTION',
     resources: [
       {
         id: 'herbs',
