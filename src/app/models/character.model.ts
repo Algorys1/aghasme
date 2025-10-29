@@ -106,3 +106,12 @@ export const ARCHETYPE_ORB_MODIFIERS: Record<Archetype, Partial<Orbs>> = {
   ant:        { natural: +1, bestial: -1 },
   engineer:   { mechanic: +1, natural: -1 },
 };
+
+export function getOrbModifier(orbValue: number): number {
+  if (orbValue <= 6) return -2;
+  if (orbValue <= 9) return -1;
+  if (orbValue <= 12) return 0;
+  if (orbValue <= 15) return +1;
+  if (orbValue <= 19) return +2;
+  return +3;
+}

@@ -21,7 +21,7 @@ export class DiceService {
     return this.request$.asObservable();
   }
 
-  askPlayerRoll(orb: OrbType, orbPower: number): Promise<DiceResult> {
+  askPlayerRoll(orb: OrbType, orbPower: number, difficulty: number): Promise<DiceResult> {
     return new Promise((resolve) => {
       this.request$.next({ orb, orbPower, resolve });
     });

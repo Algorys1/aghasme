@@ -20,14 +20,19 @@
   width: 80%;
   max-width: 320px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-  color: #f5f2e8;
+  color: #2b1a0f;
+  background-image: url('../../assets/ui/parchment-background.webp');
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  background-position: center;
+  animation: fadeInScale 0.3s ease-out;
 }
 
 .title {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
-  color: #ffe9a9;
-  text-shadow: 1px 1px 2px #000;
+  color: #2b1a0f;
+  text-shadow: 1px 1px 2px #a9a5a5;
 }
 
 canvas {
@@ -41,19 +46,69 @@ canvas {
   margin-top: 0.5rem;
 
   button {
-    background: #70593d;
-    color: #fdf6e3;
-    border: 2px solid #cbb27d;
-    border-radius: 8px;
-    padding: 0.4rem 1.2rem;
-    font-size: 1rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 3px solid #cbb27d;
+    background: radial-gradient(circle at 30% 30%, #7a6142, #4e3b28);
+    box-shadow:
+      inset 0 2px 3px rgba(255, 255, 255, 0.2),
+      0 3px 6px rgba(0, 0, 0, 0.6);
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    padding: 0;
+    margin: 0.5rem auto;
+
     &:hover {
-      background: #8b6e4c;
+      transform: scale(1.05);
+      box-shadow:
+        inset 0 2px 3px rgba(255, 255, 255, 0.3),
+        0 4px 10px rgba(0, 0, 0, 0.7);
+    }
+
+    &:active {
+      transform: scale(0.95);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+      transition: transform 0.2s ease;
+    }
+
+    &:hover .icon {
+      transform: rotate(10deg);
     }
   }
 }
+
+.roll-infos {
+  background: rgba(255, 248, 225, 0.5);
+  border: 1px solid rgba(203, 178, 125, 0.6);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  margin: 0.3rem auto 0.8rem;
+  width: 90%;
+  font-size: 0.9rem;
+  color: #3a2615;
+
+  p {
+    margin: 0.2rem 0;
+    display: flex;
+    justify-content: space-between;
+
+    strong {
+      color: #42280f;
+    }
+  }
+}
+
 
 .rolling-text {
   color: #cbb27d;
@@ -75,9 +130,37 @@ canvas {
   .result-verdict {
     font-weight: bold;
     margin-bottom: .5rem;
-    &.criticalFail { color: #ff4b4b; }
+    &.criticalFail {
+      color: #ff4b4b;
+      animation: shake 0.4s;
+    }
     &.fail { color: #e38a6d; }
     &.success { color: #6df176; }
-    &.criticalSuccess { color: #67c9ff; }
+    &.criticalSuccess {
+      color: #67c9ff;
+      animation: pulse 0.8s ease-in-out;
+    }
   }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }

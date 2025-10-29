@@ -53,7 +53,7 @@ export class HarvestWindowComponent implements OnInit {
 
     this.setMessage(`⛏️ You are trying to harvest ${res.id}...`);
 
-    const { value, verdict } = await this.diceService.askPlayerRoll(res.orb, this.characterService.getOrbPower(res.orb));
+    const { value, verdict } = await this.diceService.askPlayerRoll(res.orb, this.characterService.getOrbPower(res.orb), res.difficulty + 6);
     const orbPower = this.characterService.getOrbPower(res.orb) ?? 0;
 
     const total = value + orbPower;

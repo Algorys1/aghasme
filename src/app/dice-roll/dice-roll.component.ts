@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
 import { CommonModule } from '@angular/common';
 import { Application, Sprite, Texture, Rectangle, Assets, Ticker } from 'pixi.js';
 import { Haptics } from '@capacitor/haptics';
+import { getOrbModifier } from '../models/character.model';
 
 export type OrbType = 'bestial' | 'elemental' | 'natural' | 'mechanic';
 export type DiceVerdict = 'criticalFail' | 'fail' | 'success' | 'criticalSuccess';
@@ -22,12 +23,15 @@ export class DiceRollComponent {
   @ViewChild('diceCanvas', { static: true }) diceCanvas!: ElementRef<HTMLCanvasElement>;
   @Input() orb: OrbType = 'natural';
   @Input() orbPower = 0;
+  @Input() difficulty = 10;
   @Output() rolledResult = new EventEmitter<DiceResult>();
 
   visible = true;
   rolling = false;
   rolled = false;
   result = 0;
+  modifier = 0;
+  total = 0;
   verdict: DiceVerdict | null = null;
 
   private app?: Application;
@@ -52,7 +56,7 @@ export class DiceRollComponent {
       height: 200,
     });
 
-    const base = await Assets.load<Texture>(`assets/ui/dice/dice-${this.orb}-sheet.png`);
+    const base = await Assets.load<Texture>(`assets/ui/dices/dice-${this.orb}-sheet.png`);
     this.frameTextures = [];
 
     const cols = 5, rows = 4;
@@ -135,14 +139,14 @@ export class DiceRollComponent {
   }
 
   private async finishRoll(result: number) {
-    console.log('🎯 finishRoll called with', result);
-
     try { await Haptics.vibrate({ duration: 100 }); } catch {}
+
+    this.modifier = getOrbModifier(this.orbPower);
+    this.total = result + this.modifier;
 
     if (result === 1) this.verdict = 'criticalFail';
     else if (result === 20) this.verdict = 'criticalSuccess';
-    else if (result >= this.orbPower) this.verdict = 'success';
-    else this.verdict = 'fail';
+    else this.verdict = this.total >= this.difficulty ? 'success' : 'fail';
 
     this.rolling = false;
     this.rolled = true;
