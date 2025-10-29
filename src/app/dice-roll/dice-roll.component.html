@@ -8,6 +8,7 @@
       @if(!rolled && !rolling) {
         <button (click)="roll()">🎲 Roll</button>
       }
+
       @if(rolling) {
         <div class="rolling-text">Rolling...</div>
       }
@@ -20,11 +21,14 @@
               @case ('fail') { Fail }
               @case ('success') { ✅ Success }
               @case ('criticalSuccess') { 🌟 Critical Success! }
+              @default { 🎲 Unknown Result }
             }
           </div>
-          <button class="close-btn" (click)="close()">Close</button>
+
+          <button class="close-btn" (click)="emitResult()">Close</button>
         </div>
       }
     </div>
   </div>
+
 </div>

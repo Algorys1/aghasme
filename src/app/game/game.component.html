@@ -149,6 +149,12 @@
     </div>
   }
 
-  <app-dice-roll #diceRoll></app-dice-roll>
+  @if(diceVisible) {
+    <app-dice-roll
+      [orb]="pendingOrb"
+      [orbPower]="pendingOrbPower"
+      (rolledResult)="onDiceRolled($event)">
+    </app-dice-roll>
+  }
 
 </div>

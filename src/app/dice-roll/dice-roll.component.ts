@@ -1,10 +1,15 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Application, Sprite, Texture, Rectangle, Assets } from 'pixi.js';
+import { Application, Sprite, Texture, Rectangle, Assets, Ticker } from 'pixi.js';
 import { Haptics } from '@capacitor/haptics';
 
-type OrbType = 'bestial' | 'elemental' | 'natural' | 'mechanic';
-type DiceVerdict = 'criticalFail' | 'fail' | 'success' | 'criticalSuccess';
+export type OrbType = 'bestial' | 'elemental' | 'natural' | 'mechanic';
+export type DiceVerdict = 'criticalFail' | 'fail' | 'success' | 'criticalSuccess';
+export interface DiceResult {
+  orb: OrbType;
+  value: number;
+  verdict: DiceVerdict;
+}
 
 @Component({
   selector: 'app-dice-roll',
@@ -14,14 +19,14 @@ type DiceVerdict = 'criticalFail' | 'fail' | 'success' | 'criticalSuccess';
   styleUrls: ['./dice-roll.component.scss']
 })
 export class DiceRollComponent {
-  @ViewChild('diceCanvas', { static: false }) diceCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('diceCanvas', { static: true }) diceCanvas!: ElementRef<HTMLCanvasElement>;
+  @Input() orb: OrbType = 'natural';
+  @Input() orbPower = 0;
+  @Output() rolledResult = new EventEmitter<DiceResult>();
 
-  visible = false;
+  visible = true;
   rolling = false;
   rolled = false;
-
-  orb: OrbType = 'natural';
-  orbPower = 0;
   result = 0;
   verdict: DiceVerdict | null = null;
 
@@ -29,24 +34,16 @@ export class DiceRollComponent {
   private sprite?: Sprite;
   private frameTextures: Texture[] = [];
 
-  open(orb: OrbType, orbPower: number) {
-    this.orb = orb;
-    this.orbPower = orbPower;
-    this.result = 0;
-    this.verdict = null;
-    this.visible = true;
-    this.rolling = false;
-    this.rolled = false;
-  }
-
   async roll() {
     if (this.rolling) return;
     this.rolling = true;
 
-    await new Promise(r => setTimeout(r));
+    if (this.app) {
+      this.app.destroy(true, { children: true });
+      this.app = undefined;
+    }
 
     const canvas = this.diceCanvas.nativeElement;
-
     this.app = new Application();
     await this.app.init({
       canvas,
@@ -58,29 +55,17 @@ export class DiceRollComponent {
     const base = await Assets.load<Texture>(`assets/ui/dice/dice-${this.orb}-sheet.png`);
     this.frameTextures = [];
 
-    const frameCols = 5;
-    const frameRows = 4;
-    const frameWidth = Math.floor(base.width / frameCols);
-    const frameHeight = Math.floor(base.height / frameRows);
-    const safePad = 1;
-
+    const cols = 5, rows = 4;
+    const w = base.width / cols, h = base.height / rows;
     for (let i = 0; i < 20; i++) {
-      const col = i % frameCols;
-      const row = Math.floor(i / frameCols);
-
-      const x = col * frameWidth + safePad;
-      const y = row * frameHeight + safePad;
-      const w = frameWidth - safePad * 2;
-      const h = frameHeight - safePad * 2;
-
-      const rect = new Rectangle(x, y, w, h);
+      const rect = new Rectangle((i % cols) * w, Math.floor(i / cols) * h, w, h);
       this.frameTextures.push(new Texture({ source: base.source, frame: rect }));
     }
 
     this.sprite = new Sprite(this.frameTextures[0]);
     this.sprite.anchor.set(0.5);
-    this.sprite.x = this.app.renderer.width / 2;
-    this.sprite.y = this.app.renderer.height / 2;
+    this.sprite.x = 100;
+    this.sprite.y = 100;
     this.sprite.scale.set(0.7);
     this.app.stage.addChild(this.sprite);
 
@@ -94,25 +79,24 @@ export class DiceRollComponent {
 
     const sprite = this.sprite!;
     const baseScale = 0.7;
-    const start = performance.now();
-    const duration = 2500;
     const totalFrames = 20;
+    const duration = 2000;
+    const start = performance.now();
 
     let frame = 0;
     let lastChange = 0;
 
-    const ticker = this.app.ticker;
+    const rollTicker = this.app.ticker;
+    rollTicker.start();
 
-    ticker.add(() => {
+    rollTicker.add(() => {
       const elapsed = performance.now() - start;
-      const progress = elapsed / duration;
+      const progress = Math.min(elapsed / duration, 1);
+      const interval = 60 + 200 * Math.pow(progress, 2.2);
 
-      const interval = 40 + 300 * Math.pow(progress, 2.3);
+      sprite.rotation = Math.PI * 4 * progress;
 
-      const totalRotation = Math.PI * 2 * 3;
-      sprite.rotation = totalRotation * progress;
-
-      const scalePulse = baseScale + Math.sin(progress * Math.PI * 6) * 0.03 * (1 - progress);
+      const scalePulse = baseScale + Math.sin(progress * Math.PI * 4) * 0.05 * (1 - progress);
       sprite.scale.set(scalePulse);
 
       if (elapsed - lastChange >= interval) {
@@ -122,19 +106,18 @@ export class DiceRollComponent {
       }
 
       if (elapsed >= duration) {
-        ticker.stop();
+        rollTicker.stop();
 
         const finalIndex = (finalResult - 1) % totalFrames;
         sprite.texture = this.frameTextures[finalIndex];
 
+        const settleTicker = new Ticker();
         const settleStart = performance.now();
         const settleDuration = 400;
-        const settleTicker = this.app!.ticker;
 
         settleTicker.add(() => {
           const t = Math.min((performance.now() - settleStart) / settleDuration, 1);
           const damping = Math.pow(1 - t, 2);
-
           sprite.rotation = Math.sin(t * 10) * 0.15 * damping;
           sprite.scale.set(baseScale + 0.04 * damping);
 
@@ -142,14 +125,18 @@ export class DiceRollComponent {
             settleTicker.stop();
             sprite.rotation = 0;
             sprite.scale.set(baseScale);
+            this.finishRoll(finalResult);
           }
-          this.onRollComplete(finalResult);
         });
+
+        settleTicker.start();
       }
     });
   }
 
-  private async onRollComplete(result: number) {
+  private async finishRoll(result: number) {
+    console.log('🎯 finishRoll called with', result);
+
     try { await Haptics.vibrate({ duration: 100 }); } catch {}
 
     if (result === 1) this.verdict = 'criticalFail';
@@ -161,12 +148,11 @@ export class DiceRollComponent {
     this.rolled = true;
   }
 
-  close() {
-    if (this.app) {
-      this.app.destroy(true, { children: true });
-      this.app = undefined;
-    }
-    this.visible = false;
-    this.rolled = false;
+  emitResult() {
+    this.rolledResult.emit({
+      orb: this.orb,
+      value: this.result,
+      verdict: this.verdict!
+    });
   }
 }

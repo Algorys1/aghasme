@@ -19,7 +19,7 @@ import { LootPanelComponent } from "../loot-panel/loot-panel.component";
 import { LootService } from '../services/loot.service';
 import { OverlayRegistryService } from '../services/overlay-registry.service';
 import { HarvestRegenerationService } from '../services/harvest-regeneration.service';
-import { DiceRollComponent } from "../dice-roll/dice-roll.component";
+import { DiceResult, DiceRollComponent, OrbType } from "../dice-roll/dice-roll.component";
 import { DiceService } from '../services/dice.service';
 
 @Component({
@@ -31,7 +31,11 @@ import { DiceService } from '../services/dice.service';
 })
 export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('diceRoll') diceRoll!: DiceRollComponent;
+
+  diceVisible = false;
+  pendingOrb: OrbType = 'natural';
+  pendingOrbPower = 0;
+  private rollResolver?: (r: DiceResult) => void;
 
   character: Character | null = null;
   orbs: { key: OrbKey; name: string; icon: string; value: number }[] = [];
@@ -126,8 +130,20 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('🧹 Overlay closed via closeOverlay$');
         this.activeOverlay = null;
       }),
+      this.diceService.onRequest.subscribe(req => {
+        this.pendingOrb = req.orb;
+        this.pendingOrbPower = req.orbPower;
+        this.rollResolver = req.resolve;
+        this.diceVisible = true;
+      })
     );
     this.refreshOrbs();
+  }
+
+  onDiceRolled(result: DiceResult) {
+    this.diceVisible = false;
+    this.rollResolver?.(result);
+    this.rollResolver = undefined;
   }
 
   async ngAfterViewInit() {
@@ -137,7 +153,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       console.error('❌ Impossible to find canvas');
       return;
     }
-    this.diceService.registerComponent(this.diceRoll);
 
     const nav = history.state ?? {};
     const chosenSlot: string | undefined = nav.slot;

@@ -16,9 +16,7 @@ export class HarvestWindowComponent implements OnInit {
   @Input() resources: HarvestResource[] = [];
   @Output() closed = new EventEmitter<void>();
 
-  isProcessing = false;
   message = '';
-  progress = 0;
 
   constructor(
     private characterService: CharacterService,
@@ -48,27 +46,14 @@ export class HarvestWindowComponent implements OnInit {
   }
 
   async harvest(res: HarvestResource) {
-    if (res.exhausted || this.isProcessing) return;
+    if (res.exhausted) return;
 
     const item = res.item;
     if (!item) return;
 
-    this.isProcessing = true;
-    this.progress = 0;
     this.setMessage(`⛏️ You are trying to harvest ${res.id}...`);
 
-    const duration = 1000 + res.difficulty * 150;
-    const step = 50;
-    const increment = (step / duration) * 100;
-
-    for (let t = 0; t < duration; t += step) {
-      await new Promise(r => setTimeout(r, step));
-      this.progress = Math.min(100, this.progress + increment);
-    }
-
-    const { value, verdict } = await this.diceService.askPlayerRoll(
-      res.orb, this.characterService.getOrbPower(res.orb)
-    );
+    const { value, verdict } = await this.diceService.askPlayerRoll(res.orb, this.characterService.getOrbPower(res.orb));
     const orbPower = this.characterService.getOrbPower(res.orb) ?? 0;
 
     const total = value + orbPower;
@@ -113,8 +98,6 @@ export class HarvestWindowComponent implements OnInit {
 
     res.exhausted = true;
     this.harvestRegenService.addDepletedResource(res, this.mapService.getPlayerPosition());
-    this.isProcessing = false;
-    this.progress = 0;
   }
 
   quit() {

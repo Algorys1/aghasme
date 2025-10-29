@@ -1,11 +1,11 @@
 <div class="harvest-window parchment-bg">
   <h2 class="title">Harvest</h2>
-
+<!--
   @if(isProcessing) {
     <div class="progress-bar global">
       <div class="bar" [style.width.%]="progress"></div>
     </div>
-  }
+  } -->
 
   <div class="resources-list">
     @for(res of resources; track res.id) {
@@ -25,7 +25,7 @@
         <button
           class="action-btn"
           (click)="harvest(res)"
-          [disabled]="res.exhausted || isProcessing"
+          [disabled]="res.exhausted"
         >
           {{ res.exhausted ? 'Out of stock' : 'Harvest' }}
         </button>
