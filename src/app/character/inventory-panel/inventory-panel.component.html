@@ -1,0 +1,101 @@
+<div class="inventory">
+  <div class="gold-display" *ngIf="character">
+    <img src="assets/ui/gold.png" alt="Gold" />
+    <span>{{ character.gold }}</span>
+  </div>
+
+  <div class="inventory-filters">
+    @for (f of filterOptions; track f) {
+      <button
+        class="filter-btn"
+        [class.active]="activeFilter === f"
+        (click)="selectFilter(f)"
+      >
+        {{ f | titlecase }}
+      </button>
+    }
+  </div>
+
+  <!-- === INVENTAIRE DU JOUEUR === -->
+  <section class="inventory-grid">
+    @for (item of filteredItems; track item.instanceId ?? item.id + '-' + $index) {
+      <div
+        class="inventory-slot"
+        [class.selected]="selectedItem?.instanceId === item.instanceId"
+        [ngClass]="item.rarity.toLowerCase()"
+        (click)="selectItem(item)"
+      >
+        <img [src]="item.icon" [alt]="item.name" />
+        @if (item.count && item.count > 1) {
+          <div class="stack-count">x{{ item.count }}</div>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- === DESCRIPTION + ACTIONS === -->
+  @if (selectedItem) {
+    <section class="item-description">
+      <div class="item-header">
+        <h3 [ngClass]="selectedItem.rarity.toLowerCase()">
+          {{ selectedItem.name }}
+        </h3>
+        <span class="rarity-label">{{ selectedItem.rarity }}</span>
+      </div>
+
+      <p class="item-text">{{ selectedItem.description }}</p>
+
+      @if (selectedItem.effects.length) {
+        <ul class="item-effects">
+          @for (eff of selectedItem.effects; track eff.stat + '-' + eff.value) {
+            <li>
+              <span class="effect-stat">{{ eff.stat | uppercase }}</span>
+              <span class="effect-value">
+                {{ eff.value > 0 ? '+' : '' }}{{ eff.value
+                }}{{ eff.type === 'percent' ? '%' : '' }}
+              </span>
+            </li>
+          }
+        </ul>
+      }
+
+      <div class="item-value">
+        <img src="assets/ui/gold.png" alt="Gold" />
+        <span>{{ selectedItem.computedValue ?? selectedItem.baseValue }}</span>
+      </div>
+    </section>
+
+    <!-- === ACTIONS === -->
+    <section class="item-actions">
+      <button class="action-btn" title="Use" (click)="useItem()">
+        <img src="assets/ui/action-use.png" alt="Use" />
+      </button>
+
+      @if (selectedItem.equipSlot?.length) {
+        <button
+          class="action-btn"
+          title="Equip"
+          (click)="inventory.equipItem(selectedItem)"
+        >
+          <img src="assets/ui/action-equip.png" alt="Equip" />
+        </button>
+      }
+
+      <button
+        class="action-btn"
+        title="Throw"
+        (click)="inventory.dropItem(selectedItem)"
+      >
+        <img src="assets/ui/action-throw.png" alt="Throw" />
+      </button>
+
+      <button
+        class="action-btn"
+        title="Delete"
+        (click)="inventory.removeItem(selectedItem!.id)"
+      >
+        <img src="assets/ui/action-delete.png" alt="Delete" />
+      </button>
+    </section>
+  }
+</div>

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { MapService } from '../services/map.service';
+import { MapService } from '../../services/map.service';
 
 interface MiniTile {
   terrain: string;
@@ -180,7 +180,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'forest': return '#228833';
       case 'desert': return '#d9c96c';
       case 'mountain': return '#777777';
-      case 'volcano': return '#993333';
+      case 'volcano': return '#4d4d4dff';
       case 'swamp': return '#446655';
       case 'jungle': return '#337755';
       case 'sea': return '#3a6ea5';

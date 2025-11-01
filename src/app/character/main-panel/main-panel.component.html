@@ -1,0 +1,54 @@
+<div class="player-panel">
+  <div class="tab-bar">
+    <button
+      class="tab-btn"
+      [class.active]="tab === 'inventory'"
+      (click)="switchTab('inventory')"
+      title="Inventory"
+    >
+      <img src="assets/ui/hud-inventory.png" alt="Inventory" />
+    </button>
+
+    <button
+      class="tab-btn"
+      [class.active]="tab === 'equipment'"
+      (click)="switchTab('equipment')"
+      title="Equipment"
+    >
+      <img src="assets/ui/hud-equipment.png" alt="Equipment" />
+    </button>
+
+    <button
+      class="tab-btn"
+      [class.active]="tab === 'character'"
+      (click)="switchTab('character')"
+      title="Character"
+    >
+      <img src="assets/ui/hud-character.png" alt="Character" />
+    </button>
+
+    <button
+    class="tab-btn"
+    [class.active]="tab === 'minimap'"
+    (click)="switchTab('minimap')"
+    title="Minimap"
+  >
+    <img src="assets/ui/hud-map.png" alt="Minimap" />
+  </button>
+  </div>
+
+  <div class="tab-content">
+    @if(tab === 'inventory') {
+      <app-inventory-panel></app-inventory-panel>
+    }
+    @if(tab === 'equipment') {
+      <app-equipment-panel></app-equipment-panel>
+    }
+    @if(tab === 'character') {
+      <app-character-panel></app-character-panel>
+    }
+    @if(tab === 'minimap') {
+      <app-minimap></app-minimap>
+    }
+  </div>
+</div>

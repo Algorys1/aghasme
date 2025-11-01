@@ -9,25 +9,24 @@ import { SaveService } from '../services/save.service';
 import { GameState } from '../models/game-state.model';
 import { OverlayInstance, OverlayKind } from '../models/overlays.model';
 import { OverlayFactory } from '../factories/overlay.factory';
-import { MinimapComponent } from "../minimap/minimap.component";
 import { OverlayWindowComponent } from '../overlay-window/overlay-window.component';
 import {ActionType} from '../models/actions';
 import {ActionService} from '../services/action.service';
 import { CombatComponent } from '../combat/combat.component';
-import { InventoryPanelComponent } from '../inventory-panel/inventory-panel.component';
 import { LootPanelComponent } from "../loot-panel/loot-panel.component";
 import { LootService } from '../services/loot.service';
 import { OverlayRegistryService } from '../services/overlay-registry.service';
 import { HarvestRegenerationService } from '../services/harvest-regeneration.service';
 import { DiceResult, DiceRollComponent, OrbType } from "../dice-roll/dice-roll.component";
 import { DiceService } from '../services/dice.service';
+import { PlayerPanelComponent } from "../character/main-panel/main-panel.component";
 
 @Component({
   selector: 'app-game',
   standalone: true,
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
-  imports: [MinimapComponent, OverlayWindowComponent, CombatComponent, InventoryPanelComponent, LootPanelComponent, DiceRollComponent]
+  imports: [OverlayWindowComponent, CombatComponent, LootPanelComponent, DiceRollComponent, PlayerPanelComponent]
 })
 export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -46,7 +45,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   showInventoryPanel = false;
   showLootPanel = false;
   showMenuPanel = false;
-  showMapPanel = false;
 
   activeOverlay: OverlayInstance | null = null;
   isOverlayPaused = false;
@@ -252,18 +250,13 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // === HUD buttons ===
-  openMapPanel() { this.showMapPanel = true; }
   openInventoryPanel() { this.showInventoryPanel = true; }
   openLootPanel() { this.showLootPanel = true; }
   openPauseMenu() { this.showMenuPanel = true; }
 
-  closeMap() { this.showMapPanel = false; }
   closeInventoryPanel() { this.showInventoryPanel = false; }
   closeLootPanel() { this.showLootPanel = false; }
   closePauseMenu() { this.showMenuPanel = false; }
-
-  // TODO
-  openQuests() { console.log('Open Quests'); }
 
   goHome() { this.router.navigate(['/home']); }
 

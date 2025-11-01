@@ -134,6 +134,17 @@ export const ACCESSORY_ITEMS: Item[] = [
 
 export const ARMOR_ITEMS: Item[] = [
   {
+    id: 'armor-chainmail-power',
+    name: 'Power Chainmail Armor',
+    description: 'A chainmail-like armor that seems invincible and unalterable.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/armor-chainmail-power.png',
+    baseValue: 800,
+    equipSlot: [EquipSlot.Torso],
+    rarity: RarityType.Legendary,
+    effects: [{stat: 'defense', value: 5}]
+  },
+  {
     id: 'armor-leather',
     name: 'Leather Armor',
     description: 'Light armor, offers minimal protection but keeps mobility.',
@@ -153,6 +164,17 @@ export const ARMOR_ITEMS: Item[] = [
     baseValue: 250,
     equipSlot: [EquipSlot.Torso],
     rarity: RarityType.Normal,
+    effects: [{stat: 'defense', value: 4}]
+  },
+  {
+    id: 'armor-iron-mechanic',
+    name: 'Mechanical Iron Armor',
+    description: 'This mechanical iron armor comes from an ancient time and a forgotten technology.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/armor-iron-mechanic.png',
+    baseValue: 300,
+    equipSlot: [EquipSlot.Torso],
+    rarity: RarityType.Rare,
     effects: [{stat: 'defense', value: 4}]
   },
   {
@@ -427,6 +449,17 @@ export const ARMOR_ITEMS: Item[] = [
 ];
 
 export const CONSUMABLE_ITEMS: Item[] = [
+  {
+    id: 'apples',
+    name: 'Apples',
+    description: 'A few red apples, but not from a fairy tale!',
+    type: ItemType.Consumable,
+    icon: 'assets/items/consumables/apples.png',
+    stackable: true,
+    baseValue: 2,
+    rarity: RarityType.Normal,
+    effects: [{ stat: 'hp', value: 2 }]
+  },
   {
     id: 'ammo-arrows',
     name: 'Arrows',
@@ -806,11 +839,11 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     effects: [{ stat: 'damage', value: 6 }],
   },
   {
-    id: 'axe',
-    name: 'Axe',
+    id: 'axe-battle',
+    name: 'Battle Axe',
     description: 'A good axe can always cut something. A discussion or a head.',
     type: ItemType.WeaponMelee,
-    icon: 'assets/items/weapons-melee/axe.png',
+    icon: 'assets/items/weapons-melee/axe-battle.png',
     baseValue: 100,
     subtype: 'axe',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
@@ -992,7 +1025,32 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
 ];
 
 export const WEAPON_RANGE_ITEMS: Item[] = [
-  // WEAPON RANGE
+  {
+    id: 'bow-golden',
+    name: 'Golden Bow',
+    description: 'A golden bow, made of precious wood and decorated with ancient runes.',
+    type: ItemType.WeaponRange,
+    icon: 'assets/items/weapons-range/bow-golden.png',
+    baseValue: 450,
+    subtype: 'bow',
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    twoHanded: true,
+    rarity: RarityType.Epic,
+    effects: [{ stat: 'damage', value: 4 }]
+  },
+  {
+    id: 'bow-long',
+    name: 'Long Bow',
+    description: 'A long, flexible, and beautifully crafted bow.',
+    type: ItemType.WeaponRange,
+    icon: 'assets/items/weapons-range/bow-long.png',
+    baseValue: 220,
+    subtype: 'bow',
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    twoHanded: true,
+    rarity: RarityType.Normal,
+    effects: [{ stat: 'damage', value: 4 }]
+  },
   {
     id: 'bow-short',
     name: 'Short Bow',
@@ -1012,12 +1070,12 @@ export const WEAPON_RANGE_ITEMS: Item[] = [
     description: 'The bowstring sings with the sound of wind when drawn.',
     type: ItemType.WeaponRange,
     icon: 'assets/items/weapons-range/bow-whisper.png',
-    baseValue: 540,
-    rarity: RarityType.Rare,
+    baseValue: 900,
+    rarity: RarityType.Legendary,
     subtype: 'bow',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
-    effects: [{ stat: 'damage', value: 4 }, { stat: 'critical', value: 5 }],
+    effects: [{ stat: 'damage', value: 6 }, { stat: 'critical', value: 5 }],
   },
 ];
 

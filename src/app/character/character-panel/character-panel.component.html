@@ -1,0 +1,52 @@
+<div class="character-panel" *ngIf="character">
+  <div class="char-header">
+    <img
+      class="portrait"
+      [src]="'assets/characters/' + character.archetype + '-' + character.gender + '.png'"
+      alt="Portrait"
+    />
+    <div class="char-info">
+      <h2>{{ character.name }}</h2>
+      <p>Level {{ character.level }}</p>
+    </div>
+  </div>
+
+  <div class="bars">
+    <div class="bar">
+      <img src="assets/ui/hp.png" alt="HP" />
+      <span>{{ character.hp }} / {{ character.maxHp }}</span>
+    </div>
+    <div class="bar">
+      <img src="assets/ui/mana.png" alt="MP" />
+      <span>{{ character.mp }} / {{ character.maxMp }}</span>
+    </div>
+  </div>
+
+  <div class="orbs">
+    <div class="orb" *ngFor="let key of orbKeys()">
+      <img [src]="orbDefs[key].icon" [alt]="orbDefs[key].label" />
+      <span class="orb-value">{{ character.orbs[key] }}</span>
+      <small>{{ orbDefs[key].label }}</small>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="primary-stats">
+    <div><strong>Attack:</strong> {{ character.attack }}</div>
+    <div><strong>Defense:</strong> {{ character.defense }}</div>
+    <div><strong>XP:</strong> {{ character.xp }}</div>
+  </div>
+
+  <hr />
+
+  <div class="secondary-stats">
+    <div>🔥 Fire Resistance: +10%</div>
+    <div>⚡ Electric Resistance: +8%</div>
+    <div>🪞 Damage Reflection: +5%</div>
+    <div>💥 Additional Damage: +5%</div>
+    <div>⛏️ Mining Bonus: +8%</div>
+    <div>🌲 Woodcutting Bonus: +6%</div>
+    <div>🌿 Herbalism Bonus: +4%</div>
+  </div>
+</div>

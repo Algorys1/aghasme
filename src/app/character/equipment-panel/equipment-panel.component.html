@@ -1,0 +1,48 @@
+<div class="equipment-panel">
+  <h3 class="title">Equipped Gear</h3>
+
+  <div class="equip-grid">
+    @for (slot of equipSlots; track $index) {
+      <div class="equip-slot" (click)="compare(slot)">
+        @if (equipped[slot]) {
+          <img
+            [src]="equipped[slot]!.icon"
+            [alt]="equipped[slot]!.name"
+            class="equip-icon"
+          />
+        } @else {
+          <div class="slot-empty">{{ slot }}</div>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="bonus-summary" *ngIf="character">
+    <div><strong>Attack:</strong> {{ character.attack }}</div>
+    <div><strong>Defense:</strong> {{ character.defense }}</div>
+  </div>
+
+  <!-- Comparison overlay -->
+  @if (showComparison && comparisonTarget) {
+    <div class="comparison-overlay" (click)="closeComparison()">
+      <div class="comparison-box" (click)="$event.stopPropagation()">
+        <h4>{{ comparisonTarget.name }}</h4>
+        <p>{{ comparisonTarget.description }}</p>
+
+        <div class="comparison-stats">
+          @for (eff of comparisonTarget.effects; track eff.stat) {
+            <div class="comparison-line">
+              <span class="stat">{{ eff.stat | uppercase }}</span>
+              <span class="value"
+                >{{ eff.value > 0 ? '+' : '' }}{{ eff.value
+                }}{{ eff.type === 'percent' ? '%' : '' }}</span
+              >
+            </div>
+          }
+        </div>
+
+        <button class="close-btn" (click)="closeComparison()">Close</button>
+      </div>
+    </div>
+  }
+</div>

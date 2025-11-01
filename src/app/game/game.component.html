@@ -13,14 +13,8 @@
       </div>
 
       <div class="hud-buttons">
-        <div class="hud-button" (click)="openMapPanel()">
-          <img src="assets/ui/hud-map.png" alt="Map" />
-        </div>
         <div class="hud-button" (click)="openInventoryPanel()">
-          <img src="assets/ui/hud-inventory.png" alt="Backpack" />
-        </div>
-        <div class="hud-button" (click)="openQuests()">
-          <img src="assets/ui/hud-quests.png" alt="Quests" />
+          <img src="assets/ui/hud-stats.png" alt="Backpack" />
         </div>
         <div class="hud-button" (click)="openLootPanel()">
           <img src="assets/ui/hud-loot.png" alt="Skills" />
@@ -71,20 +65,6 @@
     </div>
   </div>
 
-  <!-- Map Menu Overlay -->
-  @if (showMapPanel) {
-    <div class="common-overlay">
-      <div class="common-wrapper">
-        <div class="common-header">
-          <div class="common-title">World Map</div>
-          <button class="close-btn" (click)="closeMap()">✕</button>
-        </div>
-        <hr class="common-separator" />
-        <app-minimap [size]="900" [hexSize]="8"></app-minimap>
-      </div>
-    </div>
-  }
-
   <!-- Pause Menu Overlay -->
   @if (showMenuPanel) {
     <div class="common-overlay">
@@ -127,11 +107,11 @@
     <div class="common-overlay">
       <div class="common-wrapper">
         <div class="common-header">
-          <div class="common-title">Inventory / Character</div>
+          <div class="common-title">Camp</div>
           <button class="close-btn" (click)="closeInventoryPanel()">✕</button>
         </div>
         <hr class="common-separator" />
-        <app-inventory-panel></app-inventory-panel>
+        <app-player-panel></app-player-panel>
       </div>
     </div>
   }
