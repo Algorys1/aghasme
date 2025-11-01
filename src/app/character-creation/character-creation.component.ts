@@ -53,6 +53,21 @@ export class CharacterCreationComponent {
     this.selectedGender = g;
   }
 
+  getOrbIcon(archetype: string) {
+    switch(archetype) {
+      case 'beast':
+        return 'bestial';
+      case 'elemental':
+        return 'elemental';
+      case 'ant':
+        return 'natural';
+      case 'engineer':
+        return 'mechanic';
+      default:
+        return ''
+    }
+  }
+
   // === STEP 2 : ORBS ===
   adjustOrb(key: keyof Orbs, delta: number) {
     const current = this.orbs[key];
@@ -130,7 +145,7 @@ export class CharacterCreationComponent {
 
 
   getPortrait(): string {
-    if (!this.selectedArchetype) return 'assets/characters/default.png';
+    if (!this.selectedArchetype) return 'assets/monsters/lost-soul.png';
     return `assets/characters/${this.selectedArchetype}-${this.selectedGender}.png`;
   }
 }

@@ -23,7 +23,7 @@ export class PlayerService {
 
   get portrait(): string {
     const char = this.getCharacter();
-    if (!char) return 'assets/characters/default.png';
+    if (!char) return 'assets/monsters/lost-soul.png';
     return CHARACTER_ASSETS[char.gender][char.archetype];
   }
 

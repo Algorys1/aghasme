@@ -80,22 +80,22 @@ export interface NewCharacterInput {
 export const ORB_DEFINITIONS: Record<OrbKey, { label: string; icon: string; description: string }> = {
   bestial: {
     label: 'Bestial',
-    icon: 'assets/ui/orb-bestial.png',
+    icon: 'assets/characters/orbs/orb-bestial.png',
     description: 'Embodies raw power and primal strength. Enhances your physical attacks and combat prowess.',
   },
   elemental: {
     label: 'Elemental',
-    icon: 'assets/ui/orb-elemental.png',
+    icon: 'assets/characters/orbs/orb-elemental.png',
     description: 'Channel the power of the elements. Improves your mystical energy and magical offense.',
   },
   natural: {
     label: 'Natural',
-    icon: 'assets/ui/orb-natural.png',
+    icon: 'assets/characters/orbs/orb-natural.png',
     description: 'Represents endurance and balance. Increases vitality, resilience, and connection to nature.',
   },
   mechanic: {
     label: 'Mechanic',
-    icon: 'assets/ui/orb-mechanic.png',
+    icon: 'assets/characters/orbs/orb-mechanic.png',
     description: 'Precision and ingenuity. Strengthens your defense and mastery of crafted tools and armor.',
   },
 };

@@ -1,48 +1,61 @@
 <div class="equipment-panel">
-  <h3 class="title">Equipped Gear</h3>
+  @if(character) {
+    <div class="primary-stats">
+      <div><strong>Attack:</strong> {{ character.attack }}</div>
+      <div><strong>Defense:</strong> {{ character.defense }}</div>
+    </div>
+  }
 
-  <div class="equip-grid">
+  <section class="equip-grid">
     @for (slot of equipSlots; track $index) {
       <div class="equip-slot" (click)="compare(slot)">
         @if (equipped[slot]) {
           <img
             [src]="equipped[slot]!.icon"
             [alt]="equipped[slot]!.name"
-            class="equip-icon"
           />
         } @else {
-          <div class="slot-empty">{{ slot }}</div>
+          <div class="slot-name">{{ slot }}</div>
         }
       </div>
     }
-  </div>
+  </section>
 
-  <div class="bonus-summary" *ngIf="character">
-    <div><strong>Attack:</strong> {{ character.attack }}</div>
-    <div><strong>Defense:</strong> {{ character.defense }}</div>
-  </div>
-
-  <!-- Comparison overlay -->
   @if (showComparison && comparisonTarget) {
-    <div class="comparison-overlay" (click)="closeComparison()">
-      <div class="comparison-box" (click)="$event.stopPropagation()">
-        <h4>{{ comparisonTarget.name }}</h4>
-        <p>{{ comparisonTarget.description }}</p>
-
-        <div class="comparison-stats">
-          @for (eff of comparisonTarget.effects; track eff.stat) {
-            <div class="comparison-line">
-              <span class="stat">{{ eff.stat | uppercase }}</span>
-              <span class="value"
-                >{{ eff.value > 0 ? '+' : '' }}{{ eff.value
-                }}{{ eff.type === 'percent' ? '%' : '' }}</span
-              >
-            </div>
-          }
-        </div>
-
-        <button class="close-btn" (click)="closeComparison()">Close</button>
+    <section class="item-description">
+      <div class="item-header">
+        <h3 [ngClass]="comparisonTarget.rarity.toLowerCase()">
+          {{ comparisonTarget.name }}
+        </h3>
+        <span class="rarity-label">{{ comparisonTarget.rarity }}</span>
       </div>
-    </div>
+
+      <p class="item-text">{{ comparisonTarget.description }}</p>
+
+      @if (comparisonTarget.effects.length) {
+        <ul class="item-effects">
+          @for (eff of comparisonTarget.effects; track eff.stat + '-' + eff.value) {
+            <li>
+              <span class="effect-stat">{{ eff.stat | uppercase }}</span>
+              <span class="effect-value">
+                {{ eff.value > 0 ? '+' : '' }}{{ eff.value
+                }}{{ eff.type === 'percent' ? '%' : '' }}
+              </span>
+            </li>
+          }
+        </ul>
+      }
+
+      <div class="item-value">
+        <img src="assets/ui/gold.png" alt="Gold" />
+        <span>{{ comparisonTarget.computedValue ?? comparisonTarget.baseValue }}</span>
+      </div>
+    </section>
+
+    <section class="item-actions">
+      <button class="action-btn" title="Unequip" (click)="unequip(comparisonTarget.equipSlot![0])">
+        <img src="assets/ui/action-unequip.png" alt="Unequip" />
+      </button>
+    </section>
   }
 </div>

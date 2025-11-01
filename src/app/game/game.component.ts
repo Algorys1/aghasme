@@ -53,10 +53,10 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   private subs: Subscription[] = [];
 
   private ORB_ICONS: Record<OrbKey, string> = {
-    bestial: 'assets/ui/orb-bestial.png',
-    elemental: 'assets/ui/orb-elemental.png',
-    natural: 'assets/ui/orb-natural.png',
-    mechanic: 'assets/ui/orb-mechanic.png',
+    bestial: 'assets/characters/orbs/orb-bestial.png',
+    elemental: 'assets/characters/orbs/orb-elemental.png',
+    natural: 'assets/characters/orbs/orb-natural.png',
+    mechanic: 'assets/characters/orbs/orb-mechanic.png',
   };
 
   constructor(

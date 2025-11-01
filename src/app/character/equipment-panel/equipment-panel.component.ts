@@ -38,9 +38,4 @@ export class EquipmentPanelComponent implements OnInit {
     this.showComparison = true;
     this.comparisonTarget = this.equipped[slot];
   }
-
-  closeComparison() {
-    this.showComparison = false;
-    this.comparisonTarget = null;
-  }
 }

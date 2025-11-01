@@ -16,7 +16,7 @@
             [class.selected]="selectedArchetype === type"
             (click)="selectArchetype(type)"
           >
-            <img [src]="'assets/characters/' + type + '-' + selectedGender + '.png'" [alt]="type" />
+            <img [src]="'assets/characters/orbs/orb-' + getOrbIcon(type) + '.png'" [alt]="type" />
             <p>{{ type | titlecase }}</p>
           </div>
         }

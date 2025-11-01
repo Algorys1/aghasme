@@ -16,9 +16,6 @@
   }
 }
 
-/* =======================
-   HUD STYLE GLOBAL
-   ======================= */
 .hud-top,
 .hud-bottom {
   position: absolute;
@@ -66,7 +63,6 @@
   }
 }
 
-/* --- HUD TOP --- */
 .hud-top {
   top: 0;
   display: flex;
@@ -106,7 +102,6 @@
   height: 16px;
 }
 
-/* Orbs grid */
 .orbs-grid {
   display: grid;
   grid-template-columns: repeat(2, auto);
@@ -123,7 +118,6 @@
   height: 42px;
 }
 
-/* Buttons */
 .hud-buttons {
   display: flex;
   gap: 8px;
@@ -157,9 +151,6 @@
   transform: scale(0.95);
 }
 
-/* =======================
-   HUD BOTTOM
-   ======================= */
 .hud-bottom {
   bottom: 0;
   display: flex;
@@ -198,9 +189,6 @@
   transform: scale(0.95);
 }
 
-/* =======================
-   WORLD MAP / PARCHEMIN
-   ======================= */
 .map-overlay {
   position: fixed;
   inset: 0;
@@ -318,6 +306,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .common-title {
