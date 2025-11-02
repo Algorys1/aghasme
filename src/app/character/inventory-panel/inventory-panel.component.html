@@ -1,39 +1,55 @@
 <div class="inventory">
   <div class="gold-display" *ngIf="character">
-    <img src="assets/ui/gold.png" alt="Gold" />
-    <span>{{ character.gold }}</span>
+    <div class="inventory-space">
+      <span class="label">Slots:</span>
+      <span class="value">{{ inventory.usedSlots }}/{{ inventory.maxSlots }}</span>
+    </div>
+
+    <div class="gold-amount">
+      <span class="label">Gold:</span>
+      <span class="value">{{ character.gold }}</span>
+      <img src="assets/ui/gold.png" alt="Gold" />
+    </div>
   </div>
 
-  <div class="inventory-filters">
-    @for (f of filterOptions; track f) {
-      <button
-        class="filter-btn"
-        [class.active]="activeFilter === f"
-        (click)="selectFilter(f)"
-      >
-        {{ f | titlecase }}
-      </button>
-    }
+  <div class="inventory-tabs">
+    <div class="inventory-filters">
+      @for (f of filterOptions; track f) {
+        <button
+          class="filter-btn"
+          [class.active]="activeFilter === f"
+          (click)="selectFilter(f)"
+        >
+          {{ f | titlecase }}
+        </button>
+      }
+    </div>
   </div>
 
-  <!-- === INVENTAIRE DU JOUEUR === -->
-  <section class="inventory-grid">
-    @for (item of filteredItems; track item.instanceId ?? item.id + '-' + $index) {
-      <div
-        class="inventory-slot"
-        [class.selected]="selectedItem?.instanceId === item.instanceId"
-        [ngClass]="item.rarity.toLowerCase()"
-        (click)="selectItem(item)"
-      >
-        <img [src]="item.icon" [alt]="item.name" />
-        @if (item.count && item.count > 1) {
-          <div class="stack-count">x{{ item.count }}</div>
-        }
-      </div>
-    }
-  </section>
+  <div class="inventory-frame">
+    <section class="inventory-grid">
+      @for (item of filteredItems; track item.instanceId ?? item.id + '-' + $index) {
+        <div
+          class="inventory-slot"
+          [class.selected]="selectedItem?.instanceId === item.instanceId"
+          [ngClass]="item.rarity.toLowerCase()"
+          (click)="selectItem(item)"
+        >
+          <img [src]="item.icon" [alt]="item.name" />
+          @if (item.count && item.count > 1) {
+            <div class="stack-count">x{{ item.count }}</div>
+          }
+        </div>
+      }
 
-  <!-- === DESCRIPTION + ACTIONS === -->
+      @for (empty of [].constructor(inventory.maxSlots - filteredItems.length); track $index) {
+        <div class="inventory-slot empty">
+          <div class="placeholder"></div>
+        </div>
+      }
+    </section>
+  </div>
+
   @if (selectedItem) {
     <section class="item-description">
       <div class="item-header">
@@ -65,7 +81,6 @@
       </div>
     </section>
 
-    <!-- === ACTIONS === -->
     <section class="item-actions">
       <button class="action-btn" title="Use" (click)="useItem()">
         <img src="assets/ui/action-use.png" alt="Use" />

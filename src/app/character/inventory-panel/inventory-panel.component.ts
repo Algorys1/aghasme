@@ -24,6 +24,13 @@ export class InventoryPanelComponent implements OnInit {
 
   activeFilter: InventoryFilter = 'all';
   filterOptions: InventoryFilter[] = ['all', 'equipment', 'consumable', 'resource', 'utility'];
+  iconMap: Record<string, string> = {
+    all: 'assets/ui/hud-inventory.png',
+    equipment: 'assets/ui/hud-tab-equipment.png',
+    consumable: 'assets/ui/hud-tab-consumable.png',
+    resource: 'assets/ui/hud-tab-resource.png',
+    utility: 'assets/ui/hud-tab-utility.png',
+  };
 
   constructor(
     public inventory: InventoryService,
