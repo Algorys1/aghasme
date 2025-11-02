@@ -62,6 +62,18 @@ export const ACCESSORY_ITEMS: Item[] = [
     effects: [{stat: 'maxMp', value: 20}]
   },
   {
+    id: 'medallion-destiny',
+    name: 'Destiny Medallion',
+    description: 'The Medallion of Destiny allows you to find your way even in the most twisted labyrinths!',
+    type: ItemType.Accessory,
+    icon: 'assets/items/accessories/medallion-destiny.png',
+    baseValue: 1310,
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
+    rarity: RarityType.Legendary,
+    subtype: 'book',
+    effects: [{stat: 'mv', value: 1}, {stat: 'defense', value: 2}]
+  },
+  {
     id: 'orb-epic',
     name: 'A Mysterious Orb',
     description: 'A glowing shard from the Bestial Orb.',
@@ -106,6 +118,18 @@ export const ACCESSORY_ITEMS: Item[] = [
     equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
     rarity: RarityType.Normal,
     effects: [{stat: 'maxMp', value: 1}]
+  },
+  {
+    id: 'ring-queen',
+    name: 'The Queen\'s Ring',
+    description: 'The Queen\'s Ring is a ring forged in the ancient Great Royal Forge. It is indestructible.',
+    type: ItemType.Accessory,
+    icon: 'assets/items/accessories/ring-queen.png',
+    baseValue: 1030,
+    rarity: RarityType.Legendary,
+    subtype: 'ring',
+    equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
+    effects: [{ stat: 'maxHp', value: 10 }, { stat: 'attack', value: 2 }],
   },
   {
     id: 'ring-sparks',
@@ -156,6 +180,17 @@ export const ARMOR_ITEMS: Item[] = [
     effects: [{stat: 'defense', value: 2}]
   },
   {
+    id: 'armor-leather-mechanic',
+    name: 'Mechanical Armor',
+    description: 'This armor is lightweight and seems to completely conform to the shape of your body.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/armor-leather-mchanic.png',
+    baseValue: 240,
+    equipSlot: [EquipSlot.Torso],
+    rarity: RarityType.Rare,
+    effects: [{stat: 'defense', value: 3}]
+  },
+  {
     id: 'armor-iron',
     name: 'Iron Armor',
     description: 'Iron armor, heavy certainly, but perfect for protecting yourself against bad blows!',
@@ -176,6 +211,17 @@ export const ARMOR_ITEMS: Item[] = [
     equipSlot: [EquipSlot.Torso],
     rarity: RarityType.Rare,
     effects: [{stat: 'defense', value: 4}]
+  },
+  {
+    id: 'boots-dragon',
+    name: 'Dragon Scale Boots',
+    description: 'These boots made of dragon scales will never wear out, no matter the distance.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/boots-dragon.png',
+    baseValue: 120,
+    equipSlot: [EquipSlot.Feet],
+    rarity: RarityType.Rare,
+    effects: [{stat: 'flee', value: 3}]
   },
   {
     id: 'boots-mechanic',
@@ -219,7 +265,18 @@ export const ARMOR_ITEMS: Item[] = [
     baseValue: 120,
     equipSlot: [EquipSlot.Hand1],
     rarity: RarityType.Rare,
-    effects: []
+    effects: [{stat: 'tool', value: 1}]
+  },
+  {
+    id: 'gloves-shadow',
+    name: 'Shadow Gloves',
+    description: 'Shadow gloves. Apparently you can steal anything with them, even in broad daylight.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/gloves-shadow.png',
+    baseValue: 460,
+    equipSlot: [EquipSlot.Hand1],
+    rarity: RarityType.Legendary,
+    effects: [{stat: 'defense', value: 2}]
   },
   {
     id: 'helmet-echo',
@@ -267,6 +324,17 @@ export const ARMOR_ITEMS: Item[] = [
     effects: [{stat: 'defense', value: 1}]
   },
   {
+    id: 'helmet-luminous',
+    name: 'Luminous Helmet',
+    description: 'This luminous helmet exudes magic and seems indestructible.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/helmet-luminous.png',
+    baseValue: 160,
+    equipSlot: [EquipSlot.Head],
+    rarity: RarityType.Rare,
+    effects: [{stat: 'defense', value: 2}]
+  },
+  {
     id: 'helmet-iron-mechanic',
     name: 'Improved Mechanical Helmet',
     description: 'The first time you put on this helmet, you\'re a little confused. But then you can\'t live without it.',
@@ -286,7 +354,7 @@ export const ARMOR_ITEMS: Item[] = [
     baseValue: 60,
     equipSlot: [EquipSlot.Head],
     rarity: RarityType.Normal,
-    effects: [{stat: 'maxMp', value: 5}]
+    effects: []
   },
   {
     id: 'hat-travel',
@@ -305,11 +373,11 @@ export const ARMOR_ITEMS: Item[] = [
     description: 'A cloak that always seems clean, no matter the mud.',
     type: ItemType.Armor,
     icon: 'assets/items/armors/mantle-traveler.png',
-    baseValue: 465,
+    baseValue: 320,
     rarity: RarityType.Rare,
     subtype: 'robe',
     equipSlot: [EquipSlot.Torso],
-    effects: [{ stat: 'maxHp', value: 5 }],
+    effects: [],
   },
   {
     id: 'outfit-common',
@@ -354,6 +422,30 @@ export const ARMOR_ITEMS: Item[] = [
     equipSlot: [EquipSlot.Torso],
     rarity: RarityType.Normal,
     effects: [{stat: 'maxHp', value: 2}],
+  },
+  {
+    id: 'robe-archmage',
+    name: 'Archmage Robe',
+    description: 'The archmage robes are among the most beautiful creations of this kingdom.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/robe-archmage.png',
+    baseValue: 1100,
+    subtype: 'robe',
+    equipSlot: [EquipSlot.Torso],
+    rarity: RarityType.Legendary,
+    effects: [{stat: 'maxHp', value: 5}, {stat: 'action', value: 1}],
+  },
+  {
+    id: 'robe-darkness',
+    name: 'Robe of Darkness',
+    description: 'The Robe of Darkness, also known as the Robe of One, inspires fear simply by its presence.',
+    type: ItemType.Armor,
+    icon: 'assets/items/armors/robe-darkness.png',
+    baseValue: 2740,
+    subtype: 'robe',
+    equipSlot: [EquipSlot.Torso],
+    rarity: RarityType.Artefact,
+    effects: [{stat: 'fear', value: 1}, {stat: 'maxMp', value: 10}],
   },
   {
     id: 'shield-mechanic-long',
@@ -874,6 +966,18 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     rarity: RarityType.Normal
   },
   {
+    id: 'axe-death',
+    name: 'Death Axe',
+    description: 'It is said that this axe was stolen from death itself. It is also said that it kills you instantly.',
+    type: ItemType.WeaponMelee,
+    icon: 'assets/items/weapons-melee/axe-death.png',
+    baseValue: 2740,
+    subtype: 'axe',
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    effects: [{ stat: 'damage', value: 8 }],
+    rarity: RarityType.Artefact
+  },
+  {
     id: 'club',
     name: 'Club',
     description: 'An ordinary club. Well, it\'s made for hitting, quite simply.',
@@ -891,9 +995,9 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/dagger-ceremonial.png',
     baseValue: 330,
-    effects: [{ stat: 'damage', value: 3 }, {stat: 'critical', value: 5}],
+    effects: [{ stat: 'damage', value: 2 }, {stat: 'critical', value: 1}],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
-    rarity: RarityType.Rare
+    rarity: RarityType.Normal
   },
   {
     id: 'dagger-damaged',
@@ -916,6 +1020,28 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     effects: [{ stat: 'damage', value: 5 }, {stat: 'attack', value: 1}],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Epic
+  },
+  {
+    id: 'dagger-sorcerer',
+    name: 'Sorcerer Dagger',
+    description: 'Sorcerer daggers come from a time when rituals were legion.',
+    type: ItemType.WeaponMelee,
+    icon: 'assets/items/weapons-melee/dagger-sorcerer.png',
+    baseValue: 1150,
+    effects: [{ stat: 'damage', value: 7 }, {stat: 'critical', value: 3}],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Legendary
+  },
+  {
+    id: 'dagger-mechanic',
+    name: 'Mechanical Dagger',
+    description: 'With this mechanical dagger in your pocket, nothing will be able to resist you!',
+    type: ItemType.WeaponMelee,
+    icon: 'assets/items/weapons-melee/dagger-mechanic.png',
+    baseValue: 325,
+    effects: [{ stat: 'damage', value: 4 }],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Rare
   },
   {
     id: 'hammer',
@@ -955,6 +1081,28 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     effects: [{ stat: 'damage', value: 10 }, { stat: 'tool', value: 1 }],
   },
   {
+    id: 'sword-bastard',
+    name: 'Bastard Sword',
+    description: 'Between a short sword and a long sword, it suits those who want a happy medium.',
+    type: ItemType.WeaponMelee,
+    icon: 'assets/items/weapons-melee/sword-bastard.png',
+    baseValue: 110,
+    effects: [{ stat: 'damage', value: 4 }],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Normal
+  },
+  {
+    id: 'sword-ignition',
+    name: 'Sword of Ignition',
+    description: 'An elemental sword. Very few of these have been found in this world.',
+    type: ItemType.WeaponMelee,
+    icon: 'assets/items/weapons-melee/sword-ignition.png',
+    baseValue: 2350,
+    effects: [{ stat: 'damage', value: 7 }, {stat: 'burn', value: 4}],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Artefact
+  },
+  {
     id: 'sword-long',
     name: 'Long Sword',
     description: 'This sword requires some training. But once mastered, it wreaks havoc.',
@@ -964,6 +1112,17 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     effects: [{ stat: 'damage', value: 5 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
+  },
+  {
+    id: 'sword-mechanic',
+    name: 'Mechanical Sword',
+    description: 'This mechanical sword still works, you can hear it whirring and your hand almost trembles.',
+    type: ItemType.WeaponMelee,
+    icon: 'assets/items/weapons-melee/sword-mechanic.png',
+    baseValue: 450,
+    effects: [{ stat: 'damage', value: 5 }],
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Rare
   },
   {
     id: 'sword-short',
@@ -1061,12 +1220,24 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
 
 export const WEAPON_RANGE_ITEMS: Item[] = [
   {
+    id: 'blunderbuss',
+    name: 'Blunderbuss',
+    description: 'A blunderbuss from the Old War, still functional it seems!',
+    type: ItemType.WeaponRange,
+    icon: 'assets/items/weapons-range/blunderbuss.png',
+    baseValue: 325,
+    subtype: 'bow',
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    rarity: RarityType.Rare,
+    effects: [{ stat: 'damage', value: 4 }]
+  },
+  {
     id: 'bow-golden',
     name: 'Golden Bow',
     description: 'A golden bow, made of precious wood and decorated with ancient runes.',
     type: ItemType.WeaponRange,
     icon: 'assets/items/weapons-range/bow-golden.png',
-    baseValue: 450,
+    baseValue: 650,
     subtype: 'bow',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
@@ -1137,6 +1308,19 @@ export const WEAPON_RANGE_ITEMS: Item[] = [
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
     effects: [{ stat: 'damage', value: 3 }],
+  },
+  {
+    id: 'crossbow-mechanic',
+    name: 'Mechanical Crossbow',
+    description: 'When this crossbow is cocked, the sound it makes is a sign that you should take cover.',
+    type: ItemType.WeaponRange,
+    icon: 'assets/items/weapons-range/crossbow-mechanic.png',
+    baseValue: 240,
+    rarity: RarityType.Rare,
+    subtype: 'bow',
+    equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
+    twoHanded: true,
+    effects: [{ stat: 'damage', value: 5 }],
   },
   {
     id: 'scepter-crystal',

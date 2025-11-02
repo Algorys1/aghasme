@@ -1,4 +1,5 @@
 export type StatKey =
+  | 'action'
   | 'hp'
   | 'maxHp'
   | 'mp'
@@ -7,8 +8,10 @@ export type StatKey =
   | 'critical'
   | 'damage'
   | 'defense'
+  | 'mv'
   | 'flee'
   | 'burn'
+  | 'fear'
   | 'reflect'
   | 'orbs.bestial'
   | 'orbs.elemental'
