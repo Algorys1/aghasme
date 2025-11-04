@@ -1,0 +1,565 @@
+// enemy.data.ts
+import { EnemyDefinition } from '../factories/enemy.factory';
+
+export const ENEMIES: EnemyDefinition[] = [
+  {
+    id: 'rats',
+    name: 'Rats',
+    desc: 'A massive rat prowls in the darkness.',
+    icon: 'assets/monsters/rats.png',
+    subCategories: ['vermin'],
+    terrains: ['plain', 'swamp', 'sea', 'forest'],
+    minLevel: 1,
+    maxLevel: 5
+  },
+  {
+    id: 'wolf',
+    name: 'Wolf',
+    desc: 'A lone wolf growls nearby.',
+    icon: 'assets/monsters/wolf.png',
+    subCategories: [],
+    terrains: ['plain', 'forest', 'mountain'],
+    minLevel: 1,
+    maxLevel: 5
+  },
+  {
+    id: 'wild-boar',
+    name: 'Wild Boar',
+    desc: 'A furious wild boar charges at you!',
+    icon: 'assets/monsters/wild-boar.png',
+    subCategories: [],
+    terrains: ['plain', 'forest', 'mountain', 'jungle'],
+    minLevel: 1,
+    maxLevel: 5
+  },
+  {
+    id: 'bear',
+    name: 'Bear',
+    desc: 'A large bear blocks your way.',
+    icon: 'assets/monsters/bear.png',
+    subCategories: [],
+    terrains: ['forest', 'mountain', 'jungle'],
+    minLevel: 3,
+    maxLevel: 8
+  },
+  {
+    id: 'bandit',
+    name: 'Bandit',
+    desc: 'These roads aren\'t safe, you knew that. You\'re face to face with a highwayman.',
+    icon: 'assets/monsters/bandit.png',
+    subCategories: ['human'],
+    terrains: ['plain', 'desert', 'forest', 'mountain', 'volcano'],
+    minLevel: 1,
+    maxLevel: 6
+  },
+  {
+    id: 'guard',
+    name: 'Guard',
+    desc: 'A simple guard, but one with a suspicious look. He\'d like to increase his pay in a less than respectable way.',
+    icon: 'assets/monsters/guard.png',
+    subCategories: ['human'],
+    terrains: ['plain', 'mountain', 'forest'],
+    minLevel: 1,
+    maxLevel: 10
+  },
+  {
+    id: 'thief',
+    name: 'Thief',
+    desc: 'This thief is not at his first theft, keep an eye on your purse and your valuables.',
+    icon: 'assets/monsters/thief.png',
+    subCategories: ['human'],
+    terrains: ['plain', 'mountain', 'forest', 'swamp', 'volcano', 'jungle'],
+    minLevel: 3,
+    maxLevel: 15
+  },
+  {
+    id: 'merchant',
+    name: 'Venal Merchant',
+    desc: 'You\'re not convinced this merchant made his fortune in a completely legal way. His smile says it all.',
+    icon: 'assets/monsters/merchant.png',
+    subCategories: ['human'],
+    terrains: ['plain', 'mountain', 'forest'],
+    minLevel: 3,
+    maxLevel: 15
+  },
+  {
+    id: 'corrupt-sorcerer',
+    name: 'Corrupt Sorcerer',
+    desc: 'This hooded man is nothing more than a Dark Wizard. It\'s time to offer him some light!',
+    icon: 'assets/monsters/corrupt-sorcerer.png',
+    subCategories: ['human'],
+    terrains: ['plain', 'forest', 'volcano', 'swamp'],
+    minLevel: 1,
+    maxLevel: 15
+  },
+  {
+    id: 'disciple',
+    name: 'Disciple',
+    desc: 'You don\'t know what this person is mumbling, but it\'s definitely not poetry. Better to shut him up!',
+    icon: 'assets/monsters/disciple.png',
+    subCategories: ['human'],
+    terrains: ['forest', 'desert', 'swamp', 'jungle'],
+    minLevel: 1,
+    maxLevel: 10
+  },
+  {
+    id: 'priest',
+    name: 'Priest',
+    desc: 'This hooded person is chanting incomprehensible words... Better to shut him up before he\'s finished.',
+    icon: 'assets/monsters/priest.png',
+    subCategories: ['human'],
+    terrains: ['volcano', 'mountain', 'plain', 'jungle'],
+    minLevel: 8,
+    maxLevel: 12
+  },
+  {
+    id: 'temple-guardian',
+    name: 'Guardian of the Temple',
+    desc: 'You find yourself facing the Guardian of the Temple. The divine aura seems to flow throughout her entire body.',
+    icon: 'assets/monsters/temple-guardian.png',
+    subCategories: ['human'],
+    terrains: ['forest', 'desert', 'swamp', 'jungle'],
+    minLevel: 5,
+    maxLevel: 20
+  },
+  {
+    id: 'dark-knight',
+    name: 'Dark Knight',
+    desc: 'A towering black knight stands before you. His armor gleams with evil colors, but at this moment, you don\'t have time to admire him.',
+    icon: 'assets/monsters/dark-knight.png',
+    subCategories: ['human'],
+    terrains: ['desert', 'mountain', 'volcano'],
+    minLevel: 10,
+    maxLevel: 20
+  },
+  {
+    id: 'young-griffin',
+    name: 'Young Griffin',
+    desc: 'What you thought was a large eagle is actually a young griffin. The problem is, this young griffin is coming at you at full speed!',
+    icon: 'assets/monsters/griffin-young.png',
+    subCategories: ['flying'],
+    terrains: ['plain', 'sea', 'forest'],
+    minLevel: 4,
+    maxLevel: 8
+  },
+  {
+    id: 'mossy-spider',
+    name: 'Mossy Spider',
+    desc: 'No, it\'s not moss peeling off this tree, but a spider and its mandibles getting closer.',
+    icon: 'assets/monsters/spider-mossy.png',
+    subCategories: ['vermin', 'plant', 'elemental'],
+    terrains: ['plain', 'forest', 'swamp', 'jungle'],
+    minLevel: 5,
+    maxLevel: 15
+  },
+  {
+    id: 'spider',
+    name: 'Spider',
+    desc: 'A monstrous spider is heading towards you at high speed.',
+    icon: 'assets/monsters/spider.png',
+    subCategories: ['vermin'],
+    terrains: ['forest', 'swamp', 'jungle', 'plain'],
+    minLevel: 1,
+    maxLevel: 6
+  },
+  {
+    id: 'goblin-warrior',
+    name: 'Goblin Warrior',
+    desc: 'A sneaky goblin jumps right in front of you and challenges you',
+    icon: 'assets/monsters/goblin-warrior.png',
+    subCategories: ['goblin'],
+    terrains: ['plain', 'mountain', 'forest', 'jungle'],
+    minLevel: 1,
+    maxLevel: 15
+  },
+  {
+    id: 'goblin-archer',
+    name: 'Goblin Archer',
+    desc: 'Perched on a rock, a goblin stares at you, ready to fire his arrow.',
+    icon: 'assets/monsters/goblin-archer.png',
+    subCategories: ['goblin'],
+    terrains: ['plain', 'mountain', 'forest', 'jungle'],
+    minLevel: 1,
+    maxLevel: 15
+  },
+  {
+    id: 'goblin-shaman',
+    name: 'Goblin Shaman',
+    desc: 'A goblin shaman is looking at you maliciously, probably preparing to cast a dark spell...',
+    icon: 'assets/monsters/goblin-shaman.png',
+    subCategories: ['goblin'],
+    terrains: ['plain', 'mountain', 'forest', 'jungle'],
+    minLevel: 1,
+    maxLevel: 15
+  },
+  {
+    id: 'harpy',
+    name: 'Harpy',
+    desc: 'The scream that creature just made deafened you, a little more and you would have fallen. You will have to defend yourself.',
+    icon: 'assets/monsters/harpy.png',
+    subCategories: ['flying'],
+    terrains: ['forest', 'sea', 'jungle'],
+    minLevel: 5,
+    maxLevel: 15
+  },
+  {
+    id: 'giant-bat',
+    name: 'Giant Bat',
+    desc: 'You thought it was a bird that was circling around you all this time, but no, it\'s definitely a bat!',
+    icon: 'assets/monsters/bat-giant.png',
+    subCategories: ['vermin', 'flying'],
+    terrains: ['forest', 'jungle', 'mountain'],
+    minLevel: 2,
+    maxLevel: 10
+  },
+  {
+    id: 'snake',
+    name: 'Snake',
+    desc: 'A huge snake stands before you, its mouth open, ready to bite.',
+    icon: 'assets/monsters/snake.png',
+    subCategories: ['vermin'],
+    terrains: ['desert', 'jungle', 'forest'],
+    minLevel: 1,
+    maxLevel: 5
+  },
+  {
+    id: 'orb-mechanic',
+    name: 'Mechanical Orb',
+    desc: 'What you thought was a pile of inert scrap metal suddenly finds itself flying around you. That glowing eye doesn\'t bode well for you...',
+    icon: 'assets/monsters/orb-mechanic.png',
+    subCategories: ['mechanical', 'flying'],
+    terrains: ['desert', 'mountain', 'volcano'],
+    minLevel: 6,
+    maxLevel: 10
+  },
+  {
+    id: 'beetle-sand',
+    name: 'Sand Beetle',
+    desc: 'Suddenly you see the sand moving in front of you. A creature with a golden shell seems to emerge from time.',
+    icon: 'assets/monsters/beetle-sand.png',
+    subCategories: ['vermin'],
+    terrains: ['desert', 'swamp'],
+    minLevel: 1,
+    maxLevel: 10
+  },
+  {
+    id: 'sand-worm',
+    name: 'Sand Worm',
+    desc: 'The air trembles beneath your feet and you fall backward as you see a sandworm rising into the sky. Get up, you must fight for your life!',
+    icon: 'assets/monsters/worm-sand.png',
+    subCategories: ['vermin'],
+    terrains: ['desert'],
+    minLevel: 10,
+    maxLevel: 20
+  },
+  {
+    id: '3-eyed-crow',
+    name: '3-Eyed Crow',
+    desc: 'This crow doesn\'t look like he\'s going to be joking around, he\'s definitely going to try to peck your head off.',
+    icon: 'assets/monsters/3-eyed-crow.png',
+    subCategories: ['flying'],
+    terrains: ['desert', 'swamp', 'volcano'],
+    minLevel: 1,
+    maxLevel: 10
+  },
+  {
+    id: 'zombie',
+    name: 'Zombie',
+    desc: 'The undead rise, a dark age is fast approaching! If you kill him, that will always be one less!',
+    icon: 'assets/monsters/zombie.png',
+    subCategories: ['undead'],
+    terrains: ['forest', 'swamp', 'mountain', 'plain'],
+    minLevel: 3,
+    maxLevel: 8
+  },
+  {
+    id: 'mummy',
+    name: 'Mummy',
+    desc: 'The thing about mummies is, we don\'t want them to touch us. And this one is no exception!',
+    icon: 'assets/monsters/mummy.png',
+    subCategories: ['undead'],
+    terrains: ['desert', 'jungle'],
+    minLevel: 1,
+    maxLevel: 15
+  },
+  {
+    id: 'royal-mummy',
+    name: 'Royal Mummy',
+    desc: 'The thing about mummies is, we don\'t want them to touch us. And this one is no exception!',
+    icon: 'assets/monsters/mummy-royal.png',
+    subCategories: ['undead'],
+    terrains: ['desert', 'jungle'],
+    minLevel: 5,
+    maxLevel: 20
+  },
+  {
+    id: 'lost-soul',
+    name: 'Lost Soul',
+    desc: 'A wandering soul, lost between two worlds, blocks your path. Judging by the sound it makes, it doesn\'t seem very friendly.',
+    icon: 'assets/monsters/lost-soul.png',
+    subCategories: ['undead'],
+    terrains: ['plain', 'swamp', 'sea', 'jungle'],
+    minLevel: 3,
+    maxLevel: 15
+  },
+  {
+    id: 'skeleton-warrior',
+    name: 'Skeleton Warrior',
+    desc: 'Everything was so calm... But then a previously inert skeleton had to rise up and attack you!',
+    icon: 'assets/monsters/skeleton-warrior.png',
+    subCategories: ['undead'],
+    terrains: ['plain', 'mountain', 'swamp'],
+    minLevel: 1,
+    maxLevel: 10
+  },
+  {
+    id: 'skeleton-archer',
+    name: 'Skeleton Archer',
+    desc: 'Given the age of his arrows, it\'s better not to get them in your body!',
+    icon: 'assets/monsters/skeleton-archer.png',
+    subCategories: ['undead'],
+    terrains: ['mountain', 'plain', 'swamp'],
+    minLevel: 1,
+    maxLevel: 10
+  },
+  {
+    id: 'skeleton-mage',
+    name: 'Skeleton Mage',
+    desc: 'An undead is already unusual, but a magical undead. In short, bones break!',
+    icon: 'assets/monsters/skeleton-mage.png',
+    subCategories: ['undead'],
+    terrains: ['mountain', 'volcano', 'swamp'],
+    minLevel: 3,
+    maxLevel: 15
+  },
+  {
+    id: 'ghost',
+    name: 'Ghost',
+    desc: 'A vaporous mass forms in front of you, it\'s definitely a creature from the beyond: a ghost!',
+    icon: 'assets/monsters/ghost.png',
+    subCategories: ['undead'],
+    terrains: ['swamp', 'sea', 'volcano'],
+    minLevel: 4,
+    maxLevel: 15
+  },
+  {
+    id: 'mechanical-spider',
+    name: 'Mechanical Spider',
+    desc: 'This monstrosity from a forgotten era is going to give you a hard time. You\'re going to have to hit hard!',
+    icon: 'assets/monsters/spider-mechanic.png',
+    subCategories: ['mechanical', 'vermin'],
+    terrains: ['mountain', 'volcano', 'desert'],
+    minLevel: 6,
+    maxLevel: 10
+  },
+  {
+    id: 'beetle-lava',
+    name: 'Lava Beetle',
+    desc: 'You don\'t know why, but you think it\'s going to get hot... This beetle seems pretty tough!',
+    icon: 'assets/monsters/beetle-lava.png',
+    subCategories: ['vermin'],
+    terrains: ['mountain', 'volcano'],
+    minLevel: 4,
+    maxLevel: 15
+  },
+  {
+    id: 'golem-mechanic',
+    name: 'Mechanical Golem',
+    desc: 'The slowly rising metal mass looks like it came straight out of a foundry of evil. It\'s not going to be the easiest of opponents...',
+    icon: 'assets/monsters/golem-mechanic.png',
+    subCategories: ['mechanical'],
+    terrains: ['mountain', 'volcano', 'desert'],
+    minLevel: 10,
+    maxLevel: 20
+  },
+  {
+    id: 'snake-crystal',
+    name: 'Snake Crystal',
+    desc: 'The noise this snake makes when it coils is most unpleasant. This deafening din must be stopped.',
+    icon: 'assets/monsters/snake-crystal.png',
+    subCategories: ['vermin', 'elemental', 'mineral'],
+    terrains: ['mountain', 'desert', 'volcano'],
+    minLevel: 5,
+    maxLevel: 20
+  },
+  {
+    id: 'elemental-fire',
+    name: 'Fire Elemental',
+    desc: 'This being of living flame is radiating intense heat. You must be careful not to get burned!',
+    icon: 'assets/monsters/elemental-fire.png',
+    subCategories: ['elemental', 'fire'],
+    terrains: ['mountain', 'volcano', 'desert'],
+    minLevel: 8,
+    maxLevel: 25
+  },
+  {
+    id: 'elemental-earth',
+    name: 'Earth Elemental',
+    desc: 'This towering figure made of rock and soil moves with surprising agility. Its strength is formidable.',
+    icon: 'assets/monsters/elemental-earth.png',
+    subCategories: ['elemental', 'mineral'],
+    terrains: ['mountain', 'volcano', 'desert', 'plain'],
+    minLevel: 8,
+    maxLevel: 25
+  },
+  {
+    id: 'elemental-water',
+    name: 'Water Elemental',
+    desc: 'This fluid entity flows and shifts constantly, its form ever-changing. It can strike with the force of a tidal wave.',
+    icon: 'assets/monsters/elemental-water.png',
+    subCategories: ['elemental', 'mineral'],
+    terrains: ['plain', 'sea'],
+    minLevel: 8,
+    maxLevel: 25
+  },
+  {
+    id: 'elemental-air',
+    name: 'Air Elemental',
+    desc: 'This swirling mass of wind and cloud moves with incredible speed. Its attacks can knock you off your feet.',
+    icon: 'assets/monsters/elemental-air.png',
+    subCategories: ['elemental', 'flying'],
+    terrains: ['mountain', 'desert', 'plain', 'sea'],
+    minLevel: 8,
+    maxLevel: 25
+  },
+  {
+    id: 'wolf-mechanic',
+    name: 'Mechanical Wolf',
+    desc: 'What you thought was a real wolf turns out to be a complex machine, and that machine is about to crush you!',
+    icon: 'assets/monsters/wolf-mechanic.png',
+    subCategories: ['mechanical'],
+    terrains: ['mountain', 'volcano', 'desert'],
+    minLevel: 5,
+    maxLevel: 20
+  },
+  {
+    id: 'drake-of-ashes',
+    name: 'Drake of Ashes',
+    desc: 'The bright red this drake is sporting is truly magnificent... the problem is, it burns.',
+    icon: 'assets/monsters/drake-ash.png',
+    subCategories: ['elemental', 'dragon', 'fire'],
+    terrains: ['mountain', 'volcano'],
+    minLevel: 10,
+    maxLevel: 30
+  },
+  {
+    id: 'demon-of-ashes',
+    name: 'Demon of Ashes',
+    desc: 'Those red eyes, those horns, that impossible smile, there\'s no doubt he\'s a demon, and a big one at that.',
+    icon: 'assets/monsters/demon-ash.png',
+    subCategories: ['undead', 'elemental'],
+    terrains: ['mountain', 'volcano'],
+    minLevel: 10,
+    maxLevel: 40
+  },
+  {
+    id: 'dragon-blue-adult',
+    name: 'Adult Blue Dragon',
+    desc: 'The blue scales of this dragon shimmer in the light. Its piercing gaze meets yours as it prepares to unleash its fury.',
+    icon: 'assets/monsters/dragon-blue-adult.png',
+    subCategories: ['dragon', 'lightning'],
+    terrains: ['mountain', 'sea'],
+    minLevel: 20,
+    maxLevel: 50
+  },
+  {
+    id: 'dragon-blue-young',
+    name: 'Young Blue Dragon',
+    desc: 'This young blue dragon is still learning to control its powers, but it\'s already a formidable opponent.',
+    icon: 'assets/monsters/dragon-blue-young.png',
+    subCategories: ['dragon', 'lightning'],
+    terrains: ['mountain', 'sea'],
+    minLevel: 10,
+    maxLevel: 30
+  },
+  {
+    id: 'dragon-green-adult',
+    name: 'Adult Green Dragon',
+    desc: 'The green scales of this dragon blend perfectly with the forest. Its eyes gleam with intelligence as it watches you closely.',
+    icon: 'assets/monsters/dragon-green-adult.png',
+    subCategories: ['dragon', 'plant'],
+    terrains: ['forest', 'jungle', 'swamp'],
+    minLevel: 20,
+    maxLevel: 50
+  },
+  {
+    id: 'dragon-green-young',
+    name: 'Young Green Dragon',
+    desc: 'This young green dragon is agile and quick, darting through the trees with ease as it prepares to strike.',
+    icon: 'assets/monsters/dragon-green-young.png',
+    subCategories: ['dragon', 'plant'],
+    terrains: ['forest', 'jungle', 'swamp'],
+    minLevel: 10,
+    maxLevel: 30
+  },
+  {
+    id: 'dragon-red-adult',
+    name: 'Adult Red Dragon',
+    desc: 'The red scales of this dragon glow like embers. Its fiery breath can incinerate anything in its path.',
+    icon: 'assets/monsters/dragon-red-adult.png',
+    subCategories: ['dragon', 'fire'],
+    terrains: ['volcano', 'mountain'],
+    minLevel: 20,
+    maxLevel: 50
+  },
+  {
+    id: 'dragon-red-young',
+    name: 'Young Red Dragon',
+    desc: 'This young red dragon is fierce and determined, its flames already capable of causing significant damage.',
+    icon: 'assets/monsters/dragon-red-young.png',
+    subCategories: ['dragon', 'fire'],
+    terrains: ['volcano', 'mountain'],
+    minLevel: 10,
+    maxLevel: 30
+  },
+  {
+    id: 'giant-toad',
+    name: 'Giant Toad',
+    desc: 'The size of this toad is impressive. You wonder if it would be able to swallow you. Better not to check...',
+    icon: 'assets/monsters/toad.png',
+    subCategories: ['vermin', 'plant'],
+    terrains: ['swamp', 'jungle', 'forest'],
+    minLevel: 2,
+    maxLevel: 10
+  },
+  {
+    id: 'giant-lizard',
+    name: 'Giant Lizard',
+    desc: 'Considering the size of this lizard, you might be surprised if it only eats flies!',
+    icon: 'assets/monsters/lizard-giant.png',
+    subCategories: ['vermin', 'plant'],
+    terrains: ['swamp', 'jungle', 'forest'],
+    minLevel: 10,
+    maxLevel: 30
+  },
+  {
+    id: 'young-kraken',
+    name: 'Young Kraken',
+    desc: 'Your ship was sailing peacefully when suddenly a shock was felt beneath the hull. Numerous tentacles assaulted the deck.',
+    icon: 'assets/monsters/kraken-young.png',
+    subCategories: ['aquatic'],
+    terrains: ['sea'],
+    minLevel: 10,
+    maxLevel: 20
+  },
+  {
+    id: 'snake-water',
+    name: 'Snake Water',
+    desc: 'You see the water begin to simmer and bubble. What is this creature that is bothering you?',
+    icon: 'assets/monsters/snake-water.png',
+    subCategories: ['aquatic'],
+    terrains: ['sea'],
+    minLevel: 1,
+    maxLevel: 8
+  },
+  {
+    id: 'tentacle-cursed',
+    name: 'Cursed Tentacle',
+    desc: 'This tentacle is all alone, but it can do a lot of damage.',
+    icon: 'assets/monsters/tentacle-cursed.png',
+    subCategories: ['aquatic'],
+    terrains: ['sea'],
+    minLevel: 4,
+    maxLevel: 15
+  }
+];

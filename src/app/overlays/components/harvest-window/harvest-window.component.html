@@ -1,0 +1,47 @@
+<div class="harvest-window parchment-bg">
+  <h2 class="title">Harvest</h2>
+<!--
+  @if(isProcessing) {
+    <div class="progress-bar global">
+      <div class="bar" [style.width.%]="progress"></div>
+    </div>
+  } -->
+
+  <div class="resources-list">
+    @for(res of resources; track res.id) {
+      <div class="resource-card" [class]="res.exhausted ? 'depleted':''">
+        <div class="header">
+          <div>
+            <img [src]="res.item?.icon" class="icon" />
+            <h3>{{ res.item?.name || res.id }}</h3>
+          </div>
+          <p class="description">{{ res.item?.description }}</p>
+          <div class="difficulty">
+            <img class="orb" src="assets/characters/orbs/orb-{{ res.orb }}.png"/>
+            <small>Difficulty : {{ res.difficulty }}</small>
+          </div>
+        </div>
+
+        <button
+          class="action-btn"
+          (click)="harvest(res)"
+          [disabled]="res.exhausted"
+        >
+          {{ res.exhausted ? 'Out of stock' : 'Harvest' }}
+        </button>
+
+        @if(res.exhausted &&res.remainingSteps && res.remainingSteps > 0) {
+          <p class="cooldown">
+            🌱 Resource available in {{ res.remainingSteps }} movements
+          </p>
+        }
+      </div>
+    }
+
+  </div>
+
+  <div class="footer">
+    <p class="message">{{ message }}</p>
+    <button class="nav-btn" (click)="quit()">Quitter</button>
+  </div>
+</div>

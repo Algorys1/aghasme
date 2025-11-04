@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { HomeScreenComponent } from './home-screen/home-screen.component';
-import { GameComponent } from './game/game.component';
-import { StartGameComponent } from './start-game/start-game.component';
-import { CharacterCreationComponent } from './character-creation/character-creation.component';
-import {SaveListComponent} from './save-list/save-list.component';
+import { HomeScreenComponent } from './game/components/home-screen/home-screen.component';
+import { GameComponent } from './game/components/game.component';
+import { StartGameComponent } from './game/components/start-game/start-game.component';
+import { CharacterCreationComponent } from './character/components/character-creation/character-creation.component';
+import {SaveListComponent} from './game/components/save-list/save-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeScreenComponent },

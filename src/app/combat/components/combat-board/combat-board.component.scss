@@ -1,0 +1,13 @@
+.board-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  width: 100%;
+  flex: 1;
+
+  canvas {
+    border: 1px solid #333;
+    image-rendering: pixelated;
+  }
+}

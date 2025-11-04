@@ -1,0 +1,37 @@
+<div class="combat-container">
+  <!-- HUD Joueur -->
+  <div class="hud player">
+    <div class="info">
+      <h3>{{ player?.name }}</h3>
+      <p>HP: {{ player?.hp }}/{{ player?.maxHp }}</p>
+      <p>MP: {{ player?.mp }}/{{ player?.maxMp }}</p>
+    </div>
+  </div>
+
+  <!-- Plateau de combat -->
+  <app-combat-board></app-combat-board>
+
+  <!-- HUD Ennemi -->
+  <div class="hud enemy">
+    <div class="info">
+      <h3>{{ enemy?.name }}</h3>
+      <p>HP: {{ enemy?.hp }}/{{ enemy?.maxHp }}</p>
+      <p>MP: {{ enemy?.mp }}/{{ enemy?.maxMp }}</p>
+    </div>
+  </div>
+
+  <!-- Commandes -->
+  <div class="actions" *ngIf="isPlayerTurn">
+    <button (click)="onEndTurn()">End Turn</button>
+    <button (click)="onQuit()">Quit</button>
+  </div>
+
+  <!-- Résultat du combat -->
+  <div class="result" *ngIf="result">
+    <h2 *ngIf="result.winner === 'player'">Victory!</h2>
+    <h2 *ngIf="result.winner === 'enemy'">Defeat...</h2>
+    <p *ngIf="result.winner === 'player'">
+      XP: +{{ result.xpGained }} | Gold: +{{ result.goldGained }}
+    </p>
+  </div>
+</div>

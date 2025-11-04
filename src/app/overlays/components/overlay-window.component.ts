@@ -1,0 +1,319 @@
+import {
+  Component, EventEmitter, Input, Output,
+  OnChanges, SimpleChanges, OnInit, OnDestroy,
+  ViewChild, ElementRef, NgZone, ChangeDetectorRef
+} from '@angular/core';
+import { OverlayKind, OverlayInstance } from '../models/overlays.model';
+import { ActionType } from '../models/actions';
+import { Subscription, take } from 'rxjs';
+import { ActionService } from '../services/action.service';
+import {RestWindowComponent} from '../components/rest-window/rest-window.component';
+import { HarvestWindowComponent } from "../components/harvest-window/harvest-window.component";
+import { HarvestResource } from '../models/harvest.model';
+import { TradeWindowComponent } from "./trade-window/trade-window.component";
+import { OverlayShopMap, ShopType, TradeService } from '../services/trade.service';
+import { CharacterService } from '../../character/services/character.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SettingsService } from '../../game/services/settings.service';
+
+@Component({
+  selector: 'app-overlay-window',
+  templateUrl: './overlay-window.component.html',
+  imports: [
+    RestWindowComponent,
+    HarvestWindowComponent,
+    TradeWindowComponent,
+    TranslateModule
+  ],
+  styleUrls: ['./overlay-window.component.scss']
+})
+export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
+  @Input() kind!: OverlayKind;
+  @Input() data!: OverlayInstance;
+
+  @Output() close = new EventEmitter<void>();
+  @Output() actionSelected = new EventEmitter<ActionType>();
+
+  @ViewChild('bodyContainer') bodyContainer!: ElementRef<HTMLDivElement>;
+
+  mainTitle = '';
+  displayedTitle = '';
+  displayedDescription = '';
+
+  private titleIndex = 0;
+  private descIndex = 0;
+
+  public writingTitle = false;
+  public writingDesc = false;
+
+  private subs: Subscription[] = [];
+
+  private titleInterval?: ReturnType<typeof setInterval>;
+  private descInterval?: ReturnType<typeof setInterval>;
+  private passiveInterval?: ReturnType<typeof setInterval>;
+
+  private lastOverlayId?: string;
+  disabledActions = new Set<ActionType>();
+  disableQuit = true;
+
+  showRestWindow = false;
+  showHarvestWindow = false;
+  showTradeWindow = false;
+
+  res: HarvestResource[] = [];
+
+  constructor(
+    private actionService: ActionService,
+    private tradeService: TradeService,
+    private translate: TranslateService,
+    private characterService: CharacterService,
+    private settings: SettingsService,
+    private zone: NgZone
+  ) {
+    const lang = this.settings.language || 'en';
+    this.translate.use(lang);
+  }
+
+  ngOnInit() {
+    this.subs.push(
+      this.actionService.passiveText$.subscribe(msg => this.appendPassiveText(msg)),
+      this.actionService.enableQuit$.subscribe(() => this.disableQuit = false),
+      this.actionService.restRequested$.subscribe(() => this.showRestWindow = true),
+      this.actionService.tradeRequested$.subscribe((overlay) => {
+        const level = this.characterService.getCharacter()?.level ?? 1;
+
+        const shopTypes = OverlayShopMap[overlay.kind] ?? [];
+        const shop = shopTypes.length ? shopTypes[0] : ShopType.General;
+
+        this.tradeService.openTrade(shop, overlay.kind, level);
+
+        this.showTradeWindow = true;
+      }),
+      this.actionService.harvestRequested$.subscribe((overlay) => {
+        console.log('🔹 Resources found:', this.data?.resources);
+        this.res = overlay.resources || [];
+        this.showHarvestWindow = true
+      }),
+    );
+  }
+
+  ngOnDestroy() {
+    this.clearAllIntervals();
+    this.subs.forEach(s => s.unsubscribe());
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const newData = changes['data']?.currentValue as OverlayInstance | undefined;
+    if (!newData) return;
+
+    if (this.lastOverlayId === newData.id && this.data?.currentFloor === newData.currentFloor) {
+      return;
+    }
+    this.lastOverlayId = newData.id;
+
+    const hasEventChain = !!newData.eventChain && Object.keys(newData.eventChain).length > 0;
+    const hasBaseDescription = !!newData.description?.trim();
+
+    if (hasEventChain || hasBaseDescription) {
+      setTimeout(() => {
+        this.resetTyping();
+        this.startTypingAnimation()
+      }, 0);
+    }
+  }
+
+  isNarrativeType(): boolean {
+    return ![OverlayKind.City, OverlayKind.Village, OverlayKind.Farm, OverlayKind.Forest, OverlayKind.Mine, OverlayKind.Portal].includes(this.kind);
+  }
+
+  isActionDisabled(action: ActionType): boolean {
+    return (
+      this.writingTitle ||
+      this.writingDesc ||
+      this.disabledActions.has(action) ||
+      this.data?.disabledActions?.includes(action) ||
+      false
+    );
+  }
+
+  disableContinue(): boolean {
+    if(this.data.eventChain?.[this.data.currentFloor ?? '']?.uniqueChoice)
+      return this.disabledActions.size === 0;
+    return false;
+  }
+
+  private resetTyping() {
+    this.clearAllIntervals();
+    this.displayedTitle = '';
+    this.displayedDescription = '';
+    this.titleIndex = 0;
+    this.descIndex = 0;
+    this.writingTitle = false;
+    this.writingDesc = false;
+    this.disabledActions.clear();
+    this.data.disabledActions = [];
+    this.disableQuit = this.isNarrativeType();
+  }
+
+  private async startTypingAnimation() {
+    if (!this.mainTitle) this.mainTitle = this.data.name;
+
+    const current = this.data.eventChain?.[this.data.currentFloor ?? ''];
+    const titleKey = current?.title || this.data.name;
+    const descKey = current?.description || this.data.description || '';
+
+    const title = this.translate.instant(titleKey);
+    const desc = this.translate.instant(descKey);
+
+    if (!desc.trim() || this.writingTitle || this.writingDesc) return;
+
+    this.clearActiveTypingIntervals();
+    this.displayedTitle = '';
+    this.displayedDescription = '';
+    this.titleIndex = 0;
+    this.descIndex = 0;
+    this.writingTitle = true;
+    this.writingDesc = false;
+
+    this.titleInterval = setInterval(() => {
+      if (this.titleIndex < title.length) {
+        this.displayedTitle += title[this.titleIndex++];
+      } else {
+        this.stopTyping('title');
+        this.typeDescription(desc);
+      }
+    }, 45);
+  }
+
+  private typeDescription(desc: string) {
+    this.stopTyping('desc');
+    this.writingDesc = true;
+    this.descInterval = setInterval(() => {
+      if (this.descIndex < desc.length) {
+        this.displayedDescription += desc[this.descIndex++];
+        this.scrollToBottom();
+      } else {
+        this.stopTyping('desc');
+        this.animateActionButtons();
+      }
+    }, 50);
+  }
+
+  private animateActionButtons() {
+    const buttons = document.querySelectorAll('.action-btn');
+    buttons.forEach(btn => {
+      btn.classList.add('reactivated');
+      setTimeout(() => btn.classList.remove('reactivated'), 500);
+    });
+  }
+
+  onSkipText() {
+    const current = this.data.eventChain?.[this.data.currentFloor ?? ''];
+    const titleKey = current?.title || this.data.name;
+    const descKey = current?.description || this.data.description || '';
+
+    const fullTitle = this.translate.instant(titleKey);
+    const fullDesc = this.translate.instant(descKey);
+
+    if (this.writingTitle) {
+      this.displayedTitle += this.getRemainingText(this.displayedTitle, fullTitle);
+      this.stopTyping('title');
+      this.typeDescription(fullDesc);
+    } else if (this.writingDesc) {
+      this.displayedDescription += this.getRemainingText(this.displayedDescription, fullDesc);
+      this.stopTyping('desc');
+    }
+  }
+
+  private getRemainingText(current: string, full: string): string {
+    return full.slice(current.length);
+  }
+
+  private appendPassiveText(msg: string) {
+    const targetId = this.lastOverlayId;
+
+    const addText = () => {
+      if (this.lastOverlayId !== targetId) return;
+      const textToAdd = `\n\n${msg}`;
+      let i = 0;
+      this.passiveInterval = setInterval(() => {
+        if (this.lastOverlayId !== targetId) {
+          clearInterval(this.passiveInterval);
+          return;
+        }
+        if (i < textToAdd.length) {
+          this.displayedDescription += textToAdd[i++];
+          this.scrollToBottom();
+        } else {
+          this.stopTyping('passive');
+        }
+      }, 50);
+    };
+
+    if (this.writingDesc) {
+      const wait = setInterval(() => {
+        if (!this.writingDesc) {
+          clearInterval(wait);
+          addText();
+        }
+      }, 100);
+    } else {
+      addText();
+    }
+  }
+
+  private scrollToBottom() {
+    const el = this.bodyContainer?.nativeElement;
+    if (el) {
+      this.zone.onStable.pipe(take(1)).subscribe(() => {
+        el.scrollTop = el.scrollHeight;
+      });
+    }
+  }
+
+  private stopTyping(type: 'title' | 'desc' | 'passive') {
+    switch (type) {
+      case 'title': clearInterval(this.titleInterval); this.writingTitle = false; break;
+      case 'desc': clearInterval(this.descInterval); this.writingDesc = false; break;
+      case 'passive': clearInterval(this.passiveInterval); break;
+    }
+  }
+
+  private clearActiveTypingIntervals() {
+    clearInterval(this.titleInterval);
+    clearInterval(this.descInterval);
+  }
+
+  private clearAllIntervals() {
+    this.clearActiveTypingIntervals();
+    clearInterval(this.passiveInterval);
+  }
+
+  onAction(action: ActionType) {
+    if (this.disabledActions.has(action)) return;
+    this.disabledActions.add(action);
+    this.actionSelected.emit(action);
+  }
+
+  continue() {
+    this.clearAllIntervals();
+    this.onAction(ActionType.Continue);
+  }
+
+  quit() {
+    this.clearAllIntervals();
+    this.onAction(ActionType.Quit);
+  }
+
+  trackByAction(_index: number, action: string) {
+    return action;
+  }
+
+  getConsequence(action: string): string {
+    const translated = this.translate.instant(`ACTIONS.${action.toUpperCase()}`);
+    if(translated === `ACTIONS.${action.toUpperCase()}`) {
+      return this.translate.instant('ACTIONS.DEFAULT');
+    }
+    return translated;
+  }
+}

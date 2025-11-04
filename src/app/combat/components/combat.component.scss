@@ -1,0 +1,57 @@
+.combat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #111;
+  color: #eee;
+  font-family: 'Cinzel', serif;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.hud {
+  width: 100%;
+  padding: 8px 0;
+  background: rgba(255,255,255,0.05);
+  &.player {
+    border-top: 2px solid #444;
+  }
+  &.enemy {
+    border-bottom: 2px solid #444;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  justify-content: center;
+
+  button {
+    background: #333;
+    border: 1px solid #666;
+    color: #fff;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 1rem;
+  }
+}
+
+.result {
+  position: absolute;
+  top: 40%;
+  background: rgba(0,0,0,0.85);
+  padding: 16px 24px;
+  border-radius: 8px;
+  color: gold;
+}
+
+:host {
+  display: block;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #000;
+  z-index: 8888;
+}
+
