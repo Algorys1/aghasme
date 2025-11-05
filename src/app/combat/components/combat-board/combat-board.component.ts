@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CombatService } from '../../services/combat.service';
 import { CombatInitPayload } from '../../models/combat.model';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './combat-board.component.html',
   styleUrls: ['./combat-board.component.scss']
 })
-export class CombatBoardComponent implements OnInit {
+export class CombatBoardComponent implements OnInit, AfterViewInit {
   @ViewChild('boardCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
   ctx!: CanvasRenderingContext2D;
   gridCols = 6;
@@ -20,11 +20,27 @@ export class CombatBoardComponent implements OnInit {
   playerPos = { x: 1, y: 4 };
   enemyPos = { x: 4, y: 4 };
 
+  private pendingData?: CombatInitPayload;
+
   constructor(private combatService: CombatService) {}
 
   ngOnInit() {
-    this.combatService.combatStarted$.subscribe(data => this.initBoard(data));
     this.combatService.entityMoved$.subscribe(m => this.animateMove(m.id, m.x, m.y));
+  }
+
+  ngAfterViewInit(): void {
+    this.combatService.combatStarted$.subscribe(data => {
+      if (!this.canvasRef) {
+        this.pendingData = data;
+        return;
+      }
+      this.initBoard(data);
+    });
+
+    if (this.pendingData) {
+      this.initBoard(this.pendingData);
+      this.pendingData = undefined;
+    }
   }
 
   private initBoard(data: CombatInitPayload) {
