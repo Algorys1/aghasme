@@ -497,7 +497,7 @@ private placePortals(): void {
     const playerLevel = char.level;
     const enemy = EnemyFactory.generate({ playerLevel, terrain });
 
-    this.combatService.startCombat(enemy);
+    this.combatService.startPreCombat(enemy);
   }
 
   // === SAVE / LOAD ================================================================

@@ -21,13 +21,14 @@ import { DiceResult, DiceRollComponent, OrbType } from "./dice-roll/dice-roll.co
 import { DiceService } from '../services/dice.service';
 import { CampComponent } from "../../camp/components/camp-panel.component";
 import { CombatService } from '../../combat/services/combat.service';
+import { PreCombatWindowComponent } from "../../combat/components/pre-combat-window/pre-combat-window.component";
 
 @Component({
   selector: 'app-game',
   standalone: true,
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
-  imports: [OverlayWindowComponent, CombatComponent, LootPanelComponent, DiceRollComponent, CampComponent]
+  imports: [OverlayWindowComponent, CombatComponent, LootPanelComponent, DiceRollComponent, CampComponent, PreCombatWindowComponent]
 })
 export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -42,6 +43,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   currentTile: { type: string; description?: string } | null = null;
 
+  showPreCombat = false;
   showCombat = false;
   showInventoryPanel = false;
   showLootPanel = false;
@@ -70,7 +72,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private lootService: LootService,
     private overlayRegistry: OverlayRegistryService,
     private harvestRegenService: HarvestRegenerationService,
-    private combatService: CombatService,
+    public combatService: CombatService,
     private diceService: DiceService
   ) {}
 
@@ -90,10 +92,19 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapService.checkForEncounter();
         }
       }),
-      this.combatService.combatStarted$.subscribe(payload => {
-        console.log(`🎯 Launching combat UI vs ${payload.enemy.name}`);
-        this.showCombat = true;
+      this.combatService.preCombatStarted$.subscribe(payload => {
+        console.log(`🎯 Launching Precombat UI`);
+        this.showPreCombat = true;
         this.isOverlayPaused = true;
+      }),
+      this.combatService.combatStarted$.subscribe(payload => {
+        console.log(`🎯 Launching combat UI vs ${payload?.enemy.name}`);
+        this.showPreCombat = false;
+        this.showCombat = true;
+      }),
+      this.combatService.combatEnded$.subscribe(() => {
+        this.showCombat = false;
+        this.isOverlayPaused = false;
       }),
       this.mapService.overlayChange.subscribe(kind => {
         if (kind && kind !== OverlayKind.None) {
@@ -145,6 +156,16 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     this.diceVisible = false;
     this.rollResolver?.(result);
     this.rollResolver = undefined;
+  }
+
+  onFightConfirmed() {
+    this.combatService.startCombat();
+  }
+
+  onFleeAttempt() {
+    this.combatService.endCombat('player');
+    this.showPreCombat = false;
+    this.isOverlayPaused = false;
   }
 
   async ngAfterViewInit() {

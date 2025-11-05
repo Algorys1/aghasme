@@ -129,7 +129,7 @@ export class ActionService {
 
       console.log(`⚔️ Combat begins: ${player.name} vs ${enemy.name} (Lv ${enemy.level})`);
 
-      this.combatService.startCombat(enemy);
+      this.combatService.startPreCombat(enemy);
       return;
     }
   }

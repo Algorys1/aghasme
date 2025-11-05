@@ -99,6 +99,15 @@
     </div>
   }
 
+  @if (showPreCombat) {
+    <app-pre-combat-window
+      [player]="combatService.getPlayerEntity()!"
+      [enemy]="combatService.getEnemyEntity()!"
+      (fight)="onFightConfirmed()"
+      (flee)="onFleeAttempt()">
+    </app-pre-combat-window>
+  }
+
   @if (showCombat) {
     <app-combat (closed)="onCombatClosed()"></app-combat>
   }

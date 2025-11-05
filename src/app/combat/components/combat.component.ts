@@ -23,6 +23,7 @@ export class CombatComponent implements OnInit {
 
   ngOnInit() {
     this.combatService.combatStarted$.subscribe(({ player, enemy }) => {
+      console.log('Combat started ', player, enemy)
       this.player = player;
       this.enemy = enemy;
     });

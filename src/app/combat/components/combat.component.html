@@ -1,37 +1,81 @@
 <div class="combat-container">
-  <!-- HUD Joueur -->
+
   <div class="hud player">
-    <div class="info">
-      <h3>{{ player?.name }}</h3>
-      <p>HP: {{ player?.hp }}/{{ player?.maxHp }}</p>
-      <p>MP: {{ player?.mp }}/{{ player?.maxMp }}</p>
+    <div class="portrait">
+      <img [src]="player?.icon" alt="{{ player?.name }}" />
+    </div>
+    <div class="stats">
+      <div class="line">
+        <img src="assets/ui/hp.png" alt="HP" class="icon" />
+        <div class="bar">
+          <div class="fill" [style.width.%]="(player?.hp ?? 0) / (player?.maxHp ?? 1) * 100"></div>
+        </div>
+        <span class="value">{{ player?.hp }}/{{ player?.maxHp }}</span>
+      </div>
+
+      <div class="line">
+        <img src="assets/ui/mana.png" alt="MP" class="icon" />
+        <div class="bar mana">
+          <div class="fill" [style.width.%]="(player?.mp ?? 0) / (player?.maxMp ?? 1) * 100"></div>
+        </div>
+        <span class="value">{{ player?.mp }}/{{ player?.maxMp }}</span>
+      </div>
+
+      <div class="name">{{ player?.name }} • Lv {{ player?.level }}</div>
     </div>
   </div>
+  <div class="player-actions">
+    <button>Inventory</button>
+    <button>Skills</button>
+  </div>
+  <div class="status-effects">
+    feu, glace, light
+  </div>
 
-  <!-- Plateau de combat -->
   <app-combat-board></app-combat-board>
 
-  <!-- HUD Ennemi -->
   <div class="hud enemy">
-    <div class="info">
-      <h3>{{ enemy?.name }}</h3>
-      <p>HP: {{ enemy?.hp }}/{{ enemy?.maxHp }}</p>
-      <p>MP: {{ enemy?.mp }}/{{ enemy?.maxMp }}</p>
+    <div class="portrait">
+      <img [src]="enemy?.icon" alt="{{ enemy?.name }}" />
+    </div>
+    <div class="stats">
+      <div class="line">
+        <img src="assets/ui/hp.png" alt="HP" class="icon" />
+        <div class="bar">
+          <div class="fill" [style.width.%]="(enemy?.hp ?? 0) / (enemy?.maxHp ?? 1) * 100"></div>
+        </div>
+        <span class="value">{{ enemy?.hp }}/{{ enemy?.maxHp }}</span>
+      </div>
+
+      <div class="line">
+        <img src="assets/ui/mana.png" alt="MP" class="icon" />
+        <div class="bar mana">
+          <div class="fill" [style.width.%]="(enemy?.mp ?? 0) / (enemy?.maxMp ?? 1) * 100"></div>
+        </div>
+        <span class="value">{{ enemy?.mp }}/{{ enemy?.maxMp }}</span>
+      </div>
+
+      <div class="name">{{ enemy?.name }} • Lv {{ enemy?.level }}</div>
     </div>
   </div>
 
-  <!-- Commandes -->
-  <div class="actions" *ngIf="isPlayerTurn">
-    <button (click)="onEndTurn()">End Turn</button>
-    <button (click)="onQuit()">Quit</button>
-  </div>
+  @if(isPlayerTurn) {
+    <div class="actions">
+      <button (click)="onEndTurn()">End Turn</button>
+      <button (click)="onQuit()">Quit</button>
+    </div>
+  }
 
-  <!-- Résultat du combat -->
-  <div class="result" *ngIf="result">
-    <h2 *ngIf="result.winner === 'player'">Victory!</h2>
-    <h2 *ngIf="result.winner === 'enemy'">Defeat...</h2>
-    <p *ngIf="result.winner === 'player'">
-      XP: +{{ result.xpGained }} | Gold: +{{ result.goldGained }}
-    </p>
-  </div>
+  @if(result) {
+    <div class="result">
+      @if(result.winner === 'player') {
+        <h2>Victory!</h2>
+        <p>XP: +{{ result.xpGained }} | Gold: +{{ result.goldGained }}</p>
+      }
+      @if(result.winner === 'enemy') {
+        <h2>Defeat...</h2>
+      }
+    </div>
+  }
+
 </div>

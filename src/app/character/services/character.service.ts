@@ -105,12 +105,10 @@ export class CharacterService {
     return this.character;
   }
 
-  /** Lecture (mémoire uniquement) */
   getCharacter(): Character | null {
     return this.character;
   }
 
-  /** Remplace le personnage courant (mémoire uniquement) */
   setCharacter(c: Character) {
     this.character = { ...c };
     this.characterSubject.next(this.character);

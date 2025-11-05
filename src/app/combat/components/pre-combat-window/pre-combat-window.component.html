@@ -1,0 +1,38 @@
+<div class="pre-combat-overlay">
+  <div class="window">
+
+    <div class="entity-block player">
+      <div>
+        <img  class="portrait" src="{{ player.icon }}" />
+      </div>
+      <div class="name">{{ player.name }} • Lv {{ player.level }}</div>
+      <div class="stats">
+        <div class="stat"><img src="assets/ui/hp.png" alt="HP"><span>{{ player.hp }}/{{ player.maxHp }}</span></div>
+        <div class="stat"><img src="assets/ui/mana.png" alt="MP"><span>{{ player.mp }}/{{ player.maxMp }}</span></div>
+        <div class="stat"><span class="chip">XP {{ player.level * 10 }}</span></div>
+      </div>
+    </div>
+
+    <div class="center-icon">
+      <img src="assets/ui/combat.png" alt="Combat">
+    </div>
+
+    <div class="entity-block enemy">
+      <div>
+        <img class="portrait" src="{{ enemy.icon }}" />
+      </div>
+      <div class="name">{{ enemy.name }} • Lv {{ enemy.level }}</div>
+      <div class="stats">
+        <div class="stat"><img src="assets/ui/hp.png" alt="HP"><span>{{ enemy.hp }}/{{ enemy.maxHp }}</span></div>
+        <div class="stat"><img src="assets/ui/mana.png" alt="MP"><span>{{ enemy.mp }}/{{ enemy.maxMp }}</span></div>
+        <div class="stat"><span class="chip">XP {{ enemy.level * 10 }}</span></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="fight" (click)="fight.emit()">Fight</button>
+      <button class="flee" (click)="flee.emit()">Flee</button>
+    </div>
+
+  </div>
+</div>
