@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
-import { PlayerService } from '../../character/services/player.service';
+import { ReplaySubject, Subject } from 'rxjs';
 import { Enemy } from '../models/enemy.model';
-import { Character } from '../../character/models/character.model';
+import { Character, CHARACTER_ASSETS } from '../../character/models/character.model';
 import { CombatEntity, CombatInitPayload, CombatResult, CombatStateGlobal, Turn } from '../models/combat.model';
+import { CharacterService } from '../../character/services/character.service';
 
 @Injectable({ providedIn: 'root' })
 export class CombatService {
@@ -19,10 +19,10 @@ export class CombatService {
   public combatEnded$ = new Subject<CombatResult>();
   public entityMoved$ = new Subject<{ id: string; x: number; y: number }>();
 
-  constructor(private playerService: PlayerService) {}
+  constructor(private characterService: CharacterService) {}
 
   startPreCombat(enemy: Enemy): void {
-    const player = this.playerService.getCharacter();
+    const player = this.characterService.getCharacter();
     if (!player) return;
 
     this.playerEntity = this.createCombatEntityFromCharacter(player, true);
@@ -95,8 +95,8 @@ export class CombatService {
     };
 
     if (winner === 'player') {
-      this.playerService.gainXP(result.xpGained);
-      this.playerService.gainGold(result.goldGained);
+      this.characterService.addXP(result.xpGained);
+      this.characterService.gainGold(result.goldGained);
     }
 
     this.inCombat = false;
@@ -120,7 +120,7 @@ export class CombatService {
       mov: Math.max(1, Math.floor((character.orbs.natural + character.orbs.elemental) / 10)),
       position: { x: 1, y: 4 },
       actionsRemaining: 2,
-      icon: this.playerService.portrait
+      icon: CHARACTER_ASSETS[character.gender][character.archetype]
     };
   }
 

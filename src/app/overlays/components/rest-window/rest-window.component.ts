@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {DecimalPipe} from '@angular/common';
-import { PlayerService } from '../../../character/services/player.service';
 import { MapService } from '../../../game/services/map.service';
 import { ActionService } from '../../services/action.service';
 import { OverlayKind } from '../../../overlays/models/overlays.model';
+import { CharacterService } from '../../../character/services/character.service';
 
 @Component({
   selector: 'app-rest-window',
@@ -27,7 +27,7 @@ export class RestWindowComponent {
   private restInterval: any;
 
   constructor(
-    private playerService: PlayerService,
+    private characterService: CharacterService,
     private mapService: MapService,
     private actionService: ActionService
   ) {}
@@ -58,12 +58,12 @@ export class RestWindowComponent {
   private endRest(healPercent: number): void {
     if (this.rollInterruption()) {
       this.interrupted = true;
-      this.playerService.heal(healPercent * 0.5);
-      this.playerService.restoreMana(healPercent * 0.5);
+      this.characterService.heal(healPercent * 0.5);
+      this.characterService.restoreMana(healPercent * 0.5);
       setTimeout(() => this.mapService.triggerRandomEncounter(), 1000);
     } else {
-      this.playerService.heal(healPercent);
-      this.playerService.restoreMana(healPercent);
+      this.characterService.heal(healPercent);
+      this.characterService.restoreMana(healPercent);
     }
 
     setTimeout(() => {

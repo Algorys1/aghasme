@@ -97,12 +97,15 @@ export class CharacterService {
   }
 
   setCharacter(c: Character) {
-    this.character = { ...c };
+    const newChar = { ...c };
+    newChar.hp = Math.min(newChar.hp, newChar.maxHp);
+    newChar.mp = Math.min(newChar.mp, newChar.maxMp);
+    this.character = newChar;
     this.characterSubject.next(this.character);
   }
 
   upsertSourceEffects(sourceId: string, effects: Effect[]) {
-    // wipe puis ajoute les effets permanents/temporaires de cette source
+    // Wipe and then add the permanent/temporary effects from this source
     this.effectService.removeEffectsBySource(sourceId);
     for (const eff of effects) this.effectService.applyEffect({ ...eff, source: sourceId });
   }

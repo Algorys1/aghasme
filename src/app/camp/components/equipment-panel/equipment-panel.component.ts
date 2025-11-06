@@ -4,6 +4,7 @@ import { InventoryService } from '../../services/inventory.service';
 import { CharacterService } from '../../../character/services/character.service';
 import { EquipSlot, Item } from '../../../items/models/items.model';
 import { Character } from '../../../character/models/character.model';
+import { EffectService } from '../../../character/services/effect.service';
 
 @Component({
   selector: 'app-equipment-panel',
@@ -21,7 +22,8 @@ export class EquipmentPanelComponent implements OnInit {
 
   constructor(
     private inventory: InventoryService,
-    private characterService: CharacterService
+    private characterService: CharacterService,
+    private effectService: EffectService
   ) {}
 
   ngOnInit(): void {
@@ -37,5 +39,10 @@ export class EquipmentPanelComponent implements OnInit {
   compare(slot: EquipSlot) {
     this.showComparison = true;
     this.comparisonTarget = this.equipped[slot];
+  }
+
+  getStat(stat: string): number {
+    if (!this.character) return 0;
+    return this.effectService.getFinalStat(stat as any, this.character);
   }
 }

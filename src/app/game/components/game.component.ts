@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PlayerService } from '../../character/services/player.service';
 import { Character, OrbKey } from '../../character/models/character.model';
 import { MapService } from '../services/map.service';
 import { CharacterService } from '../../character/services/character.service';
@@ -63,7 +62,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   constructor(
-    private player: PlayerService,
     private router: Router,
     private mapService: MapService,
     private saveService: SaveService,
@@ -77,7 +75,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.character = this.player.getCharacter();
+    this.character = this.characterService.getCharacter();
 
     this.subs.push(
       this.mapService.playerMoved.subscribe(() => {

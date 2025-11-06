@@ -14,39 +14,41 @@
   <div class="bars">
     <div class="bar">
       <img src="assets/ui/hp.png" alt="HP" />
-      <span>{{ character.hp }} / {{ character.maxHp }}</span>
+      <span>{{ character.hp }} / {{ getStat('maxHp') }}</span>
     </div>
     <div class="bar">
       <img src="assets/ui/mana.png" alt="MP" />
-      <span>{{ character.mp }} / {{ character.maxMp }}</span>
+      <span>{{ character.mp }} / {{ getStat('maxMp') }}</span>
     </div>
   </div>
 
   <div class="orbs">
-    <div class="orb" *ngFor="let key of orbKeys()">
-      <img [src]="orbDefs[key].icon" [alt]="orbDefs[key].label" />
-      <span class="orb-value">{{ character.orbs[key] }}</span>
-      <small>{{ orbDefs[key].label }}</small>
-    </div>
+    @for(key of orbKeys(); track key) {
+      <div class="orb">
+        <img [src]="orbDefs[key].icon" [alt]="orbDefs[key].label" />
+        <span class="orb-value">{{ getStat('orbs.' + key) }}</span>
+        <small>{{ orbDefs[key].label }}</small>
+      </div>
+    }
   </div>
 
   <hr />
 
   <div class="primary-stats">
-    <div><strong>Attack:</strong> {{ character.attack }}</div>
-    <div><strong>Defense:</strong> {{ character.defense }}</div>
-    <div><strong>XP:</strong> {{ character.xp }}</div>
+    <div><strong>Attack:</strong> {{ getStat('attack') }}</div>
+    <div><strong>Defense:</strong> {{ getStat('defense') }}</div>
+    <div><strong>XP:</strong> {{ getStat('xp') }}</div>
   </div>
 
   <hr />
 
   <div class="secondary-stats">
-    <div>🔥 Fire Resistance: +10%</div>
-    <div>⚡ Electric Resistance: +8%</div>
-    <div>🪞 Damage Reflection: +5%</div>
-    <div>💥 Additional Damage: +5%</div>
-    <div>⛏️ Mining Bonus: +8%</div>
-    <div>🌲 Woodcutting Bonus: +6%</div>
-    <div>🌿 Herbalism Bonus: +4%</div>
+    <div>Fire Resistance: {{ getStat('resist.fire') }}%</div>
+    <div>Electric Resistance: {{ getStat('resist.electricity') }}%</div>
+    <div>Damage Reflection: {{ getStat('reflect') }}%</div>
+    <div>Additional Damage: {{ getStat('damage') }}%</div>
+    <div>Mining Bonus: {{ getStat('mine') }}%</div>
+    <div>Woodcutting Bonus: {{ getStat('woodcut') }}%</div>
+    <div>Herbalism Bonus: {{ getStat('herbalism') }}%</div>
   </div>
 </div>

@@ -1,8 +1,8 @@
 <div class="equipment-panel">
   @if(character) {
     <div class="primary-stats">
-      <div><strong>Attack:</strong> {{ character.attack }}</div>
-      <div><strong>Defense:</strong> {{ character.defense }}</div>
+      <div><strong>Attack:</strong> {{ getStat('attack') }}</div>
+      <div><strong>Defense:</strong> {{ getStat('defense') }}</div>
     </div>
   }
 
