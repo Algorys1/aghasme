@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Item, ItemType, RarityType } from '../models/items.model';
 import { BASE_ITEMS } from '../tables/item-tables';
 import { EFFECT_POOL, RARITY_EFFECT_COUNT, RARITY_MULTIPLIERS } from '../tables/effect-pool';
-import { Effect } from '../models/effect.model';
+import { Effect } from '../../character/models/effect.model';
 import { OverlayKind } from '../../overlays/models/overlays.model';
 
 @Injectable({ providedIn: 'root' })

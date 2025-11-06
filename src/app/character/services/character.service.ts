@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Archetype, ARCHETYPE_ORB_MODIFIERS, Character, NewCharacterInput, OrbKey, Orbs } from '../models/character.model';
 import { BACKGROUNDS } from '../models/background.model';
+import { EffectService } from './effect.service';
+import { Effect, StatKey } from '../models/effect.model';
 
 const DEFAULT_ORBS: Orbs = { bestial: 0, elemental: 0, natural: 0, mechanic: 0 };
 
@@ -10,6 +12,8 @@ export class CharacterService {
   private character: Character | null = null;
   private characterSubject = new BehaviorSubject<Character | null>(null);
   character$ = this.characterSubject.asObservable();
+
+  constructor(private effectService: EffectService) {}
 
   createCharacter(data: NewCharacterInput): Character {
     const level = data.level ?? 1;
@@ -77,26 +81,9 @@ export class CharacterService {
 
     if (data.background) {
       const bg = BACKGROUNDS.find(b => b.id === data.background);
-      if (bg) {
-        bg.effects?.forEach(eff => {
-          switch (eff.stat) {
-            case 'attack': this.character!.attack += eff.value; break;
-            case 'defense': this.character!.defense += eff.value; break;
-            case 'maxHp': this.character!.maxHp += eff.value; this.character!.hp = this.character!.maxHp; break;
-            case 'maxMp': this.character!.maxMp += eff.value; this.character!.mp = this.character!.maxMp; break;
-            case 'bestial':
-            case 'elemental':
-            case 'natural':
-            case 'mechanic':
-              (this.character!.orbs as any)[eff.stat] += eff.value;
-              break;
-          }
-        });
-
-        // Equipment
-        if (bg.startingItemIds?.length) {
-          this.character!.inventory.push(...bg.startingItemIds);
-        }
+      if (bg?.effects?.length) {
+        const effects = bg.effects.map(e => ({ ...e, duration: undefined })); // permanents
+        this.upsertSourceEffects(`background:${bg.id}`, effects);
       }
     }
 
@@ -111,6 +98,32 @@ export class CharacterService {
 
   setCharacter(c: Character) {
     this.character = { ...c };
+    this.characterSubject.next(this.character);
+  }
+
+  upsertSourceEffects(sourceId: string, effects: Effect[]) {
+    // wipe puis ajoute les effets permanents/temporaires de cette source
+    this.effectService.removeEffectsBySource(sourceId);
+    for (const eff of effects) this.effectService.applyEffect({ ...eff, source: sourceId });
+  }
+
+  removeSourceEffects(sourceId: string) {
+    this.effectService.removeEffectsBySource(sourceId);
+  }
+
+  applyInstant(effect: Effect) {
+    const char = this.character; if (!char) return;
+    this.effectService.applyEffect(effect, char);
+    this.characterSubject.next(this.character);
+  }
+
+  getFinal(stat: StatKey): number {
+    const char = this.character; if (!char) return 0;
+    return this.effectService.getFinalStat(stat, char);
+  }
+
+  tickAction() {
+    this.effectService.tickDurations();
     this.characterSubject.next(this.character);
   }
 

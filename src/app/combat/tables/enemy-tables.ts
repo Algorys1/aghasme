@@ -8,7 +8,7 @@ export const ENEMIES: EnemyDefinition[] = [
     desc: 'A massive rat prowls in the darkness.',
     icon: 'assets/monsters/rats.png',
     subCategories: ['vermin'],
-    terrains: ['plain', 'swamp', 'sea', 'forest'],
+    terrains: ['plain', 'swamp', 'forest', 'volcano'],
     minLevel: 1,
     maxLevel: 5
   },
@@ -363,6 +363,16 @@ export const ENEMIES: EnemyDefinition[] = [
     maxLevel: 15
   },
   {
+    id: 'ash-eaters',
+    name: 'Ash Eaters',
+    desc: 'Ash Eaters are unintelligent creatures, but they are very resilient.',
+    icon: 'assets/monsters/ash-devorer.png',
+    subCategories: ['vermin'],
+    terrains: ['mountain', 'volcano'],
+    minLevel: 1,
+    maxLevel: 15
+  },
+  {
     id: 'golem-mechanic',
     name: 'Mechanical Golem',
     desc: 'The slowly rising metal mass looks like it came straight out of a foundry of evil. It\'s not going to be the easiest of opponents...',
@@ -559,7 +569,47 @@ export const ENEMIES: EnemyDefinition[] = [
     icon: 'assets/monsters/tentacle-cursed.png',
     subCategories: ['aquatic'],
     terrains: ['sea'],
-    minLevel: 4,
+    minLevel: 1,
     maxLevel: 15
-  }
+  },
+  {
+    id: 'crab-deep-sea',
+    name: 'Deep-sea crab',
+    desc: 'The Deep Sea Crab likes to hide among rocks. If it attacks you, it means you must have something shiny.',
+    icon: 'assets/monsters/crab-deep-sea.png',
+    subCategories: ['aquatic'],
+    terrains: ['sea'],
+    minLevel: 1,
+    maxLevel: 15
+  },
+  {
+    id: 'coral-horror',
+    name: 'Coral of Horror',
+    desc: 'This monstrous coral wants to swallow you and your bag.',
+    icon: 'assets/monsters/coral-horror.png',
+    subCategories: ['aquatic', 'plant'],
+    terrains: ['swamp', 'sea'],
+    minLevel: 5,
+    maxLevel: 20
+  },
+  {
+    id: 'horse-water',
+    name: 'Water Horse',
+    desc: 'Water horses hide in the depths, but sometimes come up to the surface if they are hungry.',
+    icon: 'assets/monsters/horse-water.png',
+    subCategories: ['aquatic'],
+    terrains: ['swamp', 'sea'],
+    minLevel: 10,
+    maxLevel: 30
+  },
+  {
+    id: 'abyssal-manta',
+    name: 'Abyssal Manta',
+    desc: 'Deep-sea manta rays are known for their bad temper. Disturbing one was definitely not a good idea!',
+    icon: 'assets/monsters/abyssal-manta.png',
+    subCategories: ['aquatic'],
+    terrains: ['swamp', 'sea'],
+    minLevel: 5,
+    maxLevel: 20
+  },
 ];

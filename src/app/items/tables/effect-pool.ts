@@ -1,4 +1,4 @@
-import { StatKey } from '../models/effect.model';
+import { StatKey, VitalsStats } from '../../character/models/effect.model';
 import { RarityType } from '../models/items.model';
 
 export interface EffectTemplate {
@@ -9,25 +9,55 @@ export interface EffectTemplate {
 }
 
 export const EFFECT_POOL: Record<string, EffectTemplate[]> = {
-  offensive: [
+  vitals: [
+    { stat: 'hp', base: 5 },
+    { stat: 'maxHp', base: 5 },
+    { stat: 'mp', base: 5 },
+    { stat: 'maxMp', base: 1 },
+    { stat: 'action', base: 1 },
+    { stat: 'orbs.bestial', base: 1 },
+    { stat: 'orbs.elemental', base: 1 },
+    { stat: 'orbs.natural', base: 1 },
+    { stat: 'orbs.mechanic', base: 1 },
+    { stat: 'resist.fire', base: 3, type: 'percent' },
+    { stat: 'resist.electricity', base: 3, type: 'percent' },
+    { stat: 'resist.ice', base: 3, type: 'percent' },
+    { stat: 'resist.poison', base: 3, type: 'percent' },
+  ],
+  combat: [
     { stat: 'attack', base: 1 },
     { stat: 'damage', base: 3 },
     { stat: 'critical', base: 5, type: 'percent' },
-  ],
-  defensive: [
     { stat: 'defense', base: 1 },
-    { stat: 'resist', base: 3 },
-    { stat: 'reflect', base: 5, type: 'percent' },
-  ],
-  mystic: [
-    { stat: 'maxMp', base: 5 },
-    { stat: 'xp', base: 5 },
-    { stat: 'light', base: 1 },
-  ],
-  utility: [
     { stat: 'speed', base: 1 },
+    { stat: 'fright', base: 1 },
+  ],
+  exploration: [
+    { stat: 'mv', base: 1 },
+    { stat: 'perception', base: 1 },
+    { stat: 'light', base: 1 },
+    { stat: 'open', base: 1 },
+    { stat: 'lockpick', base: 1 },
+    { stat: 'craft', base: 1 },
+    { stat: 'mine', base: 1 },
+    { stat: 'woodcut', base: 1 },
+    { stat: 'herbalism', base: 1 },
     { stat: 'flee', base: 1 },
-    { stat: 'tool', base: 1 },
+    { stat: 'fear', base: 1 },
+  ],
+  resource: [
+    { stat: 'xp', base: 5 },
+    { stat: 'gold', base: 1 },
+    { stat: 'loot', base: 1 },
+  ],
+  status: [
+    { stat: 'burn', base: 1 },
+    { stat: 'frozen', base: 1 },
+    { stat: 'electrified', base: 1 },
+    { stat: 'poison', base: 1 },
+    { stat: 'reflect', base: 1 },
+    { stat: 'regen.mp', base: 1 },
+    { stat: 'regen.hp', base: 1 },
   ],
 };
 

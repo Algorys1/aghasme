@@ -1,9 +1,12 @@
+import { Effect } from "./effect.model";
+
+
 export interface CharacterBackground {
   id: string;
   name: string;
   description: string;
   flavor?: string;
-  effects?: { stat: string; value: number }[];
+  effects?: Effect[];
   startingItemIds?: string[];
 }
 
@@ -15,7 +18,7 @@ export const BACKGROUNDS: CharacterBackground[] = [
     flavor: 'The road taught you to survive where others would fall.',
     effects: [
       { stat: 'maxHp', value: 10 },
-      { stat: 'natural', value: 1 }
+      { stat: 'orbs.natural', value: 1 }
     ]
   },
   {
@@ -25,7 +28,7 @@ export const BACKGROUNDS: CharacterBackground[] = [
     flavor: 'Knowledge is your true weapon.',
     effects: [
       { stat: 'maxMp', value: 5 },
-      { stat: 'elemental', value: 1 }
+      { stat: 'orbs.elemental', value: 1 }
     ]
   },
   {
@@ -35,7 +38,7 @@ export const BACKGROUNDS: CharacterBackground[] = [
     flavor: 'Coin and blood, both flow freely in your past.',
     effects: [
       { stat: 'attack', value: 1 },
-      { stat: 'bestial', value: 1 }
+      { stat: 'orbs.bestial', value: 1 }
     ]
   },
   {
@@ -43,7 +46,7 @@ export const BACKGROUNDS: CharacterBackground[] = [
     name: 'Tinkerer',
     description: 'You’ve always loved creating and fixing things.',
     flavor: 'You see the world as parts to be improved.',
-    effects: [{ stat: 'mechanic', value: 1 }],
+    effects: [{ stat: 'orbs.mechanic', value: 1 }],
     startingItemIds: ['rusty-sword']
   },
   {

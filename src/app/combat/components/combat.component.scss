@@ -123,17 +123,6 @@
   text-align: center;
 }
 
-app-combat-board {
-  flex: 1;
-  width: 100%;
-  max-width: 95vw; // quasi collé
-  height: 50vh; // prend plus d’espace vertical
-  background: rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  margin: 8px 0;
-}
-
 .player-actions {
   display: flex;
   justify-content: center;
@@ -161,5 +150,13 @@ app-combat-board {
   gap: 4px;
   min-height: 20px;
   margin-bottom: 8px;
+}
+
+app-combat-board {
+  flex: 1;
+  width: 100%;
+  max-width: 95vw;
+  height: 50vh;
+  margin: 8px 0;
 }
 

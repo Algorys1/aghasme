@@ -4,8 +4,6 @@ import { EquipSlot, Item, ItemType } from '../../items/models/items.model';
 import { CharacterService } from '../../character/services/character.service';
 import { LootService } from '../services/loot.service';
 import { MapService } from '../../game/services/map.service';
-import { Effect } from '../../items/models/effect.model';
-import { applyEffectsToEntity } from '../../items/tools/effect-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -130,8 +128,11 @@ export class InventoryService {
     let effectMessage: string | null = null;
 
     if (item.type === ItemType.Consumable || item.type === ItemType.Utility) {
-      effectMessage = `${item.effects}` || `${item.name} used.`;
+      for (const eff of (item.effects ?? [])) {
+        this.characterService.applyInstant(eff); // heal/xp/gold...
+      }
       this.removeItem(itemId);
+      return `${item.name} used.`;
     } else {
       this.errorSubject.next(`Item no usable: ${item.name}`);
     }
@@ -165,7 +166,10 @@ export class InventoryService {
     this.equippedItemsSubject.next(current);
     this.removeItem(item.id);
 
-    this.recalculateCharacterStats();
+    if (item.effects?.length) {
+      const sourceId = `gear:${item.instanceId}`;
+      this.characterService.upsertSourceEffects(sourceId, item.effects);
+    }
 
     return `Equipped ${item.name}`;
   }
@@ -179,45 +183,9 @@ export class InventoryService {
     this.equippedItemsSubject.next(current);
     this.addItem(item);
 
-    this.recalculateCharacterStats();
+    this.characterService.removeSourceEffects(`gear:${item.instanceId}`);
 
     return `Unequipped ${item.name}`;
-  }
-
-  recalculateCharacterStats() {
-    const char = this.characterService.getCharacter();
-    if (!char || !char.baseStats) return;
-
-    const equipped = this.equippedItemsSubject.value;
-
-    const effects: Effect[] = [];
-    Object.values(equipped).forEach(item => {
-      if (item?.effects?.length) {
-        effects.push(...item.effects);
-      }
-    });
-
-    const base = {
-      attack: char.baseStats.attack,
-      defense: char.baseStats.defense,
-      maxHp: char.baseStats.maxHp,
-      maxMp: char.baseStats.maxMp,
-    };
-
-    const modified = applyEffectsToEntity(base, effects);
-
-    const newHp = Math.min(char.hp, modified.maxHp);
-    const newMp = Math.min(char.mp, modified.maxMp);
-
-    console.log('💥 Base stats:', char.baseStats);
-    console.log('💥 Modified stats:', modified);
-
-    this.characterService.setCharacter({
-      ...char,
-      ...modified,
-      hp: newHp,
-      mp: newMp,
-    });
   }
 
   expandInventory(): void {

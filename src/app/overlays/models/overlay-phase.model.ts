@@ -1,5 +1,5 @@
 import { ActionType } from '../../overlays/models/actions';
-import { Effect } from '../../items/models/effect.model';
+import { Effect } from '../../character/models/effect.model';
 import { Terrain } from '../../game/factories/tile.factory';
 
 /**

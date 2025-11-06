@@ -2,7 +2,7 @@
 import {Enemy, EnnemySubCategory} from '../models/enemy.model';
 import { Terrain } from '../../game/factories/tile.factory';
 import { ENEMIES } from '../tables/enemy-tables';
-import { Effect } from '../../items/models/effect.model';
+import { Effect } from '../../character/models/effect.model';
 import { applyEffectsToEntity } from '../../items/tools/effect-utils';
 
 export interface EnemyDefinition {

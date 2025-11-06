@@ -1,4 +1,4 @@
-import { Effect, StatKey } from '../models/effect.model';
+import { Effect, StatKey } from '../../character/models/effect.model';
 
 /**
  * Applies a list of effects to an entity (player, enemy, etc.)

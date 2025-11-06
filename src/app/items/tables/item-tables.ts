@@ -23,7 +23,7 @@ export const ACCESSORY_ITEMS: Item[] = [
     rarity: RarityType.Rare,
     subtype: 'amulet',
     equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
-    effects: [{ stat: 'maxHp', value: 5 }, { stat: 'resist', value: 1 }],
+    effects: [{ stat: 'maxHp', value: 5 }, { stat: 'resist.fire', value: 1 }],
   },
   {
     id: 'chalice-shadows',
@@ -71,7 +71,7 @@ export const ACCESSORY_ITEMS: Item[] = [
     equipSlot: [EquipSlot.Accessory1, EquipSlot.Accessory2],
     rarity: RarityType.Legendary,
     subtype: 'book',
-    effects: [{stat: 'mov', value: 1}, {stat: 'defense', value: 2}]
+    effects: [{stat: 'mv', value: 1}, {stat: 'defense', value: 2}]
   },
   {
     id: 'orb-epic',
@@ -265,7 +265,7 @@ export const ARMOR_ITEMS: Item[] = [
     baseValue: 120,
     equipSlot: [EquipSlot.Hand1],
     rarity: RarityType.Rare,
-    effects: [{stat: 'tool', value: 1}]
+    effects: [{stat: 'lockpick', value: 1}]
   },
   {
     id: 'gloves-shadow',
@@ -884,7 +884,7 @@ export const UTILITY_ITEMS: Item[] = [
     type: ItemType.Utility,
     icon: 'assets/items/utility/axe-lumberjack.png',
     baseValue: 60,
-    effects: [],
+    effects: [{ stat: 'woodcut', value: 1 }],
     rarity: RarityType.Normal
   },
   {
@@ -903,7 +903,7 @@ export const UTILITY_ITEMS: Item[] = [
     description: 'You should always have some tools on hand. Even in a cell, they\'re useful.',
     type: ItemType.Utility,
     icon: 'assets/items/utility/tools.png',
-    effects: [{ stat: 'tool', value: 1 }],
+    effects: [{ stat: 'lockpick', value: 1 },{ stat: 'craft', value: 1 } ],
     baseValue: 25,
     rarity: RarityType.Normal
   },
@@ -914,7 +914,7 @@ export const UTILITY_ITEMS: Item[] = [
     type: ItemType.Utility,
     icon: 'assets/items/utility/pickaxe.png',
     baseValue: 60,
-    effects: [],
+    effects: [{ stat: 'mine', value: 1 }],
     rarity: RarityType.Normal
   },
   {
@@ -923,7 +923,7 @@ export const UTILITY_ITEMS: Item[] = [
     description: 'We don\'t know, we might need to harvest some herbs.',
     type: ItemType.Utility,
     icon: 'assets/items/utility/sickle.png',
-    effects: [{ stat: 'tool', value: 1 }],
+    effects: [{ stat: 'herbalism', value: 1 }],
     baseValue: 50,
     rarity: RarityType.Normal
   },
@@ -1078,7 +1078,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     subtype: 'hammer',
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     twoHanded: true,
-    effects: [{ stat: 'damage', value: 10 }, { stat: 'tool', value: 1 }],
+    effects: [{ stat: 'damage', value: 10 }, { stat: 'mine', value: 1 }],
   },
   {
     id: 'sword-bastard',
@@ -1212,7 +1212,7 @@ export const WEAPON_MELEE_ITEMS: Item[] = [
     type: ItemType.WeaponMelee,
     icon: 'assets/items/weapons-melee/sword-epic.png',
     baseValue: 150,
-    effects: [{ stat: 'damage', value: 15 }, { stat: 'tool', value: 2 }],
+    effects: [{ stat: 'damage', value: 15 }, { stat: 'craft', value: 2 }],
     equipSlot: [EquipSlot.Weapon1, EquipSlot.Weapon2],
     rarity: RarityType.Normal
   },

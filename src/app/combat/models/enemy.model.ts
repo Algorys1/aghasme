@@ -1,4 +1,4 @@
-import { Effect } from "../../items/models/effect.model";
+import { Effect } from "../../character/models/effect.model";
 
 export type EnnemySubCategory =
   'undead' | 'human' | 'goblin' | 'dragon' | 'elemental' | 'flying' | 'vermin' |
