@@ -1,0 +1,32 @@
+{
+  "VILLAGE": {
+    "OAKWOOD": {
+      "NAME": "La Chênaie",
+      "DESCRIPTION": "La Chênaie se niche sous de majestueux chênes, ses cottages se fondant dans l'étreinte paisible de la forêt. C'est un ancien village mais il est plein de charme."
+    },
+    "PINEHILL": {
+      "NAME": "Pincolline",
+      "DESCRIPTION": "Le doux village de Pincolline surplombe les bois vallonnés, où le parfum des pins flotte dans chaque sentier étroit."
+    },
+    "CEDARBROOK": {
+      "NAME": "Rivecèdre",
+      "DESCRIPTION": "Rivecèdre se niche au bord d'un ruisseau paisible, ses ponts de bois craquant doucement sous le passage des voyageurs."
+    },
+    "MAPLECROSS": {
+      "NAME": "Feucroix",
+      "DESCRIPTION": "Feucroix se situe au croisement de deux chemins, ses arbres aux feuilles rouges accueillant les promeneurs dans une douce chaleur."
+    },
+    "BIRCKFIELD": {
+      "NAME": "Bouleaugris",
+      "DESCRIPTION": "Bouleaugris s'étend sur des prairies dorées, ses arbres pâles scintillant sous la lumière du matin."
+    },
+    "DARKROAD": {
+      "NAME": "Sombrevoie",
+      "DESCRIPTION": "Le village de Sombrevoie se situe à la lisière d'un bois ombragé, où les voyageurs trouvent refuge contre la nuit qui s'installe."
+    },
+    "WOODENPALE": {
+      "NAME": "Boispâle",
+      "DESCRIPTION": "La scintillante Boispâle est un village paisible aux maisons en bois, dont les rues sont bordées de lanternes qui brillent doucement au crépuscule."
+    }
+  }
+}

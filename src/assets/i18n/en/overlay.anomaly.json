@@ -6,10 +6,14 @@
       "F1": {
         "TITLE": "Frozen Moment",
         "DESCRIPTION": "Birds hang motionless midair. Even your heartbeat seems delayed. The world moves a half-second too slow.",
-        "OBSERVE": "You watch a raindrop suspended before your eyes.",
-        "OBSERVE_SUCCESS": "Time resumes for a heartbeat, you see glimpses of yourself standing elsewhere.",
-        "OBSERVE_FAIL": "The distortion flares, your mind reels from the paradox.",
-        "INTERACT": "You reach toward the ripple, the air resists your hand like thick glass."
+        "OBSERVE": {
+          "DESCRIPTION": "You watch a raindrop suspended before your eyes.",
+          "SUCCESS": "Time resumes for a heartbeat, you see glimpses of yourself standing elsewhere.",
+          "FAIL": "The distortion flares, your mind reels from the paradox.",
+        },
+        "INTERACT":{
+          "DESCRIPTION": "You reach toward the ripple, the air resists your hand like thick glass."
+        }
       },
       "F2": {
         "TITLE": "Echo of the Past",
@@ -22,10 +26,14 @@
       "F1": {
         "TITLE": "Blistered Ground",
         "DESCRIPTION": "The earth pulses with molten veins. You can almost hear a heartbeat under the soil.",
-        "OBSERVE": "You study the fissures closely, the glow responds to your movement.",
-        "PRAY": "You whisper a warding chant.",
-        "PRAY_SUCCESS": "The air cools momentarily, the anomaly weakens.",
-        "PRAY_FAIL": "A burst of heat sears your arm. Something stirs below."
+        "OBSERVE": {
+          "DESCRIPTION": "You study the fissures closely, the glow responds to your movement."
+        },
+        "PRAY": {
+          "DESCRIPTION": "You whisper a warding chant.",
+          "SUCCESS": "The air cools momentarily, the anomaly weakens.",
+          "FAIL": "A burst of heat sears your arm. Something stirs below."
+        }
       },
       "F2": {
         "TITLE": "Infernal Gate",
@@ -38,14 +46,18 @@
       "F1": {
         "TITLE": "Echoing Halls",
         "DESCRIPTION": "Broken gears and bronze pillars hum with a life of their own. The air smells of ozone and oil.",
-        "OBSERVE": "You notice patterns in the hum — it’s almost musical.",
-        "INTERACT": "You approach the core fragment cautiously.",
-        "INTERACT_SUCCESS": "You stabilize a fragment of power, energy flows in reverse, harmlessly dissipating.",
-        "INTERACT_FAIL": "Sparks leap to your fingers, leaving a painful burn."
+        "OBSERVE": {
+          "DESCRIPTION": "You notice patterns in the hum — it's almost musical."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "You approach the core fragment cautiously.",
+          "SUCCESS": "You stabilize a fragment of power, energy flows in reverse, harmlessly dissipating.",
+          "FAIL": "Sparks leap to your fingers, leaving a painful burn."
+        }
       },
       "F2": {
         "TITLE": "Core Awakening",
-        "DESCRIPTION": "The machine’s heart flickers; the orb reactivates, scanning for threats."
+        "DESCRIPTION": "The machine's heart flickers; the orb reactivates, scanning for threats."
       }
     },
     "CORRUPTED_GROVE": {
@@ -54,16 +66,22 @@
       "F1": {
         "TITLE": "Black Roots",
         "DESCRIPTION": "You step over roots that pulse faintly like veins. The air smells of rot and incense.",
-        "OBSERVE": "You see runes carved into tree bark, oozing sap like blood.",
-        "INTERACT": "You touch the nearest root — it twitches violently!"
+        "OBSERVE": {
+          "DESCRIPTION": "You see runes carved into tree bark, oozing sap like blood."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "You touch the nearest root — it twitches violently!"
+        }
       },
       "F2": {
         "TITLE": "Heart of Corruption",
-        "DESCRIPTION": "At the grove’s center, a pulsating cocoon of vines throbs with malign light.",
-        "INSPECT": "You study the cocoon’s rhythm — it beats like a heart.",
-        "PRAY": "You call on the forest’s true spirit to resist the corruption.",
-        "PRAY_SUCCESS": "A burst of green light pierces the cocoon, the forest gasps in relief.",
-        "PRAY_FAIL": "The vines tighten around your feet, the corruption answers instead."
+        "DESCRIPTION": "At the grove's center, a pulsating cocoon of vines throbs with malign light.",
+        "INSPECT": "You study the cocoon's rhythm — it beats like a heart.",
+        "PRAY": {
+          "DESCRIPTION": "You call on the forest's true spirit to resist the corruption.",
+          "SUCCESS": "A burst of green light pierces the cocoon, the forest gasps in relief.",
+          "FAIL": "The vines tighten around your feet, the corruption answers instead."
+       }
       },
       "F3": {
         "TITLE": "The Twisted Spirit",
@@ -76,10 +94,14 @@
       "F1": {
         "TITLE": "Circle of Names",
         "DESCRIPTION": "The stones hum softly. Every step you take echoes twice — once in sound, once in memory.",
-        "OBSERVE": "You study the symbols. They belong to no known language.",
-        "PRAY": "You repeat one of the whispered names.",
-        "PRAY_SUCCESS": "A warmth fills your chest — the spirit acknowledges you briefly.",
-        "PRAY_FAIL": "The air freezes, a shadow stirs behind the stones."
+        "OBSERVE": {
+          "DESCRIPTION": "You study the symbols. They belong to no known language."
+        },
+        "PRAY": {
+          "DESCRIPTION": "You repeat one of the whispered names.",
+          "SUCCESS": "A warmth fills your chest — the spirit acknowledges you briefly.",
+          "FAIL": "The air freezes, a shadow stirs behind the stones."
+        }
       },
       "F2": {
         "TITLE": "Spirit Manifestation",
@@ -92,24 +114,42 @@
       "F1": {
         "TITLE": "Field of Cinders",
         "DESCRIPTION": "Black ash covers the ground. Each step releases a puff of smoke that smells of burnt iron.",
-        "OBSERVE": "You kneel, scooping a handful of ash. It glows faintly between your fingers.",
-        "OBSERVE_SUCCESS": "The ash reacts to your essence, forming glowing sigils before fading.",
-        "OBSERVE_FAIL": "The ash seeps into your skin, burning with a whisper of pain.",
-        "INTERACT": "You press your hand to the warm ground — it beats faintly, like a living heart."
+        "OBSERVE": {
+          "DESCRIPTION": "You kneel, scooping a handful of ash. It glows faintly between your fingers.",
+          "SUCCESS": "The ash reacts to your essence, forming glowing sigils before fading.",
+          "FAIL": "The ash seeps into your skin, burning with a whisper of pain."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "You press your hand to the warm ground — it beats faintly, like a living heart."
+        }
       },
       "F2": {
         "TITLE": "Crumbling Sanctum",
         "DESCRIPTION": "Remnants of an old temple glow faintly red beneath soot. Heat distorts your vision.",
-        "INSPECT": "You examine the runes, tracing their shapes through the dust.",
-        "INSPECT_SUCCESS": "You decipher the pattern — a seal restraining something below.",
-        "INSPECT_FAIL": "The rune flashes and cracks violently, your vision blurs.",
-        "PRAY": "You attempt a purification prayer to reinforce the seal.",
-        "PRAY_SUCCESS": "The hum stabilizes, the heat lessens for a brief moment.",
-        "PRAY_FAIL": "Your words twist into smoke, the seal begins to fracture."
+        "INSPECT": {
+          "DESCRIPTION": "You examine the runes, tracing their shapes through the dust.",
+          "SUCCESS": "You decipher the pattern — a seal restraining something below.",
+          "FAIL": "The rune flashes and cracks violently, your vision blurs."
+        },
+        "PRAY": {
+          "DESCRIPTION": "You attempt a purification prayer to reinforce the seal.",
+          "SUCCESS": "The hum stabilizes, the heat lessens for a brief moment.",
+          "FAIL": "Your words twist into smoke, the seal begins to fracture."
+        }
       },
       "F3": {
-        "TITLE": "The Breach Opens",
-        "DESCRIPTION": "A violent tremor splits the floor. Lava spills from the cracks, screams echo from below."
+        "TITLE": "The breach opens",
+        "DESCRIPTION": "A violent tremor splits the ground. Lava erupts from the cracks, cries echo from the depths.",
+        "OBSERVE": {
+          "DESCRIPTION": "You sense a presence, you sense something is coming",
+          "SUCCESS": "No doubt about it, there's something down there",
+          "FAIL": "The lava begins to eat away at your boots, it burns you violently!"
+        },
+        "PRAY": {
+          "DESCRIPTION": "You try to pray to hold back the thing that seems to want to come out!",
+          "SUCCESS": "Your prayers seem to calm the impending eruption...",
+          "FAIL": "Your words seem to burn as soon as they leave your mouth."
+        }
       },
       "F4": {
         "TITLE": "Infernal Descent",
@@ -117,51 +157,101 @@
       },
       "F5": {
         "TITLE": "Ashes and Silence",
-        "DESCRIPTION": "The breach cools to stone. The air still hums faintly, as if the world itself remembers."
+        "DESCRIPTION": "The breach solidifies into stone. The air still vibrates, as if the world were remembering.",
+        "REST": {
+          "DESCRIPTION": "Calm has returned; you can finally rest."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "Nothing strange remains on the horizon; the anomaly seems to have evaporated."
+        }
       }
     },
     "RIFT_OF_ECHOES": {
       "NAME": "Rift of Echoes",
       "DESCRIPTION": "A trembling fissure hums in the air, like the resonance of an invisible bell.",
       "F1": {
-        "TITLE": "The Shattered Silence",
-        "DESCRIPTION": "The ground vibrates faintly. Every step echoes a second later, not in space, but in time."
+        "TITLE": "The Broken Silence",
+        "DESCRIPTION": "The ground vibrates gently. Each step resonates a second later... not in space, but in time.",
+        "OBSERVE": {
+          "DESCRIPTION": "You inspect the ground, but it seems perfectly normal."
+        },
+        "INSPECT": {
+          "DESCRIPTION": "You try to understand what's happening, but for the moment something eludes you..."
+        }
       },
       "F2": {
         "TITLE": "Voice of the Rift",
-        "DESCRIPTION": "A whisper echoes from within — your own voice, answering questions you never asked."
+        "DESCRIPTION": "A whisper rises from within... your own voice, answering questions you never asked.",
+        "TALK": {
+          "DESCRIPTION": "You try to answer yourself, but the voice seems to be talking to itself!"
+        },
+        "PRAY": {
+          "DESCRIPTION": "Let's pray that this voice stops; it can only be a bad sign.",
+          "SUCCESS": "The voice now seems to be answering you... at least that's how you feel.",
+          "FAIL": "The words seem even more confused than before. This conversation makes no sense..."
+        }
       },
       "F3": {
-        "TITLE": "The Resonant Field",
-        "DESCRIPTION": "You find a circular platform of floating stones, humming in perfect harmony."
+        "TITLE": "Resonating Field",
+        "DESCRIPTION": "You discover a circular platform of floating stones, vibrating in perfect unison.",
+        "INTERACT": {
+          "DESCRIPTION": "You try to control this dance using the levers on the wall.",
+          "SUCCESS": "You don't know why, but you've played this melody before... someday or in another life.",
+          "FAIL": "A shard of stone flies from the center of the platform and bleeds into your face."
+        },
+        "INSPECT": {
+          "DESCRIPTION": "You wonder what this machine is for... It seems complex and from another time."
+        }
       },
       "F4": {
-        "TITLE": "Manifestation of the Rift",
-        "DESCRIPTION": "A luminous being forms from vibrating shards of sound, alive and unfinished."
+        "TITLE": "Manifestation of the Fault",
+        "DESCRIPTION": "A luminous being forms from fragments of sound, both alive and unfinished."
       },
       "F5": {
         "TITLE": "Harmony Restored",
-        "DESCRIPTION": "The echoes fade. The fissure closes with a deep, final note that resonates through your bones."
+        "DESCRIPTION": "The echoes fade. The crack closes with a final, deep sound that resonates in your bones. No more noise from the machine that was running.",
+        "OBSERVE": {
+          "DESCRIPTION": "This machine was completely malfunctioning and would soon have opened a portal to the Other World. Thanks to you, this danger has been averted!"
+        }
       }
     },
     "ASHEN_CONVERGENCE": {
       "NAME": "The Ashen Convergence",
       "DESCRIPTION": "The horizon folds in on itself, ash floats upward like reversed rain. You feel two worlds overlapping.",
       "F1": {
-        "TITLE": "The Burning Sky",
-        "DESCRIPTION": "The light is wrong. Shadows burn brighter than the fire itself."
+        "TITLE": "A Burning Sky",
+        "DESCRIPTION": "The light is deceptive. The shadows burn brighter than the fire itself and seem to wander as if they have souls.",
+        "OBSERVE": {
+          "DESCRIPTION": "You try to understand how these ashes interact and pierce this unreal light."
+        },
+        "PRAY": {
+          "DESCRIPTION": "You fall to your knees and try to reconcile this place.",
+          "SUCCESS": "Little by little, the horizon seems to return to its place...",
+          "FAIL": "Now it's the birds that seem to be flying upside down and too close to the ground! One of them strikes you right in the back."
+        }
       },
       "F2": {
-        "TITLE": "The Twin Suns",
-        "DESCRIPTION": "Two glowing orbs float overhead, their light bending and merging into a spiral."
+        "TITLE": "The Two Suns",
+        "DESCRIPTION": "Two luminous orbs float above you, their brilliance twisting and merging in a spiral. To your right, two metal discs, resting on pillars, seem to be able to control these spheres.",
+        "INSPECT": {
+          "DESCRIPTION": "Yes, those are indeed two suns you see now; it seems to be some kind of crazy machine."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "You try your best to rotate the two discs.",
+          "SUCCESS": "It looks like the discs are moving away again... or perhaps it's just your mind trying to believe it.",
+          "FAIL": "You are witnessing the merging of two suns... it's beautiful and terrifying at the same time!"
+        }
       },
       "F3": {
-        "TITLE": "The Rift Guardian",
-        "DESCRIPTION": "A colossal silhouette emerges — a being of fire and cinder with ember eyes."
+        "TITLE": "Guardian of the Rift",
+        "DESCRIPTION": "A colossal figure emerges from the spiral, a being of fire and ash with eyes of embers."
       },
       "F4": {
-        "TITLE": "Collapse of the Convergence",
-        "DESCRIPTION": "The suns collide, shattering into showers of burning glass. The world goes white."
+        "TITLE": "Convergence Collapse",
+        "DESCRIPTION": "The suns collide, shattering into shards of burning glass. The world turns white.",
+        "OBSERVE": {
+          "DESCRIPTION": "The machine appears to have stopped; only a few small, bright shards remain on the ground."
+        }
       }
     }
   }

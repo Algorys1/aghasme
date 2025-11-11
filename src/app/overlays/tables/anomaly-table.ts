@@ -11,30 +11,30 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     eventChain: {
       floor_1: {
         title: 'ANOMALY.TEMPORAL_RIFT.F1.TITLE',
-        description: 'Birds hang motionless midair. Even your heartbeat seems delayed. The world moves a half-second too slow.',
+        description: 'ANOMALY.TEMPORAL_RIFT.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'You watch a raindrop suspended before your eyes.',
+            description: 'ANOMALY.TEMPORAL_RIFT.F1.OBSERVE.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'Time resumes for a heartbeat, you see glimpses of yourself standing elsewhere.',
+              description: 'ANOMALY.TEMPORAL_RIFT.F1.OBSERVE.SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'The distortion flares, your mind reels from the paradox.',
+              description: 'ANOMALY.TEMPORAL_RIFT.F1.OBSERVE.FAIL',
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
           [ActionType.Interact]: {
-            description: 'You reach toward the ripple, the air resists your hand like thick glass.',
+            description: 'ANOMALY.TEMPORAL_RIFT.F1.INTERACT.DESCRIPTION',
           },
         },
         next: 'floor_2',
       },
       floor_2: {
-        title: 'Echo of the Past',
-        description: 'A familiar figure stands before you, it’s you, or rather, a version that shouldn’t exist.',
+        title: 'ANOMALY.TEMPORAL_RIFT.F2.TITLE',
+        description: 'ANOMALY.TEMPORAL_RIFT.F2.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
@@ -57,17 +57,17 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.INFERNAL_SURGE.F1.OBSERVE',
+            description: 'ANOMALY.INFERNAL_SURGE.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Pray]: {
-            description: 'ANOMALY.INFERNAL_SURGE.F1.PRAY',
+            description: 'ANOMALY.INFERNAL_SURGE.F1.PRAY.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 11 },
             onSuccess: {
-              description: 'ANOMALY.INFERNAL_SURGE.F1.PRAY_SUCCESS',
+              description: 'ANOMALY.INFERNAL_SURGE.F1.PRAY.SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'ANOMALY.INFERNAL_SURGE.F1.PRAY_FAIL',
+              description: 'ANOMALY.INFERNAL_SURGE.F1.PRAY.FAIL',
               effects: [{ stat: 'hp', value: -5 }],
             },
           },
@@ -99,17 +99,17 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.MECHANICAL_DISTORSION.F1.OBSERVE',
+            description: 'ANOMALY.MECHANICAL_DISTORSION.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Interact]: {
-            description: 'ANOMALY.MECHANICAL_DISTORSION.F1.INTERACT',
+            description: 'ANOMALY.MECHANICAL_DISTORSION.F1.INTERACT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 10 },
             onSuccess: {
-              description: 'OVERLAY_MECHANICAL_DISTORSION.F1.INTERACT_SUCCESS',
+              description: 'OVERLAY_MECHANICAL_DISTORSION.F1.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'OVERLAY_MECHANICAL_DISTORSION.F1.INTERACT_FAIL',
+              description: 'OVERLAY_MECHANICAL_DISTORSION.F1.INTERACT.FAIL',
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
@@ -141,11 +141,11 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.CORRUPTED_GROVE.F1.OBSERVE',
+            description: 'ANOMALY.CORRUPTED_GROVE.F1.OBSERVE.DESCRIPTION',
             effects: [{ stat: 'xp', value: +4 }],
           },
           [ActionType.Interact]: {
-            description: 'ANOMALY.CORRUPTED_GROVE.F1.INTERACT',
+            description: 'ANOMALY.CORRUPTED_GROVE.F1.INTERACT.DESCRIPTION',
             effects: [{ stat: 'hp', value: -2 }],
           },
         },
@@ -157,17 +157,17 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Pray],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'ANOMALY.CORRUPTED_GROVE.F2.INSPECT',
+            description: 'ANOMALY.CORRUPTED_GROVE.F2.INSPECT.DESCRIPTION',
           },
           [ActionType.Pray]: {
-            description: 'ANOMALY.CORRUPTED_GROVE.F2.PRAY',
+            description: 'ANOMALY.CORRUPTED_GROVE.F2.PRAY.DESCRIPTION',
             check: { orb: 'natural', difficulty: 10 },
             onSuccess: {
-              description: 'ANOMALY.CORRUPTED_GROVE.F2.PRAY_SUCCESS',
+              description: 'ANOMALY.CORRUPTED_GROVE.F2.PRAY.SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'ANOMALY.CORRUPTED_GROVE.F2.PRAY_FAIL',
+              description: 'ANOMALY.CORRUPTED_GROVE.F2.PRAY.FAIL',
               effects: [{ stat: 'hp', value: -5 }],
             },
           },
@@ -199,17 +199,17 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.ANCESTRAL_ECHO.F1.OBSERVE',
+            description: 'ANOMALY.ANCESTRAL_ECHO.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Pray]: {
-            description: 'ANOMALY.ANCESTRAL_ECHO.F1.PRAY',
+            description: 'ANOMALY.ANCESTRAL_ECHO.F1.PRAY.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 11 },
             onSuccess: {
-              description: 'ANOMALY.ANCESTRAL_ECHO.F1.PRAY_SUCCESS',
+              description: 'ANOMALY.ANCESTRAL_ECHO.F1.PRAY.SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'ANOMALY.ANCESTRAL_ECHO.F1.PRAY_FAIL',
+              description: 'ANOMALY.ANCESTRAL_ECHO.F1.PRAY.FAIL',
             },
           },
         },
@@ -241,19 +241,19 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.ASH_BREACH.F1.OBSERVE',
+            description: 'ANOMALY.ASH_BREACH.F1.OBSERVE.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'ANOMALY.ASH_BREACH.F1.OBSERVE_SUCCESS',
+              description: 'ANOMALY.ASH_BREACH.F1.OBSERVE.SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'ANOMALY.ASH_BREACH.F1.OBSERVE_FAIL',
+              description: 'ANOMALY.ASH_BREACH.F1.OBSERVE.FAIL',
               effects: [{ stat: 'hp', value: -3 }],
             },
           },
           [ActionType.Interact]: {
-            description: 'ANOMALY.ASH_BREACH.F1.INTERACT',
+            description: 'ANOMALY.ASH_BREACH.F1.INTERACT.DESCRIPTION',
           },
         },
         next: 'floor_2',
@@ -264,25 +264,25 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Pray],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'ANOMALY.ASH_BREACH.F2.INSPECT',
+            description: 'ANOMALY.ASH_BREACH.F2.INSPECT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 11 },
             onSuccess: {
-              description: 'ANOMALY.ASH_BREACH.F2.INSPECT_SUCCESS',
+              description: 'ANOMALY.ASH_BREACH.F2.INSPECT.SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'ANOMALY.ASH_BREACH.F2.INSPECT_FAIL',
+              description: 'ANOMALY.ASH_BREACH.F2.INSPECT.FAIL',
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
           [ActionType.Pray]: {
-            description: 'ANOMALY.ASH_BREACH.F2.PRAY',
+            description: 'ANOMALY.ASH_BREACH.F2.PRAY.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 12 },
             onSuccess: {
-              description: 'ANOMALY.ASH_BREACH.F2.PRAY_SUCCESS',
+              description: 'ANOMALY.ASH_BREACH.F2.PRAY.SUCCESS',
             },
             onFailure: {
-              description: 'ANOMALY.ASH_BREACH.F2.PRAY_FAIL',
+              description: 'ANOMALY.ASH_BREACH.F2.PRAY.FAIL',
               next: 'floor_3',
             },
           },
@@ -295,17 +295,17 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.ASH_BREACH.F3.OBSERVE',
+            description: 'ANOMALY.ASH_BREACH.F3.OBSERVE.DESCRIPTION',
           },
           [ActionType.Interact]: {
-            description: 'ANOMALY.ASH_BREACH.F3.INTERACT',
+            description: 'ANOMALY.ASH_BREACH.F3.INTERACT.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 13 },
             onSuccess: {
-              description: 'ANOMALY.ASH_BREACH.F3.INTERACT_SUCCESS',
+              description: 'ANOMALY.ASH_BREACH.F3.INTERACT.SUCCESS',
               effects: [{ stat: 'hp', value: -2 }, { stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'ANOMALY.ASH_BREACH.F3.INTERACT_FAIL',
+              description: 'ANOMALY.ASH_BREACH.F3.INTERACT.FAIL',
               effects: [{ stat: 'hp', value: -6 }],
             },
           },
@@ -330,11 +330,11 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Rest, ActionType.Observe],
         actionPassive: {
           [ActionType.Rest]: {
-            description: 'ANOMALY.ASH_BREACH.F5.REST',
+            description: 'ANOMALY.ASH_BREACH.F5.REST.DESCRIPTION',
             effects: [{ stat: 'hp', value: +5 }, { stat: 'xp', value: +6 }],
           },
           [ActionType.Observe]: {
-            description: 'ANOMALY.ASH_BREACH.F5.OBSERVE',
+            description: 'ANOMALY.ASH_BREACH.F5.OBSERVE.DESCRIPTION',
           },
         },
       },
@@ -353,10 +353,10 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Inspect],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.RIFT_OF_ECHOES.F1.OBSERVE',
+            description: 'ANOMALY.RIFT_OF_ECHOES.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Inspect]: {
-            description: 'ANOMALY.RIFT_OF_ECHOES.F1.INSPECT',
+            description: 'ANOMALY.RIFT_OF_ECHOES.F1.INSPECT.DESCRIPTION',
             effects: [{ stat: 'xp', value: +4 }],
           },
         },
@@ -368,19 +368,19 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Talk, ActionType.Pray],
         actionPassive: {
           [ActionType.Talk]: {
-            description: 'ANOMALY.RIFT_OF_ECHOES.F2.TALK',
+            description: 'ANOMALY.RIFT_OF_ECHOES.F2.TALK.DESCRIPTION',
             effects: [{ stat: 'mp', value: -2 }],
           },
           [ActionType.Pray]: {
-            description: 'ANOMALY.RIFT_OF_ECHOES.F2.PRAY',
+            description: 'ANOMALY.RIFT_OF_ECHOES.F2.PRAY.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 10 },
             onSuccess: {
-              description: 'ANOMALY.RIFT_OF_ECHOES.F2.PRAY_SUCCESS',
+              description: 'ANOMALY.RIFT_OF_ECHOES.F2.PRAY.SUCCESS',
               effects: [{ stat: 'xp', value: +6 }],
             },
             onFailure: {
-              description: 'ANOMALY.RIFT_OF_ECHOES.F2.PRAY_FAIL',
-              next: 'floor_3',
+              description: 'ANOMALY.RIFT_OF_ECHOES.F2.PRAY.FAIL',
+              effects: [{ stat: 'mp', value: -6 }],
             },
           },
         },
@@ -392,20 +392,20 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Interact, ActionType.Inspect],
         actionPassive: {
           [ActionType.Interact]: {
-            description: 'ANOMALY.RIFT_OF_ECHOES.F3.INTERACT',
+            description: 'ANOMALY.RIFT_OF_ECHOES.F3.INTERACT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 12 },
             onSuccess: {
-              description: 'ANOMALY.RIFT_OF_ECHOES.F3.INTERACT_SUCCESS',
+              description: 'ANOMALY.RIFT_OF_ECHOES.F3.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'ANOMALY.RIFT_OF_ECHOES.F3.INTERACT_FAIL',
+              description: 'ANOMALY.RIFT_OF_ECHOES.F3.INTERACT.FAIL',
               effects: [{ stat: 'hp', value: -5 }],
               next: 'floor_4',
             },
           },
           [ActionType.Inspect]: {
-            description: 'ANOMALY.RIFT_OF_ECHOES.F3.INSPECT',
+            description: 'ANOMALY.RIFT_OF_ECHOES.F3.INSPECT.DESCRIPTION',
           },
         },
         next: 'floor_4',
@@ -428,7 +428,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.RIFT_OF_ECHOES.F5.OBSERVE',
+            description: 'ANOMALY.RIFT_OF_ECHOES.F5.OBSERVE.DESCRIPTION',
             effects: [{ stat: 'xp', value: +15 }, { stat: 'mp', value: +8 }],
           },
         },
@@ -448,17 +448,17 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe, ActionType.Pray],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.ASHEN_CONVERGENCE.F1.OBSERVE',
+            description: 'ANOMALY.ASHEN_CONVERGENCE.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Pray]: {
-            description: 'ANOMALY.ASHEN_CONVERGENCE.F1.PRAY',
+            description: 'ANOMALY.ASHEN_CONVERGENCE.F1.PRAY.DESCRIPTION',
             check: { orb: 'elemental', difficulty: 11 },
             onSuccess: {
-              description: 'ANOMALY.ASHEN_CONVERGENCE.F1.PRAY_SUCCESS',
+              description: 'ANOMALY.ASHEN_CONVERGENCE.F1.PRAY.SUCCESS',
               effects: [{ stat: 'xp', value: +5 }],
             },
             onFailure: {
-              description: 'ANOMALY.ASHEN_CONVERGENCE.F1.PRAY_FAIL',
+              description: 'ANOMALY.ASHEN_CONVERGENCE.F1.PRAY.FAIL',
               effects: [{ stat: 'hp', value: -3 }],
             },
           },
@@ -471,19 +471,19 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Inspect, ActionType.Interact],
         actionPassive: {
           [ActionType.Inspect]: {
-            description: 'ANOMALY.ASHEN_CONVERGENCE.F2.INSPECT',
+            description: 'ANOMALY.ASHEN_CONVERGENCE.F2.INSPECT.DESCRIPTION',
           },
           [ActionType.Interact]: {
-            description: 'ANOMALY.ASHEN_CONVERGENCE.F2.INTERACT',
+            description: 'ANOMALY.ASHEN_CONVERGENCE.F2.INTERACT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 12 },
             onSuccess: {
-              description: 'ANOMALY.ASHEN_CONVERGENCE.F2.INTERACT_SUCCESS',
+              description: 'ANOMALY.ASHEN_CONVERGENCE.F2.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'ANOMALY.ASHEN_CONVERGENCE.F2.INTERACT_FAIL',
+              description: 'ANOMALY.ASHEN_CONVERGENCE.F2.INTERACT.FAIL',
               next: 'floor_3',
-              effects: [{ stat: 'hp', value: -5 }],
+              effects: [{ stat: 'mp', value: -5 }],
             },
           },
         },
@@ -507,7 +507,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         actions: [ActionType.Observe],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.ASHEN_CONVERGENCE.F4.OBSERVE',
+            description: 'ANOMALY.ASHEN_CONVERGENCE.F4.OBSERVE.DESCRIPTION',
             effects: [{ stat: 'xp', value: +20 }, { stat: 'hp', value: +10 }],
           },
         },

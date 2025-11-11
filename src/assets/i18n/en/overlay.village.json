@@ -1,0 +1,32 @@
+{
+  "VILLAGE": {
+    "OAKWOOD": {
+      "NAME": "Oakwood",
+      "DESCRIPTION": "Oakwood nestles beneath majestic oak trees, its cottages blending into the peaceful embrace of the forest. It's an old village, but it's full of charm."
+    },
+    "PINEHILL": {
+      "NAME": "Pinehill",
+      "DESCRIPTION": "The gentle village of Pinehill overlooks the rolling woods, where the scent of pine wafts along every narrow path."
+    },
+    "CEDARBROOK": {
+      "NAME": "Cedarbrook",
+      "DESCRIPTION": "Cedarbrook nestles by a gentle stream, its wooden bridges creaking softly beneath passing travelers."
+    },
+    "MAPLECROSS": {
+      "NAME": "Maplecross",
+      "DESCRIPTION": "Maplecross lies where two paths meet, its red-leaved trees welcoming wanderers with quiet warmth."
+    },
+    "BIRCKFIELD": {
+      "NAME": "Birchfield",
+      "DESCRIPTION": "Birchfield stretches across golden meadows, its pale trees shimmering in the morning light."
+    },
+    "DARKROAD": {
+      "NAME": "Darkroad",
+      "DESCRIPTION": "Darkroad sits at the edge of shadowed woods, where travelers find refuge from the encroaching night"
+    },
+    "WOODENPALE": {
+      "NAME": "Woodenpale",
+      "DESCRIPTION": "Woodenpale is a quiet village of timber homes, its streets lined with lanterns that glow softly at dusk"
+    }
+  }
+}

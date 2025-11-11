@@ -27,6 +27,7 @@ bootstrapApplication(AppComponent, {
             'overlay.anomaly',
             'overlay.caravan',
             'overlay.city',
+            'overlay.village',
             'overlay.farm',
             'overlay.ritual',
             'items',

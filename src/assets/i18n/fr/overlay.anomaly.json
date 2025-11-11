@@ -2,50 +2,62 @@
   "ANOMALY": {
     "TEMPORAL_RIFT": {
       "NAME": "Faille Temporelle",
-      "DESCRIPTION": "Une distorsion dans l’air scintille comme une plaie dans la réalité. Le paysage se plie et se déforme sur lui-même.",
+      "DESCRIPTION": "Une distorsion dans l'air scintille comme une plaie dans la réalité. Le paysage se plie et se déforme sur lui-même.",
       "F1": {
         "TITLE": "Instant figé",
         "DESCRIPTION": "Les oiseaux restent suspendus dans les airs. Même ton cœur semble battre avec un décalage. Le monde bouge une demi-seconde trop lentement.",
-        "OBSERVE": "Tu observes une goutte de pluie figée devant tes yeux.",
-        "OBSERVE_SUCCESS": "Le temps reprend un battement, tu entrevois ton reflet ailleurs, l’espace d’un instant.",
-        "OBSERVE_FAIL": "La distorsion se contracte, ta tête résonne d’un paradoxe impossible.",
-        "INTERACT": "Tu tends la main vers la faille, l’air résiste comme une vitre invisible."
+        "OBSERVE": {
+          "DESCRIPTION": "Tu observes une goutte de pluie figée devant tes yeux.",
+          "SUCCESS": "Le temps reprend un battement, tu entrevois ton reflet ailleurs, l'espace d'un instant.",
+          "FAIL": "La distorsion se contracte, ta tête résonne d'un paradoxe impossible."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Tu tends la main vers la faille, l'air résiste comme une vitre invisible."
+        }
       },
       "F2": {
         "TITLE": "Écho du passé",
-        "DESCRIPTION": "Une silhouette familière se tient devant toi... Mais c’est toi ! Ou plutôt une version de toi qui ne devrait pas exister."
+        "DESCRIPTION": "Une silhouette familière se tient devant toi... Mais c'est toi ! Ou plutôt une version de toi qui ne devrait pas exister."
       }
     },
     "INFERNAL_SURGE": {
       "NAME": "Déferlement Infernal",
-      "DESCRIPTION": "L’air brûle rouge ; des fissures au sol laissent échapper des cris étouffés. Quelque chose sous la croûte terrestre tente de s’échapper.",
+      "DESCRIPTION": "L'air brûle rouge ; des fissures au sol laissent échapper des cris étouffés. Quelque chose sous la croûte terrestre tente de s'échapper.",
       "F1": {
         "TITLE": "Terre brûlante",
         "DESCRIPTION": "La terre pulse de veines de magma. Tu entends presque un cœur battre sous tes pieds.",
-        "OBSERVE": "Tu examines les fissures de près, la lueur semble suivre tes mouvements.",
-        "PRAY": "Tu murmures une prière protectrice.",
-        "PRAY_SUCCESS": "L’air se rafraîchit un instant, l’anomalie faiblit.",
-        "PRAY_FAIL": "Une bouffée de chaleur brûle ton bras. Quelque chose s’agite dans les profondeurs."
+        "OBSERVE": {
+          "DESCRIPTION": "Tu examines les fissures de près, la lueur semble suivre tes mouvements."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Tu murmures une prière protectrice.",
+          "SUCCESS": "L'air se rafraîchit un instant, l'anomalie faiblit.",
+          "FAIL": "Une bouffée de chaleur brûle ton bras. Quelque chose s'agite dans les profondeurs."
+        }
       },
       "F2": {
         "TITLE": "Porte Infernale",
-        "DESCRIPTION": "Une déchirure s’ouvre, révélant des ombres mouvantes et un sourire de feu."
+        "DESCRIPTION": "Une déchirure s'ouvre, révélant des ombres mouvantes et un sourire de feu."
       }
     },
     "MECHANICAL_DISTORTION": {
       "NAME": "Distorsion Mécanique",
-      "DESCRIPTION": "Les ruines de machines anciennes s’enroulent autour d’une sphère vibrante. Des étincelles jaillissent dans l’air avec une précision rythmique.",
+      "DESCRIPTION": "Les ruines de machines anciennes s'enroulent autour d'une sphère vibrante. Des étincelles jaillissent dans l'air avec une précision rythmique.",
       "F1": {
         "TITLE": "Salles résonnantes",
-        "DESCRIPTION": "Des engrenages brisés et des piliers de bronze vibrent d’une vie propre. L’air sent l’ozone et l’huile.",
-        "OBSERVE": "Tu remarques des séquences dans le bourdonnement, ils sont presque musicaux.",
-        "INTERACT": "Tu t’approches prudemment du fragment de noyau.",
-        "INTERACT_SUCCESS": "Tu stabilises un fragment d’énergie, le flux s’inverse et se dissipe sans danger.",
-        "INTERACT_FAIL": "Des étincelles jaillissent sur tes doigts, laissant une brûlure cuisante."
+        "DESCRIPTION": "Des engrenages brisés et des piliers de bronze vibrent d'une vie propre. L'air sent l'ozone et l'huile.",
+        "OBSERVE": {
+          "DESCRIPTION": "Tu remarques des séquences dans le bourdonnement, ils sont presque musicaux."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Tu t'approches prudemment du fragment de noyau.",
+          "SUCCESS": "Tu stabilises un fragment d'énergie, le flux s'inverse et se dissipe sans danger.",
+          "FAIL": "Des étincelles jaillissent sur tes doigts, laissant une brûlure cuisante."
+        }
       },
       "F2": {
         "TITLE": "Réveil du noyau",
-        "DESCRIPTION": "Le cœur de la machine vacille ; l’orbe se réactive et scanne les environs."
+        "DESCRIPTION": "Le cœur de la machine vacille ; l'orbe se réactive et scanne les environs."
       }
     },
     "CORRUPTED_GROVE": {
@@ -53,107 +65,182 @@
       "DESCRIPTION": "Autrefois paisible, la forêt tremble sous une influence obscure. Les arbres se tordent, la sève coule noire.",
       "F1": {
         "TITLE": "Racines noires",
-        "DESCRIPTION": "Tu enjambe des racines qui pulsent faiblement comme des veines. L’air sent la pourriture et l’encens.",
-        "OBSERVE": "Tu vois des runes gravées dans l’écorce, suintant une sève sanglante.",
-        "INTERACT": "Tu touches la racine la plus proche... elle tressaille violemment !"
+        "DESCRIPTION": "Tu enjambe des racines qui pulsent faiblement comme des veines. L'air sent la pourriture et l'encens.",
+        "OBSERVE":{
+          "DESCRIPTION": "Tu vois des runes gravées dans l'écorce, suintant une sève sanglante."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Tu touches la racine la plus proche... elle tressaille violemment !"
+        }
       },
       "F2": {
-        "TITLE": "Cœur de la corruption",
-        "DESCRIPTION": "Au centre du bosquet, un cocon de lianes palpite d’une lumière malsaine.",
+        "TITLE": "Coeur de la corruption",
+        "DESCRIPTION": "Au centre du bosquet, un cocon de lianes palpite d'une lumière malsaine.",
         "INSPECT": "Tu observes le rythme du cocon, on dirait qu'il bat comme un cœur.",
-        "PRAY": "Tu invoques l’esprit véritable de la forêt pour repousser la corruption.",
-        "PRAY_SUCCESS": "Une lueur verte perce le cocon, la forêt pousse un soupir de soulagement.",
-        "PRAY_FAIL": "Les lianes s’enroulent autour de tes pieds, la corruption te répond."
+        "PRAY": {
+          "DESCRIPTION": "Tu invoques l'esprit véritable de la forêt pour repousser la corruption.",
+          "SUCCESS": "Une lueur verte perce le cocon, la forêt pousse un soupir de soulagement.",
+          "FAIL": "Les lianes s'enroulent autour de tes pieds, la corruption te répond."
+        }
       },
       "F3": {
-        "TITLE": "L’esprit tordu",
+        "TITLE": "L'esprit tordu",
         "DESCRIPTION": "Du cocon jaillit une immense araignée couverte de mousse, hurlant de haine."
       }
     },
     "ANCESTRAL_ECHO": {
       "NAME": "Écho Ancestral",
-      "DESCRIPTION": "Tu découvres un cercle de pierres à demi enfoui sous la cendre. Des murmures s’élèvent avec le vent... les noms des oubliés.",
+      "DESCRIPTION": "Tu découvres un cercle de pierres à demi enfoui sous la cendre. Des murmures s'élèvent avec le vent... les noms des oubliés.",
       "F1": {
         "TITLE": "Cercle des noms",
-        "DESCRIPTION": "Les pierres vibrent doucement. Chaque pas que tu fais résonne deux fois, une fois dans l’air, une autre fois dans ta mémoire.",
-        "OBSERVE": "Tu examines les symboles. Ils n’appartiennent à aucun langage connu.",
-        "PRAY": "Tu répètes l’un des noms chuchotés.",
-        "PRAY_SUCCESS": "Une chaleur envahit ta poitrine, l’esprit te reconnaît un instant.",
-        "PRAY_FAIL": "L’air se glace, une ombre s’agite derrière les pierres."
+        "DESCRIPTION": "Les pierres vibrent doucement. Chaque pas que tu fais résonne deux fois, une fois dans l'air, une autre fois dans ta mémoire.",
+        "OBSERVE": {
+          "DESCRIPTION":" Tu examines les symboles. Ils n'appartiennent à aucun langage connu."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Tu répètes l'un des noms chuchotés.",
+          "SUCCESS": "Une chaleur envahit ta poitrine, l'esprit te reconnaît un instant.",
+          "FAIL": "L'air se glace, une ombre s'agite derrière les pierres."
+        }
       },
       "F2": {
-        "TITLE": "Manifestation de l’esprit",
-        "DESCRIPTION": "Une forme translucide se matérialise, ses yeux vides pleins d’intention."
+        "TITLE": "Manifestation de l'esprit",
+        "DESCRIPTION": "Une forme translucide se matérialise, ses yeux vides pleins d'intention."
       }
     },
     "ASH_BREACH": {
       "NAME": "Brèche de Cendres",
-      "DESCRIPTION": "Le ciel se déchire, saignant feu et fumée. L’air tremble sous une ancienne fureur.",
+      "DESCRIPTION": "Le ciel se déchire, saignant feu et fumée. L'air tremble sous une ancienne fureur.",
       "F1": {
         "TITLE": "Champ de braises",
         "DESCRIPTION": "Des cendres noires couvrent le sol. Chaque pas libère un souffle de fumée au parfum de fer brûlé.",
-        "OBSERVE": "Tu ramasses une poignée de cendres ; elles brillent faiblement entre tes doigts.",
-        "OBSERVE_SUCCESS": "Les cendres réagissent à ton essence, formant des symboles lumineux avant de s’éteindre.",
-        "OBSERVE_FAIL": "Les cendres s’infiltrent dans ta peau, brûlant d’une douleur sourde.",
-        "INTERACT": "Tu poses ta main sur le sol chaud, il bat faiblement, comme un cœur vivant."
+        "OBSERVE": {
+          "DESCRIPTION": "Tu ramasses une poignée de cendres ; elles brillent faiblement entre tes doigts.",
+          "SUCCESS": "Les cendres réagissent à ton essence, formant des symboles lumineux avant de s'éteindre.",
+          "FAIL": "Les cendres s'infiltrent dans ta peau, brûlant d'une douleur sourde."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Tu poses ta main sur le sol chaud, il bat faiblement, comme un coeur vivant."
+        }
       },
       "F2": {
         "TITLE": "Sanctuaire effondré",
         "DESCRIPTION": "Des vestiges de temple luisent faiblement sous la suie. La chaleur déforme ta vision.",
-        "INSPECT": "Tu examines les runes, suivant leurs formes à travers la poussière.",
-        "INSPECT_SUCCESS": "Tu déchiffres le motif, un sceau qui retient quelque chose dessous.",
-        "INSPECT_FAIL": "La rune éclate violemment, ta vue se brouille.",
-        "PRAY": "Tu tentes une prière de purification pour renforcer le sceau.",
-        "PRAY_SUCCESS": "Le bourdonnement se stabilise, la chaleur faiblit un instant.",
-        "PRAY_FAIL": "Tes mots se changent en fumée, le sceau se fissure lentement."
+        "INSPECT": {
+          "DESCRIPTION": "Tu examines les runes, suivant leurs formes à travers la poussière.",
+          "SUCCESS": "Tu déchiffres le motif, un sceau qui retient quelque chose dessous.",
+          "FAIL": "La rune éclate violemment, ta vue se brouille."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Tu tentes une prière de purification pour renforcer le sceau.",
+          "SUCCESS": "Le bourdonnement se stabilise, la chaleur faiblit un instant.",
+          "FAIL": "Tes mots se changent en fumée, le sceau se fissure lentement."
+        }
       },
       "F3": {
-        "TITLE": "La brèche s’ouvre",
-        "DESCRIPTION": "Un tremblement violent fend le sol. La lave s’échappe des fissures, des cris résonnent dans les profondeurs."
+        "TITLE": "La brèche s'ouvre",
+        "DESCRIPTION": "Un tremblement violent fend le sol. La lave s'échappe des fissures, des cris résonnent dans les profondeurs.",
+        "OBSERVE": {
+          "DESCRIPTION": "Tu sens une présence, tu sens que quelque chose arrive",
+          "SUCCESS": "Plus aucun doute, il y a quelque chose là-dessous",
+          "FAIL": "La lave commence à entammer tes bottes, elle te brûle violement !"
+        },
+        "PRAY": {
+          "DESCRIPTION": "Tu essaie de prier afin de retenir la chose qui semble vouloir sortir !",
+          "SUCCESS": "Tes prières semblent calmer l'eruption imminente...",
+          "FAIL": "Tes mots semblent brûler dès qu'ils sortent de ta bouche."
+        }
       },
       "F4": {
         "TITLE": "Descente Infernale",
-        "DESCRIPTION": "De la brèche en fusion surgit une créature de flammes et d’ombre, ses écailles pleurant des larmes de magma."
+        "DESCRIPTION": "De la brèche en fusion surgit une créature de flammes et d'ombre, ses écailles pleurant des larmes de magma."
       },
       "F5": {
         "TITLE": "Cendres et silence",
-        "DESCRIPTION": "La brèche se fige en pierre. L’air vibre encore, comme si le monde se souvenait."
+        "DESCRIPTION": "La brèche se fige en pierre. L'air vibre encore, comme si le monde se souvenait.",
+        "REST": {
+          "DESCRIPTION": "Le calme est revenu, tu peux enfin de reposer."
+        },
+        "OBSERVE": {
+          "DESCRIPTION": "Plus rien d'étrange à l'horizon, l'anomalie semble être évaporé."
+        }
       }
     },
     "RIFT_OF_ECHOES": {
       "NAME": "Faille des Échos",
-      "DESCRIPTION": "Une fissure tremblante bourdonne dans l’air, comme la résonance d’une cloche invisible.",
+      "DESCRIPTION": "Une fissure tremblante bourdonne dans l'air, comme la résonance d'une cloche invisible.",
       "F1": {
         "TITLE": "Le silence brisé",
-        "DESCRIPTION": "Le sol vibre doucement. Chaque pas résonne une seconde plus tard... non pas dans l’espace, mais dans le temps."
+        "DESCRIPTION": "Le sol vibre doucement. Chaque pas résonne une seconde plus tard... non pas dans l'espace, mais dans le temps.",
+        "OBSERVE": {
+          "DESCRIPTION": "Tu inspectes le sol, mais il semble tout à fait normal."
+        },
+        "INSPECT": {
+          "DESCRIPTION": "Tu essaie de comprendre ce qui arrive, mais pour le moment quelque chose t'échappe..."
+        }
       },
       "F2": {
         "TITLE": "Voix de la faille",
-        "DESCRIPTION": "Un murmure s’élève de l’intérieur... ta propre voix, répondant à des questions que tu n’as jamais posées."
+        "DESCRIPTION": "Un murmure s'élève de l'intérieur... ta propre voix, répondant à des questions que tu n'as jamais posées.",
+        "TALK": {
+          "DESCRIPTION": "Tu essaies de te répondre, mais la voix semble se parler à elle-même !"
+        },
+        "PRAY": {
+          "DESCRIPTION": "Prions pour que cette voix s'arrête, elle ne peux qu'être mauvais signe.",
+          "SUCCESS": "La voix semble maintenant te répondre... en tout cas c'est ce que tu ressens.",
+          "FAIL": "Les mots semblent encore plus confus qu'avant. Cette conversation n'a pas de sens..."
+        }
       },
       "F3": {
         "TITLE": "Champ résonant",
-        "DESCRIPTION": "Tu découvres une plateforme circulaire de pierres flottantes, vibrant à l’unisson parfait."
+        "DESCRIPTION": "Tu découvres une plateforme circulaire de pierres flottantes, vibrant à l'unisson parfait.",
+        "INTERACT": {
+          "DESCRIPTION": "Tu essaie d'ordonner cette danse via les leviers au mur.",
+          "SUCCESS": "Tu ne sais pas pourquoi, mais tu as déjà joué cette mélodie... un jour ou dans une autre vie.",
+          "FAIL": "Un éclat de pierre part du centre de la plateforme et te saigne le visage."
+        },
+        "INSPECT": {
+          "DESCRIPTION": "Tu te demandes à quoi peut bien servir cette machine... Elle semble complexe et provenir d'un autre temps."
+        }
       },
       "F4": {
         "TITLE": "Manifestation de la faille",
-        "DESCRIPTION": "Un être lumineux se forme à partir d’éclats de son, à la fois vivant et inachevé."
+        "DESCRIPTION": "Un être lumineux se forme à partir d'éclats de son, à la fois vivant et inachevé."
       },
       "F5": {
         "TITLE": "Harmonie restaurée",
-        "DESCRIPTION": "Les échos s’éteignent. La fissure se referme dans un ultime son grave qui résonne dans tes os."
+        "DESCRIPTION": "Les échos s'éteignent. La fissure se referme dans un ultime son grave qui résonne dans tes os. Plus aucun bruit de la machine qui tournait.",
+        "OBSERVE": {
+          "DESCRIPTION": "Cette machine était complètement détraquée et n'allait pas tarder à ouvrir une porte sur l'Autre Monde. Grace à toi, ce danger est évité !"
+        }
       }
     },
     "ASHEN_CONVERGENCE": {
       "NAME": "Convergence Cendrée",
-      "DESCRIPTION": "L’horizon se replie sur lui-même, la cendre s’élève comme une pluie inversée. Tu sens deux mondes se superposer.",
+      "DESCRIPTION": "L'horizon se replie sur lui-même, la cendre s'élève comme une pluie inversée. Tu sens que deux mondes sont en train de se superposer.",
       "F1": {
-        "TITLE": "Le ciel brûlant",
-        "DESCRIPTION": "La lumière est fausse. Les ombres brûlent plus fort que le feu lui-même."
+        "TITLE": "Un ciel brûlant",
+        "DESCRIPTION": "La lumière est fausse. Les ombres brûlent plus fort que le feu lui-même et semblent se balader comme si elles avaient une âme.",
+        "OBSERVE": {
+          "DESCRIPTION": "Tu essaies de comprendre comment intéragissent ces cendres et de percer cette lumière iréelle."
+        },
+        "PRAY": {
+          "DESCRIPTION": "Tu te mets à genoux et tu tentes de réconcilier cet endroit.",
+          "SUCCESS": "Petit à petit, l'horizon semble reprendre sa place...",
+          "FAIL": "Ce sont maintenant les oiseaux qui semblent voler à l'envers et trop près du sol ! L'un deux vous frappe en plein dans le dos."
+        }
       },
       "F2": {
         "TITLE": "Les deux soleils",
-        "DESCRIPTION": "Deux orbes lumineux flottent au-dessus, leur éclat se tordant et fusionnant en spirale."
+        "DESCRIPTION": "Deux orbes lumineux flottent au-dessus de vous, leur éclat se tordant et fusionnant en spirale. A ta droite, deux disques en métal, posés sur des piliers semblent pouvoir contrôler ces sphères.",
+        "INSPECT": {
+          "DESCRIPTION": "Mais oui, c'est bien deux soleils que tu aperçois maintenant, cela semble être une machine folle."
+        },
+        "INTERACT": {
+          "DESCRIPTION": "Tu essaies de tourner tant bien que mal les deux disques.",
+          "SUCCESS": "On dirait que les disques s'éloignent à nouveau... ou bien c'est ton esprit qui veux y croire.",
+          "FAIL": "Tu es en train d'assister à la fusion de deux soleils... c'est beau et effrayant à la fois !"
+        }
       },
       "F3": {
         "TITLE": "Gardien de la faille",
@@ -161,7 +248,10 @@
       },
       "F4": {
         "TITLE": "Effondrement de la convergence",
-        "DESCRIPTION": "Les soleils entrent en collision, se brisant en éclats de verre brûlant. Le monde devient blanc."
+        "DESCRIPTION": "Les soleils entrent en collision, se brisant en éclats de verre brûlant. Le monde devient blanc.",
+        "OBSERVE": {
+          "DESCRIPTION": "La machine semble être stoppée, seul reste quelques petites éclats brillants au sol."
+        }
       }
     }
   }
