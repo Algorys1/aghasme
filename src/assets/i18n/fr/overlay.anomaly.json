@@ -145,10 +145,10 @@
           "SUCCESS": "Plus aucun doute, il y a quelque chose là-dessous",
           "FAIL": "La lave commence à entammer tes bottes, elle te brûle violement !"
         },
-        "PRAY": {
-          "DESCRIPTION": "Tu essaie de prier afin de retenir la chose qui semble vouloir sortir !",
-          "SUCCESS": "Tes prières semblent calmer l'eruption imminente...",
-          "FAIL": "Tes mots semblent brûler dès qu'ils sortent de ta bouche."
+        "INTERACT": {
+          "DESCRIPTION": "Tu essaie de combler les fissures pour empêcher la chose qui semble vouloir sortir d'apparaitre !",
+          "SUCCESS": "La lave semble être retardée, mais pour combien de temps ?",
+          "FAIL": "La chaleur est trop forte et vos mains brûlent au contact du sol."
         }
       },
       "F4": {

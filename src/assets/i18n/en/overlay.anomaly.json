@@ -145,10 +145,10 @@
           "SUCCESS": "No doubt about it, there's something down there",
           "FAIL": "The lava begins to eat away at your boots, it burns you violently!"
         },
-        "PRAY": {
-          "DESCRIPTION": "You try to pray to hold back the thing that seems to want to come out!",
-          "SUCCESS": "Your prayers seem to calm the impending eruption...",
-          "FAIL": "Your words seem to burn as soon as they leave your mouth."
+        "INTERACT": {
+          "DESCRIPTION": "You're trying to fill the cracks to prevent the thing that seems to want to come out from appearing.",
+          "SUCCESS": "The lava seems to be delayed, but for how long?",
+          "FAIL": "The heat is too intense and your hands burn when they touch the ground."
         }
       },
       "F4": {

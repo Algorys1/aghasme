@@ -87,29 +87,29 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'ANOMALY.MECHANICAL_DISTORSION.NAME',
-    description: 'ANOMALY.MECHANICAL_DISTORSION.DESCRIPTION',
+    name: 'ANOMALY.MECHANICAL_DISTORTION.NAME',
+    description: 'ANOMALY.MECHANICAL_DISTORTION.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'mechanical-distorsion',
     actions: [],
     eventChain: {
       floor_1: {
-        title: 'ANOMALY.MECHANICAL_DISTORSION.F1.TITLE',
-        description: 'ANOMALY.MECHANICAL_DISTORSION.F1.DESCRIPTION',
+        title: 'ANOMALY.MECHANICAL_DISTORTION.F1.TITLE',
+        description: 'ANOMALY.MECHANICAL_DISTORTION.F1.DESCRIPTION',
         actions: [ActionType.Observe, ActionType.Interact],
         actionPassive: {
           [ActionType.Observe]: {
-            description: 'ANOMALY.MECHANICAL_DISTORSION.F1.OBSERVE.DESCRIPTION',
+            description: 'ANOMALY.MECHANICAL_DISTORTION.F1.OBSERVE.DESCRIPTION',
           },
           [ActionType.Interact]: {
-            description: 'ANOMALY.MECHANICAL_DISTORSION.F1.INTERACT.DESCRIPTION',
+            description: 'ANOMALY.MECHANICAL_DISTORTION.F1.INTERACT.DESCRIPTION',
             check: { orb: 'mechanic', difficulty: 10 },
             onSuccess: {
-              description: 'OVERLAY_MECHANICAL_DISTORSION.F1.INTERACT.SUCCESS',
+              description: 'ANOMALY.MECHANICAL_DISTORTION.F1.INTERACT.SUCCESS',
               effects: [{ stat: 'xp', value: +8 }],
             },
             onFailure: {
-              description: 'OVERLAY_MECHANICAL_DISTORSION.F1.INTERACT.FAIL',
+              description: 'ANOMALY.MECHANICAL_DISTORTION.F1.INTERACT.FAIL',
               effects: [{ stat: 'hp', value: -4 }],
             },
           },
@@ -117,8 +117,8 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
         next: 'floor_2',
       },
       floor_2: {
-        title: 'ANOMALY.MECHANICAL_DISTORSION.F2.TITLE',
-        description: 'ANOMALY.MECHANICAL_DISTORSION.F2.DESCRIPTION',
+        title: 'ANOMALY.MECHANICAL_DISTORTION.F2.TITLE',
+        description: 'ANOMALY.MECHANICAL_DISTORTION.F2.DESCRIPTION',
         actions: [ActionType.Fight, ActionType.Flee],
         uniqueChoice: true,
         encounter: {
