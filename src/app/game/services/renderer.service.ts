@@ -113,8 +113,8 @@ export class RendererService {
     s.anchor.set(0.5);
     s.x = x;
     s.y = y;
-    s.width = size * 0.8;
-    s.height = size * 0.8;
+    s.width = size * 1.3;
+    s.height = size * 1.3;
     this.mapContainer.addChild(s);
     return s;
   }

@@ -1,16 +1,24 @@
 <div class="overlay-window" (click)="onSkipText()">
   <div class="overlay-content">
     <div class="overlay-top">
-      <img class="overlay-icon" [src]="data.icon" [alt]="mainTitle" />
+      <img class="overlay-icon" [src]="'assets/overlays/' + data.kind + '.png'" [alt]="mainTitle" />
       <h2 class="overlay-name">{{ mainTitle | translate }}</h2>
     </div>
 
     <hr class="divider" />
 
-    <div
+    @if(data.kind === 'city' || data.kind === 'village') {
+      <div
+      class="overlay-header"
+      [style.background-image]="'url(' + data.icon + ')'"
+    ></div>
+    } @else {
+      <div
       class="overlay-header"
       [style.background-image]="'url(assets/overlays/backgrounds/' + kind + '.png)'"
     ></div>
+    }
+
 
     <hr class="divider" />
 

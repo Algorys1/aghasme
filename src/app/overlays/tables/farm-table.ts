@@ -300,9 +300,9 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
   },
   {
-    name: 'FARM.MEADOW_VIEW.NAME',
+    name: 'FARM.MEADOWVIEW_FARM.NAME',
     id: 'meadowview-farm',
-    description: 'FARM.MEADOW_VIEW.DESCRIPTION',
+    description: 'FARM.MEADOWVIEW_FARM.DESCRIPTION',
     resources: [
       {
         id: 'herbs',
