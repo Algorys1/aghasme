@@ -23,7 +23,6 @@ export class CombatComponent implements OnInit {
 
   ngOnInit() {
     this.combatService.combatStarted$.subscribe(({ player, enemy }) => {
-      console.log('Combat started ', player, enemy)
       this.player = player;
       this.enemy = enemy;
     });
@@ -32,8 +31,6 @@ export class CombatComponent implements OnInit {
 
     this.combatService.combatEnded$.subscribe(result => {
       this.result = result;
-
-      setTimeout(() => this.closed.emit(), 1000);
     });
   }
 
@@ -41,9 +38,12 @@ export class CombatComponent implements OnInit {
     this.combatService.endTurn();
   }
 
+  onResultOk() {
+    this.closed.emit();
+  }
+
   onQuit() {
     this.combatService.endCombat('player');
-    this.closed.emit();
   }
 
   get isPlayerTurn(): boolean {

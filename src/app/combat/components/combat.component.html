@@ -66,15 +66,15 @@
     </div>
   }
 
-  @if(result) {
-    <div class="result">
-      @if(result.winner === 'player') {
+  @if (result) {
+    <div class="result-overlay">
+      @if (result.winner === 'player') {
         <h2>Victory!</h2>
         <p>XP: +{{ result.xpGained }} | Gold: +{{ result.goldGained }}</p>
-      }
-      @if(result.winner === 'enemy') {
+      } @else {
         <h2>Defeat...</h2>
       }
+      <button (click)="onResultOk()">OK</button>
     </div>
   }
 

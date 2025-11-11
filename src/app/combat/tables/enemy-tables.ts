@@ -366,7 +366,7 @@ export const ENEMIES: EnemyDefinition[] = [
     id: 'ash-eaters',
     name: 'Ash Eaters',
     desc: 'Ash Eaters are unintelligent creatures, but they are very resilient.',
-    icon: 'assets/monsters/ash-devorer.png',
+    icon: 'assets/monsters/ash-eaters.png',
     subCategories: ['vermin'],
     terrains: ['mountain', 'volcano'],
     minLevel: 1,

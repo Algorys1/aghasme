@@ -74,13 +74,17 @@ export class ItemFactory {
     switch (type) {
       case ItemType.WeaponMelee:
       case ItemType.WeaponRange:
-        return [...EFFECT_POOL['offensive'], ...EFFECT_POOL['utility']];
+        return [...EFFECT_POOL['combat'], ...EFFECT_POOL['status']];
       case ItemType.Armor:
-        return [...EFFECT_POOL['defensive'], ...EFFECT_POOL['utility']];
+        return [...EFFECT_POOL['vitals'], ...EFFECT_POOL['exploration']];
       case ItemType.Accessory:
-        return [...EFFECT_POOL['mystic'], ...EFFECT_POOL['utility']];
+        return [...EFFECT_POOL['status'], ...EFFECT_POOL['exploration']];
+      case ItemType.Consumable:
+        return [...EFFECT_POOL['vitals']];
+      case ItemType.Utility:
+        return [...EFFECT_POOL['exploration']];
       default:
-        return [...EFFECT_POOL['utility']];
+        return [...EFFECT_POOL['combat'], ...EFFECT_POOL['status'], ...EFFECT_POOL['vitals'], ...EFFECT_POOL['exploration']];
     }
   }
 

@@ -101,7 +101,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
         this.showCombat = true;
       }),
       this.combatService.combatEnded$.subscribe(() => {
-        this.showCombat = false;
         this.isOverlayPaused = false;
       }),
       this.mapService.overlayChange.subscribe(kind => {

@@ -13,6 +13,7 @@ export class CombatService {
   private enemyEntity?: CombatEntity;
 
   // --- EVENTS ---
+  public attackPerformed$ = new Subject<{ attacker: string; target: string; damage: number }>();
   public preCombatStarted$ = new Subject<{ player: CombatEntity; enemy: CombatEntity }>();
   public combatStarted$ = new ReplaySubject<CombatInitPayload>(1);
   public turnChanged$ = new Subject<Turn>();
@@ -67,6 +68,42 @@ export class CombatService {
     this.checkEndOfTurn();
   }
 
+  attackEntity(attackerId: string, targetId: string) {
+    if (!this.state) return;
+
+    const attacker = Object.values(this.state.entities).find(e => e.id === attackerId);
+    const target   = Object.values(this.state.entities).find(e => e.id === targetId);
+    if (!attacker || !target) return;
+
+    // adjacent check
+    const dx = Math.abs(attacker.position.x - target.position.x);
+    const dy = Math.abs(attacker.position.y - target.position.y);
+    if (dx + dy !== 1) {
+      console.log('❌ Pas à portée');
+      return;
+    }
+
+    // Simple damage (TODO use Effects and roll)
+    const raw = Math.max(1, attacker.attackBonus - target.defenseBonus);
+    const variance = Math.floor(Math.random() * 3) - 1; // -1 / 0 / +1
+    const damage = Math.max(1, raw + variance);
+
+    target.hp = Math.max(0, target.hp - damage);
+    console.log(`⚔️ ${attacker.name} inflige ${damage} dégâts à ${target.name}`);
+
+    this.attackPerformed$.next({ attacker: attacker.id, target: target.id, damage });
+
+    if (target.hp <= 0) {
+      const winner = attacker.isPlayer ? 'player' : 'enemy';
+      this.endCombat(winner);
+      return;
+    }
+
+    attacker.actionsRemaining = Math.max(0, attacker.actionsRemaining - 1);
+    this.checkEndOfTurn();
+  }
+
+
   private checkEndOfTurn(): void {
     if (!this.state) return;
     const active = this.state.turn === 'player' ? this.state.entities.player : this.state.entities.enemy;
@@ -84,9 +121,29 @@ export class CombatService {
     active.actionsRemaining = 2;
 
     this.turnChanged$.next(nextTurn);
+    if (nextTurn === 'enemy') {
+      this.enemyTurn();
+    }
+  }
+
+  private enemyTurn() {
+    if (!this.state) return;
+    const { player, enemy } = this.state.entities;
+    const dx = Math.abs(player.position.x - enemy.position.x);
+    const dy = Math.abs(player.position.y - enemy.position.y);
+
+    if (dx + dy === 1) {
+      // attaque auto
+      this.attackEntity('enemy', 'player');
+    } else {
+      console.log('👹 Ennemi ne peut pas attaquer (pas à portée)');
+    }
+
+    this.endTurn();
   }
 
   endCombat(winner: 'player' | 'enemy'): void {
+    console.log('End Combat')
     if (!this.state) return;
     const result: CombatResult = {
       winner,
