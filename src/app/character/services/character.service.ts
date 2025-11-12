@@ -18,7 +18,7 @@ export class CharacterService {
   createCharacter(data: NewCharacterInput): Character {
     const level = data.level ?? 1;
     let orbs: Orbs = { ...DEFAULT_ORBS, ...(data.orbs ?? {}) };
-    const archetype = data.archetype ?? 'beast';
+    const archetype = data.archetype ?? 'anims';
 
     const mods = ARCHETYPE_ORB_MODIFIERS[archetype];
     for (const key of Object.keys(mods) as (keyof Orbs)[]) {

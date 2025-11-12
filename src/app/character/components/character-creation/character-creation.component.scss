@@ -27,19 +27,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  background-image: url('../../../../assets/ui/combat-background.webp');
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  background-position: center;
+  filter: brightness(1.02) contrast(0.98);
 }
 
 /* === TITLES === */
 h2 {
   margin-bottom: 1rem;
   color: #f7d77d;
-  text-shadow: 0 0 6px rgba(255, 220, 120, 0.6);
 }
 
 /* === ARCHETYPES === */
 .archetype-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
   justify-items: center;
   margin-bottom: 1rem;
@@ -48,14 +52,16 @@ h2 {
     border: 2px solid transparent;
     border-radius: 12px;
     padding: 4px;
-    width: 110px;
+    width: 64px;
     background: rgba(255, 255, 255, 0.05);
     cursor: pointer;
     transition: 0.3s;
+    opacity: .4;
 
     &.selected {
       border-color: #f7d77d;
       background: rgba(247, 215, 125, 0.15);
+      opacity: 1;
     }
 
     img {
@@ -94,7 +100,6 @@ h2 {
 /* === PORTRAIT & MODIFIERS === */
 .preview-block {
   display: flex;
-  flex-direction: column;
   align-items: center;
   margin-top: .25rem;
   gap: 1rem;
@@ -113,7 +118,7 @@ h2 {
     background: rgba(255, 255, 255, 0.05);
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    width: 180px;
+    width: 120px;
 
     h4 {
       margin: auto;
@@ -130,6 +135,43 @@ h2 {
       justify-content: space-between;
       font-size: 0.9rem;
     }
+  }
+}
+
+.history {
+  margin-top: .5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+
+  .description {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-align: justify;
+    white-space: pre-line;
+  }
+  .clan {
+    align-items: center;
+    display: flex;
+    color: #f7d77d;
+
+    img {
+      width: 32px;
+      height: 32px;
+      margin-right: .5rem;
+    }
+  }
+  .anims {
+    color: #ff6565;
+  }
+  .frostfire {
+    color: #379edd;
+  }
+  .sylvaris {
+    color: #c1c783;
+  }
+  .engineer {
+    color: #e39d4a;
   }
 }
 

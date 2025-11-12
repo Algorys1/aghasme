@@ -7,7 +7,7 @@
 
     <!-- === STEP 1 : ARCHETYPE & GENDER === -->
     <section class="slide">
-      <h2>Select Archetype</h2>
+      <h2>{{ 'CHARACTER.CREATION.SELECT_CLAN' | translate }}</h2>
 
       <div class="archetype-grid">
         @for (type of archetypes; track type) {
@@ -16,8 +16,7 @@
             [class.selected]="selectedArchetype === type"
             (click)="selectArchetype(type)"
           >
-            <img [src]="'assets/characters/orbs/orb-' + getOrbIcon(type) + '.png'" [alt]="type" />
-            <p>{{ type | titlecase }}</p>
+            <img [src]="'assets/ui/banners/banner-' + type + '.png'" [alt]="type" />
           </div>
         }
       </div>
@@ -28,7 +27,7 @@
             [class.active]="selectedGender === g"
             (click)="selectGender(g)"
           >
-            {{ g | titlecase }}
+            {{ getGender(g) }}
           </button>
         }
       </div>
@@ -37,7 +36,7 @@
         <div class="preview-block">
           <img [src]="getPortrait()" class="portrait" />
           <div class="modifiers">
-            <h4>Modifiers ({{ selectedArchetype | titlecase }})</h4>
+            <h4>Modifiers</h4>
             <ul>
               @for (entry of characterService.getArchetypeModifiers(selectedArchetype!); track entry.key) {
                 <li>
@@ -49,6 +48,13 @@
               }
             </ul>
           </div>
+        </div>
+
+        <div class="history">
+          <h3 class="clan" [class]="selectedArchetype">
+            <img [src]="'assets/ui/banners/banner-' + selectedArchetype + '.png'" [alt]="selectedArchetype" /> {{ getClan() }}
+          </h3>
+          <div class="description"> {{ getDescription() }}</div>
         </div>
       }
 

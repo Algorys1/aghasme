@@ -1,0 +1,30 @@
+{
+  "CHARACTER": {
+    "CREATION": {
+      "SELECT_CLAN": "Selectionnez un Clan",
+      "MODIFIERS": "Modificateurs"
+    },
+    "CLANS": {
+      "ANIMS": {
+        "TITLE": "Anims",
+        "DESCRIPTION": "Descendants de Theorn le Solitaire, celui qui garda l'Orbe pour lui seul. \nPuissants combattants et âmes fières, leur corps porte encore les stigmates de la malédiction de leur aïeul. \nLeur force brute et leur résistance font d'eux des guerriers redoutables, mais leur tempérament farouche peut parfois les isoler."
+      },
+      "SYLVARIS": {
+        "TITLE": "Sylvaris",
+        "DESCRIPTION": "Enfants de la nature et gardiens des forêts, les Sylvaris vivent en harmonie avec les animaux et les plantes. \nLeur lien avec Élémie de Sombrebois leur confère une grande résistance aux maladies et une compassion naturelle. \nGénéreux, solidaires et sages, ils espèrent un jour voir l'Arbre Unique renaître de ses cendres."
+      },
+      "FROSTFIRES": {
+        "TITLE": "Feufroids",
+        "DESCRIPTION": "Maîtres des éléments, les Feufroids savent canaliser les forces du feu, de la glace, du vent et de l'eau. \nHéritiers de l'enseignement d'Angorn l'Académicien, ils puisent leur pouvoir dans la connaissance et la discipline. \nLeur devise résonne encore à travers les âges : \"La connaissance est la clé de tout.\""
+      },
+      "ENGINEERS": {
+        "TITLE": "Ingénieurs",
+        "DESCRIPTION": "Mystiques du métal et de la mécanique, les Ingénieurs donnent vie à l'inerte. \nBien que leur savoir s'effrite depuis le sacrifice de Khilia, leur ingéniosité reste inégalée. \nBâtisseurs, inventeurs et rétameurs de l'impossible, ils manient la science comme une forme de magie."
+      }
+    },
+    "GENDER": {
+      "MALE": "Homme",
+      "FEMALE": "Femme"
+    }
+  }
+}

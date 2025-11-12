@@ -1,0 +1,30 @@
+{
+  "CHARACTER": {
+    "CREATION": {
+      "SELECT_CLAN": "Select Clan",
+      "MODIFIERS": "Modifiers"
+    },
+    "CLANS": {
+      "ANIMS": {
+        "TITLE": "Anims",
+        "DESCRIPTION": "Descendants of Theorn the Lonely, he who kept the Orb for himself alone. \nPowerful warriors and proud souls, their bodies still bear the marks of their ancestor's curse. \nTheir brute strength and resilience make them formidable warriors, but their fierce temperament can sometimes isolate them."
+      },
+      "SYLVARIS": {
+        "TITLE": "Sylvaris",
+        "DESCRIPTION": "Children of nature and guardians of the forests, the Sylvari live in harmony with animals and plants. \nTheir connection to Elemia of Darkwood grants them great resistance to disease and a natural compassion. \nGenerous, supportive, and wise, they hope one day to see the One Tree rise from its ashes."
+      },
+      "FROSTFIRES": {
+        "TITLE": "Frostfires",
+        "DESCRIPTION": "Masters of the elements, the Fire-Colds know how to channel the forces of fire, ice, wind, and water. \nHeirs to the teachings of Angorn the Academic, they draw their power from knowledge and discipline. \nTheir motto still resonates through the ages: \"Knowledge is the key to everything.\""
+      },
+      "ENGINEERS": {
+        "TITLE": "Engineers",
+        "DESCRIPTION": "Mystics of metal and mechanics, the Engineers give life to the inert. \nAlthough their knowledge has been waning since Khilia's sacrifice, their ingenuity remains unmatched. \nBuilders, inventors, and tinners of the impossible, they wield science as a form of magic."
+      }
+    },
+    "GENDER": {
+      "MALE": "Man",
+      "FEMALE": "Women"
+    }
+  }
+}

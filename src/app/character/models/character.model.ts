@@ -1,22 +1,21 @@
-export type Archetype = 'beast' | 'elemental' | 'ant' | 'engineer';
+export type Archetype = 'anims' | 'frostfire' | 'sylvaris' | 'engineer';
 export type Gender = 'male' | 'female';
+export type OrbKey = 'bestial' | 'elemental' | 'natural' | 'mechanic';
 
 export const CHARACTER_ASSETS: Record<string, Record <Archetype, string>> = {
   "male" : {
-    beast: 'assets/characters/beast-male.png',
-    elemental: 'assets/characters/elemental-male.png',
-    ant: 'assets/characters/ant-male.png',
+    anims: 'assets/characters/anims-male.png',
+    frostfire: 'assets/characters/frostfire-male.png',
+    sylvaris: 'assets/characters/sylvaris-male.png',
     engineer: 'assets/characters/engineer-male.png'
   },
   "female" :{
-    beast: 'assets/characters/beast-female.png',
-    elemental: 'assets/characters/elemental-female.png',
-    ant: 'assets/characters/ant-female.png',
+    anims: 'assets/characters/anims-female.png',
+    frostfire: 'assets/characters/frostfire-female.png',
+    sylvaris: 'assets/characters/sylvaris-female.png',
     engineer: 'assets/characters/engineer-female.png'
   }
 };
-
-export type OrbKey = 'bestial' | 'elemental' | 'natural' | 'mechanic';
 
 export interface Orbs {
   bestial: number;
@@ -101,9 +100,9 @@ export const ORB_DEFINITIONS: Record<OrbKey, { label: string; icon: string; desc
 };
 
 export const ARCHETYPE_ORB_MODIFIERS: Record<Archetype, Partial<Orbs>> = {
-  beast:      { bestial: +1, elemental: -1 },
-  elemental:  { elemental: +1, mechanic: -1 },
-  ant:        { natural: +1, bestial: -1 },
+  anims:      { bestial: +1, elemental: -1 },
+  frostfire:  { elemental: +1, mechanic: -1 },
+  sylvaris:   { natural: +1, bestial: -1 },
   engineer:   { mechanic: +1, natural: -1 },
 };
 

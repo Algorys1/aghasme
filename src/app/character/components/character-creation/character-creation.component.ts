@@ -5,17 +5,18 @@ import { TitleCasePipe } from '@angular/common';
 import { CharacterService } from '../../services/character.service';
 import { Archetype, Orbs, Gender, ORB_DEFINITIONS, ARCHETYPE_ORB_MODIFIERS } from '../../models/character.model';
 import { BACKGROUNDS, CharacterBackground } from '../../models/background.model';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-character-creation',
-  imports: [TitleCasePipe, FormsModule],
+  imports: [TitleCasePipe, FormsModule, TranslateModule],
   templateUrl: './character-creation.component.html',
   styleUrls: ['./character-creation.component.scss']
 })
 export class CharacterCreationComponent {
   step = 1; // 1: archetype, 2: orbs, 3: name
 
-  archetypes: Archetype[] = ['beast', 'elemental', 'ant', 'engineer'];
+  archetypes: Archetype[] = ['anims', 'frostfire', 'sylvaris', 'engineer'];
   genders: Gender[] = ['male', 'female'];
   selectedArchetype: Archetype | null = null;
   selectedGender: Gender = 'male';
@@ -39,6 +40,7 @@ export class CharacterCreationComponent {
 
   constructor(
     public characterService: CharacterService,
+    private translate: TranslateService,
     private router: Router
   ) {}
 
@@ -53,18 +55,37 @@ export class CharacterCreationComponent {
     this.selectedGender = g;
   }
 
-  getOrbIcon(archetype: string) {
-    switch(archetype) {
-      case 'beast':
-        return 'bestial';
-      case 'elemental':
-        return 'elemental';
-      case 'ant':
-        return 'natural';
+  getClan() {
+    switch(this.selectedArchetype) {
+      case 'anims':
+        return this.translate.instant('CHARACTER.CLANS.ANIMS.TITLE');
       case 'engineer':
-        return 'mechanic';
-      default:
-        return ''
+        return this.translate.instant('CHARACTER.CLANS.ENGINEERS.TITLE');
+      case 'sylvaris':
+        return this.translate.instant('CHARACTER.CLANS.SYLVARIS.TITLE');
+      case 'frostfire':
+        return this.translate.instant('CHARACTER.CLANS.FROSTFIRES.TITLE');
+    }
+  }
+
+  getGender(g: Gender) {
+    if(g === 'male') {
+      return this.translate.instant('CHARACTER.GENDER.MALE');
+    } else {
+      return this.translate.instant('CHARACTER.GENDER.FEMALE');
+    }
+  }
+
+  getDescription() {
+    switch(this.selectedArchetype) {
+      case 'anims':
+        return this.translate.instant('CHARACTER.CLANS.ANIMS.DESCRIPTION');
+      case 'engineer':
+        return this.translate.instant('CHARACTER.CLANS.ENGINEERS.DESCRIPTION');
+      case 'sylvaris':
+        return this.translate.instant('CHARACTER.CLANS.SYLVARIS.DESCRIPTION');
+      case 'frostfire':
+        return this.translate.instant('CHARACTER.CLANS.FROSTFIRES.DESCRIPTION');
     }
   }
 

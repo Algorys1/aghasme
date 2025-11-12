@@ -9,7 +9,7 @@
         "OBSERVE": {
           "DESCRIPTION": "You watch a raindrop suspended before your eyes.",
           "SUCCESS": "Time resumes for a heartbeat, you see glimpses of yourself standing elsewhere.",
-          "FAIL": "The distortion flares, your mind reels from the paradox.",
+          "FAIL": "The distortion flares, your mind reels from the paradox."
         },
         "INTERACT":{
           "DESCRIPTION": "You reach toward the ripple, the air resists your hand like thick glass."
