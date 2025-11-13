@@ -588,6 +588,14 @@ export class MapService {
       const hasOverlay = this.overlayTypes[key]?.length;
       if (hasOverlay) continue;
 
+      const densityCfg = this.getNarrativeDensityConfig(kind);
+      if (densityCfg) {
+        const density = this.getOverlayDensityAround(q, r, densityCfg.radius);
+        if (density >= densityCfg.max) {
+          continue;
+        }
+      }
+
       if (minDistance > 0 && !this.isFarEnoughFromSameType(q, r, kind, minDistance)) continue;
 
       return { q, r };
@@ -618,6 +626,56 @@ export class MapService {
     }
     return false;
   }
+
+  // Returns the total number of overlays (all types) within a given radius around (q,r).
+  private getOverlayDensityAround(
+    q: number,
+    r: number,
+    radius: number
+  ): number {
+    let count = 0;
+
+    for (const [key, kinds] of Object.entries(this.overlayTypes)) {
+      const [oq, orr] = key.split(',').map(Number);
+      const dist = this.hexDistance({ q, r }, { q: oq, r: orr });
+      if (dist <= radius && kinds.length > 0) {
+        // Just counting "there's an overlay on this tile"
+        count++;
+      }
+    }
+
+    return count;
+  }
+
+  /** Local density rules for narrative overlays.
+  * radius = hex radius around the candidate tile
+  * max = maximum number of tiles WITH overlays within this radius (before saying "it's too cluttered")
+  */
+  private getNarrativeDensityConfig(kind: OverlayKind): { radius: number; max: number } | null {
+    switch (kind) {
+      case OverlayKind.Ruins:
+        return { radius: 3, max: 2 };
+      case OverlayKind.Tower:
+        return { radius: 3, max: 2 };
+      case OverlayKind.Shrine:
+        return { radius: 2, max: 3 };
+      case OverlayKind.Spirit:
+        return { radius: 2, max: 3 };
+      case OverlayKind.Anomaly:
+        return { radius: 3, max: 2 };
+      case OverlayKind.Caravan:
+        return { radius: 2, max: 4 };
+      case OverlayKind.Wanderer:
+        return { radius: 2, max: 4 };
+      case OverlayKind.Treasure:
+        return { radius: 2, max: 2 };
+      case OverlayKind.Ritual:
+        return { radius: 3, max: 2 };
+      default:
+        return null;
+    }
+  }
+
 
   // ENCOUNTERS
   checkForEncounter() {
