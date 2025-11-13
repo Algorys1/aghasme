@@ -3,7 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { createNoise2D } from 'simplex-noise';
 
 import { createTile, Terrain } from '../factories/tile.factory';
-import { OverlayKind, OVERLAY_COMPATIBILITY } from '../../overlays/models/overlays.model';
+import { OverlayKind, OVERLAY_COMPATIBILITY, OverlayTemplate } from '../../overlays/models/overlays.model';
 import { CharacterService } from '../../character/services/character.service';
 import { RendererService } from './renderer.service';
 import { Container, Sprite } from 'pixi.js';
@@ -36,7 +36,7 @@ export interface MapSnapshot {
 export class MapService {
   private size = 80;
 
-  private tiles: Record<string, { gfx: Container; terrain: Terrain; discovered: boolean, variant: string }> = {};
+  private tiles: Record<string, { gfx: Container; terrain: Terrain; discovered: boolean; variant: string }> = {};
   private overlaySprites: Record<string, Sprite[]> = {};
   private overlayTypes: Record<string, OverlayKind[]> = {};
 
@@ -50,7 +50,7 @@ export class MapService {
   private player!: Sprite;
   private playerPos = { q: 0, r: 0 };
 
-  private mapRadius = 10;
+  private mapRadius = 20;
 
   private activeOverlay: OverlayKind | null = null;
   overlayChange = new Subject<OverlayKind>();
@@ -81,11 +81,13 @@ export class MapService {
     return this.activeOverlay;
   }
 
+  // PRNG for noises
   private nextRand(): number {
     this.randState = (this.randState * 48271) % 0x7fffffff;
     return this.randState / 0x7fffffff;
   }
 
+  // ---------- TERRAIN ----------
   private generateTerrain(q: number, r: number): Terrain {
     const altRaw = this.noiseAltitude(q * this.scaleAltitude, r * this.scaleAltitude);
     const humRaw = this.noiseHumidity(q * this.scaleHumidity, r * this.scaleHumidity);
@@ -109,10 +111,26 @@ export class MapService {
     return { x, y };
   }
 
+  private isInMapBounds(q: number, r: number, radius = this.mapRadius): boolean {
+    const s = -q - r;
+    return Math.abs(q) <= radius && Math.abs(r) <= radius && Math.abs(s) <= radius;
+  }
+
+  private key(q: number, r: number) { return `${q},${r}`; }
+  private tileAt(q: number, r: number) { return this.tiles[this.key(q,r)]; }
+
+  private neighborsOf(q: number, r: number) {
+    const dirs = [[1,0],[1,-1],[0,-1],[-1,0],[-1,1],[0,1]];
+    return dirs
+      .map(([dq,dr]) => ({ q:q+dq, r:r+dr }))
+      .filter(p => this.isInMapBounds(p.q,p.r));
+  }
+
   private buildMap(radius: number) {
     const N = radius;
     this.overlayRegistry.reset();
 
+    // Generate all tiles (raw land)
     for (let q = -N; q <= N; q++) {
       for (let r = -N; r <= N; r++) {
         const s = -q - r;
@@ -130,7 +148,7 @@ export class MapService {
             onClick: () => this.movePlayer(q, r)
           });
 
-          this.tiles[`${q},${r}`] = {
+          this.tiles[this.key(q,r)] = {
             gfx: tile,
             terrain,
             discovered: false,
@@ -140,9 +158,18 @@ export class MapService {
       }
     }
 
+    // PLACE 7 ANCHORED CITIES (one place for each, no duplicates)
+    this.placeCitiesAnchored();
+
+    // SECONDARY CIVILIZATION (villages, farms, resources)
     this.placeCivilizationOverlays();
+
+    // NARRATIVE / EXPLORATION
     this.placeNarrativeOverlays();
+
+    // PORTALS located far from the cities
     this.placePortals();
+
     this.logOverlayStats();
     this.overlayRegistry.getRemainingStockSummary();
   }
@@ -215,9 +242,9 @@ export class MapService {
     const sprite = this.renderer.createOverlaySprite(kind, x, y, this.size);
     if (!sprite) return;
 
-    const key = `${q},${r}`;
-    (this.overlaySprites[key] ||= []).push(sprite);
-    (this.overlayTypes[key] ||= []).push(kind);
+    const k = this.key(q,r);
+    (this.overlaySprites[k] ||= []).push(sprite);
+    (this.overlayTypes[k] ||= []).push(kind);
   }
 
   private logOverlayStats(): void {
@@ -238,6 +265,7 @@ export class MapService {
     console.groupEnd();
   }
 
+  // ----------  Narrative ----------
   private placeNarrativeOverlays(): void {
     console.group('🌀 Phase narrative: placement des overlays fixes');
 
@@ -297,60 +325,89 @@ export class MapService {
     console.groupEnd();
   }
 
+  // ---------- PHASE 2 : Secondary Civilization ----------
   private placeCivilizationOverlays(): void {
-    console.group('🏙️ Phase civilisation: placement des villes, villages et ressources');
+    console.group('🏙️ Phase civilisation: villages, fermes, ressources');
 
-    const factor = this.mapRadius / 10;
     const desired: Partial<Record<OverlayKind, number>> = {
-      [OverlayKind.City]: Math.round(3 * factor),
-      [OverlayKind.Village]: Math.round(7 * factor),
-      [OverlayKind.Farm]: Math.round(10 * factor),
-      [OverlayKind.Mine]: Math.round(5 * factor),
-      [OverlayKind.Forest]: Math.round(7 * factor),
+      [OverlayKind.Village]: 12,
+      [OverlayKind.Farm]: 16,
+      [OverlayKind.Mine]: 6,
+      [OverlayKind.Forest]: 8,
     };
 
-    // CITIES
-    this.placeOverlayType(OverlayKind.City, desired[OverlayKind.City] ?? 0, ['plain', 'desert'], 7);
+    const cities = this.getAllCities();
 
-    // VILLAGES & FARMS
-    this.placeOverlayType(OverlayKind.Village, desired[OverlayKind.Village] ?? 0, ['plain', 'forest', 'jungle'], 3, 5, true);
-    this.placeOverlayType(OverlayKind.Farm, desired[OverlayKind.Farm] ?? 0, ['plain', 'jungle'], 2, 5, true);
+    for (const city of cities) {
+      this.placeNearCity(city, OverlayKind.Village, ['plain','forest'], 3, 6, Math.ceil((desired[OverlayKind.Village] ?? 0) / cities.length));
+    }
 
-    // MINES & FORESTS
-    this.placeOverlayType(OverlayKind.Mine, desired[OverlayKind.Mine] ?? 0, ['mountain', 'plain'], 4);
-    this.placeOverlayType(OverlayKind.Forest, desired[OverlayKind.Forest] ?? 0, ['forest', 'jungle'], 0);
+    for (const city of cities) {
+      this.placeNearCity(city, OverlayKind.Farm, ['plain'], 2, 5, Math.ceil((desired[OverlayKind.Farm] ?? 0) / cities.length));
+    }
+
+    const mineCities = cities.filter(c => ['ironvale','aghasme','mechanica'].includes(c.name));
+    for (const city of mineCities) {
+      this.placeNearCity(city, OverlayKind.Mine, ['mountain','plain','desert'], 4, 8, Math.ceil((desired[OverlayKind.Mine] ?? 0) / Math.max(1,mineCities.length)));
+    }
+
+    const forestCities = cities.filter(c => ['rivertown','highwall'].includes(c.name));
+    for (const city of forestCities) {
+      this.placeNearCity(city, OverlayKind.Forest, ['forest','jungle'], 4, 8, Math.ceil((desired[OverlayKind.Forest] ?? 0) / Math.max(1,forestCities.length)));
+    }
 
     console.groupEnd();
   }
 
-  private hasAnyCity(): boolean {
-    return Object.values(this.overlayTypes).some(kinds => kinds.includes(OverlayKind.City));
-  }
-
-  private placeOverlayType(
+  private placeNearCity(
+    city: { name: string; q: number; r: number },
     kind: OverlayKind,
-    count: number,
-    terrains: string[],
-    minDistance: number,
-    maxDistanceFromCity?: number,
-    nearCities: boolean = false
+    allowedTerrains: Terrain[],
+    minDist: number,
+    maxDist: number,
+    count: number
   ): void {
     let placed = 0;
-    const allKeys = Object.keys(this.tiles).sort(() => Math.random() - 0.5);
 
-    for (const key of allKeys) {
+    // Shuffle all the squares on the map
+    const keys = Object.keys(this.tiles).sort(() => Math.random() - 0.5);
+
+    for (const key of keys) {
       if (placed >= count) break;
+
       const [q, r] = key.split(',').map(Number);
       const tile = this.tiles[key];
-      if (!tile || !terrains.includes(tile.terrain)) continue;
+      if (!tile || !allowedTerrains.includes(tile.terrain)) continue;
 
-      const hasOverlay = this.overlayTypes[key]?.length;
-      if (hasOverlay) continue;
+      // Distance to town
+      const distCity = this.hexDistance({ q, r }, { q: city.q, r: city.r });
+      if (distCity < minDist || distCity > maxDist) continue;
 
-      if (maxDistanceFromCity && maxDistanceFromCity > 0 && !this.hasAnyCity() && nearCities) continue;
-      if (minDistance > 0 && !this.isFarEnoughFromSameType(q, r, kind, minDistance)) continue;
-      if (nearCities && maxDistanceFromCity && !this.isCloseEnoughToCity(q, r, maxDistanceFromCity)) continue;
-      if (!nearCities && maxDistanceFromCity && this.isCloseEnoughToCity(q, r, maxDistanceFromCity)) continue;
+      // No overlay already present
+      if (this.overlayTypes[key]?.length) continue;
+
+      // VILLAGE: min 3 hexes from any other village
+      if (kind === OverlayKind.Village) {
+        if (!this.isFarEnoughFromSameType(q, r, OverlayKind.Village, 3)) continue;
+      }
+
+      // FARM: minimum 2 hexes between farms
+      if (kind === OverlayKind.Farm) {
+        if (!this.isFarEnoughFromSameType(q, r, OverlayKind.Farm, 2)) continue;
+
+        // Farm must be close to a town OR village (2-3 hexes)
+        const nearVillage = this.isNearKind(q, r, OverlayKind.Village, 3);
+        const nearCity = this.isNearKind(q, r, OverlayKind.City, 3);
+        if (!nearVillage && !nearCity) continue;
+      }
+
+      // MINE / FOREST: min 3 hexes between mines / between forests
+      if (kind === OverlayKind.Mine) {
+        if (!this.isFarEnoughFromSameType(q, r, OverlayKind.Mine, 3)) continue;
+      }
+      if (kind === OverlayKind.Forest) {
+        if (!this.isFarEnoughFromSameType(q, r, OverlayKind.Forest, 3)) continue;
+      }
 
       const id = this.overlayRegistry.getRandomAvailableId(kind);
       if (!id) continue;
@@ -360,9 +417,158 @@ export class MapService {
       placed++;
     }
 
-    console.log(`✅ ${placed}/${count} ${kind} placés`);
+    console.log(`🏡 ${placed}/${count} ${kind} placed near ${city.name}`);
   }
 
+  private getAllCities(): { name: string; q: number; r: number }[] {
+    const cities: { name: string; q: number; r: number }[] = [];
+    for (const [id, data] of this.overlayRegistry['assigned'] as Map<string, { kind: OverlayKind; coords: { q:number; r:number } }>) {
+      if (data.kind === OverlayKind.City) {
+        cities.push({ name: id, q: data.coords.q, r: data.coords.r });
+      }
+    }
+    return cities;
+  }
+
+  // ANCHORED CITIES
+  private placeCitiesAnchored(): void {
+    console.group('🌍 Génération ancrée : villes principales');
+
+    const cityTemplates = OverlayFactory.getTable(OverlayKind.City) ?? [];
+
+    type CityDef = {
+      id: string;
+      allowedTerrains: Terrain[];
+      requireAdjSea: boolean;
+      minCityDistance: number;
+    };
+
+    const cityDefs: CityDef[] = cityTemplates.map((t: OverlayTemplate) => ({
+      id: t.id,
+      allowedTerrains: (t.allowedTerrains as Terrain[]) ?? ['plain'],
+      requireAdjSea: t.requireAdjSea ?? false,
+      minCityDistance: t.minCityDistance ?? 8,
+    }));
+
+    const placed: { id: string; q: number; r: number }[] = [];
+
+    for (const def of cityDefs) {
+      if (this.overlayRegistry.getById(def.id)) {
+        console.warn(`⚠️ City '${def.id}' already registered, skipping.`);
+        continue;
+      }
+
+      const candidates: { q: number; r: number }[] = [];
+
+      for (const key of Object.keys(this.tiles)) {
+        const [q, r] = key.split(',').map(Number);
+        const tile = this.tiles[key];
+        if (!tile) continue;
+
+        const terrain = tile.terrain;
+        if (!def.allowedTerrains.includes(terrain)) continue;
+
+        if (def.requireAdjSea) {
+          const hasSeaNeighbor = this.neighborsOf(q, r).some(p => this.tileAt(p.q, p.r)?.terrain === 'sea');
+          if (!hasSeaNeighbor) continue;
+        }
+
+        const tooClose = placed.some(c => this.hexDistance(c, { q, r }) < def.minCityDistance);
+        if (tooClose) continue;
+
+        candidates.push({ q, r });
+      }
+
+      if (!candidates.length) {
+        console.warn(`⚠️ No compatible placement found for city '${def.id}'`);
+        continue;
+      }
+
+      const coords = candidates[Math.floor(Math.random() * candidates.length)];
+
+      this.overlayRegistry.register(def.id, OverlayKind.City, coords);
+      this.addOverlay(coords.q, coords.r, OverlayKind.City);
+      placed.push({ id: def.id, ...coords });
+
+      console.log(`✅ City '${def.id}' placée en (${coords.q}, ${coords.r})`);
+    }
+
+    console.log(`🏙️ ${placed.length}/${cityDefs.length} cités principales placées.`);
+    console.groupEnd();
+  }
+
+  // PORTALS
+  private placePortals(): void {
+    console.group('🌀 Phase Portals: place portals');
+
+    const desiredCount = 4;
+    let placed = 0;
+
+    const validTerrains: Terrain[] = ['plain', 'desert', 'mountain', 'forest', 'jungle', 'swamp']; // (pas sur mer/volcano)
+    const allKeys = Object.keys(this.tiles);
+
+    // Pre-calculation: city positions
+    const cityPositions = this.getAllCities().map(c => ({ q:c.q, r:c.r }));
+
+    // The keys are sorted by decreasing distance from any city (to promote isolation).
+    const keysSorted = allKeys.sort((a,b) => {
+      const [qa,ra] = a.split(',').map(Number);
+      const [qb,rb] = b.split(',').map(Number);
+      const da = this.minDistanceToAny({q:qa,r:ra}, cityPositions);
+      const db = this.minDistanceToAny({q:qb,r:rb}, cityPositions);
+      return db - da; // further on first
+    });
+
+    const placedPortalCoords: Array<{q:number;r:number}> = [];
+
+    for (const key of keysSorted) {
+      if (placed >= desiredCount) break;
+
+      const [q, r] = key.split(',').map(Number);
+      const tile = this.tiles[key];
+      if (!tile || !validTerrains.includes(tile.terrain)) continue;
+
+      // no overlay present
+      if (this.overlayTypes[key]?.length) continue;
+
+      // Quite far from a City
+      if (!this.isFarEnoughFromAnyCity(q, r, 10)) continue;
+
+      // Quite far from the other portals
+      const farFromPortals = placedPortalCoords.every(p => this.hexDistance(p,{q,r}) >= 6);
+      if (!farFromPortals) continue;
+
+      const id = this.overlayRegistry.getRandomAvailableId(OverlayKind.Portal);
+      if (!id) continue;
+
+      this.overlayRegistry.register(id, OverlayKind.Portal, { q, r });
+      this.addOverlay(q, r, OverlayKind.Portal);
+      placedPortalCoords.push({ q, r });
+      placed++;
+    }
+
+    console.log(`✅ ${placed}/${desiredCount} Portals placed.`);
+    console.groupEnd();
+  }
+
+  private minDistanceToAny(p: {q:number;r:number}, targets: Array<{q:number;r:number}>) {
+    let best = Infinity;
+    for (const t of targets) best = Math.min(best, this.hexDistance(p,t));
+    return best;
+  }
+
+  private isFarEnoughFromAnyCity(q: number, r: number, distMin: number): boolean {
+    for (const [key, kinds] of Object.entries(this.overlayTypes)) {
+      if (kinds.includes(OverlayKind.City)) {
+        const [cq, cr] = key.split(',').map(Number);
+        const d = this.hexDistance({ q, r }, { q: cq, r: cr });
+        if (d < distMin) return false;
+      }
+    }
+    return true;
+  }
+
+  // ---------- Tools for narrative placement ----------
   private findValidTileForOverlay(
     allowedTerrains: string[],
     kind: OverlayKind,
@@ -384,8 +590,6 @@ export class MapService {
 
       if (minDistance > 0 && !this.isFarEnoughFromSameType(q, r, kind, minDistance)) continue;
 
-      if (maxDistanceFromCity > 0 && !this.isCloseEnoughToCity(q, r, maxDistanceFromCity)) continue;
-
       return { q, r };
     }
 
@@ -398,63 +602,24 @@ export class MapService {
     kind: OverlayKind,
     minDist: number
   ): boolean {
-    for (const [key, kinds] of Object.entries(this.overlayTypes)) {
-      if (kinds.includes(kind)) {
-        const [oq, orr] = key.split(',').map(Number);
-        const dist = this.hexDistance({ q, r }, { q: oq, r: orr });
-        if (dist < minDist) return false;
-      }
+    for (const [key, arr] of Object.entries(this.overlayTypes)) {
+      if (!arr.includes(kind)) continue;
+      const [oq, orr] = key.split(',').map(Number);
+      if (this.hexDistance({ q, r }, { q: oq, r: orr }) < minDist) return false;
     }
     return true;
   }
 
-  private isCloseEnoughToCity(q: number, r: number, maxDist: number): boolean {
-    for (const [key, kinds] of Object.entries(this.overlayTypes)) {
-      if (kinds.includes(OverlayKind.City)) {
-        const [cq, cr] = key.split(',').map(Number);
-        const dist = this.hexDistance({ q, r }, { q: cq, r: cr });
-        if (dist <= maxDist) return true;
-      }
+  private isNearKind(q: number, r: number, kind: OverlayKind, maxDist: number): boolean {
+    for (const [key, arr] of Object.entries(this.overlayTypes)) {
+      if (!arr.includes(kind)) continue;
+      const [oq, orr] = key.split(',').map(Number);
+      if (this.hexDistance({ q, r }, { q: oq, r: orr }) <= maxDist) return true;
     }
     return false;
   }
 
-private placePortals(): void {
-  console.group('🌀 Phase Portals: place portals');
-
-  const desiredCount = 4;
-  let placed = 0;
-
-  // Terrains compatibles
-  const validTerrains: Terrain[] = ['plain', 'desert', 'mountain', 'forest', 'jungle'];
-
-  const allKeys = Object.keys(this.tiles).sort(() => Math.random() - 0.5);
-
-  for (const key of allKeys) {
-    if (placed >= desiredCount) break;
-
-    const [q, r] = key.split(',').map(Number);
-    const tile = this.tiles[key];
-    if (!tile || !validTerrains.includes(tile.terrain)) continue;
-
-    const hasOverlay = this.overlayTypes[key]?.length;
-    if (hasOverlay) continue;
-
-    const minPortalDistance = 6;
-    if (!this.isFarEnoughFromSameType(q, r, OverlayKind.Portal, minPortalDistance)) continue;
-
-    const id = this.overlayRegistry.getRandomAvailableId(OverlayKind.Portal);
-    if (!id) continue;
-
-    this.overlayRegistry.register(id, OverlayKind.Portal, { q, r });
-    this.addOverlay(q, r, OverlayKind.Portal);
-
-    placed++;
-  }
-
-  console.log(`✅ ${placed}/${desiredCount} Portals placed.`);
-  console.groupEnd();
-}
+  // ENCOUNTERS
   checkForEncounter() {
     if (this.cooldown > 0) {
       this.cooldown--;
@@ -500,7 +665,7 @@ private placePortals(): void {
     this.combatService.startPreCombat(enemy);
   }
 
-  // === SAVE / LOAD ================================================================
+  // SAVE / LOAD
   public serializeMap(): MapSnapshot {
     const tiles: MapTileSnapshot[] = [];
     for (const [key, entry] of Object.entries(this.tiles)) {
@@ -540,7 +705,7 @@ private placePortals(): void {
     };
   }
 
-  // === TERRAIN DESCRIPTIONS ==========================================================
+  // TERRAIN DESCRIPTIONS
   private describeTerrain(terrain: Terrain): string {
     switch (terrain) {
       case 'plain': return 'A vast plain, punctuated here and there with stones and emerging trees.';
@@ -555,6 +720,7 @@ private placePortals(): void {
     }
   }
 
+  // BOOT / INIT
   public clearAll(): void {
     this.renderer.clear();
     this.tiles = {};
@@ -564,7 +730,6 @@ private placePortals(): void {
     this.seed = Date.now();
     this.randState = 1;
   }
-
 
   public generateNewSeed(): number {
     this.seed = Math.floor(Math.random() * Date.now());
@@ -654,7 +819,7 @@ private placePortals(): void {
           coords: { q: e.q, r: e.r },
         }))
       );
-      console.log(`💾 OverlayRegistry restauré (${snapshot.overlayRegistry.length} entrées).`);
+      console.log(`💾 OverlayRegistry restored (${snapshot.overlayRegistry.length} entrées).`);
     }
 
     for (const o of snapshot.overlays ?? []) this.addOverlay(o.q, o.r, o.kind);
@@ -666,7 +831,7 @@ private placePortals(): void {
   }
 
   public getCurrentTile(): { q: number; r: number; terrain: Terrain } | null {
-    const key = `${this.playerPos.q},${this.playerPos.r}`;
+    const key = this.key(this.playerPos.q, this.playerPos.r);
     const tileData = this.tiles[key];
     if (!tileData) return null;
 

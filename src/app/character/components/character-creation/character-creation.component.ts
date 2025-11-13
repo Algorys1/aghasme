@@ -6,6 +6,7 @@ import { CharacterService } from '../../services/character.service';
 import { Archetype, Orbs, Gender, ORB_DEFINITIONS, ARCHETYPE_ORB_MODIFIERS } from '../../models/character.model';
 import { BACKGROUNDS, CharacterBackground } from '../../models/background.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SettingsService } from '../../../game/services/settings.service';
 
 @Component({
   selector: 'app-character-creation',
@@ -41,8 +42,12 @@ export class CharacterCreationComponent {
   constructor(
     public characterService: CharacterService,
     private translate: TranslateService,
+    private settings: SettingsService,
     private router: Router
-  ) {}
+  ) {
+    const lang = this.settings.language || 'en';
+    this.translate.use(lang);
+  }
 
   // === STEP 1 : ARCHETYPE & GENDER ===
   selectArchetype(type: Archetype) {

@@ -44,6 +44,8 @@ export interface OverlayTemplate {
 
   eventChain?: Record<string, OverlayPhase>;
   allowedTerrains?: Terrain[];
+  requireAdjSea?: boolean;
+  minCityDistance?: number;
   minDistance?: number;
   maxDistanceFromCity?: number;
   resources?: HarvestResource[];

@@ -36,7 +36,7 @@
         <div class="preview-block">
           <img [src]="getPortrait()" class="portrait" />
           <div class="modifiers">
-            <h4>Modifiers</h4>
+            <h4> {{ 'CHARACTER.CREATION.MODIFIERS' | translate}}</h4>
             <ul>
               @for (entry of characterService.getArchetypeModifiers(selectedArchetype!); track entry.key) {
                 <li>

@@ -1,5 +1,7 @@
+// city.table.ts
 import { ActionType } from '../models/actions';
 import { OverlayTemplate } from '../models/overlays.model';
+import { Terrain } from '../../game/factories/tile.factory'; // adapte le chemin si besoin
 
 export const CITY_TABLE: OverlayTemplate[] = [
   {
@@ -8,6 +10,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     description: 'CITY.AGHASME.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-aghasme.png',
     actions: [ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['mountain', 'plain'],
+    minCityDistance: 10
   },
   {
     name: 'CITY.ELDERGATE.NAME',
@@ -15,6 +19,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     description: 'CITY.ELDERGATE.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-eldergate.png',
     actions: [ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['plain', 'desert', 'mountain'],
+    minCityDistance: 8
   },
   {
     name: 'CITY.HIGHWALL.NAME',
@@ -22,6 +28,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     description: 'CITY.HIGHWALL.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-highwall.png',
     actions: [ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['plain', 'forest'],
+    minCityDistance: 8
   },
   {
     name: 'CITY.IRONVALE.NAME',
@@ -29,13 +37,17 @@ export const CITY_TABLE: OverlayTemplate[] = [
     description: 'CITY.IRONVALE.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-ironvale.png',
     actions: [ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['mountain', 'plain'],
+    minCityDistance: 8
   },
   {
     name: 'CITY.MECHANICA.NAME',
-    id: 'highwall',
+    id: 'mechanica', // ⚠️ ici tu avais "highwall" → bug !
     description: 'CITY.MECHANICA.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-mechanica.png',
     actions: [ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['plain', 'desert'],
+    minCityDistance: 10
   },
   {
     name: 'CITY.RIVERTOWN.NAME',
@@ -43,6 +55,9 @@ export const CITY_TABLE: OverlayTemplate[] = [
     description: 'CITY.RIVERTOWN.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-rivertown.png',
     actions: [ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['plain', 'forest'],
+    requireAdjSea: true,
+    minCityDistance: 8
   },
   {
     name: 'CITY.STORMHOLD.NAME',
@@ -50,5 +65,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     description: 'CITY.STORMHOLD.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-stormhold.png',
     actions: [ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['mountain'],
+    requireAdjSea: true,
+    minCityDistance: 10
   }
-]
+];

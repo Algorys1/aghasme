@@ -18,7 +18,7 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
   },
   {
     name: 'VILLAGE.CEDARBROOK.NAME',
-    description: 'VILLAGE.CEDARBBROOK.DESCRIPTION',
+    description: 'VILLAGE.CEDARBROOK.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/village-cedarbrook.png',
     actions: [ActionType.Trade, ActionType.Rest],
     id: 'cedarbrook',
