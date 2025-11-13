@@ -11,6 +11,8 @@ import { OverlayRegistryService } from '../../overlays/services/overlay-registry
 import { OverlayFactory } from '../../overlays/factories/overlay.factory';
 import { EnemyFactory } from '../../combat/factories/enemy.factory';
 import { CombatService } from '../../combat/services/combat.service';
+import { hexKey, hexDistance, hexNeighborsInBounds } from '../utils/hex.utils';
+
 
 export interface MapTileSnapshot {
   key: string;
@@ -111,21 +113,6 @@ export class MapService {
     return { x, y };
   }
 
-  private isInMapBounds(q: number, r: number, radius = this.mapRadius): boolean {
-    const s = -q - r;
-    return Math.abs(q) <= radius && Math.abs(r) <= radius && Math.abs(s) <= radius;
-  }
-
-  private key(q: number, r: number) { return `${q},${r}`; }
-  private tileAt(q: number, r: number) { return this.tiles[this.key(q,r)]; }
-
-  private neighborsOf(q: number, r: number) {
-    const dirs = [[1,0],[1,-1],[0,-1],[-1,0],[-1,1],[0,1]];
-    return dirs
-      .map(([dq,dr]) => ({ q:q+dq, r:r+dr }))
-      .filter(p => this.isInMapBounds(p.q,p.r));
-  }
-
   private buildMap(radius: number) {
     const N = radius;
     this.overlayRegistry.reset();
@@ -148,7 +135,7 @@ export class MapService {
             onClick: () => this.movePlayer(q, r)
           });
 
-          this.tiles[this.key(q,r)] = {
+          this.tiles[hexKey(q,r)] = {
             gfx: tile,
             terrain,
             discovered: false,
@@ -218,7 +205,7 @@ export class MapService {
   private updateVisibility() {
     for (const key in this.tiles) {
       const [q, r] = key.split(',').map(Number);
-      const dist = this.hexDistance(this.playerPos, { q, r });
+      const dist = hexDistance(this.playerPos, { q, r });
       const tileData = this.tiles[key];
       const tile = tileData.gfx as any;
       if (tile && tile.fog) {
@@ -232,17 +219,13 @@ export class MapService {
     }
   }
 
-  private hexDistance(a: { q: number; r: number }, b: { q: number; r: number }) {
-    return (Math.abs(a.q - b.q) + Math.abs(a.q + a.r - b.q - b.r) + Math.abs(a.r - b.r)) / 2;
-  }
-
   // === OVERLAYS ===================================================================
   addOverlay(q: number, r: number, kind: OverlayKind) {
     const { x, y } = this.hexToPixel(q, r);
     const sprite = this.renderer.createOverlaySprite(kind, x, y, this.size);
     if (!sprite) return;
 
-    const k = this.key(q,r);
+    const k = hexKey(q,r);
     (this.overlaySprites[k] ||= []).push(sprite);
     (this.overlayTypes[k] ||= []).push(kind);
   }
@@ -380,7 +363,7 @@ export class MapService {
       if (!tile || !allowedTerrains.includes(tile.terrain)) continue;
 
       // Distance to town
-      const distCity = this.hexDistance({ q, r }, { q: city.q, r: city.r });
+      const distCity = hexDistance({ q, r }, { q: city.q, r: city.r });
       if (distCity < minDist || distCity > maxDist) continue;
 
       // No overlay already present
@@ -469,11 +452,12 @@ export class MapService {
         if (!def.allowedTerrains.includes(terrain)) continue;
 
         if (def.requireAdjSea) {
-          const hasSeaNeighbor = this.neighborsOf(q, r).some(p => this.tileAt(p.q, p.r)?.terrain === 'sea');
+          const hasSeaNeighbor = hexNeighborsInBounds(q, r, this.mapRadius)
+            .some(p => this.tiles[hexKey(p.q, p.r)]?.terrain === 'sea');
           if (!hasSeaNeighbor) continue;
         }
 
-        const tooClose = placed.some(c => this.hexDistance(c, { q, r }) < def.minCityDistance);
+        const tooClose = placed.some(c => hexDistance(c, { q, r }) < def.minCityDistance);
         if (tooClose) continue;
 
         candidates.push({ q, r });
@@ -535,7 +519,7 @@ export class MapService {
       if (!this.isFarEnoughFromAnyCity(q, r, 10)) continue;
 
       // Quite far from the other portals
-      const farFromPortals = placedPortalCoords.every(p => this.hexDistance(p,{q,r}) >= 6);
+      const farFromPortals = placedPortalCoords.every(p => hexDistance(p,{q,r}) >= 6);
       if (!farFromPortals) continue;
 
       const id = this.overlayRegistry.getRandomAvailableId(OverlayKind.Portal);
@@ -553,7 +537,7 @@ export class MapService {
 
   private minDistanceToAny(p: {q:number;r:number}, targets: Array<{q:number;r:number}>) {
     let best = Infinity;
-    for (const t of targets) best = Math.min(best, this.hexDistance(p,t));
+    for (const t of targets) best = Math.min(best, hexDistance(p,t));
     return best;
   }
 
@@ -561,7 +545,7 @@ export class MapService {
     for (const [key, kinds] of Object.entries(this.overlayTypes)) {
       if (kinds.includes(OverlayKind.City)) {
         const [cq, cr] = key.split(',').map(Number);
-        const d = this.hexDistance({ q, r }, { q: cq, r: cr });
+        const d = hexDistance({ q, r }, { q: cq, r: cr });
         if (d < distMin) return false;
       }
     }
@@ -613,7 +597,7 @@ export class MapService {
     for (const [key, arr] of Object.entries(this.overlayTypes)) {
       if (!arr.includes(kind)) continue;
       const [oq, orr] = key.split(',').map(Number);
-      if (this.hexDistance({ q, r }, { q: oq, r: orr }) < minDist) return false;
+      if (hexDistance({ q, r }, { q: oq, r: orr }) < minDist) return false;
     }
     return true;
   }
@@ -622,7 +606,7 @@ export class MapService {
     for (const [key, arr] of Object.entries(this.overlayTypes)) {
       if (!arr.includes(kind)) continue;
       const [oq, orr] = key.split(',').map(Number);
-      if (this.hexDistance({ q, r }, { q: oq, r: orr }) <= maxDist) return true;
+      if (hexDistance({ q, r }, { q: oq, r: orr }) <= maxDist) return true;
     }
     return false;
   }
@@ -637,7 +621,7 @@ export class MapService {
 
     for (const [key, kinds] of Object.entries(this.overlayTypes)) {
       const [oq, orr] = key.split(',').map(Number);
-      const dist = this.hexDistance({ q, r }, { q: oq, r: orr });
+      const dist = hexDistance({ q, r }, { q: oq, r: orr });
       if (dist <= radius && kinds.length > 0) {
         // Just counting "there's an overlay on this tile"
         count++;
@@ -889,7 +873,7 @@ export class MapService {
   }
 
   public getCurrentTile(): { q: number; r: number; terrain: Terrain } | null {
-    const key = this.key(this.playerPos.q, this.playerPos.r);
+    const key = hexKey(this.playerPos.q, this.playerPos.r);
     const tileData = this.tiles[key];
     if (!tileData) return null;
 
