@@ -1,3 +1,13 @@
 <div class="minimap-panel">
   <canvas #minimapCanvas class="minimap-canvas"></canvas>
+
+  <div class="legend">
+    @for (entry of legendEntries; track entry) {
+      <div class="legend-row">
+        <span class="legend-color" [style.background]="entry.color"></span>
+        <span class="legend-label">{{ entry.label }}</span>
+      </div>
+    }
+
+  </div>
 </div>
