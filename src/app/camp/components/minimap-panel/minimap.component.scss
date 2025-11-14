@@ -3,17 +3,45 @@
   flex-direction: column;
   gap: 12px;
   overflow-y: auto;
-  font-family: 'Cinzel', serif;
+  font-family: 'Spectral', serif;
 
   filter: brightness(1.02) contrast(0.98);
 }
 
 .minimap-canvas {
-  border: 1px solid #666;
-  border-radius: 8px;
-  background: #111;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(245, 222, 179, 0.35); /* or très léger */
+  border-radius: 10px;
+
+  background: #111; /* ton fond actuel */
+
+  box-shadow:
+    0 0 4px rgba(255, 230, 180, 0.10),
+    0 0 8px rgba(255, 230, 180, 0.08);
+
+  animation: minimapGlow 4s ease-in-out infinite;
 }
+
+@keyframes minimapGlow {
+  0% {
+    box-shadow:
+      0 0 4px rgba(255, 230, 180, 0.10),
+      0 0 8px rgba(255, 230, 180, 0.08);
+    border-color: rgba(245, 222, 179, 0.30);
+  }
+  50% {
+    box-shadow:
+      0 0 6px rgba(255, 230, 180, 0.16),
+      0 0 12px rgba(255, 230, 180, 0.12);
+    border-color: rgba(245, 222, 179, 0.40);
+  }
+  100% {
+    box-shadow:
+      0 0 4px rgba(255, 230, 180, 0.10),
+      0 0 8px rgba(255, 230, 180, 0.08);
+    border-color: rgba(245, 222, 179, 0.30);
+  }
+}
+
 
 .legend {
   display: flex;
@@ -32,7 +60,21 @@
   gap: 8px;
   font-size: 13px;
   color: #ddd;
-  font-family: 'Cinzel', serif;
+  font-family: 'Spectral', serif;
+}
+
+.player-icon {
+  width: 0;
+  height: 0;
+
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 11px solid #7fc6ff;
+
+  position: relative;
+  top: -1px;
+
+  filter: drop-shadow(0 0 1px #000);
 }
 
 .legend-color {

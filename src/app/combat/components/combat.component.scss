@@ -14,7 +14,7 @@
   justify-content: space-between;
   height: 100vh;
   color: #eee;
-  font-family: 'Cinzel', serif;
+  font-family: 'Spectral', serif;
   background-image: url('../../../assets/ui/combat-background.webp');
   background-repeat: repeat;
   background-size: 512px 512px;
@@ -107,7 +107,7 @@
     border-radius: 6px;
     padding: 8px 16px;
     font-size: 1rem;
-    font-family: 'Cinzel', serif;
+    font-family: 'Spectral', serif;
 
     &:active { transform: scale(0.98); }
   }
@@ -135,7 +135,7 @@
     color: #fff;
     padding: 6px 12px;
     border-radius: 6px;
-    font-family: 'Cinzel', serif;
+    font-family: 'Spectral', serif;
     font-size: 0.9rem;
 
     &:active {
@@ -171,8 +171,8 @@ app-combat-board {
   background: rgba(0,0,0,0.6);
   color: #ffd76a;
   text-align: center;
-  z-index: 10000;         /* au-dessus du board */
-  pointer-events: all;    /* capte les clics */
+  z-index: 10000;
+  pointer-events: all;
 }
 
 .result-overlay button {
@@ -181,6 +181,6 @@ app-combat-board {
   color: #fff;
   border-radius: 6px;
   padding: 8px 16px;
-  font-family: 'Cinzel', serif;
+  font-family: 'Spectral', serif;
 }
 

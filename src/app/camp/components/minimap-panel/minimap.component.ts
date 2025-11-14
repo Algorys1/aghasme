@@ -8,6 +8,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
+
 import { Subscription } from 'rxjs';
 import { MapService } from '../../../game/services/map.service';
 import { OverlayRegistryService } from '../../../overlays/services/overlay-registry.service';
@@ -26,16 +27,17 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('minimapCanvas', { static: false })
   canvasRef!: ElementRef<HTMLCanvasElement>;
 
-  @Input() size = 200;   // canvas size
-  @Input() hexSize = 3;  // base hex radius on minimap
+  size = 0;
+  @Input() hexSize = 3;
 
   private ctx!: CanvasRenderingContext2D;
   private subs: Subscription[] = [];
 
-  zoom = 6;
+  // Scale fixe : pas de zoom, juste du scroll
+  private readonly FIXED_SCALE = 6;
+
   offsetX = 0;
   offsetY = 0;
-
   private isDragging = false;
   private dragStart = { x: 0, y: 0 };
 
@@ -43,29 +45,26 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
   private overlayRegistry = inject(OverlayRegistryService);
   private translate = inject(TranslateService);
 
-  // -------------------------------------------------------------
-  // COLORS (centralized palette)
-  // -------------------------------------------------------------
   private readonly overlayColors: Record<OverlayKind, string> = {
-    [OverlayKind.None]:        '#ffffff',
+    [OverlayKind.None]: '#ffffff',
 
-    [OverlayKind.City]:        '#4fc3f7',
-    [OverlayKind.Village]:     '#ffb74d',
-    [OverlayKind.Farm]:        '#f0e68c',
+    [OverlayKind.City]: '#4fc3f7',
+    [OverlayKind.Village]: '#ffb74d',
+    [OverlayKind.Farm]: '#f0e68c',
 
-    [OverlayKind.Mine]:        '#bdbdbd',
-    [OverlayKind.Forest]:      '#66bb6a',
+    [OverlayKind.Mine]: '#bdbdbd',
+    [OverlayKind.Forest]: '#66bb6a',
 
-    [OverlayKind.Ruins]:       '#ab47bc',
-    [OverlayKind.Tower]:       '#9575cd',
-    [OverlayKind.Shrine]:      '#ce93d8',
-    [OverlayKind.Spirit]:      '#81d4fa',
-    [OverlayKind.Ritual]:      '#ba68c8',
-    [OverlayKind.Wanderer]:    '#ffd54f',
-    [OverlayKind.Caravan]:     '#ffe082',
-    [OverlayKind.Anomaly]:     '#ff8a65',
-    [OverlayKind.Treasure]:    '#ffd700',
-    [OverlayKind.Portal]:      '#5c6bc0',
+    [OverlayKind.Ruins]: '#ab47bc',
+    [OverlayKind.Tower]: '#9575cd',
+    [OverlayKind.Shrine]: '#ce93d8',
+    [OverlayKind.Spirit]: '#81d4fa',
+    [OverlayKind.Ritual]: '#ba68c8',
+    [OverlayKind.Wanderer]: '#ffd54f',
+    [OverlayKind.Caravan]: '#ffe082',
+    [OverlayKind.Anomaly]: '#ff8a65',
+    [OverlayKind.Treasure]: '#ffd700',
+    [OverlayKind.Portal]: '#5c6bc0',
   };
 
   legendEntries = [
@@ -76,6 +75,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     { kind: OverlayKind.Mine,    label: 'Mine',     color: this.overlayColors[OverlayKind.Mine] },
     { kind: OverlayKind.Ruins,   label: 'Ruines',   color: this.overlayColors[OverlayKind.Ruins] },
     { kind: OverlayKind.Portal,  label: 'Portail',  color: this.overlayColors[OverlayKind.Portal] },
+    { kind: 'player', label: 'Joueur', color: '#7fc6ff', type: 'player' },
   ];
 
   // -------------------------------------------------------------
@@ -90,11 +90,22 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    const vw = window.innerWidth;
+
+    this.size = Math.min(vw * 0.9, 350);
+
     const canvas = this.canvasRef.nativeElement;
-    canvas.width = this.size;
-    canvas.height = this.size;
+
+    // retina
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = this.size * dpr;
+    canvas.height = this.size * dpr;
+    canvas.style.width = `${this.size}px`;
+    canvas.style.height = `${this.size}px`;
 
     this.ctx = canvas.getContext('2d')!;
+    this.ctx.scale(dpr, dpr);
+
     this.installMouseControls(canvas);
     this.installTouchControls(canvas);
 
@@ -102,38 +113,25 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subs.forEach((s) => s.unsubscribe());
+    this.subs.forEach(s => s.unsubscribe());
   }
 
   // -------------------------------------------------------------
-  // INPUT SNAPSHOTS (tiles, overlays, player)
+  // SNAPSHOTS
   // -------------------------------------------------------------
 
   private getTileSnapshot() {
-    const entries = Object.entries(
-      (this.mapService as any).tiles // ⚠️ see below, we can fix this if needed
-    ) as Array<
-      [
-        string,
-        { terrain: Terrain; discovered: boolean; variant: string }
-      ]
+    const tiles = (this.mapService as any).tiles as Record<
+      string,
+      { terrain: Terrain; discovered: boolean; variant: string }
     >;
 
-    return entries.map(([key, tile]) => {
+    return Object.entries(tiles).map(([key, t]) => {
       const [q, r] = key.split(',').map(Number);
-      return {
-        q,
-        r,
-        terrain: tile.terrain,
-        discovered: tile.discovered,
-      };
+      return { q, r, terrain: t.terrain, discovered: t.discovered };
     });
   }
 
-  /**
-   * Clean, typed overlay snapshot.
-   * Using OverlayRegistry as single source of truth.
-   */
   private getOverlaySnapshot() {
     const list: {
       id: string;
@@ -145,7 +143,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     for (const [id, entry] of this.overlayRegistry['assigned'].entries()) {
       const table = OverlayFactory.getTable(entry.kind);
-      const template = table?.find((t) => t.id === id);
+      const template = table?.find(t => t.id === id);
 
       list.push({
         id,
@@ -166,79 +164,151 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
   // -------------------------------------------------------------
   // DRAW
   // -------------------------------------------------------------
+
   private draw(): void {
     if (!this.ctx) return;
 
     const ctx = this.ctx;
     ctx.clearRect(0, 0, this.size, this.size);
 
-    const player = this.getPlayerPos();
+    const scale = this.FIXED_SCALE;
     const tiles = this.getTileSnapshot();
     const overlays = this.getOverlaySnapshot();
+    const player = this.getPlayerPos();
 
-    const scale = this.zoom;
     const centerX = this.size / 2 + this.offsetX;
     const centerY = this.size / 2 + this.offsetY;
 
-    // --- TILES ---
+    // === TUILES ===
     for (const tile of tiles) {
       if (!tile.discovered) continue;
 
       const { x, y } = this.hexToPixel(tile.q - player.q, tile.r - player.r);
-      const drawX = centerX + x * scale;
-      const drawY = centerY + y * scale;
+      const px = centerX + x * scale;
+      const py = centerY + y * scale;
+
       const radius = this.hexSize * scale;
 
       ctx.beginPath();
       for (let i = 0; i < 6; i++) {
         const angle = ((60 * i - 30) * Math.PI) / 180;
-        const px = drawX + radius * Math.cos(angle);
-        const py = drawY + radius * Math.sin(angle);
-        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        const tx = px + radius * Math.cos(angle);
+        const ty = py + radius * Math.sin(angle);
+        i === 0 ? ctx.moveTo(tx, ty) : ctx.lineTo(tx, ty);
       }
       ctx.closePath();
+
       ctx.fillStyle = this.terrainColor(tile.terrain);
       ctx.fill();
       ctx.strokeStyle = '#000';
-      ctx.lineWidth = Math.max(0.3, 0.5 * scale);
+      ctx.lineWidth = 1;
       ctx.stroke();
     }
 
-    // --- OVERLAYS ---
+    // OVERLAYS
+    type LabelTask = { text: string; x: number; y: number };
+    const labels: LabelTask[] = [];
+
     for (const ov of overlays) {
       const { x, y } = this.hexToPixel(ov.q - player.q, ov.r - player.r);
       const px = centerX + x * scale;
       const py = centerY + y * scale;
 
-      const size = 3 * scale; // square marker
+      const size = 3 * scale;
+      const half = size / 2;
+
+      // Light shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.25)';
+      ctx.beginPath();
+      ctx.roundRect(px - half + 1, py - half + 1, size, size, 2);
+      ctx.fill();
+
+      // Rounded square
       ctx.fillStyle = this.overlayColors[ov.kind] ?? '#fff';
-      ctx.fillRect(px - size / 2, py - size / 2, size, size);
+      ctx.beginPath();
+      ctx.roundRect(px - half, py - half, size, size, 2);
+      ctx.fill();
 
-      // City / Village labels
-      if ((ov.kind === OverlayKind.City || ov.kind === OverlayKind.Village)
-          && ov.name) {
-        ctx.font = `${4 * scale}px Cinzel`;
-        ctx.fillStyle = '#fff';
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        ctx.textAlign = 'center';
+      // Small border
+      ctx.strokeStyle = 'rgba(0,0,0,0.7)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(px - half, py - half, size, size, 2);
+      ctx.stroke();
 
-        let translated = this.translate.instant(ov.name) || ov.name;
-        ctx.strokeText(translated, px, py - 6 * scale);
-        ctx.fillText(translated, px, py - 6 * scale);
+      if ((ov.kind === OverlayKind.City || ov.kind === OverlayKind.Village) && ov.name) {
+        const label = this.translate.instant(ov.name) || ov.name;
+        labels.push({
+          text: label,
+          x: px,
+          y: py - 5 * scale,
+        });
       }
     }
 
-    // --- PLAYER ---
+    // LABELS
+    for (const lab of labels) {
+      this.drawLabel(ctx, lab.text, lab.x, lab.y, scale);
+    }
+
+    // PLAYER
+    const r = this.hexSize * 1.6;
+
     ctx.beginPath();
-    ctx.fillStyle = '#ffffff';
-    ctx.arc(centerX, centerY, this.hexSize + 1, 0, Math.PI * 2);
+    ctx.moveTo(centerX, centerY - r);
+    ctx.lineTo(centerX + r, centerY + r);
+    ctx.lineTo(centerX - r, centerY + r);
+    ctx.closePath();
+
+    ctx.fillStyle = '#7fc6ff';
     ctx.fill();
+
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+  }
+
+  // -------------------------------------------------------------
+  // LABEL
+  // -------------------------------------------------------------
+
+  private drawLabel(
+    ctx: CanvasRenderingContext2D,
+    text: string,
+    x: number,
+    y: number,
+    scale: number
+  ) {
+    const fontSize = Math.min(11, Math.max(8, 2.2 * scale));
+    ctx.font = `${fontSize}px Spectral`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const paddingX = 3 * scale;
+    const paddingY = 1.5 * scale;
+
+    const metrics = ctx.measureText(text);
+    const textWidth = metrics.width;
+
+    const bgWidth = textWidth + paddingX * 2;
+    const bgHeight = fontSize + paddingY * 2;
+
+    const bgX = x - bgWidth / 2;
+    const bgY = y - bgHeight / 2;
+
+    ctx.fillStyle = 'rgba(0,0,0,0.50)';
+    ctx.beginPath();
+    ctx.roundRect(bgX, bgY, bgWidth, bgHeight, 3);
+    ctx.fill();
+
+    ctx.fillStyle = '#fff';
+    ctx.fillText(text, x, y);
   }
 
   // -------------------------------------------------------------
   // UTILS
   // -------------------------------------------------------------
+
   private hexToPixel(q: number, r: number) {
     const x = this.hexSize * Math.sqrt(3) * (q + r / 2);
     const y = this.hexSize * 1.5 * r;
@@ -260,77 +330,57 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // -------------------------------------------------------------
-  // MOUSE + TOUCH CONTROLS
+  // DRAG
   // -------------------------------------------------------------
-  private installMouseControls(canvas: HTMLCanvasElement) {
-    canvas.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      const delta = Math.sign(e.deltaY);
-      this.zoom = Math.min(8, Math.max(0.5, this.zoom - delta * 0.3));
-      this.draw();
-    });
 
-    canvas.addEventListener('mousedown', (e) => {
+  private installMouseControls(canvas: HTMLCanvasElement) {
+    canvas.addEventListener('mousedown', e => {
       this.isDragging = true;
       this.dragStart = { x: e.clientX, y: e.clientY };
     });
 
-    window.addEventListener('mouseup', () => (this.isDragging = false));
+    window.addEventListener('mouseup', () => {
+      this.isDragging = false;
+    });
 
-    canvas.addEventListener('mousemove', (e) => {
+    canvas.addEventListener('mousemove', e => {
       if (!this.isDragging) return;
-      const dragSpeed = Math.max(1, this.zoom * .02);
+
+      const dragSpeed = 1.5;
       this.offsetX += (e.clientX - this.dragStart.x) / dragSpeed;
       this.offsetY += (e.clientY - this.dragStart.y) / dragSpeed;
+
       this.dragStart = { x: e.clientX, y: e.clientY };
       this.draw();
     });
   }
 
   private installTouchControls(canvas: HTMLCanvasElement) {
-    let lastDist = 0;
-    let pinching = false;
-
-    canvas.addEventListener('touchstart', (e) => {
+    canvas.addEventListener('touchstart', e => {
       if (e.touches.length === 1) {
         this.isDragging = true;
         this.dragStart = {
           x: e.touches[0].clientX,
           y: e.touches[0].clientY,
         };
-      } else if (e.touches.length === 2) {
-        pinching = true;
-        lastDist = this.touchDist(e.touches);
       }
     });
 
-    canvas.addEventListener('touchmove', (e) => {
+    canvas.addEventListener('touchmove', e => {
       e.preventDefault();
+      if (!this.isDragging || e.touches.length !== 1) return;
 
-      if (pinching && e.touches.length === 2) {
-        const dist = this.touchDist(e.touches);
-        const delta = dist - lastDist;
-        this.zoom = Math.min(8, Math.max(0.5, this.zoom + delta * 0.01));
-        lastDist = dist;
-        this.draw();
-      } else if (this.isDragging && e.touches.length === 1) {
-        const t = e.touches[0];
-        const dragSpeed = Math.max(1, this.zoom * 0.15);
-        this.offsetX += (t.clientX - this.dragStart.x) / dragSpeed;
-        this.offsetY += (t.clientY - this.dragStart.y) / dragSpeed;
-        this.dragStart = { x: t.clientX, y: t.clientY };
-        this.draw();
-      }
+      const t = e.touches[0];
+      const dragSpeed = 1.5;
+      this.offsetX += (t.clientX - this.dragStart.x) / dragSpeed;
+      this.offsetY += (t.clientY - this.dragStart.y) / dragSpeed;
+
+      this.dragStart = { x: t.clientX, y: t.clientY };
+      this.draw();
     });
 
     canvas.addEventListener('touchend', () => {
       this.isDragging = false;
-      pinching = false;
     });
-  }
-
-  private touchDist(touches: TouchList) {
-    const [a, b] = [touches[0], touches[1]];
-    return Math.hypot(b.clientX - a.clientX, b.clientY - a.clientY);
   }
 }

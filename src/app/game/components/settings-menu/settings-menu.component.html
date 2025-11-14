@@ -1,31 +1,34 @@
-<div class="settings-overlay" *ngIf="visible" (click)="close()">
-  <div class="settings-window" (click)="$event.stopPropagation()">
-    <h2>{{ 'MENU.SETTINGS' | translate }}</h2>
+@if(visible) {
+  <div class="settings-overlay" (click)="close()">
+    <div class="settings-window" (click)="$event.stopPropagation()">
+      <h2>{{ 'MENU.SETTINGS' | translate }}</h2>
 
-    <div class="section">
-      <label>{{ 'MENU.LANGUAGE' | translate }}</label>
-      <div class="lang-buttons">
-        <button (click)="setLang('fr')" [class.active]="settings.settings.language === 'fr'">FR</button>
-        <button (click)="setLang('en')" [class.active]="settings.settings.language === 'en'">EN</button>
+      <div class="section">
+        <label>{{ 'MENU.LANGUAGE' | translate }}</label>
+        <div class="lang-buttons">
+          <button (click)="setLang('fr')" [class.active]="settings.settings.language === 'fr'">FR</button>
+          <button (click)="setLang('en')" [class.active]="settings.settings.language === 'en'">EN</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <label>{{ 'MENU.MUSIC_VOLUME' | translate }}</label>
+        <input type="range" min="0" max="1" step="0.05"
+               [value]="settings.getVolume('music')"
+               (input)="setVolume('music', $event)" />
+
+        <label>{{ 'MENU.SFX_VOLUME' | translate }}</label>
+        <input type="range" min="0" max="1" step="0.05"
+               [value]="settings.getVolume('sfx')"
+               (input)="setVolume('sfx', $event)" />
+      </div>
+
+      <div class="actions">
+        <button class="close-btn" (click)="close()">
+          {{ 'MENU.CLOSE' | translate }}
+        </button>
       </div>
     </div>
-
-    <div class="section">
-      <label>{{ 'MENU.MUSIC_VOLUME' | translate }}</label>
-      <input type="range" min="0" max="1" step="0.05"
-             [value]="settings.getVolume('music')"
-             (input)="setVolume('music', $event)" />
-
-      <label>{{ 'MENU.SFX_VOLUME' | translate }}</label>
-      <input type="range" min="0" max="1" step="0.05"
-             [value]="settings.getVolume('sfx')"
-             (input)="setVolume('sfx', $event)" />
-    </div>
-
-    <div class="actions">
-      <button class="close-btn" (click)="close()">
-        {{ 'MENU.CLOSE' | translate }}
-      </button>
-    </div>
   </div>
-</div>
+}
+

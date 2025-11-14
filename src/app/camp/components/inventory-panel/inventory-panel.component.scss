@@ -6,7 +6,7 @@
   padding: 12px;
   overflow-y: auto;
   overflow-x: hidden;
-  font-family: 'Cinzel', serif;
+  font-family: 'Spectral', serif;
   box-sizing: border-box;
   gap: 8px;
 }
@@ -88,7 +88,7 @@
     .filter-btn {
       flex-shrink: 0;
       position: relative;
-      font-family: 'Cinzel', serif;
+      font-family: 'Spectral', serif;
       font-size: 0.8rem;
       color: #3b2b18;
       background: rgba(255, 255, 255, 0.75);
@@ -99,6 +99,7 @@
       cursor: pointer;
       transition: all 0.15s ease;
       margin-top: 4px;
+      line-height: 1;
 
       &.active {
         background: #e3d2a3;

@@ -29,7 +29,7 @@
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.3);
   text-align: center;
   color: #3b2a16;
-  font-family: 'Cinzel', serif;
+  font-family: 'Spectral', serif;
   transform: scale(1);
   animation: popIn 0.25s ease-out;
 
@@ -63,27 +63,17 @@
     margin-top: 0.5rem;
 
     button {
-      padding: 0.4rem 1.2rem;
-      border: 2px solid #3b2a16;
-      border-radius: 10px;
-      background: linear-gradient(180deg, #f5deb3 0%, #e0c186 100%);
+      padding: 6px 12px;
+      border: 2px solid #b8860b;
+      border-radius: 6px;
+      background: #fdf3d3;
       font-family: inherit;
-      font-weight: bold;
-      color: #3b2a16;
       cursor: pointer;
-      transition: all 0.15s ease-in-out;
-
-      &:hover {
-        background: linear-gradient(180deg, #fff0c9 0%, #e9c883 100%);
-        transform: scale(1.05);
-      }
-
-      &.active {
-        background: linear-gradient(180deg, #d4b06a 0%, #b98a43 100%);
-        color: white;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) inset;
-      }
+      transition: background 0.2s, transform 0.1s;
     }
+
+    button:hover { background: #fff2bf; }
+    button.active { background: #f0d98a; transform: scale(0.97); }
   }
 
   input[type="range"] {
@@ -110,21 +100,16 @@
     margin-top: 1.5rem;
 
     .close-btn {
-      background: linear-gradient(180deg, #8c4b0f 0%, #5b2e08 100%);
-      color: white;
-      border: 2px solid #3b2a16;
-      border-radius: 12px;
-      padding: 0.6rem 1.8rem;
+      padding: 6px 12px;
+      border: 2px solid #b8860b;
+      border-radius: 6px;
+      background: #fdf3d3;
       font-family: inherit;
-      font-weight: bold;
-      letter-spacing: 0.5px;
       cursor: pointer;
-      transition: all 0.15s ease-in-out;
-
-      &:hover {
-        background: linear-gradient(180deg, #a85b1a 0%, #6e350c 100%);
-        transform: translateY(-2px);
-      }
+      transition: background 0.2s, transform 0.1s;
     }
+
+    button:hover { background: #fff2bf; }
+    button:active { background: #f0d98a; transform: scale(0.97); }
   }
 }

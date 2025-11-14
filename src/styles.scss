@@ -8,7 +8,34 @@ html, body {
           env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
+body {
+  font-family: 'Spectral', serif;
+}
+
 .overlay-window, .hud, .menu, .inventory-panel {
   margin: env(safe-area-inset-top) env(safe-area-inset-right)
           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Spectral';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  src: url('/assets/fonts/spectral/Spectral-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'Spectral';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/assets/fonts/spectral/Spectral-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-display: swap;
+  font-family: 'Spectral';
+  font-style: normal;
+  font-weight: 900;
+  src: url('/assets/fonts/spectral/Spectral-Bold.woff2') format('woff2');
 }
