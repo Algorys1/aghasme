@@ -1,0 +1,22 @@
+{
+  "MAP": {
+    "LEGENDS": {
+      "CITY": "Cité",
+      "VILLAGE": "Village",
+      "FARM": "Ferme",
+      "FOREST": "Scierie",
+      "MINE": "Mine",
+      "RUINS": "Ruines",
+      "SHRINE": "Lieu Saint",
+      "TOWER": "Tour",
+      "SPIRIT": "Esprit",
+      "RITUAL": "Rituel",
+      "WANDERER": "Voyageur",
+      "CARAVAN": "Caravane",
+      "ANOMALY": "Anomalie",
+      "TREASURE": "Trésor",
+      "PORTAL": "Portail",
+      "PLAYER": "Joueur"
+    }
+  }
+}

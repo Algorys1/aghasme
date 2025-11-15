@@ -3,9 +3,8 @@
   flex-direction: column;
   gap: 12px;
   overflow-y: auto;
+  overflow-x: hidden;
   font-family: 'Spectral', serif;
-
-  filter: brightness(1.02) contrast(0.98);
 }
 
 .minimap-canvas {
@@ -44,7 +43,7 @@
 
 
 .legend {
-  display: flex;
+  display: grid;
   flex-direction: column;
   gap: 6px;
   padding: 6px 8px;
@@ -52,6 +51,7 @@
   border: 1px solid #444;
   border-radius: 6px;
   backdrop-filter: blur(3px);
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .legend-row {
@@ -83,6 +83,17 @@
   border-radius: 3px;
   border: 1px solid #222;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.legend-letter {
+  font-size: 10px;
+  font-family: 'Spectral', serif;
+  font-weight: 700;
+  user-select: none;
+  color: #000;
 }
 
 .legend-label {

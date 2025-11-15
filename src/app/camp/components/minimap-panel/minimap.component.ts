@@ -15,11 +15,13 @@ import { OverlayRegistryService } from '../../../overlays/services/overlay-regis
 import { OverlayFactory } from '../../../overlays/factories/overlay.factory';
 import { OverlayKind } from '../../../overlays/models/overlays.model';
 import { Terrain } from '../../../game/factories/tile.factory';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SettingsService } from '../../../game/services/settings.service';
 
 @Component({
   selector: 'app-minimap',
   standalone: true,
+  imports: [TranslateModule],
   templateUrl: './minimap.component.html',
   styleUrls: ['./minimap.component.scss'],
 })
@@ -32,8 +34,6 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private ctx!: CanvasRenderingContext2D;
   private subs: Subscription[] = [];
-
-  // Scale fixe : pas de zoom, juste du scroll
   private readonly FIXED_SCALE = 6;
 
   offsetX = 0;
@@ -44,6 +44,11 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
   private mapService = inject(MapService);
   private overlayRegistry = inject(OverlayRegistryService);
   private translate = inject(TranslateService);
+
+  constructor(private settings: SettingsService) {
+    const lang = this.settings.language || 'en';
+    this.translate.use(lang);
+  }
 
   private readonly overlayColors: Record<OverlayKind, string> = {
     [OverlayKind.None]: '#ffffff',
@@ -67,15 +72,43 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     [OverlayKind.Portal]: '#5c6bc0',
   };
 
+  private readonly overlayLetters: Record<OverlayKind, string> = {
+    [OverlayKind.City]: "C",
+    [OverlayKind.Village]: "V",
+    [OverlayKind.Farm]: "F",
+    [OverlayKind.Mine]: "M",
+    [OverlayKind.Forest]: "Fo",
+    [OverlayKind.Ruins]: "R",
+    [OverlayKind.Tower]: "T",
+    [OverlayKind.Shrine]: "S",
+    [OverlayKind.Spirit]: "Sp",
+    [OverlayKind.Ritual]: "Ri",
+    [OverlayKind.Anomaly]: "A",
+    [OverlayKind.Caravan]: "Ca",
+    [OverlayKind.Wanderer]: "W",
+    [OverlayKind.Treasure]: "Tr",
+    [OverlayKind.Portal]: "P",
+
+    [OverlayKind.None]: ""
+  };
+
   legendEntries = [
-    { kind: OverlayKind.City,    label: 'Ville',    color: this.overlayColors[OverlayKind.City] },
-    { kind: OverlayKind.Village, label: 'Village',  color: this.overlayColors[OverlayKind.Village] },
-    { kind: OverlayKind.Farm,    label: 'Ferme',    color: this.overlayColors[OverlayKind.Farm] },
-    { kind: OverlayKind.Forest,  label: 'Forêt',    color: this.overlayColors[OverlayKind.Forest] },
-    { kind: OverlayKind.Mine,    label: 'Mine',     color: this.overlayColors[OverlayKind.Mine] },
-    { kind: OverlayKind.Ruins,   label: 'Ruines',   color: this.overlayColors[OverlayKind.Ruins] },
-    { kind: OverlayKind.Portal,  label: 'Portail',  color: this.overlayColors[OverlayKind.Portal] },
-    { kind: 'player', label: 'Joueur', color: '#7fc6ff', type: 'player' },
+    { kind: OverlayKind.City,     label: 'MAP.LEGENDS.CITY',     color: this.overlayColors[OverlayKind.City],     letter: this.overlayLetters[OverlayKind.City] },
+    { kind: OverlayKind.Village,  label: 'MAP.LEGENDS.VILLAGE',  color: this.overlayColors[OverlayKind.Village],  letter: this.overlayLetters[OverlayKind.Village] },
+    { kind: OverlayKind.Farm,     label: 'MAP.LEGENDS.FARM',     color: this.overlayColors[OverlayKind.Farm],     letter: this.overlayLetters[OverlayKind.Farm] },
+    { kind: OverlayKind.Forest,   label: 'MAP.LEGENDS.FOREST',   color: this.overlayColors[OverlayKind.Forest],   letter: this.overlayLetters[OverlayKind.Forest] },
+    { kind: OverlayKind.Mine,     label: 'MAP.LEGENDS.MINE',     color: this.overlayColors[OverlayKind.Mine],     letter: this.overlayLetters[OverlayKind.Mine] },
+    { kind: OverlayKind.Ruins,    label: 'MAP.LEGENDS.RUINS',    color: this.overlayColors[OverlayKind.Ruins],    letter: this.overlayLetters[OverlayKind.Ruins] },
+    { kind: OverlayKind.Tower,    label: 'MAP.LEGENDS.TOWER',    color: this.overlayColors[OverlayKind.Tower],    letter: this.overlayLetters[OverlayKind.Tower] },
+    { kind: OverlayKind.Shrine,   label: 'MAP.LEGENDS.SHRINE',   color: this.overlayColors[OverlayKind.Shrine],   letter: this.overlayLetters[OverlayKind.Shrine] },
+    { kind: OverlayKind.Spirit,   label: 'MAP.LEGENDS.SPIRIT',   color: this.overlayColors[OverlayKind.Spirit],   letter: this.overlayLetters[OverlayKind.Spirit] },
+    { kind: OverlayKind.Ritual,   label: 'MAP.LEGENDS.RITUAL',   color: this.overlayColors[OverlayKind.Ritual],   letter: this.overlayLetters[OverlayKind.Ritual] },
+    { kind: OverlayKind.Wanderer, label: 'MAP.LEGENDS.WANDERER', color: this.overlayColors[OverlayKind.Wanderer], letter: this.overlayLetters[OverlayKind.Wanderer] },
+    { kind: OverlayKind.Caravan,  label: 'MAP.LEGENDS.CARAVAN',  color: this.overlayColors[OverlayKind.Caravan],  letter: this.overlayLetters[OverlayKind.Caravan] },
+    { kind: OverlayKind.Anomaly,  label: 'MAP.LEGENDS.ANOMALY',  color: this.overlayColors[OverlayKind.Anomaly],  letter: this.overlayLetters[OverlayKind.Anomaly] },
+    { kind: OverlayKind.Treasure, label: 'MAP.LEGENDS.TREASURE', color: this.overlayColors[OverlayKind.Treasure], letter: this.overlayLetters[OverlayKind.Treasure] },
+    { kind: OverlayKind.Portal,   label: 'MAP.LEGENDS.PORTAL',   color: this.overlayColors[OverlayKind.Portal],   letter: this.overlayLetters[OverlayKind.Portal] },
+    { kind: 'player', label: 'MAP.LEGENDS.PLAYER', color: '#7fc6ff', type: 'player' },
   ];
 
   // -------------------------------------------------------------
@@ -228,6 +261,16 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       ctx.beginPath();
       ctx.roundRect(px - half, py - half, size, size, 2);
       ctx.fill();
+
+      // Letters
+      const letter = this.overlayLetters[ov.kind];
+      if (letter) {
+        ctx.fillStyle = '#000000';
+        ctx.font = `${Math.max(8, 2.2 * scale)}px Cinzel`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(letter, px, py);
+      }
 
       // Small border
       ctx.strokeStyle = 'rgba(0,0,0,0.7)';

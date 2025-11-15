@@ -7,9 +7,13 @@
         @if(entry.type === 'player') {
           <span class="legend-icon player-icon"></span>
         } @else {
-          <span class="legend-color" [style.background]="entry.color"></span>
+          <span class="legend-color" [style.background]="entry.color">
+            <span class="legend-letter">
+              {{ entry.letter }}
+            </span>
+          </span>
         }
-        <span class="legend-label">{{ entry.label }}</span>
+        <span class="legend-label">{{ entry.label | translate}}</span>
       </div>
     }
 

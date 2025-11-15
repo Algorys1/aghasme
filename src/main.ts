@@ -22,6 +22,7 @@ bootstrapApplication(AppComponent, {
         provide: TranslateLoader,
         useFactory: (http: HttpClient) =>
           new MultiTranslateHttpLoader(http, [
+            'map',
             'menus',
             'character',
             'overlay.anomaly',
