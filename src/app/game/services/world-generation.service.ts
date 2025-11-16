@@ -262,42 +262,44 @@ export class WorldGenerationService {
   }
 
   // ------------------------------------------------------------
-  // 3. NARRATIVE (unchanged)
+  // 3. NARRATIVE
   // ------------------------------------------------------------
   private placeNarrativeOverlays(ctx: WorldGenContext): void {
     console.group('📖 Narrative overlays');
 
-    const desired: Partial<Record<OverlayKind, number>> = {
-      [OverlayKind.Ritual]: RITUAL_TABLE.length,
-      [OverlayKind.Ruins]: RUINS_TABLE.length,
-      [OverlayKind.Tower]: TOWER_TABLE.length,
-      [OverlayKind.Spirit]: SPIRIT_TABLE.length,
-      [OverlayKind.Shrine]: SHRINE_TABLE.length,
-      [OverlayKind.Anomaly]: ANOMALY_TABLE.length,
-      [OverlayKind.Caravan]: CARAVAN_TABLE.length,
-      [OverlayKind.Wanderer]: WANDERER_TABLE.length,
-      [OverlayKind.Treasure]: TREASURE_TABLE.length,
+    const narrativeTables: Partial<Record<OverlayKind, OverlayTemplate[]>> = {
+      [OverlayKind.Ritual]: RITUAL_TABLE,
+      [OverlayKind.Ruins]: RUINS_TABLE,
+      [OverlayKind.Tower]: TOWER_TABLE,
+      [OverlayKind.Spirit]: SPIRIT_TABLE,
+      [OverlayKind.Shrine]: SHRINE_TABLE,
+      [OverlayKind.Anomaly]: ANOMALY_TABLE,
+      [OverlayKind.Caravan]: CARAVAN_TABLE,
+      [OverlayKind.Wanderer]: WANDERER_TABLE,
+      [OverlayKind.Treasure]: TREASURE_TABLE,
     };
 
-    for (const [kind, count] of Object.entries(desired)) {
-      const typed = kind as OverlayKind;
-      const table = OverlayFactory.getTable(typed);
-      if (!table) continue;
+    for (const [kind, table] of Object.entries(narrativeTables) as [OverlayKind, OverlayTemplate[]][]) {
 
-      for (let i = 0; i < (count ?? 0); i++) {
-        const id = ctx.registry.getRandomAvailableId(typed);
-        if (!id) continue;
+      console.group(`➡ ${kind}`);
 
-        const template = table.find(t => t.id === id);
-        const terrains = template?.allowedTerrains ?? OVERLAY_COMPATIBILITY[typed] ?? [];
-        const minDist = template?.minDistance ?? 0;
+      for (const tpl of table) {
+        const terrains = tpl.allowedTerrains;
+        const minDist = tpl.minDistance ?? 2;
+        const requireAdjSea = tpl.requireAdjSea ?? false;
 
-        const pos = this.findValidTileForNarrative(ctx, terrains, typed, minDist);
-        if (!pos) continue;
+        const pos = this.findValidTileForNarrative(ctx, terrains, kind, minDist, requireAdjSea);
+        if (!pos) {
+          console.warn(`⚠ No valid placement for narrative ${kind}:${tpl.id}`);
+          continue;
+        }
 
-        ctx.registry.register(id, typed, pos);
-        ctx.addOverlay(pos.q, pos.r, typed);
+        ctx.registry.register(tpl.id, kind, pos);
+        ctx.addOverlay(pos.q, pos.r, kind);
+        console.log(`✔ Placed ${kind}:${tpl.id} at (${pos.q},${pos.r})`);
       }
+
+      console.groupEnd();
     }
 
     console.groupEnd();
@@ -307,8 +309,10 @@ export class WorldGenerationService {
     ctx: WorldGenContext,
     allowed: Terrain[],
     kind: OverlayKind,
-    minDist: number
+    minDist: number,
+    requireAdjSea: boolean
   ): { q: number; r: number } | null {
+
     const shuffled = Object.keys(ctx.tiles).sort(() => Math.random() - 0.5);
 
     for (const key of shuffled) {
@@ -317,7 +321,13 @@ export class WorldGenerationService {
       if (!tile) continue;
 
       if (!allowed.includes(tile.terrain)) continue;
+
       if (ctx.overlayTypes[key]?.length) continue;
+
+      if (requireAdjSea) {
+        const hasSea = ctx.neighbors(q, r).some(n => ctx.getTile(n.q, n.r)?.terrain === 'sea');
+        if (!hasSea) continue;
+      }
 
       const densityCfg = this.getNarrativeDensityConfig(kind);
       if (densityCfg) {
@@ -333,21 +343,10 @@ export class WorldGenerationService {
     return null;
   }
 
-  private getOverlayDensityAround(
-    ctx: WorldGenContext,
-    q: number,
-    r: number,
-    radius: number
-  ): number {
-    let count = 0;
-    for (const [key, arr] of Object.entries(ctx.overlayTypes)) {
-      if (!arr.length) continue;
-      const [oq, orr] = key.split(',').map(Number);
-      if (hexDistance({ q, r }, { q: oq, r: orr }) <= radius) count++;
-    }
-    return count;
-  }
 
+  // ------------------------------------------------------------
+  // Density rules (same as before)
+  // ------------------------------------------------------------
   private getNarrativeDensityConfig(kind: OverlayKind): { radius: number; max: number } | null {
     switch (kind) {
       case OverlayKind.Ruins: return { radius: 3, max: 2 };
@@ -361,6 +360,21 @@ export class WorldGenerationService {
       case OverlayKind.Ritual: return { radius: 3, max: 2 };
       default: return null;
     }
+  }
+
+  private getOverlayDensityAround(
+    ctx: WorldGenContext,
+    q: number,
+    r: number,
+    radius: number
+  ): number {
+    let count = 0;
+    for (const [key, arr] of Object.entries(ctx.overlayTypes)) {
+      if (!arr.length) continue;
+      const [oq, orr] = key.split(',').map(Number);
+      if (hexDistance({ q, r }, { q: oq, r: orr }) <= radius) count++;
+    }
+    return count;
   }
 
   // ------------------------------------------------------------
