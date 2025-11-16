@@ -7,6 +7,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     description: 'A pile of disturbed earth hints at a recently hidden stash. The marks are fresh, maybe too fresh.',
     icon: 'assets/overlays/treasure.png',
     id: 'buried-cache',
+    allowedTerrains: ['plain', 'mountain'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -62,6 +63,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     description: 'An ancient stone doorway sealed with heavy runes. Legends say the king\'s fortune lies within… and his curse too.',
     icon: 'assets/overlays/treasure.png',
     id: 'tomb-of-the-lost-king',
+    allowedTerrains: ['desert', 'swamp'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -140,6 +142,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     description: 'Hidden behind a cliff face lies a metal hatch engraved with arcane machinery. Someone built this to last.',
     icon: 'assets/overlays/treasure.png',
     id: 'mechanic-vault',
+    allowedTerrains: ['volcano', 'mountain'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -218,6 +221,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     description: 'A cavern glittering with gold and bones. The air smells of sulfur and age.',
     icon: 'assets/overlays/treasure.png',
     id: 'dragon-hoard',
+    allowedTerrains: ['mountain'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -277,6 +281,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     description: 'A pile of glittering gold lies abandoned in a hollow chamber. A dozen open chests seem to invite you closer.',
     icon: 'assets/overlays/treasure.png',
     id: 'mimic-treasure',
+    allowedTerrains: ['mountain'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -382,6 +387,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     description: 'Hidden beneath layers of sand lies a stone chamber humming with ancient power. Gold glints in the torchlight, too clean to be untouched.',
     icon: 'assets/overlays/treasure.png',
     id: 'pharao-vault',
+    allowedTerrains: ['desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -479,6 +485,7 @@ export const TREASURE_TABLE: OverlayTemplate[] = [
     description: 'Deep within the mountain lies a cavern vast enough to hold a god. Bones as large as wagons rest atop piles of gold.',
     icon: 'assets/overlays/treasure.png',
     id: 'dragon-tomb',
+    allowedTerrains: ['mountain', 'volcano'],
     actions: [],
     eventChain: {
       floor_1: {

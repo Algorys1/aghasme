@@ -7,6 +7,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     description: 'RITUAL.SACRED_RITUAL_SITE.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'sacred-ritual-site',
+    allowedTerrains: ['plain'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -58,6 +59,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     description: 'RITUAL.DARK_RITUAL_CIRCLE.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'dark-ritual-circle',
+    allowedTerrains: ['volcano', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -129,6 +131,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     description: 'RITUAL.NATURE_ALTAR.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'nature-altar',
+    allowedTerrains: ['forest', 'jungle'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -172,6 +175,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     description: 'RITUAL.CELESTIAL_OBSERVATORY.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'celestial-observatory',
+    allowedTerrains: ['mountain'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -216,6 +220,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     description: 'RITUAL.ELEMENTAL_SHRINE.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'elemental-shrine',
+    allowedTerrains: ['desert', 'volcano', 'swamp'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -259,6 +264,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     description: 'RITUAL.ECLIPSE_RITE.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'eclipse-rite',
+    allowedTerrains: ['plain', 'mountain', 'desert', 'swamp', 'volcano'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -354,6 +360,7 @@ export const RITUAL_TABLE: OverlayTemplate[] = [
     description: 'RITUAL.THOUSAND_HANDS_CEREMONY.DESCRIPTION',
     icon: 'assets/overlays/ritual.png',
     id: 'thousand-hands-ceremony',
+    allowedTerrains: ['desert', 'swamp', 'volcano', 'jungle'],
     actions: [],
     eventChain: {
       floor_1: {

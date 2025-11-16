@@ -7,6 +7,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     description: 'The remains of a once-grand temple, now overgrown and forgotten. Some treasures may still hide within its broken halls.',
     icon: 'assets/overlays/ruins.png',
     id: 'ancient-temple',
+    allowedTerrains: ['forest', 'jungle', 'swamp'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -89,6 +90,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     description: 'Crumbling walls and broken towers hint at a fortress long lost to time.',
     icon: 'assets/overlays/ruins.png',
     id: 'forgotten-fortress',
+    allowedTerrains: ['mountain', 'volcano', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -139,6 +141,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     description: 'Ruins of a city partially submerged, with buildings jutting out of the water like broken teeth.',
     icon: 'assets/overlays/ruins.png',
     id: 'sunken-city',
+    allowedTerrains: ['swamp'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -211,6 +214,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     description: 'Empty streets and abandoned homes tell the story of a village left behind.',
     icon: 'assets/overlays/ruins.png',
     id: 'deserted-village',
+    allowedTerrains: ['volcano', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -273,6 +277,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     description: 'A circle of standing stones, their purpose and origin shrouded in mystery.',
     icon: 'assets/overlays/ruins.png',
     id: 'mystic-circle',
+    allowedTerrains: ['forest', 'desert', 'swamp', 'jungle'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -331,10 +336,11 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     },
   },
   {
-    name: 'The Sunken Citadel',
+    name: 'The Dried-up Citadel',
     description: 'The remains of a once-majestic city now lie buried beneath layers of stone and moss. The wind still hums through its collapsed towers.',
     icon: 'assets/overlays/ruins.png',
-    id: 'sunken-citadel',
+    id: 'driedup-citadel',
+    allowedTerrains: ['desert', 'volcano'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -444,6 +450,8 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     description: 'A towering black fortress stands on a cliff\'s edge, humming faintly with latent power. The walls ripple like oil under moonlight.',
     icon: 'assets/overlays/ruins.png',
     id: 'obsidian-bastion',
+    allowedTerrains: ['mountain'],
+    requireAdjSea: true,
     actions: [],
     eventChain: {
       floor_1: {

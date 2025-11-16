@@ -7,6 +7,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     description: 'ANOMALY.TEMPORAL_RIFT.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'temporal-rift',
+    allowedTerrains: ['plain', 'volcano', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -49,6 +50,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     description: 'ANOMALY.INFERNAL_SURGE.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'infernal-surge',
+    allowedTerrains: ['volcano', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -91,6 +93,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     description: 'ANOMALY.MECHANICAL_DISTORTION.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'mechanical-distorsion',
+    allowedTerrains: ['plain', 'volcano', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -133,6 +136,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     description: 'ANOMALY.CORRUPTED_GROVE.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'corrupted-grove',
+    allowedTerrains: ['forest', 'jungle', 'swamp'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -191,6 +195,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     description: 'ANOMALY.ANCESTRAL_ECHO.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'ancestral-echo',
+    allowedTerrains: ['forest', 'jungle'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -233,6 +238,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     description: 'ANOMALY.ASH_BREACH.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     actions: [],
+    allowedTerrains: ['volcano', 'desert'],
     id: 'ash-breach',
     eventChain: {
       floor_1: {
@@ -345,6 +351,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     description: 'ANOMALY.RIFT_OF_ECHOES.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'rift-of-echoes',
+    allowedTerrains: ['desert', 'mountain'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -440,6 +447,7 @@ export const ANOMALY_TABLE: OverlayTemplate[] = [
     description: 'ANOMALY.ASHEN_CONVERGENCE.DESCRIPTION',
     icon: 'assets/overlays/anomaly.png',
     id: 'ashen-convergence',
+    allowedTerrains: ['volcano', 'mountain'],
     actions: [],
     eventChain: {
       floor_1: {

@@ -245,21 +245,6 @@ export class WorldGenerationService {
     return cities;
   }
 
-  private isNearKind(
-    ctx: WorldGenContext,
-    q: number,
-    r: number,
-    kind: OverlayKind,
-    maxDist: number
-  ): boolean {
-    for (const [key, arr] of Object.entries(ctx.overlayTypes)) {
-      if (!arr.includes(kind)) continue;
-      const [oq, orr] = key.split(',').map(Number);
-      if (hexDistance({ q, r }, { q: oq, r: orr }) <= maxDist) return true;
-    }
-    return false;
-  }
-
   private isFarEnoughFromSameType(
     ctx: WorldGenContext,
     q: number,

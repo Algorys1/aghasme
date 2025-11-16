@@ -53,7 +53,8 @@ export class OverlayFactory {
       icon: template.icon,
       actions: template.actions,
       eventChain: template.eventChain,
-      resources: template.resources
+      resources: template.resources,
+      allowedTerrains: template.allowedTerrains
     };
   }
 

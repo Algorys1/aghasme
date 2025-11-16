@@ -8,6 +8,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     description: 'The Mage\'s Spire pierces the clouds, its summit crackling with arcane energy and whispered secrets.',
     icon: 'assets/overlays/tower.png',
     id: 'mage-spire',
+    allowedTerrains: ['plain', 'mountain', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -66,6 +67,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     description: 'Wizard\'s Keep looms in eerie silence, its halls echoing with the remnants of long-forgotten spells.',
     icon: 'assets/overlays/tower.png',
     id: 'wizard-keep',
+    allowedTerrains: ['plain', 'mountain'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -130,6 +132,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     description: 'The Arcane Tower hums with unseen power, its runes glowing faintly in the twilight.',
     icon: 'assets/overlays/tower.png',
     id: 'arcane-tower',
+    allowedTerrains: ['plain', 'mountain', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -202,6 +205,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     description: 'Sorcerer\'s Pinnacle rises like a shard of crystal, pulsing with the lifeblood of ancient magic.',
     icon: 'assets/overlays/tower.png',
     id: 'sorcerer-pinnacle',
+    allowedTerrains: ['volcano', 'mountain', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -249,6 +253,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     description: 'A mysterious tower crowned by a colossal clock whose hands move in strange, uneven patterns. Time itself wavers here.',
     icon: 'assets/overlays/tower.png',
     id: 'enchantress-clock',
+    allowedTerrains: ['volcano', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -356,6 +361,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     description: 'A black spire pierces the sky, absorbing light instead of casting shadow. The air around it hums like a living thing.',
     icon: 'assets/overlays/tower.png',
     id: 'obsidian-spire',
+    allowedTerrains: ['volcano', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -490,6 +496,7 @@ export const TOWER_TABLE: OverlayTemplate[] = [
     description: 'You see it before you sleep, and awaken inside it. The walls shimmer like glass filled with galaxies.',
     icon: 'assets/overlays/tower.png',
     id: 'astral-tower',
+    allowedTerrains: ['mountain', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {

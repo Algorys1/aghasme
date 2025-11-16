@@ -7,6 +7,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     description: 'A pale silhouette drifts through the fog, murmuring words you can\'t understand.',
     icon: 'assets/overlays/spirit.png',
     id: 'wandering-soul',
+    allowedTerrains: ['swamp', 'jungle'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -50,6 +51,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     description: 'You sense reverence and authority here, the lingering echo of a protector bound to duty.',
     icon: 'assets/overlays/spirit.png',
     id: 'guardian-spirit',
+    allowedTerrains: ['desert', 'jungle', 'mountain'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -102,6 +104,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     description: 'Chains rattle faintly, yet there is no wind. The air stinks of rust and regret.',
     icon: 'assets/overlays/spirit.png',
     id: 'bound-wraith',
+    allowedTerrains: ['swamp', 'jungle', 'mountain', 'volcano'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -156,6 +159,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     description: 'An ancient burial mound whispers with old voices. The wind carries songs of a family long lost.',
     icon: 'assets/overlays/spirit.png',
     id: 'forgotten-ancestror',
+    allowedTerrains: ['swamp', 'plain'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -208,6 +212,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     description: 'A chill runs through you, the shadows whisper names you\'ve never heard before.',
     icon: 'assets/overlays/spirit.png',
     id: 'whispering-shade',
+    allowedTerrains: ['swamp', 'volcano'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -262,6 +267,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     description: 'In the ruins of a chapel, a marble statue weeps endless tears of light. The air hums with grief.',
     icon: 'assets/overlays/spirit.png',
     id: 'weeping-saint',
+    allowedTerrains: ['plain', 'forest'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -366,6 +372,7 @@ export const SPIRIT_TABLE: OverlayTemplate[] = [
     description: 'A pale figure drifts along the marsh path, holding a lantern whose flame never flickers.',
     icon: 'assets/overlays/spirit.png',
     id: 'lantern-bearer',
+    allowedTerrains: ['swamp'],
     actions: [],
     eventChain: {
       floor_1: {

@@ -7,6 +7,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     description: 'CARAVAN.MERCHANT_CARAVAN.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'merchant-caravan',
+    allowedTerrains: ['plain', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -69,6 +70,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     description: 'CARAVAN.NOMADIC_TRIBE.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'nomadic-tribe',
+    allowedTerrains: ['plain', 'forest', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -119,6 +121,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     description: 'CARAVAN.MILITARY_CONVOY.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'military-convoy',
+    allowedTerrains: ['plain', 'mountain', 'desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -187,6 +190,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     description: 'CARAVAN.PILGRIM_GROUP.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'pilgrim-group',
+    allowedTerrains: ['plain', 'mountain', 'desert', 'volcano'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -247,6 +251,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     description: 'CARAVAN.EXPLORATION_PARTY.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'exploration-party',
+    allowedTerrains: ['swamp', 'jungle', 'volcano'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -305,6 +310,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     description: 'CARAVAN.SANDSTORM_CARAVAN.DESCRIPTION',
     icon: 'assets/overlays/caravan.png',
     id: 'sandstorm-caravan',
+    allowedTerrains: ['desert'],
     actions: [],
     eventChain: {
       floor_1: {
@@ -400,6 +406,7 @@ export const CARAVAN_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/caravan.png',
     actions: [],
     id: 'night-convoy',
+    allowedTerrains: ['plain', 'mountain', 'desert'],
     eventChain: {
       floor_1: {
         title: 'CARAVAN.NIGHT_CONVOY.F1.TITLE',
