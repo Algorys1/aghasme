@@ -1,7 +1,5 @@
-// city.table.ts
 import { ActionType } from '../models/actions';
 import { OverlayTemplate } from '../models/overlays.model';
-import { Terrain } from '../../game/factories/tile.factory'; // adapte le chemin si besoin
 
 export const CITY_TABLE: OverlayTemplate[] = [
   {
@@ -10,7 +8,7 @@ export const CITY_TABLE: OverlayTemplate[] = [
     description: 'CITY.AGHASME.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-aghasme.png',
     actions: [ActionType.Trade, ActionType.Rest],
-    allowedTerrains: ['mountain', 'plain'],
+    allowedTerrains: ['plain', 'mountain'],
     minCityDistance: 10
   },
   {
@@ -19,7 +17,7 @@ export const CITY_TABLE: OverlayTemplate[] = [
     description: 'CITY.ELDERGATE.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-eldergate.png',
     actions: [ActionType.Trade, ActionType.Rest],
-    allowedTerrains: ['plain', 'desert', 'mountain'],
+    allowedTerrains: ['plain', 'mountain'],
     minCityDistance: 8
   },
   {
@@ -42,11 +40,11 @@ export const CITY_TABLE: OverlayTemplate[] = [
   },
   {
     name: 'CITY.MECHANICA.NAME',
-    id: 'mechanica', // ⚠️ ici tu avais "highwall" → bug !
+    id: 'mechanica',
     description: 'CITY.MECHANICA.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-mechanica.png',
     actions: [ActionType.Trade, ActionType.Rest],
-    allowedTerrains: ['plain', 'desert'],
+    allowedTerrains: ['desert', 'volcano'],
     minCityDistance: 10
   },
   {

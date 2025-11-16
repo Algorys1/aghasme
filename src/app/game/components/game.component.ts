@@ -181,7 +181,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log('🎲 New game → reset all');
       this.mapService.clearAll();
       this.mapService.generateNewSeed();
-      await this.mapService.initMapWithCanvas(canvas, 10);
+      await this.mapService.initMapWithCanvas(canvas);
       return;
     }
 
@@ -197,7 +197,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
         this.refreshOrbs();
         return;
       }
-      await this.mapService.initMapWithCanvas(canvas, 10);
+      await this.mapService.initMapWithCanvas(canvas);
       return;
     }
 
@@ -211,7 +211,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.refreshOrbs();
     } else {
-      await this.mapService.initMapWithCanvas(canvas, 10);
+      await this.mapService.initMapWithCanvas(canvas);
     }
 
     if (!this.character) {

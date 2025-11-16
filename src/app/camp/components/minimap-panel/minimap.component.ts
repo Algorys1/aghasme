@@ -212,7 +212,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     const centerX = this.size / 2 + this.offsetX;
     const centerY = this.size / 2 + this.offsetY;
 
-    // === TUILES ===
+    // === TILES ===
     for (const tile of tiles) {
       if (!tile.discovered) continue;
 

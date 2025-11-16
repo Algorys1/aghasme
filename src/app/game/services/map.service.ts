@@ -43,15 +43,15 @@ export class MapService {
 
   private noiseAltitude = createNoise2D();
   private noiseHumidity = createNoise2D();
-  private scaleAltitude = 0.05;
-  private scaleHumidity = 0.05;
+  private scaleAltitude = 0.18;
+  private scaleHumidity = 0.22;
   private seed: number = Date.now();
   private randState = 1;
 
   private player!: Sprite;
   private playerPos = { q: 0, r: 0 };
 
-  private mapRadius = 20;
+  private mapRadius = 40;
 
   private activeOverlay: OverlayKind | null = null;
   overlayChange = new Subject<OverlayKind>();
@@ -370,12 +370,11 @@ export class MapService {
     await this.renderer.init(canvas);
   }
 
-  async initMapWithCanvas(canvas: HTMLCanvasElement, mapRadius: number, seed?: number): Promise<void> {
+  async initMapWithCanvas(canvas: HTMLCanvasElement): Promise<void> {
     await this.bootPixi(canvas);
     await this.prepareRenderer();
 
-    this.mapRadius = mapRadius;
-    this.seed = seed ?? Math.floor(Math.random() * Date.now());
+    this.seed = Math.floor(Math.random() * Date.now());
     this.randState = this.seed;
     this.noiseAltitude = createNoise2D(() => this.nextRand());
     this.noiseHumidity = createNoise2D(() => this.nextRand());
@@ -384,7 +383,7 @@ export class MapService {
     this.overlayTypes = {};
     this.tiles = {};
 
-    this.buildMap(mapRadius);
+    this.buildMap(this.mapRadius);
     this.createPlayer();
     this.renderer.centerCamera(this.playerPos.q, this.playerPos.r, this.size);
     this.updateVisibility();

@@ -5,6 +5,22 @@ import { OverlayKind, OverlayTemplate, OVERLAY_COMPATIBILITY } from '../../overl
 import { OverlayFactory } from '../../overlays/factories/overlay.factory';
 import { hexDistance } from '../utils/hex.utils';
 
+import { RITUAL_TABLE } from '../../overlays/tables/ritual-table';
+import { RUINS_TABLE } from '../../overlays/tables/ruins-table';
+import { TOWER_TABLE } from '../../overlays/tables/tower-table';
+import { SPIRIT_TABLE } from '../../overlays/tables/spirit-table';
+import { SHRINE_TABLE } from '../../overlays/tables/shrine-table';
+import { ANOMALY_TABLE } from '../../overlays/tables/anomaly-table';
+import { CARAVAN_TABLE } from '../../overlays/tables/caravan-table';
+import { WANDERER_TABLE } from '../../overlays/tables/wanderer-table';
+import { TREASURE_TABLE } from '../../overlays/tables/treasure-table';
+
+import { VILLAGE_TABLE } from '../../overlays/tables/village-table';
+import { FARM_TABLE } from '../../overlays/tables/farm-table';
+import { MINE_TABLE } from '../../overlays/tables/mine-table';
+import { FOREST_TABLE } from '../../overlays/tables/forest-table';
+
+
 export interface WorldGenContext {
   tiles: Record<string, { terrain: Terrain }>;
   overlayTypes: Record<string, OverlayKind[]>;
@@ -12,7 +28,6 @@ export interface WorldGenContext {
   addOverlay(q: number, r: number, kind: OverlayKind): void;
   mapRadius: number;
 
-  // helpers
   getTile(q: number, r: number): { terrain: Terrain } | undefined;
   neighbors(q: number, r: number): Array<{ q: number; r: number }>;
 }
@@ -39,147 +54,184 @@ export class WorldGenerationService {
 
     const cityTemplates = OverlayFactory.getTable(OverlayKind.City) ?? [];
 
-    type CityDef = {
+    type CityCfg = {
       id: string;
       allowedTerrains: Terrain[];
       requireAdjSea: boolean;
       minCityDistance: number;
     };
 
-    const defs: CityDef[] = cityTemplates.map((t: OverlayTemplate) => ({
+    const cityDefs: CityCfg[] = cityTemplates.map(t => ({
       id: t.id,
-      allowedTerrains: (t.allowedTerrains as Terrain[]) ?? ['plain'],
+      allowedTerrains: t.allowedTerrains ?? ['plain'],
       requireAdjSea: t.requireAdjSea ?? false,
       minCityDistance: t.minCityDistance ?? 8,
     }));
 
     const placed: { id: string; q: number; r: number }[] = [];
 
-    for (const def of defs) {
-      if (ctx.registry.getById(def.id)) continue;
+    const findCityPosition = (
+      def: CityCfg,
+      placedSoFar: { id: string; q: number; r: number }[]
+    ): { q: number; r: number } | null => {
 
-      const candidates: Array<{ q: number; r: number }> = [];
+      type Pass = {
+        label: string;
+        relaxDistance: boolean;
+        relaxSea: boolean;
+      };
 
-      for (const key of Object.keys(ctx.tiles)) {
-        const [q, r] = key.split(',').map(Number);
-        const tile = ctx.tiles[key];
-        if (!tile) continue;
+      const passes: Pass[] = [
+        { label: 'strict (terrain + sea + distance)', relaxDistance: false, relaxSea: false },
+        { label: 'relaxed distance (terrain + sea)',  relaxDistance: true,  relaxSea: false },
+        { label: 'relaxed sea (terrain + distance)',  relaxDistance: false, relaxSea: true },
+        { label: 'fallback (only terrain)',           relaxDistance: true,  relaxSea: true },
+      ];
 
-        if (!def.allowedTerrains.includes(tile.terrain)) continue;
+      for (const pass of passes) {
+        const candidates: Array<{ q: number; r: number }> = [];
 
-        if (def.requireAdjSea) {
-          const hasSea = ctx.neighbors(q, r).some(n => ctx.getTile(n.q, n.r)?.terrain === 'sea');
-          if (!hasSea) continue;
+        for (const key of Object.keys(ctx.tiles)) {
+          const [q, r] = key.split(',').map(Number);
+          const tile = ctx.tiles[key];
+          if (!tile) continue;
+
+          if (!def.allowedTerrains.includes(tile.terrain)) continue;
+
+          if (def.requireAdjSea && !pass.relaxSea) {
+            const hasSea = ctx.neighbors(q, r).some(n => ctx.getTile(n.q, n.r)?.terrain === 'sea');
+            if (!hasSea) continue;
+          }
+
+          if (!pass.relaxDistance) {
+            const tooClose = placedSoFar.some(c => hexDistance(c, { q, r }) < def.minCityDistance);
+            if (tooClose) continue;
+          }
+
+          candidates.push({ q, r });
         }
 
-        const tooClose = placed.some(c => hexDistance(c, { q, r }) < def.minCityDistance);
-        if (tooClose) continue;
+        if (!candidates.length) {
+          console.warn(`⚠️ City ${def.id}: no candidates for pass "${pass.label}".`);
+          continue;
+        }
 
-        candidates.push({ q, r });
+        const pos = candidates[Math.floor(Math.random() * candidates.length)];
+        console.log(`✔ City ${def.id} placed at (${pos.q},${pos.r}) using pass "${pass.label}".`);
+        return pos;
       }
 
-      if (!candidates.length) {
-        console.warn(`⚠️ No valid position for city ${def.id}`);
+      return null;
+    };
+
+    for (const def of cityDefs) {
+      const existing = ctx.registry.getById(def.id);
+      if (existing) {
+        placed.push({ id: def.id, q: existing.coords.q, r: existing.coords.r });
+        console.log(`↺ City ${def.id} already registered at (${existing.coords.q},${existing.coords.r})`);
         continue;
       }
 
-      const pos = candidates[Math.floor(Math.random() * candidates.length)];
+      const pos = findCityPosition(def, placed);
+      if (!pos) {
+        console.error(`❌ City ${def.id} could not be placed EVEN WITH FALLBACK.`);
+        continue;
+      }
 
       ctx.registry.register(def.id, OverlayKind.City, pos);
       ctx.addOverlay(pos.q, pos.r, OverlayKind.City);
       placed.push({ id: def.id, ...pos });
-
-      console.log(`✔ City ${def.id} placed at (${pos.q},${pos.r})`);
     }
 
     console.groupEnd();
   }
 
   // ------------------------------------------------------------
-  // 2. CIVILIZATION
+  // 2. CIVILIZATION — uses TABLES now
   // ------------------------------------------------------------
   private placeCivilizationOverlays(ctx: WorldGenContext): void {
     console.group('🏡 Secondary civilization');
 
     const allCities = this.getAllCities(ctx);
 
-    const desired: Partial<Record<OverlayKind, number>> = {
-      [OverlayKind.Village]: 12,
-      [OverlayKind.Farm]: 16,
-      [OverlayKind.Mine]: 6,
-      [OverlayKind.Forest]: 8,
-    };
-
-    // Villages
+    // --- Villages
     for (const city of allCities) {
-      this.placeNearCity(ctx, city, OverlayKind.Village, ['plain','forest'], 3, 6,
-        Math.ceil((desired[OverlayKind.Village] ?? 0) / allCities.length));
+      const count = Math.ceil(VILLAGE_TABLE.length / allCities.length);
+      this.placeUsingTemplates(ctx, city, OverlayKind.Village, VILLAGE_TABLE, count);
     }
 
-    // Farms
+    // --- Farms
     for (const city of allCities) {
-      this.placeNearCity(ctx, city, OverlayKind.Farm, ['plain'], 2, 5,
-        Math.ceil((desired[OverlayKind.Farm] ?? 0) / allCities.length));
+      const count = Math.ceil(FARM_TABLE.length / allCities.length);
+      this.placeUsingTemplates(ctx, city, OverlayKind.Farm, FARM_TABLE, count);
     }
 
-    // Mines
+    // --- Mines
     const mineCities = allCities.filter(c => ['ironvale','aghasme','mechanica'].includes(c.id));
     for (const city of mineCities) {
-      this.placeNearCity(ctx, city, OverlayKind.Mine, ['mountain','plain','desert'], 4, 8,
-        Math.ceil((desired[OverlayKind.Mine] ?? 0) / mineCities.length));
+      const count = Math.ceil(MINE_TABLE.length / mineCities.length);
+      this.placeUsingTemplates(ctx, city, OverlayKind.Mine, MINE_TABLE, count);
     }
 
-    // Forest
+    // --- Forests
     const forestCities = allCities.filter(c => ['rivertown','highwall'].includes(c.id));
     for (const city of forestCities) {
-      this.placeNearCity(ctx, city, OverlayKind.Forest, ['forest','jungle'], 4, 8,
-        Math.ceil((desired[OverlayKind.Forest] ?? 0) / forestCities.length));
+      const count = Math.ceil(FOREST_TABLE.length / forestCities.length);
+      this.placeUsingTemplates(ctx, city, OverlayKind.Forest, FOREST_TABLE, count);
     }
 
     console.groupEnd();
   }
 
-  private placeNearCity(
+
+  // ------------------------------------------------------------
+  // Generic placement based on templates (NO rename, NO change)
+  // ------------------------------------------------------------
+  private placeUsingTemplates(
     ctx: WorldGenContext,
     city: { id: string; q: number; r: number },
     kind: OverlayKind,
-    allowedTerrains: Terrain[],
-    minDist: number,
-    maxDist: number,
+    templates: OverlayTemplate[],
     count: number
   ) {
     let placed = 0;
+    const shuffledTiles = Object.keys(ctx.tiles).sort(() => Math.random() - 0.5);
 
-    const shuffled = Object.keys(ctx.tiles).sort(() => Math.random() - 0.5);
-
-    for (const key of shuffled) {
+    for (const tpl of templates) {
       if (placed >= count) break;
 
-      const [q, r] = key.split(',').map(Number);
-      const tile = ctx.tiles[key];
-      if (!tile || !allowedTerrains.includes(tile.terrain)) continue;
+      const allowedTerrains = tpl.allowedTerrains ?? OVERLAY_COMPATIBILITY[kind] ?? [];
+      const minDist = tpl.minDistance ?? 2;
+      const maxDist = tpl.maxDistanceFromCity ?? 8;
+      const requireAdjSea = tpl.requireAdjSea ?? false;
 
-      const dist = hexDistance({ q, r }, city);
-      if (dist < minDist || dist > maxDist) continue;
+      for (const key of shuffledTiles) {
+        const [q, r] = key.split(',').map(Number);
+        const tile = ctx.tiles[key];
+        if (!tile) continue;
 
-      if (ctx.overlayTypes[key]?.length) continue;
+        if (!allowedTerrains.includes(tile.terrain)) continue;
 
-      // same-type spacing rules
-      if (!this.isFarEnoughFromSameType(ctx, q, r, kind, 2)) continue;
+        const dist = hexDistance({ q, r }, city);
+        if (dist < minDist || dist > maxDist) continue;
 
-      // farms need town or village nearby
-      if (kind === OverlayKind.Farm) {
-        const nearVillage = this.isNearKind(ctx, q, r, OverlayKind.Village, 3);
-        const nearCity = this.isNearKind(ctx, q, r, OverlayKind.City, 3);
-        if (!nearCity && !nearVillage) continue;
+        if (requireAdjSea) {
+          const hasSea = ctx.neighbors(q, r).some(n => ctx.getTile(n.q, n.r)?.terrain === 'sea');
+          if (!hasSea) continue;
+        }
+
+        if (ctx.overlayTypes[key]?.length) continue;
+
+        if (!this.isFarEnoughFromSameType(ctx, q, r, kind, minDist)) continue;
+
+        const id = ctx.registry.getRandomAvailableId(kind);
+        if (!id) continue;
+
+        ctx.registry.register(id, kind, { q, r });
+        ctx.addOverlay(q, r, kind);
+        placed++;
+        break;
       }
-
-      const id = ctx.registry.getRandomAvailableId(kind);
-      if (!id) continue;
-
-      ctx.registry.register(id, kind, { q, r });
-      ctx.addOverlay(q, r, kind);
-      placed++;
     }
 
     console.log(`✔ ${placed}/${count} ${kind} near ${city.id}`);
@@ -187,11 +239,9 @@ export class WorldGenerationService {
 
   private getAllCities(ctx: WorldGenContext) {
     const cities: Array<{ id: string; q: number; r: number }> = [];
-
     for (const [id, data] of (ctx.registry as any).assigned.entries()) {
       if (data.kind === OverlayKind.City) cities.push({ id, ...data.coords });
     }
-
     return cities;
   }
 
@@ -223,26 +273,25 @@ export class WorldGenerationService {
       const [oq, orr] = key.split(',').map(Number);
       if (hexDistance({ q, r }, { q: oq, r: orr }) < minDist) return false;
     }
-
     return true;
   }
 
   // ------------------------------------------------------------
-  // 3. NARRATIVE
+  // 3. NARRATIVE (unchanged)
   // ------------------------------------------------------------
   private placeNarrativeOverlays(ctx: WorldGenContext): void {
     console.group('📖 Narrative overlays');
 
     const desired: Partial<Record<OverlayKind, number>> = {
-      [OverlayKind.Ritual]: 4,
-      [OverlayKind.Ruins]: 5,
-      [OverlayKind.Tower]: 3,
-      [OverlayKind.Spirit]: 3,
-      [OverlayKind.Shrine]: 3,
-      [OverlayKind.Anomaly]: 4,
-      [OverlayKind.Caravan]: 3,
-      [OverlayKind.Wanderer]: 3,
-      [OverlayKind.Treasure]: 3,
+      [OverlayKind.Ritual]: RITUAL_TABLE.length,
+      [OverlayKind.Ruins]: RUINS_TABLE.length,
+      [OverlayKind.Tower]: TOWER_TABLE.length,
+      [OverlayKind.Spirit]: SPIRIT_TABLE.length,
+      [OverlayKind.Shrine]: SHRINE_TABLE.length,
+      [OverlayKind.Anomaly]: ANOMALY_TABLE.length,
+      [OverlayKind.Caravan]: CARAVAN_TABLE.length,
+      [OverlayKind.Wanderer]: WANDERER_TABLE.length,
+      [OverlayKind.Treasure]: TREASURE_TABLE.length,
     };
 
     for (const [kind, count] of Object.entries(desired)) {
@@ -275,7 +324,6 @@ export class WorldGenerationService {
     kind: OverlayKind,
     minDist: number
   ): { q: number; r: number } | null {
-
     const shuffled = Object.keys(ctx.tiles).sort(() => Math.random() - 0.5);
 
     for (const key of shuffled) {
@@ -286,14 +334,12 @@ export class WorldGenerationService {
       if (!allowed.includes(tile.terrain)) continue;
       if (ctx.overlayTypes[key]?.length) continue;
 
-      // DENSITY CHECK
       const densityCfg = this.getNarrativeDensityConfig(kind);
       if (densityCfg) {
         const density = this.getOverlayDensityAround(ctx, q, r, densityCfg.radius);
         if (density >= densityCfg.max) continue;
       }
 
-      // SAME TYPE SPACING
       if (!this.isFarEnoughFromSameType(ctx, q, r, kind, minDist)) continue;
 
       return { q, r };
@@ -309,14 +355,11 @@ export class WorldGenerationService {
     radius: number
   ): number {
     let count = 0;
-
     for (const [key, arr] of Object.entries(ctx.overlayTypes)) {
       if (!arr.length) continue;
-
       const [oq, orr] = key.split(',').map(Number);
       if (hexDistance({ q, r }, { q: oq, r: orr }) <= radius) count++;
     }
-
     return count;
   }
 
@@ -336,7 +379,7 @@ export class WorldGenerationService {
   }
 
   // ------------------------------------------------------------
-  // 4. PORTALS
+  // 4. PORTALS (unchanged)
   // ------------------------------------------------------------
   private placePortals(ctx: WorldGenContext): void {
     console.group('🌀 Portals');

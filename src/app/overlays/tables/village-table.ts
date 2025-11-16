@@ -8,6 +8,9 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/village-oakwood.png',
     actions: [ActionType.Trade, ActionType.Rest],
     id: 'oakwood',
+    allowedTerrains: ['forest', 'plain'],
+    minDistance: 2,
+    maxDistanceFromCity: 6
   },
   {
     name: 'VILLAGE.PINEHILL.NAME',
@@ -15,6 +18,9 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/village-pinehill.png',
     actions: [ActionType.Trade, ActionType.Rest],
     id: 'pinehill',
+    allowedTerrains: ['forest', 'plain'],
+    minDistance: 2,
+    maxDistanceFromCity: 6
   },
   {
     name: 'VILLAGE.CEDARBROOK.NAME',
@@ -22,6 +28,9 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/village-cedarbrook.png',
     actions: [ActionType.Trade, ActionType.Rest],
     id: 'cedarbrook',
+    allowedTerrains: ['forest', 'plain'],
+    minDistance: 2,
+    maxDistanceFromCity: 6
   },
   {
     name: 'VILLAGE.MAPLECROSS.NAME',
@@ -29,13 +38,19 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/village-maplecross.png',
     actions: [ActionType.Trade, ActionType.Rest],
     id: 'maple-cross',
+    allowedTerrains: ['forest', 'plain'],
+    minDistance: 2,
+    maxDistanceFromCity: 6
   },
   {
     name: 'VILLAGE.BIRCHFIELD.NAME',
     description: 'VILLAGE.BIRCHFIELD.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/village-birchfield.png',
     actions: [ActionType.Trade, ActionType.Rest],
-    id: 'brichfield',
+    id: 'birchfield',
+    allowedTerrains: ['forest', 'plain'],
+    minDistance: 2,
+    maxDistanceFromCity: 6
   },
   {
     name: 'VILLAGE.DARKROAD.NAME',
@@ -43,6 +58,9 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/village-darkroad.png',
     actions: [ActionType.Trade, ActionType.Rest],
     id: 'darkroad',
+    allowedTerrains: ['plain', 'forest'],
+    minDistance: 2,
+    maxDistanceFromCity: 6
   },
   {
     name: 'VILLAGE.WOODENPALE.NAME',
@@ -50,5 +68,8 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/village-woodenpale.png',
     actions: [ActionType.Trade, ActionType.Rest],
     id: 'woodenpale',
-  },
-]
+    allowedTerrains: ['forest'],
+    minDistance: 2,
+    maxDistanceFromCity: 6
+  }
+];
