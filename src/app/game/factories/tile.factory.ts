@@ -32,41 +32,11 @@ function getWeightedRandom<T extends string>(choices: { value: T; weight: number
   return choices[choices.length - 1].value;
 }
 
-function pickVariantKey(terrain: Terrain): string {
-  const weights = [
-    { suffix: 1, weight: 50 },
-    { suffix: 2, weight: 25 },
-    { suffix: 3, weight: 15 },
-    { suffix: 4, weight: 10 },
-  ];
-
-  const maxVariants: Record<Terrain, number> = {
-    plain: 4,
-    forest: 4,
-    desert: 4,
-    mountain: 4,
-    volcano: 4,
-    jungle: 4,
-    swamp: 4,
-    sea: 4,
-  };
-
-  const count = maxVariants[terrain] ?? 1;
-  const filtered = weights.filter(w => w.suffix <= count);
-
-  const choices = filtered.map(w => ({
-    value: `${terrain}-${w.suffix}`,
-    weight: w.weight,
-  }));
-
-  return getWeightedRandom(choices);
-}
-
 export function createTile(options: TileOptions): Container {
   const { x, y, size, terrain, container, textures, onClick } = options;
   const tileContainer = new Container();
 
-  const variantKey = options.variantKey ?? pickVariantKey(terrain);
+  const variantKey = `${terrain}-1`;
   const texture = textures[variantKey] || textures['plain-1'];
 
   const base = new Sprite(texture);

@@ -50,29 +50,12 @@ export class RendererService {
       'volcano', 'sea', 'jungle', 'swamp', 'fog'
     ];
 
-    const fallback = 'assets/tiles/plain-1.png';
-
     for (const terrain of terrains) {
       let variantIndex = 1;
-      let foundAny = false;
+      const path = `assets/tiles/${terrain}-${variantIndex}.png`;
+      const tex = await Assets.load(path);
 
-      while (true) {
-        const path = `assets/tiles/${terrain}-${variantIndex}.png`;
-        try {
-          const tex = await Assets.load(path);
-          this.tileTextures[`${terrain}-${variantIndex}`] = tex;
-          foundAny = true;
-          variantIndex++;
-        } catch {
-          break;
-        }
-      }
-
-      if (!foundAny) {
-        console.warn(`⚠️ No variants found for ${terrain}, using fallback plain-1.png`);
-        const tex = await Assets.load(fallback);
-        this.tileTextures[`${terrain}-1`] = tex;
-      }
+      this.tileTextures[`${terrain}-${variantIndex}`] = tex;
     }
 
     const fogKey = Object.keys(this.tileTextures).find(k => k.startsWith('fog-'));
