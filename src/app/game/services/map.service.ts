@@ -11,7 +11,7 @@ import { Container, Sprite } from 'pixi.js';
 import { OverlayRegistryService } from '../../overlays/services/overlay-registry.service';
 import { EnemyFactory } from '../../combat/factories/enemy.factory';
 import { CombatService } from '../../combat/services/combat.service';
-import { hexKey, hexDistance, hexNeighborsInBounds } from '../utils/hex.utils';
+import { hexKey, hexNeighborsInBounds } from '../utils/hex.utils';
 
 export interface MapTileSnapshot {
   key: string;
@@ -135,6 +135,10 @@ export class MapService {
             onClick: () => this.movePlayer(q, r)
           });
 
+          // At start all hidden, ready for flip
+          tile.visible = false;
+          tile.scale.x = 0;
+
           this.tiles[hexKey(q,r)] = {
             gfx: tile,
             terrain,
@@ -164,7 +168,7 @@ export class MapService {
     this.updatePlayerPosition();
   }
 
-  // === PLAYER MOVEMENT / CAMERA ====================================================
+  // PLAYER MOVEMENT / CAMERA
   private updatePlayerPosition() {
     const { x, y } = this.hexToPixel(this.playerPos.q, this.playerPos.r);
     this.player.x = x;
@@ -200,19 +204,37 @@ export class MapService {
     }
   }
 
+  // Local reveal : center + 6 neighbors */
   private updateVisibility() {
-    for (const key in this.tiles) {
-      const [q, r] = key.split(',').map(Number);
-      const dist = hexDistance(this.playerPos, { q, r });
+    const centerQ = this.playerPos.q;
+    const centerR = this.playerPos.r;
+
+    const coords = [
+      { q: centerQ,     r: centerR     },
+      { q: centerQ + 1, r: centerR     },
+      { q: centerQ + 1, r: centerR - 1 },
+      { q: centerQ,     r: centerR - 1 },
+      { q: centerQ - 1, r: centerR     },
+      { q: centerQ - 1, r: centerR + 1 },
+      { q: centerQ,     r: centerR + 1 },
+    ];
+
+    for (const { q, r } of coords) {
+      const key = hexKey(q, r);
       const tileData = this.tiles[key];
-      const tile = tileData.gfx as any;
-      if (tile && tile.fog) {
-        if (dist <= 1) {
-          tile.fog.visible = false;
-          tileData.discovered = true;
-        } else if (!tileData.discovered) {
-          tile.fog.visible = true;
-        }
+      if (!tileData) continue;
+
+      const tile = tileData.gfx;
+
+      if (!tileData.discovered) {
+        tileData.discovered = true;
+
+        tile.visible = true;
+        tile.scale.x = 0;
+
+        this.renderer.animateTileReveal(tile);
+      } else {
+        tile.visible = true;
       }
     }
   }
@@ -254,7 +276,7 @@ export class MapService {
     }
 
     this.encounterMeter += this.baseIncrease;
-    let terrain = this.getCurrentTile()?.terrain;
+    const terrain = this.getCurrentTile()?.terrain;
     if (!terrain) return;
     const terrainFactor = this.getTerrainRiskFactor(terrain);
     const roll = Math.random() * 100;
@@ -433,8 +455,8 @@ export class MapService {
         variant: variantKey
       };
 
-      const tileGfx = tileContainer as any;
-      if (tileGfx.fog) tileGfx.fog.visible = !tile.discovered;
+      tileContainer.visible = tile.discovered;
+      tileContainer.scale.x = tile.discovered ? 1 : 0;
     }
 
     if (snapshot.overlayRegistry?.length) {

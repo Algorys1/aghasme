@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Application, Container, Sprite, Texture, Assets } from 'pixi.js';
+import { Application, Container, Sprite, Texture, Assets, Ticker } from 'pixi.js';
 import { OVERLAY_ICONS } from '../../overlays/models/overlays.model';
 import { Archetype, CHARACTER_ASSETS } from '../../character/models/character.model';
 
@@ -31,7 +31,7 @@ export class RendererService {
     this.app = new Application();
     await this.app.init({
       resizeTo: canvas.parentElement!,
-      backgroundColor: 0x111111,
+      backgroundAlpha: 0,
       canvas,
     });
 
@@ -47,23 +47,14 @@ export class RendererService {
 
     const terrains = [
       'plain', 'forest', 'desert', 'mountain',
-      'volcano', 'sea', 'jungle', 'swamp', 'fog'
+      'volcano', 'sea', 'jungle', 'swamp'
     ];
 
     for (const terrain of terrains) {
-      let variantIndex = 1;
+      const variantIndex = 1;
       const path = `assets/tiles/${terrain}-${variantIndex}.png`;
       const tex = await Assets.load(path);
-
       this.tileTextures[`${terrain}-${variantIndex}`] = tex;
-    }
-
-    const fogKey = Object.keys(this.tileTextures).find(k => k.startsWith('fog-'));
-    if (fogKey) {
-      this.tileTextures['fog'] = this.tileTextures[fogKey];
-    } else {
-      console.warn('⚠️ Missing fog texture, using plain-1 as fallback.');
-      this.tileTextures['fog'] = this.tileTextures['plain-1'];
     }
 
     console.log(`🧩 ${Object.keys(this.tileTextures).length} tile textures loaded.`);
@@ -110,6 +101,36 @@ export class RendererService {
     s.height = size * 1.2;
     this.mapContainer.addChild(s);
     return s;
+  }
+
+  // Tiles flip
+  animateTileReveal(tile: Container, durationMs = 220): void {
+    if (!this.app) {
+      tile.visible = true;
+      tile.scale.x = 1;
+      return;
+    }
+
+    const ticker = this.app.ticker;
+
+    tile.visible = true;
+    tile.scale.x = 0;
+
+    let elapsedMs = 0;
+
+    const update = (t: Ticker) => {
+      elapsedMs += t.deltaMS;
+      const progress = Math.min(1, elapsedMs / durationMs);
+
+      tile.scale.x = progress;
+
+      if (progress >= 1) {
+        tile.scale.x = 1;
+        ticker.remove(update);
+      }
+    };
+
+    ticker.add(update);
   }
 
   centerCamera(q = 0, r = 0, size = 80): void {
