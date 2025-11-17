@@ -188,7 +188,7 @@ export class CharacterService {
     return true;
   }
 
-  private xpToNextLevel(level: number) {
+  public xpToNextLevel(level: number) {
     return 100 + (level - 1) * 50;
   }
 

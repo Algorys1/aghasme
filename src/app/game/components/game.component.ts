@@ -294,6 +294,12 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isOverlayPaused = false;
   }
 
+  // === Character ===
+  get characterXPPercent() {
+    if (!this.character) return 0;
+    return Math.min(100, (this.character.xp / this.characterService.xpToNextLevel(this.character.level)) * 100);
+  }
+
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());
   }

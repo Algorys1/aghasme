@@ -9,11 +9,35 @@
   <!-- HUD TOP -->
   <div class="hud-top">
     <div class="hud-row hud-top-row">
-      <div class="character-name">
-        <span>{{ character?.name }}</span>
-        <span class="lvl">Lv {{ character?.level }}</span>
+
+      <!-- LEFT : Portrait + Infos -->
+      <div class="hud-character-block">
+        <img class="portrait" src="assets/characters/portraits/{{ character?.archetype }}-{{ character?.gender }}.png" alt="portrait" />
+
+        <div class="character-infos">
+          <div class="name-row">
+            <span class="name">{{ character?.name }}</span>
+            <span class="lvl">Lv {{ character?.level }}</span>
+          </div>
+
+          <div class="bar hp-bar">
+            <div class="fill"
+                 [style.width.%]="(character?.hp || 0) / (character?.maxHp || 1) * 100"></div>
+          </div>
+
+          <div class="bar mp-bar">
+            <div class="fill"
+                 [style.width.%]="(character?.mp || 0) / (character?.maxMp || 1) * 100"></div>
+          </div>
+
+          <div class="bar xp-bar">
+            <div class="fill"
+                 [style.width.%]="characterXPPercent || 0"></div>
+          </div>
+        </div>
       </div>
 
+      <!-- RIGHT : Buttons (unchanged) -->
       <div class="hud-buttons">
         <div class="hud-button" (click)="openInventoryPanel()">
           <img src="assets/ui/hud-camp.png" alt="Backpack" />
@@ -25,38 +49,7 @@
           <img src="assets/ui/hud-settings.png" alt="Settings" />
         </div>
       </div>
-    </div>
 
-    <div class="hud-row hud-bottom-row">
-      <!-- Stats -->
-      <div class="stats">
-        <div class="stat">
-          <img src="assets/ui/hp.png" alt="HP" />
-          <span>{{ character?.hp }} / {{ character?.maxHp }}</span>
-        </div>
-        <div class="stat">
-          <img src="assets/ui/mana.png" alt="MP" />
-          <span>{{ character?.mp }} / {{ character?.maxMp }}</span>
-        </div>
-        <div class="stat">
-          <span>XP</span>
-          <span>{{ character?.xp }}</span>
-        </div>
-        <div class="stat">
-          <span>Gold</span>
-          <span>{{ character?.gold }}</span>
-        </div>
-      </div>
-
-      <!-- Orbs (2x2) -->
-      <div class="orbs-grid">
-        @for (orb of orbs; track orb.name) {
-          <div class="orb">
-            <img [src]="orb.icon" [alt]="orb.name" />
-            <span>{{ orb.value }}</span>
-          </div>
-        }
-      </div>
     </div>
   </div>
 
