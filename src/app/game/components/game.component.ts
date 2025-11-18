@@ -300,6 +300,11 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     return Math.min(100, (this.character.xp / this.characterService.xpToNextLevel(this.character.level)) * 100);
   }
 
+  get portraitPath() {
+    if (!this.character) return '';
+    return `assets/characters/portraits/${this.character.archetype}-${this.character.gender}.png`;
+  }
+
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());
   }

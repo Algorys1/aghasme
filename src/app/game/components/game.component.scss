@@ -24,7 +24,6 @@
   image-rendering: pixelated;
 }
 
-
 .hud-top,
 .hud-bottom {
   position: absolute;
@@ -47,13 +46,6 @@
   font-family: "Spectral", "Times New Roman", serif;
   font-size: 16px;
   z-index: 10;
-}
-
-.hud-top-row {
-  align-items: center;
-  border-bottom: 1px solid #48361d;
-  padding-bottom: .5rem;
-  margin-top: 8px;
 }
 
 .hud-bottom-row {
