@@ -43,8 +43,8 @@ export class MapService {
 
   private noiseAltitude = createNoise2D();
   private noiseHumidity = createNoise2D();
-  private scaleAltitude = 0.18;
-  private scaleHumidity = 0.22;
+  private scaleAltitude = 0.10;
+  private scaleHumidity = 0.16;
   private seed: number = Date.now();
   private randState = 1;
 

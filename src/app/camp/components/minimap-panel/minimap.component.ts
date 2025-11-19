@@ -214,7 +214,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // === TILES ===
     for (const tile of tiles) {
-      if (!tile.discovered) continue;
+      // if (!tile.discovered) continue;
 
       const { x, y } = this.hexToPixel(tile.q - player.q, tile.r - player.r);
       const px = centerX + x * scale;
