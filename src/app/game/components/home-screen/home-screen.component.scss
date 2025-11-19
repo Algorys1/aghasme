@@ -4,7 +4,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-image: url('../../../../assets/ui/combat-background.webp');
+  background-image: url('../../../../assets/ui/dark-background.webp');
   background-repeat: repeat;
   background-size: 512px 512px;
   background-position: center;
@@ -12,6 +12,56 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .settings-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    // glow léger
+    filter: drop-shadow(0 0 8px rgba(80, 150, 255, 0.35));
+
+    transition:
+      transform 0.12s ease,
+      filter 0.12s ease;
+
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    background-color: transparent !important;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+      transition:
+        transform 0.12s ease,
+        filter 0.12s ease;
+    }
+
+    &:active {
+      transform: scale(0.9);
+      filter: drop-shadow(0 0 5px rgba(120, 180, 255, 0.45));
+
+      img {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+      }
+    }
+  }
 
   .menu {
     position: relative;

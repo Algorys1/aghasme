@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SaveService } from '../../services/save.service';
 import { GameState } from '../../models/game-state.model';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-save-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './save-list.component.html',
   styleUrls: ['./save-list.component.scss']
 })
@@ -17,8 +19,13 @@ export class SaveListComponent implements OnInit {
 
   constructor(
     private saveService: SaveService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private translate: TranslateService,
+    private settings: SettingsService
+  ) {
+    const lang = this.settings.language || 'en';
+    this.translate.use(lang);
+  }
 
   ngOnInit(): void {
     this.saves = this.saveService.getSaveSlots();

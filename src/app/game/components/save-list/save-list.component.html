@@ -1,9 +1,9 @@
 <div class="save-list">
-  <h1>Load a game</h1>
+  <h3 class="blue-aghasme title">{{ 'MENU.LOAD_GAME' | translate }}</h3>
 
   @if (saves.length === 0) {
-    <div class="no-save">
-      <p>No save available</p>
+    <div class="no-save blue-aghasme">
+      <p>{{ 'MENU.NO_SAVE' | translate }}</p>
     </div>
   }
 
@@ -15,12 +15,12 @@
           <span class="slot-date">{{ s.state.timestamp | date:'short' }}</span>
         </div>
         <div class="slot-actions">
-          <button (click)="load(s.slot)">Load</button>
-          <button (click)="delete(s.slot)">Delete</button>
+          <button (click)="load(s.slot)">{{ 'MENU.LOAD' | translate }}</button>
+          <button (click)="delete(s.slot)">{{ 'MENU.DELETE' | translate }}</button>
         </div>
       </li>
     }
   </ul>
 
-  <button class="back-btn" (click)="back()">Back</button>
+  <button class="back-btn blue-aghasme" (click)="back()">{{ 'MENU.BACK' | translate }}</button>
 </div>

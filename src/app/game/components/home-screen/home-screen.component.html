@@ -1,9 +1,14 @@
 <div class="home-screen">
+  <app-settings-menu [visible]="showSettings" (closed)="showSettings = false"></app-settings-menu>
+  <button class="settings-btn" (click)="showSettings = true">
+    <img src="assets/ui/settings-glyph.png" alt="Settings" />
+  </button>
+
   <div class="menu">
-    <img class="logo" src="assets/ui/aghasme.png" >
+    <img class="logo" src="assets/ui/aghasme.png" alt="Aghasme" />
 
     <button class="start-glyph-btn" (click)="goToStart()">
-      <img src="assets/ui/btn-glyph.png" alt="start" />
+      <img src="assets/ui/start-glyph.png" alt="Start" />
     </button>
   </div>
 </div>

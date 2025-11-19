@@ -1,16 +1,17 @@
 <div class="home-screen">
   <div class="menu">
-    <img class="logo" src="assets/ui/aghasme.png" >
+    <div class="menu-top">
+      <img class="logo" src="assets/ui/aghasme.png" >
+    </div>
 
-    <button class="menu-btn" (click)="newGame()">{{ 'MENU.NEW_GAME' | translate }}</button>
-    @if (hasSave) {
-      <button class="menu-btn" (click)="continueGame()">{{ 'MENU.CONTINUE' | translate }}</button>
-    }
-    <button class="menu-btn" (click)="loadGame()">{{ 'MENU.LOAD_GAME' | translate }}</button>
-    <button class="menu-btn" (click)="back()">{{ 'MENU.BACK' | translate }}</button>
+    <div class="menu-center">
+      <button class="menu-btn blue-aghasme" (click)="newGame()">{{ 'MENU.NEW_GAME' | translate }}</button>
+      @if (hasSave) {
+        <button class="menu-btn blue-aghasme" (click)="continueGame()">{{ 'MENU.CONTINUE' | translate }}</button>
+      }
+      <button class="menu-btn blue-aghasme" (click)="loadGame()">{{ 'MENU.LOAD_GAME' | translate }}</button>
+    </div>
 
-    <app-settings-menu [visible]="showSettings" (closed)="showSettings = false"></app-settings-menu>
-    <button  class="menu-btn" (click)="showSettings = true">{{ 'MENU.SETTINGS' | translate }}</button>
-
+    <button class="menu-btn blue-aghasme menu-bottom" (click)="back()">{{ 'MENU.BACK_HOME' | translate }}</button>
   </div>
 </div>

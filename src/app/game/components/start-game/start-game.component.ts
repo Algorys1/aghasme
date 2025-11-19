@@ -3,20 +3,18 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CharacterService } from '../../../character/services/character.service';
 import {SaveService} from '../../services/save.service';
-import { SettingsMenuComponent } from "../settings-menu/settings-menu.component";
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-start-game',
   standalone: true,
-  imports: [CommonModule, SettingsMenuComponent, TranslateModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './start-game.component.html',
   styleUrls: ['./start-game.component.scss']
 })
 export class StartGameComponent implements OnInit {
   hasSave = false;
-  showSettings = false;
 
   constructor(
     private router: Router,
