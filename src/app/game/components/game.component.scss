@@ -1,3 +1,7 @@
+/* ===================================
+   GAME LAYOUT (FULLSCREEN CONTAINER)
+   =================================== */
+
 .game-container {
   position: fixed;
   inset: 0;
@@ -16,6 +20,7 @@
   }
 }
 
+/* Main game background behind the HUD */
 .game-wrapper {
   width: 100%;
   height: 100%;
@@ -24,11 +29,252 @@
   image-rendering: pixelated;
 }
 
-.hud-top,
+/* ===================================
+   HUD TOP – ORNAMENT & MAIN PANEL
+   =================================== */
+
+/* Thin runic band at the very top */
+.hud-ornament {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 8;
+  font-family: 'Spectral';
+  font-size: small;
+  background: #24160b;
+  padding: 2px 8px;
+  color: #b8860b;
+}
+
+/* Main top HUD parchment panel */
+.hud-top {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 24px);
+  left: 0;
+  right: 0;
+
+  padding: 10px 12px 18px 12px;
+
+  background-image: url('../../../assets/ui/parchment-background.webp');
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  background-position: center;
+  filter: brightness(1.02) contrast(0.98);
+
+  border-bottom: 3px solid #6e4a20;
+  border-radius: 0 0 22px 22px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  color: #2b1b0f;
+  font-family: "Spectral", "Times New Roman", serif;
+  font-size: 16px;
+
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Inner card that mimics the mockup border around portrait + stats */
+.hud-card {
+  border-radius: 18px;
+  border: 3px solid #2b1b0f;
+  padding: 10px 12px;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+  background: radial-gradient(circle at top left,
+              rgba(255,255,255,0.18) 0%,
+              transparent 40%) #e7cfa1;
+}
+
+/* Layout: portrait | main stats | buttons */
+.hud-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* ===================================
+   PORTRAIT + LEVEL
+   =================================== */
+
+.hud-character-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+}
+
+/* Round frame with outer dark border and inner glow */
+.portrait-frame {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  padding: 3px;
+}
+
+.portrait {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid #f4e2b5;
+  object-fit: cover;
+}
+
+/* Level text under the portrait */
+.character-level {
+  margin-top: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #4b2a09;
+}
+
+/* ===================================
+   NAME + HP / MP / XP BARS
+   =================================== */
+
+.hud-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Character name styled like in the mockup */
+.character-name {
+  font-size: 18px;
+  color: #2b1b0f;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+/* Wrapper for stacked HP/MP/XP rows */
+.stats-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* One row = label + bar */
+.stats-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* XP row can be slightly closer to buttons if needed */
+.xp-row {
+  margin-bottom: 2px;
+}
+
+/* HP / MP / XP label text */
+.stat-label {
+  width: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #4b2a09;
+}
+
+/* Generic bar container with relief effect */
+.bar {
+  flex: 1;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(to bottom,
+              #2b1b0f 0%,
+              #1a1209 100%);
+  border: 2px solid #53300c;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(0,0,0,0.45);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Filled part of the bar */
+.bar .fill {
+  height: 100%;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.3),
+    inset 0 -2px 2px rgba(0,0,0,0.4);
+}
+
+/* HP / MP / XP colors with light gradient */
+.hp-bar .fill {
+  background: linear-gradient(to bottom, #e0543d 0%, #b03026 100%);
+}
+.mp-bar .fill {
+  background: linear-gradient(to bottom, #3a8edb 0%, #1f5d9b 100%);
+}
+.xp-bar {
+  height: 10px;
+}
+.xp-bar .fill {
+  background: linear-gradient(to bottom, #8e66d6 0%, #5b3a9b 100%);
+}
+
+/* ===================================
+   HUD BUTTONS (Settings & Camp)
+   =================================== */
+
+.hud-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Square fantasy-style buttons with strong border and shadow */
+.hud-button {
+  width: 44px;
+  height: 44px;
+
+  background: linear-gradient(to bottom, #fdf3d3 0%, #e5c88b 100%);
+  border-radius: 10px;
+  border: 2px solid #2b1b0f;
+  box-shadow:
+    0 3px 4px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Remove native button styles */
+.hud-button {
+  font: inherit;
+  outline: none;
+  border-style: solid;
+}
+
+/* Slight press animation */
+.hud-button:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+/* Icon inside the button */
+.hud-button img {
+  width: 36px;
+  height: 36px;
+  image-rendering: auto;
+}
+
+
 .hud-bottom {
   position: absolute;
   left: 0;
   right: 0;
+  bottom: 0;
+
   padding: 8px 10px;
 
   background-image: url('../../../assets/ui/parchment-background.webp');
@@ -38,122 +284,13 @@
   filter: brightness(1.02) contrast(0.98);
 
   color: #2b1b0f;
-
   border-top: 3px solid #6e4a20;
   border-bottom: 3px solid #6e4a20;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 
   font-family: "Spectral", "Times New Roman", serif;
   font-size: 16px;
-  z-index: 10;
-}
 
-.hud-bottom-row {
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.hud-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  > *:nth-child(2) {
-    padding-left: 2px;
-    margin-left: 12px;
-  }
-}
-
-.hud-top {
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-radius: 0 0 12px 12px;
-}
-
-.hud-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.character-name {
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-}
-.character-name .lvl {
-  color: #4b2a09;
-}
-
-/* Stats */
-.stats {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.stat {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.stat img {
-  width: 16px;
-  height: 16px;
-}
-
-.orbs-grid {
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  gap: 8px 16px;
-}
-.orb {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-weight: bold;
-}
-.orb img {
-  width: 42px;
-  height: 42px;
-}
-
-.hud-buttons {
-  display: flex;
-  gap: 8px;
-}
-.hud-button {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: #fdf3d3;
-  border: 3px solid #b8860b;
-  border-radius: 8px;
-  cursor: pointer;
-
-  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4),
-  0 2px 6px rgba(0, 0, 0, 0.3);
-  transition: transform 0.1s, background 0.2s;
-}
-.hud-button img {
-  width: 42px;
-  height: 42px;
-}
-.hud-button:hover {
-  background: #fff2bf;
-  transform: scale(1.05);
-}
-.hud-button:active {
-  background: #f0d98a;
-  transform: scale(0.95);
-}
-
-.hud-bottom {
-  bottom: 0;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -166,6 +303,10 @@
 .tile-info {
   font-size: 14px;
 }
+
+/* ===================================
+   OVERLAYS & MAP (unchanged)
+   =================================== */
 
 .overlay-actions {
   display: flex;
@@ -182,6 +323,7 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   transition: background 0.2s, transform 0.1s;
 }
+
 .overlay-action:hover {
   background: #fff2bf;
 }
@@ -269,7 +411,7 @@
 
 @keyframes slideUp {
   from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(0);   opacity: 1; }
 }
 
 @keyframes fadeIn {
@@ -282,6 +424,10 @@
     transform: translateY(0) scale(1);
   }
 }
+
+/* ===================================
+   COMMON OVERLAY WRAPPER
+   =================================== */
 
 .common-overlay {
   position: fixed;
@@ -341,6 +487,7 @@
   pointer-events: none;
 }
 
+/* Pause menu container */
 .pause-menu {
   display: flex;
   flex-direction: column;
@@ -382,70 +529,4 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
   }
-}
-
-/* --- NEW HUD TOP --- */
-
-.hud-character-block {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.portrait {
-  width: 48px;
-  height: 48px;
-  border-radius: 6px;
-  border: 2px solid #4b2a09;
-  object-fit: cover;
-}
-
-.character-infos {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 120px;
-}
-
-.name-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.bar {
-  position: relative;
-  width: 100%;
-  height: 8px;
-  border-radius: 4px;
-  overflow: hidden;
-  background: #e8d4b2;
-  border: 1px solid #4b2a09;
-}
-
-.hp-bar .fill {
-  background: #c0392b;
-  height: 100%;
-}
-
-.mp-bar .fill {
-  background: #2980b9;
-  height: 100%;
-}
-
-.xp-bar {
-  height: 4px;
-  margin-top: 2px;
-}
-
-.xp-bar .fill {
-  background: #8e44ad;
-  height: 100%;
-}
-
-/* Ajuste un peu l’espace */
-.hud-top-row {
-  padding-bottom: 4px;
-  margin-top: 4px;
 }

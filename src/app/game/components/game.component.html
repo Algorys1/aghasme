@@ -1,55 +1,75 @@
-<!-- @if (character) { -->
-
 <div class="game-container">
   <!-- Game canvas -->
   <div class="game-wrapper">
     <canvas #gameCanvas id="myCanvas"></canvas>
   </div>
 
+  <!-- Top ornament (runes band) -->
+  <div class="hud-ornament">
+    <div>12 Aprica 230 A.P.</div>
+  </div>
+
   <!-- HUD TOP -->
   <div class="hud-top">
-    <div class="hud-row hud-top-row">
+    <div class="hud-card">
+      <div class="hud-top-row">
 
-      <!-- LEFT : Portrait + Infos -->
-      <div class="hud-character-block">
-        <img class="portrait" [src]="portraitPath" alt="portrait" />
-
-        <div class="character-infos">
-          <div class="name-row">
-            <span class="name">{{ character?.name }}</span>
-            <span class="lvl">Lv {{ character?.level }}</span>
+        <!-- Portrait + level -->
+        <div class="hud-character-block">
+          <div class="portrait-frame">
+            <img class="portrait" [src]="portraitPath" alt="portrait" />
           </div>
-
-          <div class="bar hp-bar">
-            <div class="fill"
-                 [style.width.%]="(character?.hp || 0) / (character?.maxHp || 1) * 100"></div>
-          </div>
-
-          <div class="bar mp-bar">
-            <div class="fill"
-                 [style.width.%]="(character?.mp || 0) / (character?.maxMp || 1) * 100"></div>
-          </div>
-
-          <div class="bar xp-bar">
-            <div class="fill"
-                 [style.width.%]="characterXPPercent || 0"></div>
-          </div>
+          <div class="character-level">Lv {{ character?.level }}</div>
         </div>
+
+        <!-- Name + HP/MP/XP + buttons -->
+        <div class="hud-main">
+
+          <!-- Name -->
+          <div class="character-name">
+            {{ character?.name }}
+          </div>
+
+          <!-- HP / MP / XP rows -->
+          <div class="stats-rows">
+            <div class="stats-row">
+              <span class="stat-label">HP</span>
+              <div class="bar hp-bar">
+                <div class="fill"
+                     [style.width.%]="(character?.hp || 0) / (character?.maxHp || 1) * 100"></div>
+              </div>
+            </div>
+
+            <div class="stats-row">
+              <span class="stat-label">MP</span>
+              <div class="bar mp-bar">
+                <div class="fill"
+                     [style.width.%]="(character?.mp || 0) / (character?.maxMp || 1) * 100"></div>
+              </div>
+            </div>
+
+            <div class="stats-row xp-row">
+              <span class="stat-label">XP</span>
+              <div class="bar xp-bar">
+                <div class="fill"
+                     [style.width.%]="characterXPPercent || 0"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Buttons (settings + camp) -->
+        <div class="hud-buttons">
+          <button class="hud-button" (click)="openPauseMenu()">
+            <img src="assets/ui/hud-settings.png" alt="Settings" />
+          </button>
+          <button class="hud-button" (click)="openInventoryPanel()">
+            <img src="assets/ui/hud-camp.png" alt="Camp" />
+          </button>
+        </div>
+
       </div>
-
-      <!-- RIGHT : Buttons (unchanged) -->
-      <div class="hud-buttons">
-        <div class="hud-button" (click)="openInventoryPanel()">
-          <img src="assets/ui/hud-camp.png" alt="Backpack" />
-        </div>
-        <div class="hud-button" (click)="openLootPanel()">
-          <img src="assets/ui/hud-loot.png" alt="Skills" />
-        </div>
-        <div class="hud-button" (click)="openPauseMenu()">
-          <img src="assets/ui/hud-settings.png" alt="Settings" />
-        </div>
-      </div>
-
     </div>
   </div>
 
