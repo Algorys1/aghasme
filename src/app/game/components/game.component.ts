@@ -188,6 +188,10 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     if (chosenSlot) {
       const save = this.saveService.loadGame(chosenSlot);
       if (save?.map && save?.character) {
+        this.combatService.reset();
+        this.showCombat = false;
+        this.showPreCombat = false;
+
         this.characterService.setCharacter(save.character);
         this.character = save.character;
         await this.mapService.loadFromSnapshotWithCanvas(save.map, canvas);
@@ -203,6 +207,10 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const auto = this.saveService.loadGame('auto');
     if (auto?.map && auto?.character) {
+      this.combatService.reset();
+      this.showCombat = false;
+      this.showPreCombat = false;
+
       this.characterService.setCharacter(auto.character);
       this.character = auto.character;
       await this.mapService.loadFromSnapshotWithCanvas(auto.map, canvas);

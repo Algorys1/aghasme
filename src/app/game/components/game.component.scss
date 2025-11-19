@@ -33,7 +33,7 @@
    HUD TOP – ORNAMENT & MAIN PANEL
    =================================== */
 
-/* Thin runic band at the very top */
+/* Thin band at the very top */
 .hud-ornament {
   position: absolute;
   top: 0;
@@ -432,7 +432,11 @@
 .common-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background-image: url('/assets/ui/dark-background.webp');
+  background-repeat: repeat;
+  background-size: 512px 512px;
+  background-position: center;
+  filter: brightness(1.02) contrast(0.98);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -499,7 +503,7 @@
   border-radius: 8px;
   font-family: 'Spectral', serif;
 
-  background-image: url('../../../assets/ui/parchment-background.webp');
+  background-image: url('/assets/ui/parchment-background.webp');
   background-repeat: repeat;
   background-size: 512px 512px;
   background-position: center;

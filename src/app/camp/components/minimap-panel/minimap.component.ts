@@ -237,6 +237,45 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       ctx.lineWidth = 1;
       ctx.stroke();
     }
+    // === MAP BORDER (outer hexagon) ===
+    const radiusMap = (this.mapService as any).mapRadius;
+
+    // Extend the border by 1 hex outward
+    const R = radiusMap + 1;
+
+    // Subtle golden pulse
+    const t = performance.now() * 0.0015; // slow animation
+    const pulse = 0.25 + Math.sin(t) * 0.10; // 0.15 → 0.35 range
+
+    ctx.strokeStyle = `rgba(255, 215, 130, ${pulse})`; // warm gold
+    ctx.lineWidth = 1.4;
+
+    // Axial coordinates of big hexagon corners
+    const corners = [
+      { q:  R, r: -R },
+      { q:  0, r: -R },
+      { q: -R, r:  0 },
+      { q: -R, r:  R },
+      { q:  0, r:  R },
+      { q:  R, r:  0 },
+    ];
+
+    ctx.beginPath();
+
+    corners.forEach((c, index) => {
+      // position relative to player
+      const { x, y } = this.hexToPixel(c.q - player.q, c.r - player.r);
+
+      const px = centerX + x * scale;
+      const py = centerY + y * scale;
+
+      if (index === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    });
+
+    ctx.closePath();
+    ctx.stroke();
+
 
     // OVERLAYS
     type LabelTask = { text: string; x: number; y: number };
