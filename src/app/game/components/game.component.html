@@ -1,7 +1,13 @@
 <div class="game-container">
   <!-- Game canvas -->
   <div class="game-wrapper">
-    <canvas #gameCanvas id="myCanvas"></canvas>
+    <canvas #gameCanvas
+        (pointerdown)="onPointerDown($event)"
+        (pointermove)="onPointerMove($event)"
+        (pointerup)="onPointerUp()"
+        (pointerleave)="onPointerUp()"
+        (wheel)="onWheel($event)">
+    </canvas>
   </div>
 
   <!-- HUD TOP -->
@@ -14,7 +20,7 @@
 
         <!-- Portrait + level -->
         <div class="hud-character-block">
-          <div class="portrait-frame">
+          <div class="portrait-frame" (click)="onPortraitClick()">
             <img class="portrait" [src]="portraitPath" alt="portrait" />
           </div>
           <div class="character-level">Lv {{ character?.level }}</div>

@@ -83,6 +83,10 @@ export class MapService {
     return this.activeOverlay;
   }
 
+  get getRenderer() {
+    return this.renderer;
+  }
+
   // PRNG for noises
   private nextRand(): number {
     this.randState = (this.randState * 48271) % 0x7fffffff;

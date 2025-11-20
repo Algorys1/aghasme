@@ -12,7 +12,13 @@ export class RendererService {
   private overlayTextures: Record<string, Texture> = {};
   private playerTexture?: Texture;
 
-  private initialized = false;
+  /** Camera / zoom state */
+  private zoom = 1;
+  private readonly MIN_ZOOM = 0.6;
+  private readonly MAX_ZOOM = 1.05;
+  private panOffset = { x: 0, y: 0 };
+
+  private lastCameraTarget = { q: 0, r: 0, size: 80 };
 
   get container(): Container {
     return this.mapContainer;
@@ -20,6 +26,10 @@ export class RendererService {
 
   get textures(): Record<string, Texture> {
     return this.tileTextures;
+  }
+
+  get currentZoom(): number {
+    return this.zoom;
   }
 
   /** Boot Pixi Application */
@@ -36,10 +46,16 @@ export class RendererService {
     });
 
     this.mapContainer = new Container();
-    this.app.stage.addChild(this.mapContainer);
-    this.initialized = true;
 
-    window.addEventListener('resize', () => this.centerCamera());
+    this.mapContainer.scale.set(this.zoom);
+    this.mapContainer.x = 0;
+    this.mapContainer.y = 0;
+
+    this.app.stage.addChild(this.mapContainer);
+
+    window.addEventListener('resize', () =>
+      this.centerCamera(this.lastCameraTarget.q, this.lastCameraTarget.r, this.lastCameraTarget.size)
+    );
   }
 
   async loadTileTextures(): Promise<void> {
@@ -135,10 +151,48 @@ export class RendererService {
 
   centerCamera(q = 0, r = 0, size = 80): void {
     if (!this.app || !this.mapContainer) return;
-    const x = size * Math.sqrt(3) * (q + r / 2);
-    const y = size * 1.5 * r;
-    this.mapContainer.x = this.app.screen.width / 2 - x;
-    this.mapContainer.y = this.app.screen.height / 2 - y;
+
+    // Memorize last target
+    this.lastCameraTarget = { q, r, size };
+
+    // "World" coordinates of the tile's center
+    const worldX = size * Math.sqrt(3) * (q + r / 2);
+    const worldY = size * 1.5 * r;
+
+    // Applying zoom and pan to center the tile on the screen
+    this.mapContainer.x = this.app.screen.width / 2 - worldX * this.zoom + this.panOffset.x;
+    this.mapContainer.y = this.app.screen.height / 2 - worldY * this.zoom + this.panOffset.y;
+  }
+
+  setZoom(zoom: number): void {
+    this.zoom = Math.min(this.MAX_ZOOM, Math.max(this.MIN_ZOOM, zoom));
+
+    if (!this.mapContainer || !this.app) return;
+
+    this.mapContainer.scale.set(this.zoom);
+
+    const { q, r, size } = this.lastCameraTarget;
+    this.centerCamera(q, r, size);
+  }
+
+  zoomBy(delta: number): void {
+    this.setZoom(this.zoom + delta);
+  }
+
+  panBy(dx: number, dy: number): void {
+    this.panOffset.x += dx;
+    this.panOffset.y += dy;
+
+    if (!this.app || !this.mapContainer) return;
+
+    const { q, r, size } = this.lastCameraTarget;
+    this.centerCamera(q, r, size);
+  }
+
+  resetPan(): void {
+    this.panOffset = { x: 0, y: 0 };
+    const { q, r, size } = this.lastCameraTarget;
+    this.centerCamera(q, r, size);
   }
 
   clear(): void {
@@ -147,6 +201,10 @@ export class RendererService {
     this.tileTextures = {};
     this.overlayTextures = {};
     this.playerTexture = undefined;
-    this.initialized = false;
+
+    // reset camera state
+    this.zoom = 1;
+    this.panOffset = { x: 0, y: 0 };
+    this.lastCameraTarget = { q: 0, r: 0, size: 80 };
   }
 }

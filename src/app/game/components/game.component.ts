@@ -38,6 +38,10 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   pendingOrbPower = 0;
   private rollResolver?: (r: DiceResult) => void;
 
+  dragging = false;
+  lastX = 0;
+  lastY = 0;
+
   character: Character | null = null;
   orbs: { key: OrbKey; name: string; icon: string; value: number }[] = [];
 
@@ -327,5 +331,44 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subs.forEach(s => s.unsubscribe());
+  }
+
+  // === Camera controls ===
+  onPortraitClick() {
+    const tile = this.mapService.getCurrentTile();
+    if (!tile) return;
+
+    const { q, r } = tile;
+    this.mapService.getRenderer.resetPan();
+    this.mapService.getRenderer.centerCamera(q, r);
+  }
+
+  onPointerDown(event: PointerEvent) {
+    this.dragging = true;
+    this.lastX = event.clientX;
+    this.lastY = event.clientY;
+  }
+
+  onPointerMove(event: PointerEvent) {
+    if (!this.dragging) return;
+
+    const dx = event.clientX - this.lastX;
+    const dy = event.clientY - this.lastY;
+
+    this.lastX = event.clientX;
+    this.lastY = event.clientY;
+
+    // scroll de la map
+    this.mapService.getRenderer.panBy(dx, dy);
+  }
+
+  onPointerUp() {
+    this.dragging = false;
+  }
+
+  onWheel(event: WheelEvent) {
+    event.preventDefault();
+    const delta = event.deltaY > 0 ? -0.03 : +0.03;
+    this.mapService.getRenderer.zoomBy(delta);
   }
 }
