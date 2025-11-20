@@ -198,5 +198,63 @@ export const FARM_TABLE: OverlayTemplate[] = [
     allowedTerrains: ['forest', 'plain'],
     minDistance: 2,
     maxDistanceFromCity: 5
+  },
+  {
+    name: 'FARM.RANCH_WHISPERERS.NAME',
+    id: 'dustwhisper-ranch',
+    description: 'FARM.RANCH_WHISPERERS.DESCRIPTION',
+    resources: [
+      { id: 'sand', type: 'sand', orb: 'elemental', difficulty: 4, xpReward: 2 },
+      { id: 'oil', type: 'oil', orb: 'bestial', difficulty: 6, xpReward: 4 },
+      { id: 'leather', type: 'fibers', orb: 'mechanic', difficulty: 7, xpReward: 10 }
+    ],
+    icon: 'assets/overlays/farm.png',
+    actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['desert'],
+    minDistance: 2,
+    maxDistanceFromCity: 5
+  },
+  {
+    name: 'FARM.CLIFFSTEP_PASTURES.NAME',
+    id: 'cliffstep-pastures',
+    description: 'FARM.CLIFFSTEP_PASTURES.DESCRIPTION',
+    resources: [
+      { id: 'fibers', type: 'fibers', orb: 'mechanic', difficulty: 6, xpReward: 7 },
+      { id: 'leather', type: 'fibers', orb: 'mechanic', difficulty: 8, xpReward: 12 },
+      { id: 'herbs', type: 'herbs', orb: 'natural', difficulty: 6, xpReward: 4 }
+    ],
+    icon: 'assets/overlays/farm.png',
+    actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['mountain'],
+    minDistance: 2,
+    maxDistanceFromCity: 5
+  },
+  {
+    name: 'FARM.MOSSLIGHT_GARDEN.NAME',
+    id: 'mosslight-garden',
+    description: 'FARM.MOSSLIGHT_GARDEN.DESCRIPTION',
+    resources: [
+      { id: 'herbs', type: 'herbs', orb: 'natural', difficulty: 5, xpReward: 3 },
+      { id: 'berries', type: 'berries', orb: 'natural', difficulty: 3, xpReward: 5 }
+    ],
+    icon: 'assets/overlays/farm.png',
+    actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['forest', 'jungle'],
+    minDistance: 2,
+    maxDistanceFromCity: 5
+  },
+  {
+    name: 'FARM.HEIGHTMILLS.NAME',
+    id: 'heightmills',
+    description: 'FARM.HEIGHTMILLS.DESCRIPTION',
+    resources: [
+      { id: 'wheat', type: 'wheat', difficulty: 2, orb: 'natural', xpReward: 4 },
+      { id: 'fibers', type: 'fibers', orb: 'mechanic', difficulty: 5, xpReward: 6 }
+    ],
+    icon: 'assets/overlays/farm.png',
+    actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
+    allowedTerrains: ['plain'],
+    minDistance: 2,
+    maxDistanceFromCity: 5
   }
 ];

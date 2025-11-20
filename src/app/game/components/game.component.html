@@ -4,13 +4,11 @@
     <canvas #gameCanvas id="myCanvas"></canvas>
   </div>
 
-  <!-- Top ornament (runes band) -->
-  <div class="hud-ornament">
-    <div>12 Aprica 230 A.P.</div>
-  </div>
-
   <!-- HUD TOP -->
   <div class="hud-top">
+    <div class="hud-ornament">
+      <div>12 Aprica 230 A.P.</div>
+    </div>
     <div class="hud-card">
       <div class="hud-top-row">
 
@@ -78,6 +76,9 @@
     <div class="tile-info">
       {{ currentTile?.description }}
     </div>
+    <button class="hud-button" (click)="openLootPanel()">
+      <img src="assets/ui/hud-loot.png" alt="Loot" />
+    </button>
   </div>
 
   <!-- Pause Menu Overlay -->

@@ -27,6 +27,18 @@
     "WOODENPALE": {
       "NAME": "Boispâle",
       "DESCRIPTION": "La scintillante Boispâle est un village paisible aux maisons en bois, dont les rues sont bordées de lanternes qui brillent doucement au crépuscule."
+    },
+    "SANDBLOOM" :{
+      "NAME": "Sablefleur",
+      "DESCRIPTION": "Sablefleur est l'un des rares villages situés dans le désert. Niché dans une oasis, il abrite toutes sortes de créatures ou simplement des âmes perdues."
+    },
+    "HIGHPEAK" :{
+      "NAME": "Hautepic",
+      "DESCRIPTION": "Accrochée à flanc de montagne, Hautepic abrite mineurs et voyageurs intrépides. Ses maisons de pierre résistent aux vents glacés qui balaient les hauteurs."
+    },
+    "GREENRISE" :{
+      "NAME": "Montvert",
+      "DESCRIPTION": "Suspendue aux branches d'arbres géants, Montvert s'étend sur un réseau de passerelles en bois suspendues. Ses habitants vivent en hauteur, guidés par l'esprit de la forêt profonde."
     }
   }
 }

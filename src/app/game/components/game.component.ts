@@ -12,8 +12,8 @@ import { OverlayWindowComponent } from '../../overlays/components/overlay-window
 import {ActionType} from '../../overlays/models/actions';
 import {ActionService} from '../../overlays/services/action.service';
 import { CombatComponent } from '../../combat/components/combat.component';
-import { LootPanelComponent } from "../../camp/components/loot-panel/loot-panel.component";
-import { LootService } from '../../camp/services/loot.service';
+import { LootPanelComponent } from "../../combat/components/loot-panel/loot-panel.component";
+import { LootService } from '../../combat/services/loot.service';
 import { OverlayRegistryService } from '../../overlays/services/overlay-registry.service';
 import { HarvestRegenerationService } from '../services/harvest-regeneration.service';
 import { DiceResult, DiceRollComponent, OrbType } from "./dice-roll/dice-roll.component";
@@ -181,6 +181,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log('🎲 New game → reset all');
       this.mapService.clearAll();
       this.mapService.generateNewSeed();
+
+      this.characterService.markAsNewGame();
       await this.mapService.initMapWithCanvas(canvas);
       return;
     }

@@ -27,6 +27,10 @@
     "MECHANICA": {
       "NAME": "Mechanica",
       "DESCRIPTION": "Mechanica est une relique du passé, un mystère non résolu. Dans cette ville, on trouve de tout."
+    },
+    "LEAFHAVEN": {
+      "NAME": "Havrefeuille",
+      "DESCRIPTION": "Au coeur d'une forêt ancienne se dresse Havrefeuille, cité paisible tissée de bois et de feuilles. Les druides y maintiennent l'équilibre fragile entre la nature et les voyageurs qui la traversent."
     }
   }
 }

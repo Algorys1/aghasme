@@ -71,5 +71,35 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     allowedTerrains: ['forest'],
     minDistance: 2,
     maxDistanceFromCity: 6
+  },
+  {
+    name: 'VILLAGE.SANDBLOOM.NAME',
+    description: 'VILLAGE.SANDBLOOM.DESCRIPTION',
+    icon: 'assets/overlays/backgrounds/village-sandbloom.png',
+    actions: [ActionType.Trade, ActionType.Rest],
+    id: 'sandbloom',
+    allowedTerrains: ['desert'],
+    minDistance: 2,
+    maxDistanceFromCity: 6
+  },
+  {
+    name: 'VILLAGE.HIGHPEAK.NAME',
+    description: 'VILLAGE.HIGHPEAK.DESCRIPTION',
+    icon: 'assets/overlays/backgrounds/village-highpeak.png',
+    actions: [ActionType.Trade, ActionType.Rest],
+    id: 'highpeak',
+    allowedTerrains: ['mountain'],
+    minDistance: 2,
+    maxDistanceFromCity: 6
+  },
+  {
+    name: 'VILLAGE.GREENRISE.NAME',
+    description: 'VILLAGE.GREENRISE.DESCRIPTION',
+    icon: 'assets/overlays/backgrounds/village-greenrise.png',
+    actions: [ActionType.Trade, ActionType.Rest],
+    id: 'greenrise',
+    allowedTerrains: ['forest', 'jungle'],
+    minDistance: 2,
+    maxDistanceFromCity: 6
   }
 ];

@@ -51,6 +51,22 @@
     "MEADOWVIEW_FARM": {
       "NAME": "Ferme sur Prairie",
       "DESCRIPTION": "Surplombant une prairie pittoresque, cette ferme est connue pour sa beauté pittoresque et ses récoltes abondantes."
+    },
+    "RANCH_WHISPERERS": {
+      "NAME": "Le Ranch des Murmures",
+      "DESCRIPTION": "Au coeur du désert brûlant, le Ranch des Murmures survit grâce à des bêtes robustes et au sable riche en minéraux. Ses habitants connaissent les secrets du vent et de la chaleur."
+    },
+    "CLIFFSTEP_PASTURES": {
+      "NAME": "Les Paturages De Falaise",
+      "DESCRIPTION": "Perchés sur les pentes rocheuses, Les Paturages De Falaise élèvent des bêtes résistantes au froid. Les herbes rares qui poussent ici sont très prisées."
+    },
+    "MOSSLIGHT_GARDEN": {
+      "NAME": "Les Jardins de Mousse",
+      "DESCRIPTION": "Dans les sous-bois humides, Les Jardins de Mousse cultivent mousses luminescentes et baies exotiques. Une ferme discrète mais très fertile."
+    },
+    "HEIGHTMILLS": {
+      "NAME": "Huit-Moulins",
+      "DESCRIPTION": "Les Huit-Moulins profite des vents constants des plaines pour moudre son grain et faire sécher ses fibres. Une ferme simple mais prospère."
     }
   }
 }

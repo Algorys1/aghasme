@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LootService, GroundItem } from '../../services/loot.service';
-import { InventoryService } from '../../services/inventory.service';
+import { InventoryService } from '../../../camp/services/inventory.service';
 import { MapService } from '../../../game/services/map.service';
 import { combineLatest } from 'rxjs';
 import { FormsModule } from '@angular/forms';

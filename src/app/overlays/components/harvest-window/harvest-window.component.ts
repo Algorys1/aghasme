@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HarvestResource } from '../../models/harvest.model';
 import { CharacterService } from '../../../character/services/character.service';
-import { LootService } from '../../../camp/services/loot.service';
+import { LootService } from '../../../combat/services/loot.service';
 import { MapService } from '../../../game/services/map.service';
 import { HarvestRegenerationService } from '../../../game/services/harvest-regeneration.service';
 import { ItemFactory } from '../../../items/factories/item.factory';

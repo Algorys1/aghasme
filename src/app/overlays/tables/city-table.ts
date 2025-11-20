@@ -63,8 +63,17 @@ export const CITY_TABLE: OverlayTemplate[] = [
     description: 'CITY.STORMHOLD.DESCRIPTION',
     icon: 'assets/overlays/backgrounds/city-stormhold.png',
     actions: [ActionType.Trade, ActionType.Rest],
-    allowedTerrains: ['mountain'],
+    allowedTerrains: ['mountain', 'plain'],
     requireAdjSea: true,
     minCityDistance: 10
+  },
+  {
+    name: 'CITY.LEAFHAVEN.NAME',
+    id: 'leafhaven',
+    description: 'CITY.LEAFHAVEN.DESCRIPTION',
+    icon: 'assets/overlays/backgrounds/city-leafhaven.png',
+    actions: [ActionType.Trade, ActionType.Rest, ActionType.Pray],
+    allowedTerrains: ['forest', 'plain'],
+    minCityDistance: 8
   }
 ];

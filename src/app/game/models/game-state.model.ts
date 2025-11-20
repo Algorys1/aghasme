@@ -1,6 +1,6 @@
 import { MapSnapshot } from '../services/map.service';
 import { Character } from '../../character/models/character.model';
-import { GroundItem } from '../../camp/services/loot.service';
+import { GroundItem } from '../../combat/services/loot.service';
 
 export interface GameState {
   character: Character;

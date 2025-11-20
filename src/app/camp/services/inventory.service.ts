@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { EquipSlot, Item, ItemType } from '../../items/models/items.model';
 import { CharacterService } from '../../character/services/character.service';
-import { LootService } from '../services/loot.service';
+import { LootService } from '../../combat/services/loot.service';
 import { MapService } from '../../game/services/map.service';
 
 @Injectable({

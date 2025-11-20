@@ -91,21 +91,67 @@ export class MapService {
 
   // ---------- TERRAIN ----------
   private generateTerrain(q: number, r: number): Terrain {
-    const altRaw = this.noiseAltitude(q * this.scaleAltitude, r * this.scaleAltitude);
-    const humRaw = this.noiseHumidity(q * this.scaleHumidity, r * this.scaleHumidity);
+    // Multi-octaves height + humidity
+    const altRaw = this.fractalNoise2D(
+      this.noiseAltitude,
+      q * this.scaleAltitude,
+      r * this.scaleAltitude,
+      3,
+      0.55,
+      2.0
+    );
+
+    const humRaw = this.fractalNoise2D(
+      this.noiseHumidity,
+      q * this.scaleHumidity,
+      r * this.scaleHumidity,
+      3,
+      0.50,
+      2.0
+    );
 
     const altitude = (altRaw + 1) / 2;
     const humidity = (humRaw + 1) / 2;
 
-    if (altitude < 0.3) return 'sea';
-    if (altitude > 0.9) return 'volcano';
-    if (altitude > 0.7) return 'mountain';
-    if (humidity < 0.3) return 'desert';
-    if (humidity < 0.5) return 'plain';
-    if (humidity < 0.6) return 'forest';
-    if (humidity < 0.7) return 'jungle';
-    return 'swamp';
+    // --- SEA (medium)
+    if (altitude < 0.27) return "sea";
+
+    // --- HIGH ALTITUDE biomes
+    if (altitude > 0.78) return "volcano";     // small
+    if (altitude > 0.72) return "mountain";    // large
+
+    // --- MID ALTITUDE (depends on humidity)
+    if (humidity < 0.32) return "desert";      // medium
+    if (humidity < 0.50) return "plain";       // large
+    if (humidity < 0.62) return "forest";      // large
+    if (humidity < 0.72) return "jungle";      // small
+    return "swamp";                            // small
   }
+
+  private fractalNoise2D(
+    noiseFn: (x: number, y: number) => number,
+    x: number,
+    y: number,
+    octaves: number,
+    persistence: number,
+    lacunarity: number
+  ) {
+    let amplitude = 1;
+    let frequency = 1;
+    let value = 0;
+    let maxAmplitude = 0;
+
+    for (let i = 0; i < octaves; i++) {
+      value += noiseFn(x * frequency, y * frequency) * amplitude;
+      maxAmplitude += amplitude;
+
+      amplitude *= persistence;   // controls weight of each octave
+      frequency *= lacunarity;    // controls scale of next octave
+    }
+
+    return value / maxAmplitude;
+  }
+
 
   private hexToPixel(q: number, r: number) {
     const x = this.size * Math.sqrt(3) * (q + r / 2);
@@ -406,10 +452,56 @@ export class MapService {
     this.tiles = {};
 
     this.buildMap(this.mapRadius);
+
+    // Player
+    if (this.characterService.consumeNewGameFlag()) {
+      const rivertown = this.findRivertown();
+      if (rivertown) {
+        const adj = this.findAdjacentWalkableTile(rivertown.q, rivertown.r);
+        if (adj) {
+          console.log("🏙️ Spawn new game NEAR Rivertown:", adj);
+          this.playerPos = adj;
+        } else {
+          this.playerPos = rivertown;
+        }
+      }
+    }
+
     this.createPlayer();
     this.renderer.centerCamera(this.playerPos.q, this.playerPos.r, this.size);
     this.updateVisibility();
     window.addEventListener('resize', () => this.renderer.centerCamera());
+  }
+
+  private findRivertown(): { q: number; r: number } | null {
+    const entry = this.overlayRegistry.getById("rivertown");
+    return entry ? entry.coords : null;
+  }
+
+  private findAdjacentWalkableTile(q: number, r: number): { q: number; r: number } | null {
+    const directions = [
+      [1, 0], [1, -1], [0, -1],
+      [-1, 0], [-1, 1], [0, 1]
+    ];
+
+    for (const [dq, dr] of directions) {
+      const nq = q + dq;
+      const nr = r + dr;
+      const key = `${nq},${nr}`;
+      const tile = this.tiles[key];
+
+      if (!tile) continue;
+
+      // On évite la mer et le volcan
+      if (tile.terrain === "plain")
+        return { q: nq, r: nr };
+      else
+         continue;
+
+      return { q: nq, r: nr };
+    }
+
+    return null;
   }
 
   private async prepareRenderer() {
@@ -459,7 +551,7 @@ export class MapService {
       tileContainer.scale.x = tile.discovered ? 1 : 0;
     }
 
-    // ✅ Restore player position BEFORE creating sprite
+    // Restore player position BEFORE creating sprite
     if (snapshot.player) {
       this.playerPos = { q: snapshot.player.q, r: snapshot.player.r };
       console.log(`📍 Player restored to (${this.playerPos.q}, ${this.playerPos.r})`);

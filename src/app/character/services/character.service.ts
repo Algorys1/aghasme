@@ -9,11 +9,22 @@ const DEFAULT_ORBS: Orbs = { bestial: 0, elemental: 0, natural: 0, mechanic: 0 }
 
 @Injectable({ providedIn: 'root' })
 export class CharacterService {
+  private newGame = false;
   private character: Character | null = null;
   private characterSubject = new BehaviorSubject<Character | null>(null);
   character$ = this.characterSubject.asObservable();
 
   constructor(private effectService: EffectService) {}
+
+  markAsNewGame() {
+    this.newGame = true;
+  }
+
+  consumeNewGameFlag(): boolean {
+    const v = this.newGame;
+    this.newGame = false;
+    return v;
+  }
 
   createCharacter(data: NewCharacterInput): Character {
     const level = data.level ?? 1;

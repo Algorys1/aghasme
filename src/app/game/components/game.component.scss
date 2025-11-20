@@ -35,11 +35,7 @@
 
 /* Thin band at the very top */
 .hud-ornament {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  z-index: 8;
   font-family: 'Spectral';
   font-size: small;
   background: #24160b;
@@ -50,11 +46,9 @@
 /* Main top HUD parchment panel */
 .hud-top {
   position: absolute;
-  top: calc(env(safe-area-inset-top) + 24px);
+  top: 0;
   left: 0;
   right: 0;
-
-  padding: 10px 12px 18px 12px;
 
   background-image: url('../../../assets/ui/parchment-background.webp');
   background-repeat: repeat;
@@ -79,13 +73,14 @@
 .hud-card {
   border-radius: 18px;
   border: 3px solid #2b1b0f;
-  padding: 10px 12px;
+  margin: 10px 5px;
   box-shadow:
     0 2px 4px rgba(0,0,0,0.45),
     inset 0 1px 0 rgba(255,255,255,0.35);
   background: radial-gradient(circle at top left,
               rgba(255,255,255,0.18) 0%,
               transparent 40%) #e7cfa1;
+
 }
 
 /* Layout: portrait | main stats | buttons */
@@ -93,6 +88,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  padding: 10px;
   gap: 12px;
 }
 
@@ -293,7 +289,6 @@
 
   display: flex;
   justify-content: space-between;
-  flex-direction: column;
   align-items: center;
   min-height: 40px;
   border-radius: 12px 12px 0 0;

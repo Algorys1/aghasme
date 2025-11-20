@@ -51,6 +51,22 @@
     "MEADOWVIEW_FARM": {
       "NAME": "Meadowview Farm",
       "DESCRIPTION": "Overlooking a picturesque meadow, this farm is known for its scenic beauty and bountiful harvests."
+    },
+    "RANCH_WHISPERERS": {
+      "NAME": "Whispering Ranch",
+      "DESCRIPTION": "In the heart of the scorching desert, the Whispering Ranch survives thanks to hardy animals and mineral-rich sand. Its inhabitants know the secrets of the wind and the heat."
+    },
+    "CLIFFSTEP_PASTURES": {
+      "NAME": "The Cliff Pastures",
+      "DESCRIPTION": "Perched on rocky slopes, The Cliff Pastures raises cold-resistant animals. The rare grasses that grow here are highly prized."
+    },
+    "MOSSLIGHT_GARDEN": {
+      "NAME": "The Moss Gardens",
+      "DESCRIPTION": "In the damp undergrowth, The Moss Gardens cultivates luminescent mosses and exotic berries. A discreet but very fertile farm."
+    },
+    "HEIGHTMILLS": {
+      "NAME": "Eight Mills",
+      "DESCRIPTION": "Eight Mills takes advantage of the constant winds of the plains to grind its grain and dry its fibers. A simple but prosperous farm."
     }
   }
 }

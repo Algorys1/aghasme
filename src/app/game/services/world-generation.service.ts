@@ -281,8 +281,6 @@ export class WorldGenerationService {
 
     for (const [kind, table] of Object.entries(narrativeTables) as [OverlayKind, OverlayTemplate[]][]) {
 
-      console.group(`➡ ${kind}`);
-
       for (const tpl of table) {
         const terrains = tpl.allowedTerrains;
         const minDist = tpl.minDistance ?? 2;
@@ -298,10 +296,7 @@ export class WorldGenerationService {
         ctx.addOverlay(pos.q, pos.r, kind);
         console.log(`✔ Placed ${kind}:${tpl.id} at (${pos.q},${pos.r})`);
       }
-
-      console.groupEnd();
     }
-
     console.groupEnd();
   }
 

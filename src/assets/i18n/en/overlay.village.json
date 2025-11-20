@@ -27,6 +27,18 @@
     "WOODENPALE": {
       "NAME": "Woodenpale",
       "DESCRIPTION": "Woodenpale is a quiet village of timber homes, its streets lined with lanterns that glow softly at dusk"
+    },
+    "SANDBLOOM" :{
+      "NAME": "Sandbloom",
+      "DESCRIPTION": "Sandbloom is one of the few villages located in the desert. Nestled in an oasis, it's home to all sorts of creatures or simply lost souls."
+    },
+    "HIGHPEAK" :{
+      "NAME": "Highpeak",
+      "DESCRIPTION": "Clinging to the mountainside, Hautepic shelters miners and intrepid travelers. Its stone houses withstand the icy winds that sweep across the heights."
+    },
+    "GREENRISE" :{
+      "NAME": "Greenrise",
+      "DESCRIPTION": "Hanging from the branches of giant trees, Greenrise extends across a network of suspended wooden walkways. The inhabitants live high above, guided by the spirit of the deep forest."
     }
   }
 }

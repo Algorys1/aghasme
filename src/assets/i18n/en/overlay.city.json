@@ -27,6 +27,10 @@
     "MECHANICA": {
       "NAME": "Mechanica",
       "DESCRIPTION": "Mechanica is a relic of the past, an unsolved mystery. In this city, you can find anything."
+    },
+    "LEAFHAVEN": {
+      "NAME": "Leafhaven",
+      "DESCRIPTION": "In the heart of an ancient forest stands Leafhaven, a peaceful city woven from wood and leaves. The druids maintain the fragile balance between nature and the travelers who pass through it."
     }
   }
 
