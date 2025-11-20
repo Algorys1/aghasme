@@ -21,6 +21,7 @@ import { DiceService } from '../services/dice.service';
 import { CampComponent } from "../../camp/components/camp-panel.component";
 import { CombatService } from '../../combat/services/combat.service';
 import { PreCombatWindowComponent } from "../../combat/components/pre-combat-window/pre-combat-window.component";
+import { InventoryService } from '../../camp/services/inventory.service';
 
 @Component({
   selector: 'app-game',
@@ -71,7 +72,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private overlayRegistry: OverlayRegistryService,
     private harvestRegenService: HarvestRegenerationService,
     public combatService: CombatService,
-    private diceService: DiceService
+    private diceService: DiceService,
+    private inventoryService: InventoryService
   ) {}
 
   ngOnInit(): void {
@@ -196,6 +198,9 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.characterService.setCharacter(save.character);
         this.character = save.character;
+
+        this.inventoryService.restore(save.inventory || null)
+
         await this.mapService.loadFromSnapshotWithCanvas(save.map, canvas);
         if (save?.groundItems?.length) {
           this.lootService.restoreGroundItems(save.groundItems);
@@ -215,6 +220,9 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.characterService.setCharacter(auto.character);
       this.character = auto.character;
+
+      this.inventoryService.restore(auto.inventory || null)
+
       await this.mapService.loadFromSnapshotWithCanvas(auto.map, canvas);
       if (auto?.groundItems?.length) {
         this.lootService.restoreGroundItems(auto.groundItems);
@@ -258,10 +266,12 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     const mapState = this.mapService.serializeMap();
     const charState = structuredClone(char);
     const groundItems = this.lootService.getAllGroundItems();
+    const inventoryState = this.inventoryService.serialize();
     return {
       character: charState,
       map: mapState,
       groundItems,
+      inventory: inventoryState,
       timestamp: Date.now()
     };
   }

@@ -5,6 +5,12 @@ import { CharacterService } from '../../character/services/character.service';
 import { LootService } from '../../combat/services/loot.service';
 import { MapService } from '../../game/services/map.service';
 
+export interface InventorySnapshot {
+  items: (Item & { count: number })[];
+  equipped: Record<EquipSlot, Item | null>;
+  grid: { rows: number; cols: number };
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -201,5 +207,64 @@ export class InventoryService {
 
   refresh(): void {
     this.itemsSubject.next(this.getItems());
+  }
+
+  // === SAVE / LOAD ===
+  serialize(): InventorySnapshot {
+    return {
+      items: this.getItems(),
+      equipped: { ...this.equippedItemsSubject.value },
+      grid: { rows: this.rows, cols: this.cols }
+    };
+  }
+
+  restore(snapshot: InventorySnapshot | null | undefined): void {
+    if (!snapshot) {
+      this.clear();
+      this.setGridSize(2, 4);
+      this.equippedItemsSubject.next({
+        [EquipSlot.Head]: null,
+        [EquipSlot.Torso]: null,
+        [EquipSlot.Hand1]: null,
+        [EquipSlot.Hand2]: null,
+        [EquipSlot.Feet]: null,
+        [EquipSlot.Accessory1]: null,
+        [EquipSlot.Accessory2]: null,
+        [EquipSlot.Weapon1]: null,
+        [EquipSlot.Weapon2]: null,
+      });
+      return;
+    }
+
+    // Grid
+    this.rows = snapshot.grid.rows;
+    this.cols = snapshot.grid.cols;
+    this.sizeSubject.next({ rows: this.rows, cols: this.cols });
+
+    // Items
+    this.items = snapshot.items ? [...snapshot.items] : [];
+    this.itemsSubject.next(this.getItems());
+
+    // Equipment
+    const equipped = snapshot.equipped ?? {
+      [EquipSlot.Head]: null,
+      [EquipSlot.Torso]: null,
+      [EquipSlot.Hand1]: null,
+      [EquipSlot.Hand2]: null,
+      [EquipSlot.Feet]: null,
+      [EquipSlot.Accessory1]: null,
+      [EquipSlot.Accessory2]: null,
+      [EquipSlot.Weapon1]: null,
+      [EquipSlot.Weapon2]: null,
+    };
+    this.equippedItemsSubject.next(equipped);
+
+    // Restore equipment effects
+    for (const item of Object.values(equipped)) {
+      if (item?.effects?.length && item.instanceId) {
+        const sourceId = `gear:${item.instanceId}`;
+        this.characterService.upsertSourceEffects(sourceId, item.effects);
+      }
+    }
   }
 }
