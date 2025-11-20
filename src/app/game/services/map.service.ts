@@ -459,6 +459,12 @@ export class MapService {
       tileContainer.scale.x = tile.discovered ? 1 : 0;
     }
 
+    // ✅ Restore player position BEFORE creating sprite
+    if (snapshot.player) {
+      this.playerPos = { q: snapshot.player.q, r: snapshot.player.r };
+      console.log(`📍 Player restored to (${this.playerPos.q}, ${this.playerPos.r})`);
+    }
+
     if (snapshot.overlayRegistry?.length) {
       this.overlayRegistry.deserialize(
         snapshot.overlayRegistry.map(e => ({
@@ -474,6 +480,8 @@ export class MapService {
 
     this.createPlayer();
     this.renderer.centerCamera(this.playerPos.q, this.playerPos.r, this.size);
+
+    this.updateVisibility();
 
     console.log(`✅ Map restored (${snapshot.tiles.length} tiles).`);
   }
