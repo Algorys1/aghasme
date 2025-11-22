@@ -43,6 +43,7 @@ export class RendererService {
       resizeTo: canvas.parentElement!,
       backgroundAlpha: 0,
       canvas,
+      resolution: Math.min(devicePixelRatio, 2)
     });
 
     this.mapContainer = new Container();

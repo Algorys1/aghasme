@@ -56,6 +56,8 @@ export class MapService {
   private activeOverlay: OverlayKind | null = null;
   overlayChange = new Subject<OverlayKind>();
   tileChange = new Subject<{ type: string; description?: string }>();
+  private selectedTile: { q: number; r: number } | null = null;
+  private selectedSprite: Container | null = null;
   playerMoved = new BehaviorSubject<{ q: number; r: number }>(this.playerPos);
 
   private encounterMeter = 0;
@@ -182,7 +184,7 @@ export class MapService {
             terrain,
             container: this.renderer.container,
             textures: this.renderer.textures,
-            onClick: () => this.movePlayer(q, r)
+            onClick: () => this.onTileClicked(q, r)
           });
 
           // At start all hidden, ready for flip
@@ -252,6 +254,65 @@ export class MapService {
         }
       }
     }
+  }
+
+  onTileClicked(q: number, r: number) {
+    const mv = this.getCurrentMV();
+    const player = this.playerPos;
+
+    const dist = this.hexDistance(player.q, player.r, q, r);
+
+    // Si trop loin
+    if (dist > mv) {
+      this.clearSelection();
+      return;
+    }
+
+    // Si déjà sélectionnée → on confirme
+    if (this.selectedTile?.q === q && this.selectedTile?.r === r) {
+      this.movePlayer(q, r);
+      this.clearSelection();
+      return;
+    }
+
+    // Sinon → nouvelle sélection
+    this.selectTile(q, r);
+  }
+
+  private hexDistance(q1: number, r1: number, q2: number, r2: number): number {
+    const s1 = -q1 - r1;
+    const s2 = -q2 - r2;
+    return (Math.abs(q1 - q2) + Math.abs(r1 - r2) + Math.abs(s1 - s2)) / 2;
+  }
+
+  private selectTile(q: number, r: number) {
+    this.clearSelection();
+
+    const key = `${q},${r}`;
+    const entry = this.tiles[key];
+    if (!entry) return;
+
+    const tile = entry.gfx;
+    this.selectedTile = { q, r };
+    this.selectedSprite = tile;
+
+    // --- 1. Élévation
+    tile.y -= 8;
+  }
+
+  private clearSelection() {
+    if (this.selectedSprite) {
+      // remettre la hauteur
+      this.selectedSprite.y += 8;
+    }
+
+    this.selectedSprite = null;
+    this.selectedTile = null;
+  }
+
+  private getCurrentMV(): number {
+    const char = this.characterService.getCharacter();
+    return char?.secondaryStats?.mv ?? 1;
   }
 
   // Local reveal : center + 6 neighbors */
@@ -540,7 +601,7 @@ export class MapService {
         terrain: tile.terrain ?? 'plain',
         container: this.renderer.container,
         textures: this.renderer.textures,
-        onClick: () => this.movePlayer(tile.q, tile.r),
+        onClick: () => this.onTileClicked(tile.q, tile.r),
         variantKey
       });
 
