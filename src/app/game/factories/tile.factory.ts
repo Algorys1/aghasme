@@ -23,23 +23,27 @@ export interface TileOptions {
 
 export function createTile(options: TileOptions): Container {
   const { x, y, size, terrain, container, textures, onClick, variantKey } = options;
+
   const tileContainer = new Container();
 
   const key = variantKey ?? `${terrain}-1`;
-  const texture = textures[key] || textures['plain-1'];
+  const texture = textures[key];
 
   const base = new Sprite(texture);
-  base.width = size * 2;
-  base.height = size * 2;
-  base.x = -size;
-  base.y = -size;
+  base.anchor.set(0.5);
+
+  // IMPORTANT : scale based on 768×768
+  const scale = (size * 2) / 768;
+  base.scale.set(scale);
 
   tileContainer.x = x;
   tileContainer.y = y;
+
   tileContainer.addChild(base);
 
+  // Click
   if (onClick) {
-    tileContainer.interactive = true;
+    tileContainer.eventMode = 'static';
     tileContainer.cursor = 'pointer';
     tileContainer.on('pointerdown', onClick);
   }
@@ -50,3 +54,4 @@ export function createTile(options: TileOptions): Container {
   container.addChild(tileContainer);
   return tileContainer;
 }
+

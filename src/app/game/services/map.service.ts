@@ -296,13 +296,13 @@ export class MapService {
     this.selectedTile = { q, r };
     this.selectedSprite = tile;
 
-    // --- 1. Élévation
+    // Elevate
     tile.y -= 8;
   }
 
   private clearSelection() {
     if (this.selectedSprite) {
-      // remettre la hauteur
+      // restore heigh
       this.selectedSprite.y += 8;
     }
 
@@ -562,8 +562,6 @@ export class MapService {
         return { q: nq, r: nr };
       else
          continue;
-
-      return { q: nq, r: nr };
     }
 
     return null;

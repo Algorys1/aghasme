@@ -9,6 +9,7 @@ export class RendererService {
   private mapContainer!: Container;
 
   private tileTextures: Record<string, Texture> = {};
+  private hexMaskTexture!: Texture;
   private overlayTextures: Record<string, Texture> = {};
   private playerTexture?: Texture;
 
@@ -60,7 +61,8 @@ export class RendererService {
   }
 
   async loadTileTextures(): Promise<void> {
-    this.tileTextures = {}; // reset complet
+    this.tileTextures = {};
+    await this.loadHexMask();
 
     const terrains = [
       'plain', 'forest', 'desert', 'mountain',
@@ -68,13 +70,43 @@ export class RendererService {
     ];
 
     for (const terrain of terrains) {
-      const variantIndex = 1;
-      const path = `assets/tiles/${terrain}-${variantIndex}.png`;
-      const tex = await Assets.load(path);
-      this.tileTextures[`${terrain}-${variantIndex}`] = tex;
+      const variantKey = `${terrain}-1`;
+
+      // Load square texture
+      const squareTexture = await Assets.load<Texture>(`assets/tiles/${variantKey}.png`);
+
+      const tileSprite = new Sprite(squareTexture);
+      tileSprite.anchor.set(0.5);
+      tileSprite.position.set(384, 384); // Center of 768x768
+
+      // Mask sprite
+      const maskSprite = new Sprite(this.hexMaskTexture);
+      maskSprite.anchor.set(0.5);
+      maskSprite.position.set(384, 384);
+      // Apply mask
+      tileSprite.mask = maskSprite;
+
+      // Temporary container
+      const container = new Container();
+
+      container.addChild(tileSprite);
+      container.addChild(maskSprite);
+
+      // Generate cutted texture
+      const hexTexture = this.app.renderer.generateTexture(container);
+
+      // Clean container
+      container.destroy({ children: true });
+
+      // Store final texture
+      this.tileTextures[variantKey] = hexTexture;
     }
 
-    console.log(`🧩 ${Object.keys(this.tileTextures).length} tile textures loaded.`);
+    console.log(`🧩 ${Object.keys(this.tileTextures).length} hex tile textures baked.`);
+  }
+
+  private async loadHexMask(): Promise<void> {
+    this.hexMaskTexture = await Assets.load('assets/tiles/tile-base.png');
   }
 
   async loadOverlayTextures(): Promise<void> {
