@@ -39,7 +39,7 @@
   font-family: 'Spectral';
   font-size: small;
   background: #24160b;
-  padding: 2px 8px;
+  padding: 12px 8px 4px 8px;
   color: #b8860b;
 }
 
@@ -271,7 +271,7 @@
   right: 0;
   bottom: 0;
 
-  padding: 8px 10px;
+  padding: 12px 10px;
 
   background-image: url('../../../assets/ui/parchment-background.webp');
   background-repeat: repeat;
@@ -293,6 +293,18 @@
   min-height: 40px;
   border-radius: 12px 12px 0 0;
   gap: 12px;
+
+}
+
+.zoom-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .hud-button {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 .tile-info {

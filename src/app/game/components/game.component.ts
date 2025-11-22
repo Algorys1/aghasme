@@ -366,9 +366,11 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dragging = false;
   }
 
-  onWheel(event: WheelEvent) {
-    event.preventDefault();
-    const delta = event.deltaY > 0 ? -0.03 : +0.03;
-    this.mapService.getRenderer.zoomBy(delta);
+  zoomIn() {
+    this.mapService.getRenderer.zoomBy(+0.1);
+  }
+
+  zoomOut() {
+    this.mapService.getRenderer.zoomBy(-0.1);
   }
 }

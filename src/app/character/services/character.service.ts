@@ -88,6 +88,10 @@ export class CharacterService {
         maxHp: baseMaxHp,
         maxMp: baseMaxMp,
       },
+
+      secondaryStats: {
+        mv: 1
+      }
     };
 
     if (data.background) {

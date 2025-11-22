@@ -52,6 +52,10 @@ export interface Character {
     maxHp: number;
     maxMp: number;
   };
+
+  secondaryStats?: {
+    mv: number
+  }
 }
 
 export interface NewCharacterInput {
@@ -69,7 +73,7 @@ export interface NewCharacterInput {
 
   gold?: number;
 
-  /** Orbes fournis à la création (sinon par défaut 0) */
+  // Orbs provided at creation (otherwise default to 0)
   orbs?: Partial<Orbs>;
 
   skills?: string[];

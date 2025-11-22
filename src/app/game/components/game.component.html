@@ -5,8 +5,7 @@
         (pointerdown)="onPointerDown($event)"
         (pointermove)="onPointerMove($event)"
         (pointerup)="onPointerUp()"
-        (pointerleave)="onPointerUp()"
-        (wheel)="onWheel($event)">
+        (pointerleave)="onPointerUp()">
     </canvas>
   </div>
 
@@ -79,6 +78,10 @@
 
   <!-- HUD BOTTOM -->
   <div class="hud-bottom">
+    <div class="zoom-controls">
+      <button class="hud-button" (click)="zoomIn()">+</button>
+      <button class="hud-button" (click)="zoomOut()">−</button>
+    </div>
     <div class="tile-info">
       {{ currentTile?.description }}
     </div>
