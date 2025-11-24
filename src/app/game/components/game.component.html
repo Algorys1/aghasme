@@ -85,9 +85,17 @@
     <div class="tile-info">
       {{ currentTile?.description }}
     </div>
-    <button class="hud-button" (click)="openLootPanel()">
-      <img src="assets/ui/hud-loot.png" alt="Loot" />
-    </button>
+
+    <div class="hud-buttons">
+      @if (canEnterLocation) {
+        <button class="hud-button" (click)="enterLocation()">
+          <img src="assets/ui/hud-enter.png" alt="Enter" />
+        </button>
+      }
+      <button class="hud-button" (click)="openLootPanel()">
+        <img src="assets/ui/hud-loot.png" alt="Loot" />
+      </button>
+    </div>
   </div>
 
   <!-- Pause Menu Overlay -->

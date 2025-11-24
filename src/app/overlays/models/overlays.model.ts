@@ -43,6 +43,8 @@ export interface OverlayTemplate {
   id: string;
   allowedTerrains: Terrain[];
 
+  autoTrigger?: boolean;
+
   eventChain?: Record<string, OverlayPhase>;
   requireAdjSea?: boolean;
   minCityDistance?: number;
@@ -57,6 +59,8 @@ export interface OverlayInstance extends OverlayTemplate {
 
   currentFloor?: string;
   nextFloor?: string;
+
+  hasActedInCurrentPhase?: boolean;
   isCompleted?: boolean;
   disabledActions?: ActionType[];
   ennemy?: Enemy

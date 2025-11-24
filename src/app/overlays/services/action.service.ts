@@ -44,9 +44,15 @@ export class ActionService {
     if (overlay.eventChain && overlay.currentFloor) {
       const passive = phase?.actionPassive?.[action];
       if (passive) {
+        // Count as action to activate continue button
+        overlay.hasActedInCurrentPhase = true;
         this.handlePassivePhase(passive);
         return;
       }
+    }
+
+    if (action !== ActionType.Continue && action !== ActionType.Quit) {
+      overlay.hasActedInCurrentPhase = true;
     }
 
     switch (action) {
@@ -143,6 +149,7 @@ export class ActionService {
 
     console.log(`➡️ Triggering phase: ${nextFloor}`);
     overlay.currentFloor = nextFloor;
+    overlay.hasActedInCurrentPhase = false;
 
     if (nextPhase.next) {
       const nextOverlay: OverlayInstance = {
@@ -153,6 +160,7 @@ export class ActionService {
         actions: nextPhase.actions,
         nextFloor: nextPhase.next,
         eventChain: overlay.eventChain,
+        hasActedInCurrentPhase: false,
       };
       this.nextOverlay$.next(nextOverlay);
 
@@ -173,6 +181,7 @@ export class ActionService {
         nextFloor: undefined,
         isCompleted: true,
         eventChain: overlay.eventChain,
+        hasActedInCurrentPhase: false,
       };
       this.nextOverlay$.next(finalOverlay);
     }

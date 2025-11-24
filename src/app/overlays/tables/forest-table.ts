@@ -15,7 +15,8 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   },
 
   {
@@ -30,7 +31,8 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   },
 
   {
@@ -44,7 +46,8 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   },
 
   {
@@ -58,7 +61,8 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   },
 
   {
@@ -73,7 +77,8 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   },
 
   {
@@ -87,7 +92,8 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   },
 
   {
@@ -102,7 +108,8 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   },
 
   {
@@ -117,7 +124,8 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   },
 
   {
@@ -132,7 +140,8 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   },
 
   {
@@ -147,7 +156,8 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   },
 
   {
@@ -162,6 +172,7 @@ export const FOREST_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle', 'swamp', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 8
+    maxDistanceFromCity: 8,
+    autoTrigger: false
   }
 ];

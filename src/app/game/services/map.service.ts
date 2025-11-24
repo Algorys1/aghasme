@@ -12,6 +12,7 @@ import { OverlayRegistryService } from '../../overlays/services/overlay-registry
 import { EnemyFactory } from '../../combat/factories/enemy.factory';
 import { CombatService } from '../../combat/services/combat.service';
 import { hexKey, hexNeighborsInBounds } from '../utils/hex.utils';
+import { OverlayFactory } from '../../overlays/factories/overlay.factory';
 
 export interface MapTileSnapshot {
   key: string;
@@ -299,8 +300,32 @@ export class MapService {
 
         const key = hexKey(q, r);
         const overlays = this.overlayTypes[key] || [];
-        this.activeOverlay = overlays.length > 0 ? overlays[0] : OverlayKind.None;
-        this.overlayChange.next(this.activeOverlay);
+
+        if (overlays.length > 0) {
+          // On regarde si l'overlay à ces coords est autoTrigger ou non
+          const entry = this.overlayRegistry.getByCoords(q, r);
+          let autoTrigger = true;
+
+          if (entry) {
+            const table = OverlayFactory.getTable(entry.kind);
+            const template = table?.find(t => t.id === entry.id);
+            if (template && typeof template.autoTrigger === 'boolean') {
+              autoTrigger = template.autoTrigger;
+            }
+          }
+
+          if (autoTrigger) {
+            this.activeOverlay = overlays[0];
+            this.overlayChange.next(this.activeOverlay);
+          } else {
+            // Overlay présent mais optionnel → pas d'ouverture automatique
+            this.activeOverlay = OverlayKind.None;
+            this.overlayChange.next(this.activeOverlay);
+          }
+        } else {
+          this.activeOverlay = OverlayKind.None;
+          this.overlayChange.next(this.activeOverlay);
+        }
 
         const tileData = this.tiles[key];
         if (tileData) {
@@ -309,6 +334,7 @@ export class MapService {
             description: this.describeTerrain(tileData.terrain)
           });
         }
+
       }
     }
   }
@@ -434,6 +460,35 @@ export class MapService {
       console.log(`${kind}: ${count} (${pct}%)`);
     }
     console.groupEnd();
+  }
+
+  public getOptionalOverlayAtPlayer(): { id: string; kind: OverlayKind } | null {
+    const current = this.getCurrentTile();
+    if (!current) return null;
+
+    const entry = this.overlayRegistry.getByCoords(current.q, current.r);
+    if (!entry) return null;
+
+    const table = OverlayFactory.getTable(entry.kind);
+    const template = table?.find(t => t.id === entry.id);
+    if (!template) return null;
+
+    // Par défaut, autoTrigger = true si non défini
+    const auto = typeof template.autoTrigger === 'boolean' ? template.autoTrigger : true;
+    if (auto) return null;
+
+    return { id: entry.id, kind: entry.kind };
+  }
+
+  public openOverlayAtCurrentTile(): void {
+    const current = this.getCurrentTile();
+    if (!current) return;
+
+    const entry = this.overlayRegistry.getByCoords(current.q, current.r);
+    if (!entry) return;
+
+    this.activeOverlay = entry.kind;
+    this.overlayChange.next(this.activeOverlay);
   }
 
   // ENCOUNTERS

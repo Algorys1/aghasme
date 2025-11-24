@@ -15,7 +15,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain', 'forest'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -31,7 +32,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -47,7 +49,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -63,7 +66,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain', 'forest'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -78,7 +82,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['forest', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -94,7 +99,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -109,7 +115,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['forest', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -123,7 +130,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['forest', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -138,7 +146,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -152,7 +161,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -167,7 +177,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain', 'forest'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -182,7 +193,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
 
   {
@@ -197,7 +209,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['forest', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
   {
     name: 'FARM.RANCH_WHISPERERS.NAME',
@@ -212,7 +225,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['desert'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
   {
     name: 'FARM.CLIFFSTEP_PASTURES.NAME',
@@ -227,7 +241,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['mountain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
   {
     name: 'FARM.MOSSLIGHT_GARDEN.NAME',
@@ -241,7 +256,8 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['forest', 'jungle'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   },
   {
     name: 'FARM.HEIGHTMILLS.NAME',
@@ -255,6 +271,7 @@ export const FARM_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain'],
     minDistance: 2,
-    maxDistanceFromCity: 5
+    maxDistanceFromCity: 5,
+    autoTrigger: false
   }
 ];

@@ -14,7 +14,8 @@ export const MINE_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['mountain', 'plain'],
     minDistance: 4,
-    maxDistanceFromCity: 9
+    maxDistanceFromCity: 9,
+    autoTrigger: false
   },
 
   {
@@ -29,7 +30,8 @@ export const MINE_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['mountain', 'plain'],
     minDistance: 4,
-    maxDistanceFromCity: 9
+    maxDistanceFromCity: 9,
+    autoTrigger: false
   },
 
   {
@@ -44,7 +46,8 @@ export const MINE_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['mountain'],
     minDistance: 4,
-    maxDistanceFromCity: 9
+    maxDistanceFromCity: 9,
+    autoTrigger: false
   },
 
   {
@@ -59,7 +62,8 @@ export const MINE_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['mountain', 'plain', 'desert'],
     minDistance: 4,
-    maxDistanceFromCity: 9
+    maxDistanceFromCity: 9,
+    autoTrigger: false
   },
 
   {
@@ -74,7 +78,8 @@ export const MINE_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['mountain'],
     minDistance: 4,
-    maxDistanceFromCity: 9
+    maxDistanceFromCity: 9,
+    autoTrigger: false
   },
 
   {
@@ -90,7 +95,8 @@ export const MINE_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['mountain'],
     minDistance: 4,
-    maxDistanceFromCity: 9
+    maxDistanceFromCity: 9,
+    autoTrigger: false
   },
 
   {
@@ -105,7 +111,8 @@ export const MINE_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['mountain'],
     minDistance: 4,
-    maxDistanceFromCity: 9
+    maxDistanceFromCity: 9,
+    autoTrigger: false
   },
 
   {
@@ -121,6 +128,7 @@ export const MINE_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Harvest, ActionType.Rest],
     allowedTerrains: ['mountain', 'plain'],
     minDistance: 4,
-    maxDistanceFromCity: 9
+    maxDistanceFromCity: 9,
+    autoTrigger: false
   }
 ];

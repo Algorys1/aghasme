@@ -56,6 +56,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   activeOverlay: OverlayInstance | null = null;
   isOverlayPaused = false;
   isTransitioning = false;
+  canEnterLocation = false;
 
   private subs: Subscription[] = [];
 
@@ -90,8 +91,13 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       }),
       this.mapService.tileChange.subscribe(tile => {
         this.currentTile = tile;
+
+        // Détecte la présence d'un overlay optionnel (non autoTrigger) sur la tuile actuelle
+        const optionalOverlay = this.mapService.getOptionalOverlayAtPlayer();
+        this.canEnterLocation = !!optionalOverlay;
+
         const hasOverlay = this.mapService.hasActiveOverlay;
-        if (!hasOverlay) {
+        if (!hasOverlay && !this.canEnterLocation) {
           console.log('No overlay, possible encounter check');
           this.mapService.checkForEncounter();
         }
@@ -319,6 +325,7 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
   openInventoryPanel() { this.showInventoryPanel = true; }
   openLootPanel() { this.showLootPanel = true; }
   openPauseMenu() { this.showMenuPanel = true; }
+  enterLocation() { this.mapService.openOverlayAtCurrentTile(); }
 
   closeInventoryPanel() { this.showInventoryPanel = false; }
   closeLootPanel() { this.showLootPanel = false; }

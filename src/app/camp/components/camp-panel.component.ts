@@ -5,7 +5,7 @@ import { CharacterPanelComponent } from './character-panel/character-panel.compo
 import { EquipmentPanelComponent } from './equipment-panel/equipment-panel.component';
 import { MinimapComponent } from "./minimap-panel/minimap.component";
 
-export type Tabs = 'inventory' | 'equipment' | 'character' | 'loot' | 'minimap';
+export type Tabs = 'inventory' | 'equipment' | 'character' | 'minimap';
 
 @Component({
   selector: 'app-camp-panel',

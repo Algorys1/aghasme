@@ -10,7 +10,8 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     id: 'oakwood',
     allowedTerrains: ['forest', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 6
+    maxDistanceFromCity: 6,
+    autoTrigger: false
   },
   {
     name: 'VILLAGE.PINEHILL.NAME',
@@ -20,7 +21,8 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     id: 'pinehill',
     allowedTerrains: ['forest', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 6
+    maxDistanceFromCity: 6,
+    autoTrigger: false
   },
   {
     name: 'VILLAGE.CEDARBROOK.NAME',
@@ -30,7 +32,8 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     id: 'cedarbrook',
     allowedTerrains: ['forest', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 6
+    maxDistanceFromCity: 6,
+    autoTrigger: false
   },
   {
     name: 'VILLAGE.MAPLECROSS.NAME',
@@ -40,7 +43,8 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     id: 'maple-cross',
     allowedTerrains: ['forest', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 6
+    maxDistanceFromCity: 6,
+    autoTrigger: false
   },
   {
     name: 'VILLAGE.BIRCHFIELD.NAME',
@@ -50,7 +54,8 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     id: 'birchfield',
     allowedTerrains: ['forest', 'plain'],
     minDistance: 2,
-    maxDistanceFromCity: 6
+    maxDistanceFromCity: 6,
+    autoTrigger: false
   },
   {
     name: 'VILLAGE.DARKROAD.NAME',
@@ -60,7 +65,8 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     id: 'darkroad',
     allowedTerrains: ['plain', 'forest'],
     minDistance: 2,
-    maxDistanceFromCity: 6
+    maxDistanceFromCity: 6,
+    autoTrigger: false
   },
   {
     name: 'VILLAGE.WOODENPALE.NAME',
@@ -70,7 +76,8 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     id: 'woodenpale',
     allowedTerrains: ['forest'],
     minDistance: 2,
-    maxDistanceFromCity: 6
+    maxDistanceFromCity: 6,
+    autoTrigger: false
   },
   {
     name: 'VILLAGE.SANDBLOOM.NAME',
@@ -80,7 +87,8 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     id: 'sandbloom',
     allowedTerrains: ['desert'],
     minDistance: 2,
-    maxDistanceFromCity: 6
+    maxDistanceFromCity: 6,
+    autoTrigger: false
   },
   {
     name: 'VILLAGE.HIGHPEAK.NAME',
@@ -90,7 +98,8 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     id: 'highpeak',
     allowedTerrains: ['mountain'],
     minDistance: 2,
-    maxDistanceFromCity: 6
+    maxDistanceFromCity: 6,
+    autoTrigger: false
   },
   {
     name: 'VILLAGE.GREENRISE.NAME',
@@ -100,6 +109,7 @@ export const VILLAGE_TABLE: OverlayTemplate[] = [
     id: 'greenrise',
     allowedTerrains: ['forest', 'jungle'],
     minDistance: 2,
-    maxDistanceFromCity: 6
+    maxDistanceFromCity: 6,
+    autoTrigger: false
   }
 ];

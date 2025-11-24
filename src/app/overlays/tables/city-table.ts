@@ -9,7 +9,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/city-aghasme.png',
     actions: [ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain', 'mountain'],
-    minCityDistance: 10
+    minCityDistance: 10,
+    autoTrigger: false
   },
   {
     name: 'CITY.ELDERGATE.NAME',
@@ -18,7 +19,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/city-eldergate.png',
     actions: [ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain', 'mountain'],
-    minCityDistance: 8
+    minCityDistance: 8,
+    autoTrigger: false
   },
   {
     name: 'CITY.HIGHWALL.NAME',
@@ -27,7 +29,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/city-highwall.png',
     actions: [ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain', 'forest'],
-    minCityDistance: 8
+    minCityDistance: 8,
+    autoTrigger: false
   },
   {
     name: 'CITY.IRONVALE.NAME',
@@ -36,7 +39,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/city-ironvale.png',
     actions: [ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['mountain', 'plain'],
-    minCityDistance: 8
+    minCityDistance: 8,
+    autoTrigger: false
   },
   {
     name: 'CITY.MECHANICA.NAME',
@@ -45,7 +49,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/city-mechanica.png',
     actions: [ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['desert', 'volcano'],
-    minCityDistance: 10
+    minCityDistance: 10,
+    autoTrigger: false
   },
   {
     name: 'CITY.RIVERTOWN.NAME',
@@ -55,7 +60,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['plain', 'forest'],
     requireAdjSea: true,
-    minCityDistance: 8
+    minCityDistance: 8,
+    autoTrigger: false
   },
   {
     name: 'CITY.STORMHOLD.NAME',
@@ -65,7 +71,8 @@ export const CITY_TABLE: OverlayTemplate[] = [
     actions: [ActionType.Trade, ActionType.Rest],
     allowedTerrains: ['mountain', 'plain'],
     requireAdjSea: true,
-    minCityDistance: 10
+    minCityDistance: 10,
+    autoTrigger: false
   },
   {
     name: 'CITY.LEAFHAVEN.NAME',
@@ -74,6 +81,7 @@ export const CITY_TABLE: OverlayTemplate[] = [
     icon: 'assets/overlays/backgrounds/city-leafhaven.png',
     actions: [ActionType.Trade, ActionType.Rest, ActionType.Pray],
     allowedTerrains: ['forest', 'plain'],
-    minCityDistance: 8
+    minCityDistance: 8,
+    autoTrigger: false
   }
 ];

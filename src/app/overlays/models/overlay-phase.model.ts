@@ -62,6 +62,8 @@ export interface OverlayPhase {
   description: string;
   actions: ActionType[];
   next?: string;
+
+  enableContinue?: boolean;
   uniqueChoice?: boolean;
 
   /** Associates each action with a phase or passive behavior */

@@ -137,9 +137,23 @@ export class OverlayWindowComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   disableContinue(): boolean {
-    if(this.data.eventChain?.[this.data.currentFloor ?? '']?.uniqueChoice)
-      return this.disabledActions.size === 0;
-    return false;
+    // Non-narratif (ville, village, farm, etc.) : on n'utilise pas Continue ici.
+    if (!this.isNarrativeType()) return false;
+
+    // Pas d'eventChain → overlay simple : Continue est toujours autorisé.
+    if (!this.data.eventChain) return false;
+
+    const currentKey = this.data.currentFloor ?? '';
+    const phase = this.data.eventChain[currentKey];
+
+    // Pas encore de phase active (avant le premier Continue) → laisser continuer.
+    if (!phase) return false;
+
+    // Phase explicitement skippable
+    if (phase.enableContinue === true) return false;
+
+    // Sinon, Continue est désactivé tant qu'aucune action n'a été jouée dans cette phase.
+    return !this.data.hasActedInCurrentPhase;
   }
 
   private resetTyping() {

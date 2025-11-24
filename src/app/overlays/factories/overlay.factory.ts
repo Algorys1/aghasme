@@ -54,7 +54,9 @@ export class OverlayFactory {
       actions: template.actions,
       eventChain: template.eventChain,
       resources: template.resources,
-      allowedTerrains: template.allowedTerrains
+      allowedTerrains: template.allowedTerrains,
+      autoTrigger: template.autoTrigger,
+      hasActedInCurrentPhase: false,
     };
   }
 
