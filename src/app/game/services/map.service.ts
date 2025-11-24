@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { createNoise2D } from 'simplex-noise';
 
-import { createTile, Terrain } from '../factories/tile.factory';
+import { createTile, Terrain, TileContainer } from '../factories/tile.factory';
 import { OverlayKind } from '../../overlays/models/overlays.model';
 import { CharacterService } from '../../character/services/character.service';
 import { RendererService } from './renderer.service';
@@ -37,7 +37,7 @@ export interface MapSnapshot {
 export class MapService {
   private size = 80;
 
-  private tiles: Record<string, { gfx: Container; terrain: Terrain; discovered: boolean; variant: string }> = {};
+  private tiles: Record<string, { gfx: TileContainer; terrain: Terrain; discovered: boolean; variant: string }> = {};
   private overlaySprites: Record<string, Sprite[]> = {};
   private overlayTypes: Record<string, OverlayKind[]> = {};
 
@@ -240,6 +240,7 @@ export class MapService {
             textures: this.renderer.textures,
             onClick: () => this.onTileClicked(q, r)
           });
+          tile.lootIcon = this.renderer.createLootSprite(x, y, this.size);
 
           // At start all hidden, ready for flip
           tile.visible = false;
@@ -626,6 +627,7 @@ export class MapService {
   private async prepareRenderer() {
     await this.renderer.loadTileTextures();
     await this.renderer.loadOverlayTextures();
+    await this.renderer.loadLootTexture();
 
     const char = this.characterService.getCharacter();
     if (!char) throw new Error('No character found to load player texture');
@@ -658,6 +660,7 @@ export class MapService {
         onClick: () => this.onTileClicked(tile.q, tile.r),
         variantKey
       });
+      tileContainer.lootIcon = this.renderer.createLootSprite(x, y, this.size);
 
       this.tiles[tile.key] = {
         gfx: tileContainer,

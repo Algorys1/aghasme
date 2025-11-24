@@ -10,6 +10,10 @@ export type Terrain =
   | 'jungle'
   | 'swamp';
 
+export interface TileContainer extends Container {
+  lootIcon?: Sprite;
+}
+
 export interface TileOptions {
   x: number;
   y: number;
@@ -21,7 +25,7 @@ export interface TileOptions {
   variantKey?: string;
 }
 
-export function createTile(options: TileOptions): Container {
+export function createTile(options: TileOptions): TileContainer {
   const { x, y, size, terrain, container, textures, onClick, variantKey } = options;
 
   const tileContainer = new Container();

@@ -13,7 +13,7 @@ import {ActionType} from '../../overlays/models/actions';
 import {ActionService} from '../../overlays/services/action.service';
 import { CombatComponent } from '../../combat/components/combat.component';
 import { LootPanelComponent } from "../../combat/components/loot-panel/loot-panel.component";
-import { LootService } from '../../combat/services/loot.service';
+import { GroundItem, LootService } from '../../combat/services/loot.service';
 import { OverlayRegistryService } from '../../overlays/services/overlay-registry.service';
 import { HarvestRegenerationService } from '../services/harvest-regeneration.service';
 import { DiceResult, DiceRollComponent, OrbType } from "./dice-roll/dice-roll.component";
@@ -127,6 +127,9 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
           this.activeOverlay = null;
         }
       }),
+      this.lootService.ground$.subscribe(items => {
+        this.updateLootIcons(items);
+      }),
       this.characterService.character$.subscribe(char => {
         this.character = char;
       }),
@@ -163,6 +166,24 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onFightConfirmed() {
     this.combatService.startCombat();
+  }
+
+  private updateLootIcons(items: GroundItem[]) {
+    // Efface tout
+    for (const tile of Object.values(this.mapService['tiles'])) {
+      if (tile.gfx?.lootIcon) {
+        tile.gfx.lootIcon.visible = false;
+      }
+    }
+
+    // Active les tuiles concernées
+    for (const g of items) {
+      const key = `${g.pos.q},${g.pos.r}`;
+      const tile = this.mapService['tiles'][key];
+      if (tile.gfx.lootIcon) {
+        tile.gfx.lootIcon.visible = true;
+      }
+    }
   }
 
   onFleeAttempt() {

@@ -9,9 +9,10 @@ export class RendererService {
   private mapContainer!: Container;
 
   private tileTextures: Record<string, Texture> = {};
-  private hexMaskTexture!: Texture;
+  private hexMaskTexture?: Texture;
   private overlayTextures: Record<string, Texture> = {};
   private playerTexture?: Texture;
+  private lootTexture!: Texture;
 
   /** Camera / zoom state */
   private zoom = 1;
@@ -109,6 +110,10 @@ export class RendererService {
     this.hexMaskTexture = await Assets.load('assets/tiles/tile-base.png');
   }
 
+  async loadLootTexture(): Promise<void> {
+    this.lootTexture = await Assets.load('assets/overlays/loot.png');
+  }
+
   async loadOverlayTextures(): Promise<void> {
     this.overlayTextures = {};
     for (const [key, icon] of Object.entries(OVERLAY_ICONS)) {
@@ -130,14 +135,29 @@ export class RendererService {
   }
 
   createOverlaySprite(kind: string, x: number, y: number, size: number): Sprite | null {
+    console.log('Size :', size)
     const tex = this.overlayTextures[kind];
     if (!tex) return null;
     const s = new Sprite(tex);
     s.anchor.set(0.5);
+    const overlayYOffset = -size * 0.20;
     s.x = x;
-    s.y = y;
+    s.y = y + overlayYOffset;
     s.width = size * 1.3;
     s.height = size * 1.3;
+    this.mapContainer.addChild(s);
+    return s;
+  }
+
+  createLootSprite(x: number, y: number, size: number): Sprite {
+    const s = new Sprite(this.lootTexture);
+    s.anchor.set(0.5);
+    s.zIndex = 3;
+    s.x = x;
+    s.y = y + size * 0.55; // sous l’overlay
+    s.width = size * 0.6;
+    s.height = size * 0.6;
+    s.visible = false;  // par défaut invisible
     this.mapContainer.addChild(s);
     return s;
   }
@@ -231,6 +251,7 @@ export class RendererService {
   clear(): void {
     if (!this.app) return;
     this.app.destroy(true, { children: true, texture: false, context: true });
+    this.hexMaskTexture = undefined;
     this.tileTextures = {};
     this.overlayTextures = {};
     this.playerTexture = undefined;
