@@ -44,7 +44,7 @@ export class MapService {
   private noiseAltitude = createNoise2D();
   private noiseHumidity = createNoise2D();
   private scaleAltitude = 0.10;
-  private scaleHumidity = 0.16;
+  private scaleHumidity = 0.17;
   private seed: number = Date.now();
   private randState = 1;
 
@@ -120,7 +120,7 @@ export class MapService {
     const humidity = (humRaw + 1) / 2;
 
     // --- SEA (medium)
-    if (altitude < 0.27) return "sea";
+    if (altitude < 0.28) return "sea";
 
     // --- HIGH ALTITUDE biomes
     if (altitude > 0.78) return "volcano";     // small
@@ -165,6 +165,60 @@ export class MapService {
     return { x, y };
   }
 
+  private smoothBiomes() {
+    const newTerrains: Record<string, Terrain> = {};
+
+    const dirs = [
+      [1, 0], [1, -1], [0, -1],
+      [-1, 0], [-1, 1], [0, 1]
+    ];
+
+    for (const key in this.tiles) {
+      const entry = this.tiles[key];
+      const [q, r] = key.split(',').map(Number);
+
+      const counts: Record<Terrain, number> = {
+        plain: 0,
+        forest: 0,
+        desert: 0,
+        mountain: 0,
+        volcano: 0,
+        sea: 0,
+        jungle: 0,
+        swamp: 0
+      };
+
+      for (const [dq, dr] of dirs) {
+        const nk = `${q + dq},${r + dr}`;
+        const n = this.tiles[nk];
+        if (!n) continue;
+        counts[n.terrain] = (counts[n.terrain] || 0) + 1;
+      }
+
+      // Find dominant terran
+      let dominant: Terrain = entry.terrain;
+      let max = 0;
+      for (const [t, c] of Object.entries(counts)) {
+        if (c > max) {
+          max = c;
+          dominant = t as Terrain;
+        }
+      }
+
+      // If 4 or less neighbors are the same, we put this type
+      if (max >= 4 && dominant !== entry.terrain) {
+        newTerrains[key] = dominant;
+      } else {
+        newTerrains[key] = entry.terrain;
+      }
+    }
+
+    // Apply changes
+    for (const key in newTerrains) {
+      this.tiles[key].terrain = newTerrains[key];
+    }
+  }
+
   private buildMap(radius: number) {
     const N = radius;
     this.overlayRegistry.reset();
@@ -200,6 +254,8 @@ export class MapService {
         }
       }
     }
+
+    this.smoothBiomes();
 
     this.worldGen.generate({
       tiles: this.tiles,

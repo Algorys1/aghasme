@@ -450,7 +450,7 @@ export const RUINS_TABLE: OverlayTemplate[] = [
     description: 'A towering black fortress stands on a cliff\'s edge, humming faintly with latent power. The walls ripple like oil under moonlight.',
     icon: 'assets/overlays/ruins.png',
     id: 'obsidian-bastion',
-    allowedTerrains: ['mountain'],
+    allowedTerrains: ['mountain', 'volcano', 'desert'],
     requireAdjSea: true,
     actions: [],
     eventChain: {
