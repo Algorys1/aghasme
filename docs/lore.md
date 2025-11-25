@@ -95,7 +95,6 @@ Descendants de Theorn le Solitaire, celui qui garda l’Orbe pour lui seul.
 Puissants combattants et âmes fières, leur corps porte encore les stigmates de la malédiction de leur aïeul.
 Leur force brute et leur résistance font d’eux des guerriers redoutables, mais leur tempérament farouche peut parfois les isoler.
 
-
 ---
 
 Sylvaris
@@ -104,7 +103,6 @@ Enfants de la nature et gardiens des forêts, les Végétaliens vivent en harmon
 Leur lien avec Élémie de Sombrebois leur confère une grande résistance aux maladies et une compassion naturelle.
 Généreux, solidaires et sages, ils espèrent un jour voir l’Arbre Unique renaître de ses cendres.
 
-
 ---
 
 Feufroids
@@ -112,7 +110,6 @@ Feufroids
 Maîtres des éléments, les Feufroids savent canaliser les forces du feu, de la glace, du vent et de l’eau.
 Héritiers de l’enseignement d’Angorn l’Académicien, ils puisent leur pouvoir dans la connaissance et la discipline.
 Leur devise résonne encore à travers les âges : "La connaissance est la clé de tout."
-
 
 ---
 
@@ -126,46 +123,46 @@ Bâtisseurs, inventeurs et rétameurs de l’impossible, ils manient la science 
 
 1. Aghasme, la Capitale
 
-Immense cité blanche bâtie à flanc de montagne, s’élevant en plusieurs niveaux jusqu’à une grande tour centrale.
-Des marchés, des lumières, des toits en pierre claire et des rues animées.
-Une aura d’unité — mélange des quatre clans, architectures variées, activité constante jour et nuit.
+    Immense cité blanche bâtie à flanc de montagne, s’élevant en plusieurs niveaux jusqu’à une grande tour centrale.
+    Des marchés, des lumières, des toits en pierre claire et des rues animées.
+    Une aura d’unité — mélange des quatre clans, architectures variées, activité constante jour et nuit.
 
 2. Rivertown (Villerive)
 
-Grande ville traversée par une rivière argentée, bordée de moulins et de passerelles en bois.
-Les forêts alentour s’étendent à perte de vue.
-Maisons à colombages, toits couverts de mousse, marchés sur l’eau.
+    Grande ville traversée par une rivière argentée, bordée de moulins et de passerelles en bois.
+    Les forêts alentour s’étendent à perte de vue.
+    Maisons à colombages, toits couverts de mousse, marchés sur l’eau.
 
 3. Eldergate (La Porte des Anciens)
 
-Ville monumentale bâtie autour d’une immense porte de pierre grise ornée de bas-reliefs titanesques.
-Les bâtiments semblent minuscules à côté.
-Brume légère, ruines anciennes, symboles gravés dans la roche.
+    Ville monumentale bâtie autour d’une immense porte de pierre grise ornée de bas-reliefs titanesques.
+    Les bâtiments semblent minuscules à côté.
+    Brume légère, ruines anciennes, symboles gravés dans la roche.
 
 4. Stormhold (Fort Tempête)
 
-Cité fortifiée battue par les vents, perchée sur une falaise.
-Ses murailles abritent de vastes halls décorés de tapisseries et d’étendards.
-Les rues scintillent sous la pluie, la noblesse et les artisans s’y croisent.
+    Cité fortifiée battue par les vents, perchée sur une falaise.
+    Ses murailles abritent de vastes halls décorés de tapisseries et d’étendards.
+    Les rues scintillent sous la pluie, la noblesse et les artisans s’y croisent.
 
 5. Ironvale (Val d’Argent)
 
-Ville minière nichée au pied des montagnes, ses forges illuminent la vallée la nuit.
-De grands ponts de pierre relient les bâtiments taillés dans la roche.
-De la vapeur et des étincelles montent des ateliers.
+    Ville minière nichée au pied des montagnes, ses forges illuminent la vallée la nuit.
+    De grands ponts de pierre relient les bâtiments taillés dans la roche.
+    De la vapeur et des étincelles montent des ateliers.
 
 6. Highwall (Hautefort)
 
-Cité fortifiée sur un plateau, dominée par une arène colossale.
-Bannières colorées, foule, musique, feux et festivités.
-Des gradins massifs et des sculptures guerrières ornent la ville.
+    Cité fortifiée sur un plateau, dominée par une arène colossale.
+    Bannières colorées, foule, musique, feux et festivités.
+    Des gradins massifs et des sculptures guerrières ornent la ville.
 
 7. Mechanica (Mechanica)
 
-Cité mécanique aux multiples niveaux, ponts et engrenages visibles à ciel ouvert.
-La Tour de Seylan, immense horloge, domine le paysage.
-Des lumières dorées, de la vapeur, des mécanismes en mouvement constant.
+    Cité mécanique aux multiples niveaux, ponts et engrenages visibles à ciel ouvert.
+    La Tour de Seylan, immense horloge, domine le paysage.
+    Des lumières dorées, de la vapeur, des mécanismes en mouvement constant.
 
 8. Leafhaven (Havrefeuille)
 
-Au coeur d'une forêt ancienne se dresse Havrefeuille, cité paisible tissée de bois et de feuilles. Les druides y maintiennent l'équilibre fragile entre la nature et les voyageurs qui la traversen
+    Au coeur d'une forêt ancienne se dresse Havrefeuille, cité paisible tissée de bois et de feuilles. Les druides y maintiennent l'équilibre fragile entre la nature et les voyageurs qui la traversen

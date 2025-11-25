@@ -1,16 +1,14 @@
----
-
 # Aghasme — TODO Liste BETA
 
-1. Ennemis
+## Ennemis
 
-Revoir la définition des Orbes pour tous les ennemis.
+Revoir la définition des Orbes pour tous les ennemis. Trouver un moyen simple de définir les orbes, peut-être juste faire un système de bonus qui s'ajoutera à une définition de base (base: 8 ou 10 ?).
 
-Ajuster leurs statistiques et capacités pour assurer la cohérence globale.
+Ajuster leurs statistiques et capacités pour assurer la cohérence globale. A voir peut-être une fois qu'une liste de compétences sera définies ?
 
 ---
 
-2. Objets & Effets
+## Objets & Effets
 
 Séparer les effets de base et les effets magiques :
 
@@ -26,7 +24,7 @@ Armure de cuir rare → onUse: +1 defense, effects: [+5% resist feu, +5 maxHP].
 
 ---
 
-3. Temps & Date
+## Temps & Date
 
 Ajouter le système de jours / mois / années.
 
@@ -34,22 +32,36 @@ Afficher la date dans le HUD.
 
 ---
 
-4. Level Up
+## Level Up
 
 Implémenter la montée de niveau :
 
-Gain de stats.
+* Gain de stats.
 
-Bonus de classe / background.
+* Bonus de classe / background.
 
-Logique d'évolution du personnage.
-
+* Logique d'évolution du personnage.
 
 ---
 
-5. Création de Partie / Personnage
+## Création de Partie / Personnage
 
-Revoir les backgrounds.
+Définir les secondaryStats complètes dans le modèle de Character. Fichier actuel :
+
+```ts
+  baseStats?: {
+    attack: number;
+    defense: number;
+    maxHp: number;
+    maxMp: number;
+  };
+
+  secondaryStats?: {
+    mv: number
+  }
+```
+
+Revoir les backgrounds, ne plus donner de bonus pour les orbes via les backgrounds mais plus sur les secondaryStats.
 
 Afficher un résumé global avant de choisir le nom.
 
@@ -57,13 +69,13 @@ Ajouter un bouton Generate Random Name.
 
 ---
 
-6. Pion Joueur
+## Pion Joueur
 
 Tester un pion joueur plus gros pour améliorer la lisibilité.
 
 ---
 
-7. Régions & Clusters
+## Régions & Clusters
 
 Définir les régions sur la carte :
 
@@ -79,7 +91,7 @@ Détecter les clusters de tuiles :
 
 ---
 
-8. HUD Bas
+## HUD Bas
 
 Ajouter les bannières des régions de ville.
 
@@ -87,7 +99,7 @@ Améliorer les descriptions de tuiles en utilisant les clusters.
 
 ---
 
-9. Combat
+## Combat
 
 Ajouter les textures du board (tuiles carrées).
 
@@ -103,7 +115,7 @@ Gérer la mort d'un personnage.
 
 ---
 
-10. Overlays
+## Overlays
 
 Ajouter de nouveaux overlays narratifs (Tour, Spirit, Treasure, Caravan…).
 
@@ -111,40 +123,65 @@ Revoir les overlays existants.
 
 Ajouter une description associée à chaque action.
 
-Permettre plusieurs textes pour l’action Talk.
+Permettre plusieurs choix de textes pour l’action Talk. Peut-être voir pour un arbre de choix ? Associés à des jets d'Orbes ?
 
 ---
 
-11. Sauvegardes
+## Sauvegardes
 
 Voir si une synchronisation des sauvegardes via Google Play est possible.
 
+Charger 2 parties différentes et voir si les data sont bien séparées.
+
 ---
 
-12. Son & Musique
+## Son & Musique
 
 Ajouter une musique de base.
 
-Ajouter quelques effets sonores.
+Ajouter quelques effets sonores, surtout en combat. On peut partir sur des effets génériques pour certaines choses comme l'utilisation d'objets, les attaques, etc.
 
 ---
 
-13. Quêtes
+## Quêtes
+
+### Visuel
+
+* Ce sera des overlays tout simplement
+* Un pion quête (déjà fait) sera mis sur les tuiles correspondantes.
+* Il faudra un journal de quête à rajouter dans le camp.
+
+### La Quête des Quatres Orbes
 
 Définir la quête principale (rassembler les 4 Orbes et fermer les portails).
 
-Ajouter quelques quêtes secondaires.
+Quelques idées en vrac :
+
+* Le joueur devra jouer 4 set d'overlays de quêtes, pour chaque clans.
+* Le début de la Quête sera une simple légende à propos des 4 portails réouverts. Le plus dangereux sera le Mécanique, le moins dangereux le Sylvaris.
+* Il faudra trouver 4 artefacts, 1 par clan.
+* Il faudra amener chacun des artefatcs au portail correspondant.
+* Il faudra jouer l'overlays des Portails pour finir la quête du clan.
+
+### Quêtes secondaires
+
+Ajouter quelques quêtes secondaires. J'aimerais sortir des sentiers battus et ne pas proposer la fameuse attaque de rats dans une cave (bien que ce serait un joli brin d'humour) ou la dangereuse meute de loup qui embête le village.
+
+A voir si on étends le système d'overlays pour donner la possibilité de le jouer une quête sur plusieurs endroits.
+
+Exemple :
+
+* Début de la quête dans Villerive, avec du blabla, on accepte ou on refuse la quête
+* Puis si acceptée, deuxième étape sur une tuile "mountain" précise pour récupérer un objet en résolvant une énigme par exemple
+* Puis retour à Villerive pour ramener l'objet ou bien aller détruire l'objet sur une tuile volcano.
 
 ---
 
-14. Codex
+## Codex
 
 Ajouter :
 
-Les livres trouvés.
-
-Les cartes découvertes.
-
-Les ennemis rencontrés.
-
-Les informations de lore débloquées.
+* Les livres trouvés.
+* Les cartes découvertes.
+* Les ennemis rencontrés.
+* Les informations de lore débloquées.
