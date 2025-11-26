@@ -20,10 +20,17 @@ import { SettingsService } from '../../../game/services/settings.service';
 import { RegionService } from '../../../game/services/region.service';
 
 interface Edge {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
+  x1: number; y1: number;
+  x2: number; y2: number;
+}
+
+interface CachedTile {
+  q: number;
+  r: number;
+  px: number;  // pré-calculé
+  py: number;  // pré-calculé
+  terrain: Terrain;
+  discovered: boolean;
 }
 
 @Component({
@@ -34,6 +41,7 @@ interface Edge {
   styleUrls: ['./minimap.component.scss'],
 })
 export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
+
   @ViewChild('minimapCanvas', { static: false })
   canvasRef!: ElementRef<HTMLCanvasElement>;
 
@@ -46,6 +54,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   offsetX = 0;
   offsetY = 0;
+
   private isDragging = false;
   private dragStart = { x: 0, y: 0 };
 
@@ -59,16 +68,15 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.translate.use(lang);
   }
 
+  // ===== COLORS ===============================================
+
   private readonly overlayColors: Record<OverlayKind, string> = {
     [OverlayKind.None]: '#ffffff',
-
     [OverlayKind.City]: '#4fc3f7',
     [OverlayKind.Village]: '#ffb74d',
     [OverlayKind.Farm]: '#f0e68c',
-
     [OverlayKind.Mine]: '#bdbdbd',
     [OverlayKind.Forest]: '#66bb6a',
-
     [OverlayKind.Ruins]: '#ab47bc',
     [OverlayKind.Tower]: '#9575cd',
     [OverlayKind.Shrine]: '#ce93d8',
@@ -105,9 +113,10 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     [OverlayKind.Wanderer]: "W",
     [OverlayKind.Treasure]: "Tr",
     [OverlayKind.Portal]: "P",
-
     [OverlayKind.None]: ""
   };
+
+  // ===== LEGEND ===============================================
 
   legendEntries = [
     { kind: OverlayKind.City,     label: 'MAP.LEGENDS.CITY',     color: this.overlayColors[OverlayKind.City],     letter: this.overlayLetters[OverlayKind.City] },
@@ -128,14 +137,20 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     { kind: 'player', label: 'MAP.LEGENDS.PLAYER', color: '#7fc6ff', type: 'player' },
   ];
 
-  // -------------------------------------------------------------
-  // INIT
-  // -------------------------------------------------------------
+  // ===== OPTIMISATION : CACHE =============================================
+
+  private cachedTiles: CachedTile[] = [];
+  private cachedBorders: { color: string, segments: Edge[] }[] = [];
+
+  private scheduled = false;
+
+  // ===== INIT =============================================================
+
   ngOnInit(): void {
     this.subs.push(
-      this.mapService.playerMoved.subscribe(() => this.draw()),
-      this.mapService.tileChange.subscribe(() => this.draw()),
-      this.mapService.overlayChange.subscribe(() => this.draw())
+      this.mapService.playerMoved.subscribe(() => this.requestDraw()),
+      this.mapService.tileChange.subscribe(() => this.requestDraw()),
+      this.mapService.overlayChange.subscribe(() => this.requestDraw())
     );
   }
 
@@ -146,7 +161,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const canvas = this.canvasRef.nativeElement;
 
-    // retina
+    // Retina
     const dpr = window.devicePixelRatio || 1;
     canvas.width = this.size * dpr;
     canvas.height = this.size * dpr;
@@ -159,6 +174,9 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.installMouseControls(canvas);
     this.installTouchControls(canvas);
 
+    this.precomputeTiles();
+    this.precomputeBorders();
+
     this.draw();
   }
 
@@ -166,54 +184,103 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.forEach(s => s.unsubscribe());
   }
 
-  // -------------------------------------------------------------
-  // SNAPSHOTS
-  // -------------------------------------------------------------
+  // ========================================================================
+  // OPTIMISATION 1: REDESSIN À 30 FPS MAX
+  // ========================================================================
 
-  private getTileSnapshot() {
-    const tiles = (this.mapService as any).tiles as Record<
-      string,
-      { terrain: Terrain; discovered: boolean; variant: string }
-    >;
+  private requestDraw() {
+    if (this.scheduled) return;
+    this.scheduled = true;
 
-    return Object.entries(tiles).map(([key, t]) => {
-      const [q, r] = key.split(',').map(Number);
-      return { q, r, terrain: t.terrain, discovered: t.discovered };
+    requestAnimationFrame(() => {
+      this.scheduled = false;
+      this.draw();
     });
   }
 
-  private getOverlaySnapshot() {
-    const list: {
-      id: string;
-      kind: OverlayKind;
-      q: number;
-      r: number;
-      name: string | null;
-    }[] = [];
+  // ========================================================================
+  // OPTIMISATION 2 : PRÉ-CALCUL DES TUILES
+  // ========================================================================
 
-    for (const [id, entry] of this.overlayRegistry['assigned'].entries()) {
-      const table = OverlayFactory.getTable(entry.kind);
-      const template = table?.find(t => t.id === id);
+  private precomputeTiles() {
+    const raw = (this.mapService as any).tiles as Record<
+      string,
+      { terrain: Terrain; discovered: boolean }
+    >;
 
-      list.push({
-        id,
-        kind: entry.kind,
-        q: entry.coords.q,
-        r: entry.coords.r,
-        name: template?.name ?? null,
+    const tiles: CachedTile[] = [];
+
+    for (const [key, t] of Object.entries(raw)) {
+      const [q, r] = key.split(',').map(Number);
+      const { x, y } = this.hexToPixel(q, r);  // position ABSOLUE
+
+      tiles.push({
+        q, r,
+        px: x,
+        py: y,
+        terrain: t.terrain,
+        discovered: t.discovered
       });
     }
 
-    return list;
+    this.cachedTiles = tiles;
   }
 
-  private getPlayerPos() {
-    return this.mapService.getPlayerPosition();
+  // ========================================================================
+  // OPTIMISATION 3 : PRÉ-CALCUL DES SEGMENTS DE FRONTIÈRE
+  // ========================================================================
+
+  private precomputeBorders() {
+    const results: { color: string, segments: Edge[] }[] = [];
+
+    const directions: [number, number][] = [
+      [1, 0], [0, 1], [-1, 1],
+      [-1, 0], [0, -1], [1, -1]
+    ];
+
+    const cityRegions = this.regionService.getCityRegions();
+
+    for (const region of cityRegions) {
+      const tiles = new Set(region.tiles);
+      const color = this.clanColors[region.clan ?? 'all'] ?? '#ff3366';
+
+      const segments: Edge[] = [];
+
+      for (const key of tiles) {
+        const [q, r] = key.split(',').map(Number);
+
+        // Position absolue
+        const { x, y } = this.hexToPixel(q, r);
+
+        const radius = this.hexSize;
+
+        for (let i = 0; i < 6; i++) {
+          const [dq, dr] = directions[i];
+          const neighborKey = `${q + dq},${r + dr}`;
+
+          if (tiles.has(neighborKey)) continue;
+
+          const angle1 = ((60 * i - 30) * Math.PI) / 180;
+          const angle2 = ((60 * (i + 1) - 30) * Math.PI) / 180;
+
+          segments.push({
+            x1: x + radius * Math.cos(angle1),
+            y1: y + radius * Math.sin(angle1),
+            x2: x + radius * Math.cos(angle2),
+            y2: y + radius * Math.sin(angle2),
+          });
+        }
+      }
+
+      results.push({ color, segments });
+    }
+
+    this.cachedBorders = results;
   }
 
-  // -------------------------------------------------------------
+  // ========================================================================
   // DRAW
-  // -------------------------------------------------------------
+  // ========================================================================
 
   private draw(): void {
     if (!this.ctx) return;
@@ -222,20 +289,15 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     ctx.clearRect(0, 0, this.size, this.size);
 
     const scale = this.FIXED_SCALE;
-    const tiles = this.getTileSnapshot();
-    const overlays = this.getOverlaySnapshot();
     const player = this.getPlayerPos();
 
     const centerX = this.size / 2 + this.offsetX;
     const centerY = this.size / 2 + this.offsetY;
 
-    // === TILES ===
-    for (const tile of tiles) {
-      // if (!tile.discovered) continue;
-
-      const { x, y } = this.hexToPixel(tile.q - player.q, tile.r - player.r);
-      const px = centerX + x * scale;
-      const py = centerY + y * scale;
+    // DRAW TILES (SUPER FAST)
+    for (const tile of this.cachedTiles) {
+      const px = centerX + (tile.px - player.q * this.hexSize * Math.sqrt(3) - player.r * this.hexSize * Math.sqrt(3) / 2) * scale;
+      const py = centerY + (tile.py - player.r * this.hexSize * 1.5) * scale;
 
       const radius = this.hexSize * scale;
 
@@ -255,50 +317,130 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       ctx.stroke();
     }
 
-    // Regions
-    this.drawCityRegionBorders(ctx, player, scale, centerX, centerY);
+    // DRAW REGION BORDERS (super rapide)
+    this.drawPrecomputedBorders(ctx, player, scale, centerX, centerY);
 
-    // Map border
+    // MAP BORDER (inchangé)
+    this.drawMapBorder(ctx, player, scale, centerX, centerY);
+
+    // OVERLAYS + LABELS
+    this.drawOverlays(ctx, player, scale, centerX, centerY);
+
+    // PLAYER MARKER
+    this.drawPlayer(ctx, centerX, centerY);
+  }
+
+  // ========================================================================
+  // REGIONS — drawing only (borders are precomputed)
+  // ========================================================================
+
+  private drawPrecomputedBorders(
+    ctx: CanvasRenderingContext2D,
+    player: { q: number; r: number },
+    scale: number,
+    centerX: number,
+    centerY: number
+  ) {
+    for (const region of this.cachedBorders) {
+      ctx.strokeStyle = region.color;
+      ctx.lineWidth = 2.5;
+
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = region.color;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+
+      for (const seg of region.segments) {
+        const px1 = centerX + (seg.x1 - player.q * this.hexSize * Math.sqrt(3) - player.r * this.hexSize * Math.sqrt(3) / 2) * scale;
+        const py1 = centerY + (seg.y1 - player.r * this.hexSize * 1.5) * scale;
+
+        const px2 = centerX + (seg.x2 - player.q * this.hexSize * Math.sqrt(3) - player.r * this.hexSize * Math.sqrt(3) / 2) * scale;
+        const py2 = centerY + (seg.y2 - player.r * this.hexSize * 1.5) * scale;
+
+        ctx.beginPath();
+        ctx.moveTo(px1, py1);
+        ctx.lineTo(px2, py2);
+        ctx.stroke();
+      }
+
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  // ========================================================================
+  // DRAW MAP BORDER (inchangé)
+  // ========================================================================
+
+  private drawMapBorder(
+    ctx: CanvasRenderingContext2D,
+    player: { q: number; r: number },
+    scale: number,
+    centerX: number,
+    centerY: number
+  ) {
     const radiusMap = (this.mapService as any).mapRadius;
-
-    // Extend the border by 1 hex outward
     const R = radiusMap + 1;
 
-    // Subtle golden pulse
-    const t = performance.now() * 0.0015; // slow animation
-    const pulse = 0.25 + Math.sin(t) * 0.10; // 0.15 → 0.35 range
+    const t = performance.now() * 0.0015;
+    const pulse = 0.25 + Math.sin(t) * 0.10;
 
-    ctx.strokeStyle = `rgba(255, 215, 130, ${pulse})`; // warm gold
+    ctx.strokeStyle = `rgba(255, 215, 130, ${pulse})`;
     ctx.lineWidth = 1.4;
 
-    // Axial coordinates of big hexagon corners
     const corners = [
-      { q:  R, r: -R },
-      { q:  0, r: -R },
-      { q: -R, r:  0 },
-      { q: -R, r:  R },
-      { q:  0, r:  R },
-      { q:  R, r:  0 },
+      { q: R, r: -R },
+      { q: 0, r: -R },
+      { q: -R, r: 0 },
+      { q: -R, r: R },
+      { q: 0, r: R },
+      { q: R, r: 0 },
     ];
 
     ctx.beginPath();
 
-    corners.forEach((c, index) => {
-      // position relative to player
+    corners.forEach((c, i) => {
       const { x, y } = this.hexToPixel(c.q - player.q, c.r - player.r);
-
       const px = centerX + x * scale;
       const py = centerY + y * scale;
 
-      if (index === 0) ctx.moveTo(px, py);
-      else ctx.lineTo(px, py);
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
     });
 
     ctx.closePath();
     ctx.stroke();
+  }
 
+  // ========================================================================
+  // DRAW OVERLAYS & LABELS (inchangé)
+  // ========================================================================
 
-    // OVERLAYS
+  private getOverlaySnapshot() {
+    const list: { id: string; kind: OverlayKind; q: number; r: number; name: string | null; }[] = [];
+
+    for (const [id, entry] of this.overlayRegistry['assigned'].entries()) {
+      const table = OverlayFactory.getTable(entry.kind);
+      const template = table?.find(t => t.id === id);
+
+      list.push({
+        id,
+        kind: entry.kind,
+        q: entry.coords.q,
+        r: entry.coords.r,
+        name: template?.name ?? null,
+      });
+    }
+
+    return list;
+  }
+
+  private drawOverlays(
+    ctx: CanvasRenderingContext2D,
+    player: { q: number; r: number },
+    scale: number,
+    centerX: number,
+    centerY: number
+  ) {
+    const overlays = this.getOverlaySnapshot();
     type LabelTask = { text: string; x: number; y: number };
     const labels: LabelTask[] = [];
 
@@ -310,29 +452,25 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       const size = 3 * scale;
       const half = size / 2;
 
-      // Light shadow
       ctx.fillStyle = 'rgba(0,0,0,0.25)';
       ctx.beginPath();
       ctx.roundRect(px - half + 1, py - half + 1, size, size, 2);
       ctx.fill();
 
-      // Rounded square
       ctx.fillStyle = this.overlayColors[ov.kind] ?? '#fff';
       ctx.beginPath();
       ctx.roundRect(px - half, py - half, size, size, 2);
       ctx.fill();
 
-      // Letters
       const letter = this.overlayLetters[ov.kind];
       if (letter) {
-        ctx.fillStyle = '#000000';
+        ctx.fillStyle = '#000';
         ctx.font = `${Math.max(8, 2.2 * scale)}px Cinzel`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(letter, px, py);
       }
 
-      // Small border
       ctx.strokeStyle = 'rgba(0,0,0,0.7)';
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -349,12 +487,14 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    // LABELS
-    for (const lab of labels) {
-      this.drawLabel(ctx, lab.text, lab.x, lab.y, scale);
-    }
+    labels.forEach(l => this.drawLabel(ctx, l.text, l.x, l.y, scale));
+  }
 
-    // PLAYER
+  // ========================================================================
+  // PLAYER
+  // ========================================================================
+
+  private drawPlayer(ctx: CanvasRenderingContext2D, centerX: number, centerY: number) {
     const r = this.hexSize * 1.6;
 
     ctx.beginPath();
@@ -371,80 +511,9 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     ctx.stroke();
   }
 
-  // -------------------------------------------------------------
-  // REGIONS
-  // -------------------------------------------------------------
-
-  private drawCityRegionBorders(
-    ctx: CanvasRenderingContext2D,
-    player: { q: number; r: number },
-    scale: number,
-    centerX: number,
-    centerY: number
-  ): void {
-    const cityRegions = this.regionService.getCityRegions();
-    if (!cityRegions.length) return;
-
-    const directions: [number, number][] = [
-      [1, 0],     // E
-      [0, 1],     // SE
-      [-1, 1],    // SW
-      [-1, 0],    // W
-      [0, -1],    // NW
-      [1, -1]     // NE
-    ];
-
-    for (const region of cityRegions) {
-      const tileSet = new Set(region.tiles);
-      const color = this.clanColors[region.clan ?? 'all'] ?? '#ff3366';
-
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 2.5;
-
-      for (const key of tileSet) {
-        const [q, r] = key.split(',').map(Number);
-
-        const { x, y } = this.hexToPixel(q - player.q, r - player.r);
-        const px = centerX + x * scale;
-        const py = centerY + y * scale;
-        const radius = this.hexSize * scale;
-
-        for (let i = 0; i < 6; i++) {
-          const [dq, dr] = directions[i];
-          const neighborKey = `${q + dq},${r + dr}`;
-
-          // If the neighbor EAST is in the region, this side is internal
-          if (tileSet.has(neighborKey)) continue;
-
-          // Precise calculation of the two vertices of the edge
-          const angle1 = ((60 * i - 30) * Math.PI) / 180;
-          const angle2 = ((60 * (i + 1) - 30) * Math.PI) / 180;
-
-          const x1 = px + radius * Math.cos(angle1);
-          const y1 = py + radius * Math.sin(angle1);
-          const x2 = px + radius * Math.cos(angle2);
-          const y2 = py + radius * Math.sin(angle2);
-
-          ctx.shadowBlur = 6;
-          ctx.shadowColor = color;
-          ctx.shadowOffsetX = 0;
-          ctx.shadowOffsetY = 0;
-
-          ctx.beginPath();
-          ctx.moveTo(x1, y1);
-          ctx.lineTo(x2, y2);
-          ctx.stroke();
-
-          ctx.shadowBlur = 0;
-          ctx.shadowColor = 'transparent';
-        }
-      }
-    }
-  }
-
-  // -------------------------------------------------------------
-  // LABEL
-  // -------------------------------------------------------------
+  // ========================================================================
+  // LABELS
+  // ========================================================================
 
   private drawLabel(
     ctx: CanvasRenderingContext2D,
@@ -479,9 +548,9 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     ctx.fillText(text, x, y);
   }
 
-  // -------------------------------------------------------------
+  // ========================================================================
   // UTILS
-  // -------------------------------------------------------------
+  // ========================================================================
 
   private hexToPixel(q: number, r: number) {
     const x = this.hexSize * Math.sqrt(3) * (q + r / 2);
@@ -503,9 +572,13 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // -------------------------------------------------------------
-  // DRAG
-  // -------------------------------------------------------------
+  private getPlayerPos() {
+    return this.mapService.getPlayerPosition();
+  }
+
+  // ========================================================================
+  // DRAG CONTROLS
+  // ========================================================================
 
   private installMouseControls(canvas: HTMLCanvasElement) {
     canvas.addEventListener('mousedown', e => {
@@ -525,7 +598,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       this.offsetY += (e.clientY - this.dragStart.y) / dragSpeed;
 
       this.dragStart = { x: e.clientX, y: e.clientY };
-      this.draw();
+      this.requestDraw();
     });
   }
 
@@ -550,7 +623,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       this.offsetY += (t.clientY - this.dragStart.y) / dragSpeed;
 
       this.dragStart = { x: t.clientX, y: t.clientY };
-      this.draw();
+      this.requestDraw();
     });
 
     canvas.addEventListener('touchend', () => {
