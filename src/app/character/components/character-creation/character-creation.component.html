@@ -16,7 +16,7 @@
             [class.selected]="selectedArchetype === type"
             (click)="selectArchetype(type)"
           >
-            <img [src]="'assets/ui/banners/banner-' + type + '.png'" [alt]="type" />
+            <img [src]="'assets/characters/banners/banner-' + type + '.png'" [alt]="type" />
           </div>
         }
       </div>
@@ -52,7 +52,7 @@
 
         <div class="history">
           <h3 class="clan" [class]="selectedArchetype">
-            <img [src]="'assets/ui/banners/banner-' + selectedArchetype + '.png'" [alt]="selectedArchetype" /> {{ getClan() }}
+            <img [src]="'assets/characters/banners/banner-' + selectedArchetype + '.png'" [alt]="selectedArchetype" /> {{ getClan() }}
           </h3>
           <div class="description"> {{ getDescription() }}</div>
         </div>

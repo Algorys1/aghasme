@@ -13,6 +13,8 @@ import { EnemyFactory } from '../../combat/factories/enemy.factory';
 import { CombatService } from '../../combat/services/combat.service';
 import { hexKey, hexNeighborsInBounds } from '../utils/hex.utils';
 import { OverlayFactory } from '../../overlays/factories/overlay.factory';
+import { RegionService, RegionTile, CityRegionSeed, RegionsSaveData } from './region.service';
+import { ClusterService } from './cluster.service';
 
 export interface MapTileSnapshot {
   key: string;
@@ -32,6 +34,7 @@ export interface MapSnapshot {
   overlays: { q: number; r: number; kind: OverlayKind }[];
   tiles: MapTileSnapshot[];
   overlayRegistry: { id: string; kind: OverlayKind; q: number; r: number }[];
+  regions: RegionsSaveData;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -71,7 +74,9 @@ export class MapService {
     private renderer: RendererService,
     private overlayRegistry: OverlayRegistryService,
     private combatService: CombatService,
-    private worldGen: WorldGenerationService
+    private worldGen: WorldGenerationService,
+    private regionService: RegionService,
+    private clusterService: ClusterService
   ) {}
 
   get overlays() {
@@ -271,6 +276,12 @@ export class MapService {
 
     this.logOverlayStats();
     this.overlayRegistry.getRemainingStockSummary();
+
+    // Generate City Regions
+    const citySeeds = this.buildCityRegionSeeds();
+    const regionTiles = this.buildRegionTilesArray();
+    this.regionService.generateCityRegions(regionTiles, citySeeds);
+    this.clusterService.generateNaturalRegions(regionTiles);
   }
 
   private createPlayer() {
@@ -433,6 +444,46 @@ export class MapService {
     }
   }
 
+  // REGIONS
+  // Construit les RegionTile à partir du record this.tiles
+  private buildRegionTilesArray(): RegionTile[] {
+    const result: RegionTile[] = [];
+    for (const key of Object.keys(this.tiles)) {
+      const entry = this.tiles[key];
+      const [qs, rs] = key.split(',');
+      result.push({
+        key,
+        q: Number(qs),
+        r: Number(rs),
+        terrain: entry.terrain,
+      });
+    }
+    return result;
+  }
+
+  // Identifie les villes à partir de l'OverlayRegistry
+  private buildCityRegionSeeds(): CityRegionSeed[] {
+    const ids = [
+      'aghasme',
+      'rivertown',
+      'eldergate',
+      'highwall',
+      'ironvale',
+      'mechanica',
+      'stormhold',
+      'leafhaven',
+    ];
+
+    const seeds: CityRegionSeed[] = [];
+    for (const id of ids) {
+      const entry = this.overlayRegistry.getById(id);
+      if (!entry) continue;
+      const key = hexKey(entry.coords.q, entry.coords.r);
+      seeds.push({ cityId: id, centerKey: key });
+    }
+    return seeds;
+  }
+
   // OVERLAYS
   addOverlay(q: number, r: number, kind: OverlayKind) {
     const { x, y } = this.hexToPixel(q, r);
@@ -566,6 +617,8 @@ export class MapService {
       r: entry.coords.r,
     }));
 
+    const regions = this.regionService.exportForSave();
+
     return {
       version: 1,
       size: this.mapRadius,
@@ -573,7 +626,8 @@ export class MapService {
       player: { ...this.playerPos },
       overlays,
       tiles,
-      overlayRegistry: overlayRegistryData
+      overlayRegistry: overlayRegistryData,
+      regions
     };
   }
 
@@ -746,6 +800,9 @@ export class MapService {
     }
 
     for (const o of snapshot.overlays ?? []) this.addOverlay(o.q, o.r, o.kind);
+
+    this.regionService.importFromSave(snapshot.regions);
+    console.log(`🧭 Regions restored (${snapshot.regions.regions.length} regions).`);
 
     this.createPlayer();
     this.renderer.centerCamera(this.playerPos.q, this.playerPos.r, this.size);

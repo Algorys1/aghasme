@@ -9,8 +9,8 @@ import { GameState } from '../models/game-state.model';
 import { OverlayInstance, OverlayKind } from '../../overlays/models/overlays.model';
 import { OverlayFactory } from '../../overlays/factories/overlay.factory';
 import { OverlayWindowComponent } from '../../overlays/components/overlay-window.component';
-import {ActionType} from '../../overlays/models/actions';
-import {ActionService} from '../../overlays/services/action.service';
+import { ActionType } from '../../overlays/models/actions';
+import { ActionService } from '../../overlays/services/action.service';
 import { CombatComponent } from '../../combat/components/combat.component';
 import { LootPanelComponent } from "../../combat/components/loot-panel/loot-panel.component";
 import { GroundItem, LootService } from '../../combat/services/loot.service';
@@ -22,6 +22,7 @@ import { CampComponent } from "../../camp/components/camp-panel.component";
 import { CombatService } from '../../combat/services/combat.service';
 import { PreCombatWindowComponent } from "../../combat/components/pre-combat-window/pre-combat-window.component";
 import { InventoryService } from '../../camp/services/inventory.service';
+import { Clan, RegionDisplayInfo, RegionService } from '../services/region.service';
 
 @Component({
   selector: 'app-game',
@@ -44,6 +45,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   character: Character | null = null;
   orbs: { key: OrbKey; name: string; icon: string; value: number }[] = [];
+
+  regionInfo: RegionDisplayInfo | null = null;
 
   currentTile: { type: string; description?: string } | null = null;
 
@@ -78,7 +81,8 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     private harvestRegenService: HarvestRegenerationService,
     public combatService: CombatService,
     private diceService: DiceService,
-    private inventoryService: InventoryService
+    private inventoryService: InventoryService,
+    private regionService: RegionService
   ) {}
 
   ngOnInit(): void {
@@ -91,6 +95,9 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       }),
       this.mapService.tileChange.subscribe(tile => {
         this.currentTile = tile;
+
+        const pos = this.mapService.getPlayerPosition();
+        this.regionInfo = this.regionService.getDisplayInfoAt(pos.q, pos.r);
 
         // Détecte la présence d'un overlay optionnel (non autoTrigger) sur la tuile actuelle
         const optionalOverlay = this.mapService.getOptionalOverlayAtPlayer();
@@ -164,40 +171,6 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
     this.refreshOrbs();
   }
 
-  onDiceRolled(result: DiceResult) {
-    this.diceVisible = false;
-    this.rollResolver?.(result);
-    this.rollResolver = undefined;
-  }
-
-  onFightConfirmed() {
-    this.combatService.startCombat();
-  }
-
-  private updateLootIcons(items: GroundItem[]) {
-    // Efface tout
-    for (const tile of Object.values(this.mapService['tiles'])) {
-      if (tile.gfx?.lootIcon) {
-        tile.gfx.lootIcon.visible = false;
-      }
-    }
-
-    // Active les tuiles concernées
-    for (const g of items) {
-      const key = `${g.pos.q},${g.pos.r}`;
-      const tile = this.mapService['tiles'][key];
-      if (tile.gfx.lootIcon) {
-        tile.gfx.lootIcon.visible = true;
-      }
-    }
-  }
-
-  onFleeAttempt() {
-    this.combatService.endCombat('player');
-    this.showPreCombat = false;
-    this.isOverlayPaused = false;
-  }
-
   async ngAfterViewInit() {
     await new Promise(r => setTimeout(r, 100));
     const canvas = await this.waitForCanvas();
@@ -267,6 +240,40 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
       console.warn('⚠️ No character found, back to menu');
       await this.router.navigate(['/start']);
     }
+  }
+
+  onDiceRolled(result: DiceResult) {
+    this.diceVisible = false;
+    this.rollResolver?.(result);
+    this.rollResolver = undefined;
+  }
+
+  onFightConfirmed() {
+    this.combatService.startCombat();
+  }
+
+  private updateLootIcons(items: GroundItem[]) {
+    // Efface tout
+    for (const tile of Object.values(this.mapService['tiles'])) {
+      if (tile.gfx?.lootIcon) {
+        tile.gfx.lootIcon.visible = false;
+      }
+    }
+
+    // Active les tuiles concernées
+    for (const g of items) {
+      const key = `${g.pos.q},${g.pos.r}`;
+      const tile = this.mapService['tiles'][key];
+      if (tile.gfx.lootIcon) {
+        tile.gfx.lootIcon.visible = true;
+      }
+    }
+  }
+
+  onFleeAttempt() {
+    this.combatService.endCombat('player');
+    this.showPreCombat = false;
+    this.isOverlayPaused = false;
   }
 
   private waitForCanvas(): Promise<HTMLCanvasElement | null> {

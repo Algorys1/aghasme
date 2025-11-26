@@ -67,6 +67,8 @@ Afficher un résumé global avant de choisir le nom.
 
 Ajouter un bouton Generate Random Name.
 
+Ajouter une intro lors du lancement d'une nouvelle partie. Avec l'histoire (Lore.md) et des images pour chaque partie. Un texte défilant serait super ! Avec un bouton passer si besoin.
+
 ---
 
 ## Pion Joueur

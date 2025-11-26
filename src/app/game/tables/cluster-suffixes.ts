@@ -1,0 +1,107 @@
+export const SUFFIX_TABLE: Record<string, string[]> = {
+  "natural": [
+    "des Vallons",
+    "des Hauts-Prés",
+    "de la Roche",
+    "du Ruisseau",
+    "des Mille-Feuilles",
+    "du Vent",
+    "de l'Écume",
+    "de la Brume",
+    "des Sources",
+    "des Galets",
+    "de l'Abrupt",
+    "de la Lueur"
+  ],
+  "mystic": [
+    "des Anciens",
+    "du Premier Âge",
+    "de l'Astre",
+    "du Souffle",
+    "de la Nuit",
+    "du Voile",
+    "des Ombres",
+    "du Silence",
+    "du Crépuscule",
+    "de l'Écho",
+    "des Cantiques",
+    "des Mille-Rêves",
+    "du Reliquat"
+  ],
+  "lore": [
+    "de Sombrebois",
+    "d'Élémie",
+    "de l'Arbre Unique",
+    "des Racines-Vives",
+    "de Theorn",
+    "du Sang-Animal",
+    "de la Griffe-Lune",
+    "d'Angorn",
+    "du Feu Bleu",
+    "des Contraires",
+    "de Brick Ankhal",
+    "de Seylan",
+    "des Rouages-Mères",
+    "du Premier Portail",
+    "de la Brèche",
+    "des Échos du Monde-Autre",
+    "du Voile Fracturé",
+    "de Khilia",
+    "des Quatre Pierres",
+    "du Sacrifice",
+    "du Firmament Brisé",
+    "de l'Héritage Céleste"
+  ],
+  "warm": [
+    "du Brasier",
+    "du Soleil Levant",
+    "de l'Automne",
+    "du Sable Rouge",
+    "du Feu-Perdu",
+    "du Vent-Brûlé",
+    "du Cœur-Ardent",
+    "de la Fournaise",
+    "des Flammes"
+  ],
+  "water": [
+    "des Eaux-Calmes",
+    "de la Rivière-Voilée",
+    "des Nénuphars",
+    "des Brisants",
+    "des Eaux-Fortes",
+    "de la Vase",
+    "des Larmes de Jade",
+    "du Sommet-Marin",
+    "des Écumes-Pâles"
+  ],
+  "forest": [
+    "des Oiseaux",
+    "des Racines",
+    "du Cerf-Blanc",
+    "des Arcanes Vertes",
+    "du Vieux Tronc",
+    "des Mille-Racines",
+    "du Chant-Fût",
+    "des Rameaux"
+  ],
+  "mechanical": [
+    "de Fer-Ankhal",
+    "des Engrenages",
+    "du Marteau",
+    "des Forgefroides",
+    "de l'Horloge",
+    "des Pistons",
+    "de la Forge"
+  ],
+  "dark": [
+    "du Gouffre",
+    "des Profondeurs",
+    "du Néant",
+    "de la Déchirure",
+    "du Sans-Nom",
+    "des Errants",
+    "du Dernier Souffle",
+    "des Veilleurs"
+  ]
+}
+
