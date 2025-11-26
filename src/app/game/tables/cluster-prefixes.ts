@@ -1,57 +1,57 @@
 export const PREFIX_TABLE: Record<string, Record<string, string[]>> = {
   "plain": {
-    "small": ["Prés de", "Clairière de", "Prairie de"],
-    "medium": ["Plaines de", "Étendues de", "Hautes-Prés de"],
-    "large": ["Grandes Plaines de", "Hautes-Étendues de", "Savane de"],
-    "huge": ["Mer d'Herbe de", "Étendues sans Fin de", "Horizon Vert de"]
+    "small": ["Prés", "Clairière", "Prairie"],
+    "medium": ["Plaines", "Étendues", "Hautes-Prés"],
+    "large": ["Grandes Plaines", "Hautes-Étendues", "Savane"],
+    "huge": ["Mer d'Herbe", "Étendues sans Fin", "Horizon Vert"]
   },
 
   "forest": {
-    "small": ["Bosquet de", "Fourré de", "Arbretier de"],
-    "medium": ["Bois de", "Sylve de", "Lisière de"],
-    "large": ["Forêt de", "Grande Sylve de", "Haut-Bois de"],
-    "huge": ["Grande Forêt de", "Sombrebois de", "Sylve-Mère de"]
+    "small": ["Bosquet", "Fourré", "Arbretier"],
+    "medium": ["Bois", "Sylve", "Lisière"],
+    "large": ["Forêt", "Grande Sylve", "Haut-Bois"],
+    "huge": ["Grande Forêt", "Sombrebois", "Sylve-Mère"]
   },
 
   "desert": {
-    "small": ["Dune de", "Rochers Sablés de", "Creux de"],
-    "medium": ["Dunes de", "Étendues Sèches de", "Lisière du Désert de"],
-    "large": ["Désert de", "Grands Sables de", "Hautes Dunes de"],
-    "huge": ["Mer de Sable de", "Désert Rouge de", "Étendues Arides de"]
+    "small": ["Dune", "Rochers Sablés", "Creux"],
+    "medium": ["Dunes", "Étendues Sèches", "Lisière du Désert"],
+    "large": ["Désert", "Grands Sables", "Hautes Dunes"],
+    "huge": ["Mer Sable", "Désert Rouge", "Étendues Arides"]
   },
 
   "mountain": {
-    "small": ["Roc de", "Pic de", "Rocher de"],
-    "medium": ["Monts de", "Crêtes de", "Éperons de"],
-    "large": ["Massif de", "Cordillère de", "Hautes-Chaînes de"],
-    "huge": ["Chaîne de", "Grande Chaîne de", "Échine de"]
+    "small": ["Roc", "Pic", "Rocher"],
+    "medium": ["Monts", "Crêtes", "Éperons"],
+    "large": ["Massif", "Cordillère", "Hautes-Chaînes"],
+    "huge": ["Chaîne", "Grande Chaîne", "Échine"]
   },
 
   "volcano": {
-    "small": ["Cratère de", "Pierres Rougies de", "Faille de"],
-    "medium": ["Terres Calcinées de", "Laves de", "Rifts de"],
-    "large": ["Terres Brûlantes de", "Massif Enflammé de", "Roches Ardentes de"],
-    "huge": ["La Fournaise de", "Le Grand Brasier de", "Les Écumes de Feu de"]
+    "small": ["Cratère", "Pierres Rougies", "Faille"],
+    "medium": ["Terres Calcinées", "Laves", "Rifts"],
+    "large": ["Terres Brûlantes", "Massif Enflammé", "Roches Ardentes"],
+    "huge": ["La Fournaise", "Le Grand Brasier", "Les Écumes Feu"]
   },
 
   "sea": {
-    "small": ["Étang de", "Bassin de", "Trou Bleu de"],
-    "medium": ["Lac de", "Eaux de", "Baie de"],
-    "large": ["Grand Lac de", "Bras d'Eau de", "Mer Intérieure de"],
-    "huge": ["Grandes Eaux de", "La Mer Calme de", "L'Océan Intérieur de"]
+    "small": ["Étang", "Bassin", "Trou Bleu"],
+    "medium": ["Lac", "Eaux", "Baie"],
+    "large": ["Grand Lac", "Bras d'Eau", "Mer Intérieure"],
+    "huge": ["Grandes Eaux", "La Mer Calme", "L'Océan Intérieur"]
   },
 
   "jungle": {
-    "small": ["Fourré Tropical de", "Bosquet Verdoyant de", "Lierre de"],
-    "medium": ["Jungle de", "Bois Tropicaux de", "Épaisse Forêt de"],
-    "large": ["Grande Jungle de", "Sylve Tropicale de", "Jungles Ombreuses de"],
-    "huge": ["Jungle Primaire de", "Mer de Verdure de", "Forêt Ancestrale de"]
+    "small": ["Fourré Tropical", "Bosquet Verdoyant", "Lierre"],
+    "medium": ["Jungle", "Bois Tropicaux", "Épaisse Forêt"],
+    "large": ["Grande Jungle", "Sylve Tropicale", "Jungles Ombreuses"],
+    "huge": ["Jungle Primaire", "Mer Verdure", "Forêt Ancestrale"]
   },
 
   "swamp": {
-    "small": ["Fange de", "Trou d'Eau de", "Gouilles de"],
-    "medium": ["Tourbière de", "Marécage de", "Basses-Terres de"],
-    "large": ["Grand Marais de", "Grands Replats de", "Fanges de"],
-    "huge": ["Marais Sans Fin de", "Fanges Maudites de", "Mer de Boue de"]
+    "small": ["Fange", "Trou d'Eau", "Gouilles"],
+    "medium": ["Tourbière", "Marécage", "Basses-Terres"],
+    "large": ["Grand Marais", "Grands Replats", "Fanges"],
+    "huge": ["Marais Sans Fin", "Fanges Maudites", "Mer Boue"]
   }
 }

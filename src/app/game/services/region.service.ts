@@ -135,6 +135,7 @@ export class RegionService {
       for (const key of occupiedTiles) {
         this.tileRegionMap.set(key, region.id);
       }
+      console.log("CITY REGION GENERATED", region.name, region.tiles.length);
     }
   }
 
@@ -344,6 +345,17 @@ export class RegionService {
     return this.getRegionByTileKey(key);
   }
 
+  getCityRegions() {
+    return Array.from(this.regions.values())
+      .filter(r => r.type === 'city')
+      .map(r => ({
+        id: r.id,
+        name: r.name,
+        clan: (r.clanAffinity ?? null) as Clan,
+        tiles: Array.from(r.tiles),
+      }));
+  }
+
   getAllRegions(): Region[] {
     return Array.from(this.regions.values());
   }
@@ -351,6 +363,41 @@ export class RegionService {
   resetRegions(): void {
     this.regions.clear();
     this.tileRegionMap.clear();
+  }
+
+  getCityRegionBorders(): { key: string, clan: string }[] {
+    const borders: { key: string, clan: string }[] = [];
+
+    for (const region of this.regions.values()) {
+      if (region.type !== 'city') continue;
+
+      const regionTileSet = new Set(region.tiles);
+
+      for (const key of region.tiles) {
+        const [q, r] = key.split(',').map(Number);
+
+        const neighbors = [
+          [1, 0], [1, -1], [0, -1],
+          [-1, 0], [-1, 1], [0, 1]
+        ];
+
+        let isBorder = false;
+
+        for (const [dq, dr] of neighbors) {
+          const nk = `${q + dq},${r + dr}`;
+          if (!regionTileSet.has(nk)) {
+            isBorder = true;
+            break;
+          }
+        }
+
+        if (isBorder) {
+          borders.push({ key, clan: region.clanAffinity ?? 'all' });
+        }
+      }
+    }
+
+    return borders;
   }
 
   getDisplayInfoAt(q: number, r: number): RegionDisplayInfo {

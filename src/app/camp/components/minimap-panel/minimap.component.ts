@@ -17,6 +17,14 @@ import { OverlayKind } from '../../../overlays/models/overlays.model';
 import { Terrain } from '../../../game/factories/tile.factory';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SettingsService } from '../../../game/services/settings.service';
+import { RegionService } from '../../../game/services/region.service';
+
+interface Edge {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
 
 @Component({
   selector: 'app-minimap',
@@ -44,6 +52,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
   private mapService = inject(MapService);
   private overlayRegistry = inject(OverlayRegistryService);
   private translate = inject(TranslateService);
+  private regionService = inject(RegionService);
 
   constructor(private settings: SettingsService) {
     const lang = this.settings.language || 'en';
@@ -70,6 +79,14 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     [OverlayKind.Anomaly]: '#ff8a65',
     [OverlayKind.Treasure]: '#ffd700',
     [OverlayKind.Portal]: '#5c6bc0',
+  };
+
+  private readonly clanColors: Record<string, string> = {
+    anims: "#d9534f",
+    sylvaris: "#5cb85c",
+    frostfire: "#5bc0de",
+    engineers: "#777777",
+    all: "#c9a54b"
   };
 
   private readonly overlayLetters: Record<OverlayKind, string> = {
@@ -237,7 +254,11 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       ctx.lineWidth = 1;
       ctx.stroke();
     }
-    // === MAP BORDER (outer hexagon) ===
+
+    // Regions
+    this.drawCityRegionBorders(ctx, player, scale, centerX, centerY);
+
+    // Map border
     const radiusMap = (this.mapService as any).mapRadius;
 
     // Extend the border by 1 hex outward
@@ -348,6 +369,77 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 1.4;
     ctx.stroke();
+  }
+
+  // -------------------------------------------------------------
+  // REGIONS
+  // -------------------------------------------------------------
+
+  private drawCityRegionBorders(
+    ctx: CanvasRenderingContext2D,
+    player: { q: number; r: number },
+    scale: number,
+    centerX: number,
+    centerY: number
+  ): void {
+    const cityRegions = this.regionService.getCityRegions();
+    if (!cityRegions.length) return;
+
+    const directions: [number, number][] = [
+      [1, 0],     // E
+      [0, 1],     // SE
+      [-1, 1],    // SW
+      [-1, 0],    // W
+      [0, -1],    // NW
+      [1, -1]     // NE
+    ];
+
+    for (const region of cityRegions) {
+      const tileSet = new Set(region.tiles);
+      const color = this.clanColors[region.clan ?? 'all'] ?? '#ff3366';
+
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.5;
+
+      for (const key of tileSet) {
+        const [q, r] = key.split(',').map(Number);
+
+        const { x, y } = this.hexToPixel(q - player.q, r - player.r);
+        const px = centerX + x * scale;
+        const py = centerY + y * scale;
+        const radius = this.hexSize * scale;
+
+        for (let i = 0; i < 6; i++) {
+          const [dq, dr] = directions[i];
+          const neighborKey = `${q + dq},${r + dr}`;
+
+          // If the neighbor EAST is in the region, this side is internal
+          if (tileSet.has(neighborKey)) continue;
+
+          // Precise calculation of the two vertices of the edge
+          const angle1 = ((60 * i - 30) * Math.PI) / 180;
+          const angle2 = ((60 * (i + 1) - 30) * Math.PI) / 180;
+
+          const x1 = px + radius * Math.cos(angle1);
+          const y1 = py + radius * Math.sin(angle1);
+          const x2 = px + radius * Math.cos(angle2);
+          const y2 = py + radius * Math.sin(angle2);
+
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = color;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 0;
+
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+
+          ctx.shadowBlur = 0;
+          ctx.shadowColor = 'transparent';
+        }
+      }
+    }
   }
 
   // -------------------------------------------------------------
