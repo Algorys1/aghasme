@@ -199,7 +199,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // ========================================================================
-  // OPTIMISATION 2 : PRÉ-CALCUL DES TUILES
+  // OPTIMISATION 2 : PRE-COMPUTE OF TILES
   // ========================================================================
 
   private precomputeTiles() {
@@ -294,8 +294,9 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     const centerX = this.size / 2 + this.offsetX;
     const centerY = this.size / 2 + this.offsetY;
 
-    // DRAW TILES (SUPER FAST)
+    // DRAW TILES
     for (const tile of this.cachedTiles) {
+      if(!tile.discovered) continue;
       const px = centerX + (tile.px - player.q * this.hexSize * Math.sqrt(3) - player.r * this.hexSize * Math.sqrt(3) / 2) * scale;
       const py = centerY + (tile.py - player.r * this.hexSize * 1.5) * scale;
 
@@ -317,10 +318,10 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
       ctx.stroke();
     }
 
-    // DRAW REGION BORDERS (super rapide)
+    // DRAW REGION BORDERS
     this.drawPrecomputedBorders(ctx, player, scale, centerX, centerY);
 
-    // MAP BORDER (inchangé)
+    // MAP BORDER
     this.drawMapBorder(ctx, player, scale, centerX, centerY);
 
     // OVERLAYS + LABELS
@@ -368,7 +369,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // ========================================================================
-  // DRAW MAP BORDER (inchangé)
+  // DRAW MAP BORDER
   // ========================================================================
 
   private drawMapBorder(
