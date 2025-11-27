@@ -22,17 +22,20 @@ bootstrapApplication(AppComponent, {
         provide: TranslateLoader,
         useFactory: (http: HttpClient) =>
           new MultiTranslateHttpLoader(http, [
+            'actions',
+            'character',
+            'items',
+            'lore',
             'map',
             'menus',
-            'character',
             'overlay.anomaly',
             'overlay.caravan',
             'overlay.city',
             'overlay.village',
             'overlay.farm',
             'overlay.ritual',
-            'items',
-            'actions'
+
+
           ]),
         deps: [HttpClient]
       }

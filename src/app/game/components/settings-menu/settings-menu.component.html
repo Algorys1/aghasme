@@ -1,13 +1,13 @@
 @if(visible) {
   <div class="settings-overlay" (click)="close()">
-    <div class="settings-window" (click)="$event.stopPropagation()">
-      <h2>{{ 'MENU.SETTINGS' | translate }}</h2>
+    <div class="settings-window dark-background gold-aghasme" (click)="$event.stopPropagation()">
+      <h2 class="gold-aghasme">{{ 'MENU.SETTINGS' | translate }}</h2>
 
       <div class="section">
         <label>{{ 'MENU.LANGUAGE' | translate }}</label>
         <div class="lang-buttons">
-          <button (click)="setLang('fr')" [class.active]="settings.settings.language === 'fr'">FR</button>
-          <button (click)="setLang('en')" [class.active]="settings.settings.language === 'en'">EN</button>
+          <button (click)="setLang('fr')" class="menu-btn gold-aghasme" [class.active]="settings.settings.language === 'fr'">FR</button>
+          <button (click)="setLang('en')" class="menu-btn gold-aghasme" [class.active]="settings.settings.language === 'en'">EN</button>
         </div>
       </div>
 
@@ -24,7 +24,7 @@
       </div>
 
       <div class="actions">
-        <button class="close-btn" (click)="close()">
+        <button class="menu-btn gold-aghasme" (click)="close()">
           {{ 'MENU.CLOSE' | translate }}
         </button>
       </div>

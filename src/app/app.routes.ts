@@ -3,11 +3,13 @@ import { HomeScreenComponent } from './game/components/home-screen/home-screen.c
 import { GameComponent } from './game/components/game.component';
 import { StartGameComponent } from './game/components/start-game/start-game.component';
 import { CharacterCreationComponent } from './character/components/character-creation/character-creation.component';
-import {SaveListComponent} from './game/components/save-list/save-list.component';
+import { SaveListComponent } from './game/components/save-list/save-list.component';
+import { PrologueComponent } from './game/components/prologue/prologe.component';
 
 export const routes: Routes = [
   { path: '', component: HomeScreenComponent },
   { path: 'start', component: StartGameComponent },
+  { path: 'prologue', component: PrologueComponent },
   { path: 'create-character', component: CharacterCreationComponent },
   { path: 'game', component: GameComponent },
   { path: 'saves', component: SaveListComponent },

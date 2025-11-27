@@ -1,0 +1,36 @@
+{
+  "PROLOGUE": {
+    "LEGEND": {
+      "TITLE": "La Légende des Orbes",
+      "DESCRIPTION": "On raconte, dans les anciennes légendes, que quatre pierres tombèrent des cieux sur les Terres d'Aghasme.\n\n Elles seraient, selon les anciens, les fragments d'un objet céleste en fuite, déchiré par le firmament.\n\n Chacune de ces pierres donna naissance à un clan : les Anims, les Sylvaris, les Feufroids et les Ingénieurs."
+    },
+    "ANIMS": {
+      "TITLE": "La Pierre des Anims",
+      "DESCRIPTION": "Le premier à s'en emparer fut Theorn Agh, qui découvrit la pierre au coeur des plaines infinies.\n\n Jour après jour, elle le transforma : des cornes jaillirent sur son front, une queue de lion se forma, ses crocs devinrent aussi tranchants que des lames.\n\n La pierre lui offrit une puissance sans égale… mais qu'il garda pour lui seul.\n Ses descendants portent encore aujourd'hui les stigmates de son égoïsme, comme une malédiction transmise par le sang."
+    },
+    "SYLVARIS": {
+      "TITLE": "La Pierre Végétale",
+      "DESCRIPTION": "Dans les forêts de Sombrebois, Élémie trouva la seconde pierre, incrustée dans le tronc d'un arbre qu'elle avait fendu.\n\n Mais au lieu de mourir, l'arbre grandit, magnifique et immense : l'Arbre Unique, visible à des lieues à la ronde.\n\n Élémie partagea le pouvoir de sa pierre avec les siens, offrant à sa tribu santé, abondance et prospérité.\n Sous son règne, la maladie devint rare et les blessures, presque sans conséquence."
+    },
+    "FROSTFIRES": {
+      "TITLE": "La Pierre des Éléments",
+      "DESCRIPTION": "Bien plus loin, dans les sables brûlants du désert, Angorn l'Académicien découvrit la pierre des Éléments dans un temple oublié.\n\n Elle lévitait au centre d'une salle aux piliers d'or et de cristal.\n\n Angorn l'étudia durant des années, et apprit à en canaliser l'énergie : un équilibre parfait entre feu, glace et vent.\n De ses mains jaillirent des flammes bleues et des vents de givre. Il devint le maître des contraires."
+    },
+    "ENGINEERS": {
+      "TITLE": "La Pierre des Mécanismes",
+      "DESCRIPTION":  "Enfin, Brick Ankhal découvrit la dernière pierre dans les Terres Désolées, où la terre tremblait sans cesse.\n\n Au sommet d'un plateau de lave, la pierre tournoyait à toute vitesse, créant des secousses cataclysmiques.\n\n En l'approchant, Brick accéda à un savoir interdit : le pouvoir de donner vie à la matière.\n Il construisit des merveilles et des folies, parmi lesquelles l'illustre Horloge de Seylan."
+    },
+    "DECLINE": {
+      "TITLE": "La Chute des Orbes",
+      "DESCRIPTION": "Les quatre pierres apportèrent gloire et prospérité aux peuples d'Aghasme.\n Mais leur pouvoir attira convoitise, haine et déséquilibre.\n\n C'est alors qu'apparurent les Portails, d'immenses failles ouvrant sur ce que tout le monde allait appeler : l'Autre Monde.\n Des créatures infernales en surgirent, la nature se tordit, les lois du monde s'effondrèrent.\n\n Les peuples, jadis fiers, se tournèrent contre leurs propres pierres.\n Elles qui avaient offert tant de miracles devinrent objets de peur et de ruine."
+    },
+    "KHILIA": {
+      "TITLE": "Le Sacrifice de Khilia",
+      "DESCRIPTION": "Un jour, Khilia, fille de Brick Ankhal, eut une idée folle : elle jeta la Pierre Mécanique dans un portail, au prix de sa vie.\n Le portail aspira le corps de la jeune femme, s'effondra sur lui-même et rejeta la pierre des Mécanismes dans les cieux.\n\n Trois autres sacrifices suivirent, refermant les portails restants.\n\n Puis ce fut le silence. Plus de magie. Plus d'Arbre Unique. Plus d'énergie.\n Les créations tombèrent en poussière, et les portails devinrent de simples ruines."
+    },
+    "NOWADAYS": {
+      "TITLE": "De nos jours...",
+      "DESCRIPTION": "Des siècles ont passé. Les légendes se sont effacées, mais le sang des anciens reprend peu à peu sa place.\n\n On dit que, quelque part, les orbes dorment… Et qu'un jour, les portails se rouvriront.\n\n C'est là que votre aventure commence."
+    }
+  }
+}

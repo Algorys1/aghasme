@@ -27,11 +27,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-image: url('../../../../assets/ui/dark-background.webp');
-  background-repeat: repeat;
-  background-size: 512px 512px;
-  background-position: center;
-  filter: brightness(1.02) contrast(0.98);
 }
 
 /* === TITLES === */
@@ -309,10 +304,6 @@ h2 {
     flex: 1;
     margin: 0 5px;
     padding: 10px;
-    border-radius: 8px;
-    border: none;
-    background: #f7d77d;
-    color: #000;
     font-weight: bold;
     transition: transform 0.2s;
     &:active {

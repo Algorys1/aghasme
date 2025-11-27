@@ -6,8 +6,8 @@
   <div class="container" [style.transform]="getSlideTransform()">
 
     <!-- === STEP 1 : ARCHETYPE & GENDER === -->
-    <section class="slide">
-      <h2>{{ 'CHARACTER.CREATION.SELECT_CLAN' | translate }}</h2>
+    <section class="slide dark-background">
+      <h2 class="gold-aghasme">{{ 'CHARACTER.CREATION.SELECT_CLAN' | translate }}</h2>
 
       <div class="archetype-grid">
         @for (type of archetypes; track type) {
@@ -59,14 +59,14 @@
       }
 
       <div class="nav-buttons">
-        <button (click)="backToHome()" >Cancel</button>
-        <button (click)="nextStep()" [disabled]="!selectedArchetype">Next ▶</button>
+        <button class="menu-btn gold-aghasme" (click)="backToHome()" >Cancel</button>
+        <button class="menu-btn gold-aghasme" (click)="nextStep()" [disabled]="!selectedArchetype">Next ▶</button>
       </div>
     </section>
 
     <!-- === STEP 2 : ORBS === -->
-    <section class="slide">
-      <h2>Distribute Orbs</h2>
+    <section class="slide dark-background">
+      <h2 class="gold-aghasme">Distribute Orbs</h2>
       <div>Points left: {{ pointsLeft }}</div>
 
       <div class="orbs-grid">
@@ -131,14 +131,14 @@
       </div>
 
       <div class="nav-buttons">
-        <button (click)="prevStep()">◀ Back</button>
-        <button (click)="nextStep()" [disabled]="pointsLeft > 0">Next ▶</button>
+        <button class="menu-btn gold-aghasme" (click)="prevStep()">◀ Back</button>
+        <button class="menu-btn gold-aghasme" (click)="nextStep()" [disabled]="pointsLeft > 0">Next ▶</button>
       </div>
     </section>
 
     <!-- === STEP 3 : BACKGROUND === -->
-    <section class="slide">
-      <h2>Select Background</h2>
+    <section class="slide dark-background">
+      <h2 class="gold-aghasme">Select Background</h2>
 
       <div class="background-grid">
         @for (bg of backgrounds; track bg.id) {
@@ -171,14 +171,14 @@
       }
 
       <div class="nav-buttons">
-        <button (click)="prevStep()">◀ Back</button>
-        <button (click)="nextStep()" [disabled]="!selectedBackground">Next ▶</button>
+        <button class="menu-btn gold-aghasme" (click)="prevStep()">◀ Back</button>
+        <button class="menu-btn gold-aghasme" (click)="nextStep()" [disabled]="!selectedBackground">Next ▶</button>
       </div>
     </section>
 
     <!-- === STEP 4 : NAME === -->
-    <section class="slide">
-      <h2>During this adventure, what should we call you?</h2>
+    <section class="slide dark-background">
+      <h2 class="gold-aghasme">During this adventure, what should we call you?</h2>
       <input
         type="text"
         [(ngModel)]="name"
@@ -191,8 +191,8 @@
       </p>
 
       <div class="nav-buttons">
-        <button (click)="prevStep()">◀ Back</button>
-        <button (click)="confirm()" [disabled]="!name.trim()">Start Adventure ▶</button>
+        <button class="menu-btn gold-aghasme" (click)="prevStep()">◀ Back</button>
+        <button class="menu-btn gold-aghasme" (click)="confirm()" [disabled]="!name.trim()">Start Adventure ▶</button>
       </div>
     </section>
 

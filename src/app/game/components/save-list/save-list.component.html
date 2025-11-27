@@ -1,5 +1,5 @@
-<div class="save-list">
-  <h3 class="blue-aghasme title">{{ 'MENU.LOAD_GAME' | translate }}</h3>
+<div class="save-list dark-background">
+  <h3 class="gold-aghasme title">{{ 'MENU.LOAD_GAME' | translate }}</h3>
 
   @if (saves.length === 0) {
     <div class="no-save blue-aghasme">
@@ -15,12 +15,12 @@
           <span class="slot-date">{{ s.state.timestamp | date:'short' }}</span>
         </div>
         <div class="slot-actions">
-          <button (click)="load(s.slot)">{{ 'MENU.LOAD' | translate }}</button>
-          <button (click)="delete(s.slot)">{{ 'MENU.DELETE' | translate }}</button>
+          <button class="parchment-btn" (click)="load(s.slot)">{{ 'MENU.LOAD' | translate }}</button>
+          <button class="parchment-btn" (click)="delete(s.slot)">{{ 'MENU.DELETE' | translate }}</button>
         </div>
       </li>
     }
   </ul>
 
-  <button class="back-btn blue-aghasme" (click)="back()">{{ 'MENU.BACK' | translate }}</button>
+  <button class="menu-btn gold-aghasme" (click)="back()">{{ 'MENU.BACK' | translate }}</button>
 </div>

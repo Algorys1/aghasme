@@ -77,22 +77,6 @@ Tester un pion joueur plus gros pour améliorer la lisibilité.
 
 ---
 
-## Régions & Clusters
-
-Définir les régions sur la carte :
-
-Une ville impose une région autour d’elle.
-
-Définir les clans associés si nécessaire.
-
-Détecter les clusters de tuiles :
-
-≥ 3 tuiles identiques → nom de région (ex : Forêt des Oiseaux).
-
-≤ 2 tuiles → description générique.
-
----
-
 ## HUD Bas
 
 Ajouter les bannières des régions de ville.
@@ -187,3 +171,9 @@ Ajouter :
 * Les cartes découvertes.
 * Les ennemis rencontrés.
 * Les informations de lore débloquées.
+
+---
+
+## Bug
+
+* Certaines tuiles semblent pas afficher le bon type. Certainement due au smoothing de la carte.

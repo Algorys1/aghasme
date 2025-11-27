@@ -13,6 +13,8 @@
     "LANGUAGE": "Langue",
     "MUSIC_VOLUME": "Volume Musique",
     "SFX_VOLUME": "Volume Effets",
-    "CLOSE": "Fermer"
+    "CLOSE": "Fermer",
+    "SKIP": "Passer",
+    "NEXT": "Suivant"
   }
 }

@@ -1,0 +1,36 @@
+{
+  "PROLOGUE": {
+    "LEGEND": {
+      "TITLE": "The Legend of the Orbs",
+      "DESCRIPTION": "Ancient legends tell of four stones that fell from the heavens upon the Lands of Aghasme.\n\n According to the ancients, they were fragments of a fleeing celestial object, torn apart by the firmament.\n\n Each of these stones gave birth to a clan: the Anims, the Sylvaris, the Frostfires, and the Engineers."
+    },
+    "ANIMS": {
+      "TITLE": "The Stone of the Anims",
+      "DESCRIPTION": "The first to seize it was Theorn Agh, who discovered the stone in the heart of the endless plains.\n\n Day after day, it transformed him: horns sprouted from his brow, a lion's tail formed, his fangs became as sharp as blades.\n\n The stone granted him unparalleled power… but he kept it for himself alone. His descendants still bear the marks of his selfishness, like a curse passed down through the blood."
+    },
+    "SYLVARIS": {
+      "TITLE": "The Plant Stone",
+      "DESCRIPTION": "In the forests of Darkwood, Elémie found the second stone, embedded in the trunk of a tree she had split open.\n\n But instead of dying, the tree grew, magnificent and immense: the Unique Tree, visible for miles around.\n\n Elémie shared the power of her stone with her people, granting her tribe health, abundance, and prosperity. Under her rule, illness became rare and injuries, almost without consequence."
+    },
+    "FROSTFIRES": {
+      "TITLE": "The Stone of Elements",
+      "DESCRIPTION": "Far away, in the burning sands of the desert, Angorn the Academic discovered the Stone of Elements in a forgotten temple.\n\n It levitated in the center of a hall with pillars of gold and crystal. Angorn studied it for years and learned to channel its energy: a perfect balance of fire, ice, and wind.\n\n From his hands sprang blue flames and winds of frost. He became the master of opposites."
+    },
+    "ENGINEERS": {
+      "TITLE": "The Stone of Mechanisms",
+      "DESCRIPTION": "Finally, Brick Ankhal discovered the last stone in the Wasteland, where the earth trembled ceaselessly.\n\n Atop a lava plateau, the stone spun at incredible speed, creating cataclysmic tremors. Upon approaching it, Brick gained access to forbidden knowledge: the power to give life to matter.\n\n She built wonders and follies, among them the illustrious Clock of Seylan."
+    },
+    "DECLINE": {
+      "TITLE": "The Fall of the Orbs",
+      "DESCRIPTION": "The four stones brought glory and prosperity to the people of Aghasme. But their power attracted covetousness, hatred, and imbalance.\n\n Then the Portals appeared, immense chasms opening onto what everyone would come to call: the Otherworld. Infernal creatures emerged from them, nature twisted, and the laws of the world collapsed.\n\n The people, once proud, turned against their own stones. They, which had offered so many miracles, became objects of fear and ruin."
+    },
+    "KHILIA": {
+      "TITLE": "Khilia's Sacrifice",
+      "DESCRIPTION": "One day, Khilia, daughter of Brick Ankhal, had a mad idea: she threw the Mechanical Stone into a portal, at the cost of her life.\n\n The portal absorbed the young woman's body, collapsed in on itself, and hurled the Mechanism Stone into the heavens.\n\n Three more sacrifices followed, closing the remaining portals. Then there was silence. No more magic. No more One Tree. No more energy.\n The creations crumbled to dust, and the portals became mere ruins."
+    },
+    "NOWADAYS": {
+      "TITLE": "Nowadays...",
+      "DESCRIPTION": "Centuries have passed. Legends have faded, but the blood of the ancients is slowly returning.\n\n It is said that somewhere, the orbs sleep... And that one day, the portals will reopen.\n\n This is where your adventure begins."
+    }
+  }
+}

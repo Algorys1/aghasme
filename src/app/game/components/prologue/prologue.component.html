@@ -1,0 +1,17 @@
+<div class="prologue-container">
+
+  <div class="image-wrapper">
+    <img [src]="currentImage()" alt="Scene" />
+  </div>
+
+  <h3 class="title blue-aghasme">{{ title }}</h3>
+  <div class="text-wrapper" (click)="onTap()">
+    {{ displayedText() }}
+  </div>
+
+  <div class="buttons">
+    <button class="skip menu-btn gold-aghasme" (click)="skip()">{{ 'MENU.SKIP' | translate}}</button>
+    <button class="next menu-btn gold-aghasme" (click)="next()" [disabled]="isTyping()">{{ 'MENU.NEXT' | translate}}</button>
+  </div>
+
+</div>

@@ -37,7 +37,7 @@ export class StartGameComponent implements OnInit {
 
   newGame() {
     this.characterService.clearCharacter();
-    this.router.navigate(['/create-character']).then();
+    this.router.navigate(['/prologue']).then();
   }
 
   loadGame() {

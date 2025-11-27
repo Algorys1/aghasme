@@ -1,11 +1,6 @@
 .save-list {
   position: fixed;
   inset: 0;
-  background-image: url('../../../../assets/ui/dark-background.webp');
-  background-repeat: repeat;
-  background-size: 512px 512px;
-  background-position: center;
-  filter: brightness(1.02) contrast(0.98);
 
   display: flex;
   flex-direction: column;
@@ -81,7 +76,7 @@ li {
   margin-left: 8px;
 }
 
-button {
+.parchment-btn {
   padding: 6px 12px;
   border: 2px solid #b8860b;
   border-radius: 6px;
@@ -90,49 +85,14 @@ button {
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
 }
-button:hover { background: #fff2bf; }
-button:active { background: #f0d98a; transform: scale(0.97); }
+.parchment-btn:hover { background: #fff2bf; }
+.parchment-btn:active { background: #f0d98a; transform: scale(0.97); }
 
-.back-btn {
+.menu-btn {
   display: inline-block;
   font-size: 1rem;
   width: 60%;
   margin-top: auto;
   margin-bottom: 8px;
   padding: 14px 28px;
-  border-radius: 8px;
-  background: transparent;
-  letter-spacing: 0.8px;
-  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05), inset 0 0 6px rgba(255, 255, 255, 0.03), 0 4px 10px rgba(0, 0, 0, 0.8);
-  border: none;
-  transition: transform 0.15s
-    ease, box-shadow 0.25s
-    ease, border-color 0.25s
-    ease, color 0.25s
-    ease;
-  text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
-
-  &:active {
-    transform: scale(0.95);
-    box-shadow:
-      inset 0 0 15px rgba(255, 255, 255, 0.03),
-      0 2px 6px rgba(0, 0, 0, 0.8);
-  }
-
-  &:hover {
-    border-color: rgba(255, 200, 120, 0.3);
-    color: #fff9e6;
-
-    box-shadow:
-      inset 0 0 25px rgba(255, 210, 120, 0.08),
-      inset 0 0 8px rgba(255, 210, 120, 0.05),
-      0 6px 14px rgba(0, 0, 0, 0.9);
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow:
-      0 0 0 3px rgba(255, 200, 150, 0.2),
-      0 4px 12px rgba(0, 0, 0, 0.7);
-  }
 }
