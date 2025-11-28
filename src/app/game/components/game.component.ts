@@ -99,9 +99,12 @@ export class GameComponent implements OnInit, AfterViewInit, OnDestroy {
         const pos = this.mapService.getPlayerPosition();
         this.regionInfo = this.regionService.getDisplayInfoAt(pos.q, pos.r);
 
-        // Détecte la présence d'un overlay optionnel (non autoTrigger) sur la tuile actuelle
+        // Detects the presence of an optional (autoTrigger: false) overlay on the current tile
         const optionalOverlay = this.mapService.getOptionalOverlayAtPlayer();
         this.canEnterLocation = !!optionalOverlay;
+
+        console.log('Player HP ', this.characterService.getCharacter()?.hp);
+        console.log('Player MP ', this.characterService.getCharacter()?.mp)
 
         const hasOverlay = this.mapService.hasActiveOverlay;
         if (!hasOverlay && !this.canEnterLocation) {

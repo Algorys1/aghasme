@@ -1,11 +1,11 @@
 <div class="dice-roll-overlay" [hidden]="!visible">
-  <div class="dice-roll-window">
-    <h2 class="title">Roll the {{ orb | titlecase }} Die</h2>
+  <div class="dice-roll-window dark-background">
+    <h2 class="gold-aghasme">Roll the {{ orb | titlecase }} Die</h2>
 
-    <div class="roll-infos">
-      <p>Difficulty: <strong>{{ difficulty }}</strong></p>
+    <div class="roll-infos parchment-background">
       <p>Your {{ orb }} score: <strong>{{ orbPower }}</strong></p>
-      <p>Modifier: <strong>{{ modifier >= 0 ? '+' + modifier : modifier }}</strong></p>
+      <p>Modifier: <strong>{{ modifier }}</strong></p>
+      <p>Difficulty: <strong>{{ difficulty }}</strong></p>
     </div>
 
     <canvas #diceCanvas></canvas>
@@ -23,20 +23,20 @@
 
       @if(rolled) {
         <div class="result-block">
-          <p class="total">Total: <strong>{{ total }}</strong></p>
+          <p class="gold-aghasme">Total: <strong>{{ total }}</strong></p>
 
-          <div class="result-verdict" [ngClass]="verdict">
-            @switch (verdict) {
+          <button class="close-btn" (click)="emitResult()">
+            <img class="icon" src="assets/ui/btn-ok.png"/>
+          </button>
+
+          <div class="result-verdict" [ngClass]="displayVerdict">
+            @switch (displayVerdict) {
               @case ('criticalFail') { ❌ Critical Fail! }
               @case ('fail') { Fail }
               @case ('success') { ✅ Success }
               @case ('criticalSuccess') { 🌟 Critical Success! }
             }
           </div>
-
-          <button class="close-btn" (click)="emitResult()">
-            <img class="icon" src="assets/ui/btn-ok.png"/>
-          </button>
         </div>
       }
     </div>

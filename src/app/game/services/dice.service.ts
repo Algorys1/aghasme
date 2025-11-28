@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export type OrbType = 'bestial' | 'elemental' | 'natural' | 'mechanic';
-export type DiceVerdict = 'criticalFail' | 'fail' | 'success' | 'criticalSuccess';
+export type DiceVerdict = 'criticalFail' | 'normal' | 'criticalSuccess';
+export type DiceDisplayResult = 'criticalFail' | 'fail' | 'success' | 'criticalSuccess';
+
 export interface DiceResult {
   orb: OrbType;
   value: number;

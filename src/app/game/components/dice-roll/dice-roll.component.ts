@@ -1,11 +1,12 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Application, Sprite, Texture, Rectangle, Assets, Ticker } from 'pixi.js';
 import { Haptics } from '@capacitor/haptics';
 import { getOrbModifier } from '../../../character/models/character.model';
+import { DiceDisplayResult, DiceVerdict } from '../../services/dice.service';
 
 export type OrbType = 'bestial' | 'elemental' | 'natural' | 'mechanic';
-export type DiceVerdict = 'criticalFail' | 'fail' | 'success' | 'criticalSuccess';
+
 export interface DiceResult {
   orb: OrbType;
   value: number;
@@ -23,7 +24,7 @@ export class DiceRollComponent {
   @ViewChild('diceCanvas', { static: true }) diceCanvas!: ElementRef<HTMLCanvasElement>;
   @Input() orb: OrbType = 'natural';
   @Input() orbPower = 0;
-  @Input() difficulty = 10;
+  @Input() difficulty = 8;
   @Output() rolledResult = new EventEmitter<DiceResult>();
 
   visible = true;
@@ -33,10 +34,17 @@ export class DiceRollComponent {
   modifier = 0;
   total = 0;
   verdict: DiceVerdict | null = null;
+  displayVerdict: DiceDisplayResult | null = null;
 
   private app?: Application;
   private sprite?: Sprite;
   private frameTextures: Texture[] = [];
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['orbPower'] || changes['orb']) {
+      this.modifier = getOrbModifier(this.orbPower);
+    }
+  }
 
   async roll() {
     if (this.rolling) return;
@@ -141,12 +149,27 @@ export class DiceRollComponent {
   private async finishRoll(result: number) {
     try { await Haptics.vibrate({ duration: 100 }); } catch {}
 
-    this.modifier = getOrbModifier(this.orbPower);
     this.total = result + this.modifier;
 
-    if (result === 1) this.verdict = 'criticalFail';
-    else if (result === 20) this.verdict = 'criticalSuccess';
-    else this.verdict = this.total >= this.difficulty ? 'success' : 'fail';
+    // Verdict critique envoyé au service
+    if (result === 1) {
+      this.verdict = 'criticalFail';
+    } else if (result === 20) {
+      this.verdict = 'criticalSuccess';
+    } else {
+      this.verdict = 'normal';
+    }
+
+    // Verdict d'AFFICHAGE seulement
+    if (result === 1) {
+      this.displayVerdict = 'criticalFail';
+    } else if (result === 20) {
+      this.displayVerdict = 'criticalSuccess';
+    } else if (this.total >= this.difficulty) {
+      this.displayVerdict = 'success';
+    } else {
+      this.displayVerdict = 'fail';
+    }
 
     this.rolling = false;
     this.rolled = true;

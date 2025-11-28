@@ -78,4 +78,15 @@
     </div>
   }
 
+  @if(pendingAttack) {
+    <div class="dice-overlay">
+      <app-dice-roll
+        [orb]="'bestial'"
+        [orbPower]="player?.orbs?.bestial ?? 0"
+        (rolledResult)="onDiceResult($event)"
+      >
+      </app-dice-roll>
+    </div>
+  }
+
 </div>

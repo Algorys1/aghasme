@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { CombatService } from '../services/combat.service';
 import { CombatEntity, CombatResult } from '../models/combat.model';
 import { CombatBoardComponent } from './combat-board/combat-board.component';
+import { DiceRollComponent } from '../../game/components/dice-roll/dice-roll.component';
 
 @Component({
   selector: 'app-combat',
   standalone: true,
-  imports: [CommonModule, CombatBoardComponent],
+  imports: [CommonModule, CombatBoardComponent, DiceRollComponent],
   templateUrl: './combat.component.html',
   styleUrls: ['./combat.component.scss']
 })
@@ -16,6 +17,8 @@ export class CombatComponent implements OnInit {
   enemy?: CombatEntity;
   currentTurn: 'player' | 'enemy' = 'player';
   result?: CombatResult;
+
+  pendingAttack: { attacker: string; target: string } | null = null;
 
   @Output() closed = new EventEmitter<void>();
 
@@ -32,10 +35,22 @@ export class CombatComponent implements OnInit {
     this.combatService.combatEnded$.subscribe(result => {
       this.result = result;
     });
+    this.combatService.attackRequested$.subscribe(req => {
+      this.pendingAttack = req;
+    });
   }
 
   onEndTurn() {
     this.combatService.endTurn();
+  }
+
+  onDiceResult(result: any) {
+    if (!this.pendingAttack) return;
+
+    const { attacker, target } = this.pendingAttack;
+    this.pendingAttack = null;
+
+    this.combatService.resolvePlayerAttack(attacker, target, result);
   }
 
   onResultOk() {

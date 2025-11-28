@@ -14,6 +14,7 @@ export class CombatService {
 
   // --- EVENTS ---
   public attackPerformed$ = new Subject<{ attacker: string; target: string; damage: number }>();
+  public attackRequested$ = new Subject<{ attacker: string; target: string }>();
   public preCombatStarted$ = new Subject<{ player: CombatEntity; enemy: CombatEntity }>();
   public combatStarted$ = new ReplaySubject<CombatInitPayload>(1);
   public turnChanged$ = new Subject<Turn>();
@@ -68,6 +69,11 @@ export class CombatService {
     this.entityMoved$.next({ id, x, y });
 
     this.checkEndOfTurn();
+  }
+
+  requestPlayerAttack(attackerId: string, targetId: string) {
+    if (!this.state) return;
+    this.attackRequested$.next({ attacker: attackerId, target: targetId });
   }
 
   attackEntity(attackerId: string, targetId: string) {
@@ -128,6 +134,56 @@ export class CombatService {
     }
 
     // consume action
+    attacker.actionsRemaining = Math.max(0, attacker.actionsRemaining - 1);
+    this.checkEndOfTurn();
+  }
+
+  resolvePlayerAttack(attackerId: string, targetId: string, roll: { orb: string; value: number; verdict: string }) {
+    if (!this.state) return;
+
+    const attacker = Object.values(this.state.entities).find(e => e.id === attackerId);
+    const target   = Object.values(this.state.entities).find(e => e.id === targetId);
+    if (!attacker || !target) return;
+
+    // --- CRITICAL FAIL ---
+    if (roll.verdict === 'criticalFail') {
+      console.log('💥 Critical FAIL!');
+      attacker.actionsRemaining = Math.max(0, attacker.actionsRemaining - 1);
+      this.checkEndOfTurn();
+      return;
+    }
+
+    // attack roll based on orb
+    const d20 = roll.value;
+
+    const attackRoll = this.getMeleeAttackRoll(attacker, d20);
+    const targetDefense = this.getPhysicalDefense(target);
+
+    console.log(`🎲 Player roll = ${d20} → attackRoll=${attackRoll} vs defense=${targetDefense}`);
+
+    // --- HIT ---
+    if (roll.verdict === 'criticalSuccess' || attackRoll >= targetDefense) {
+      let rawDamage = this.computeMeleeDamage(attacker);
+
+      if (roll.verdict === 'criticalSuccess') {
+        rawDamage *= 2;
+        console.log('💥 Critical HIT x2');
+      }
+
+      const final = this.applyPhysicalDamage(target, rawDamage);
+      console.log(`⚔️ Player deals ${final} damage to ${target.name}`);
+
+      this.attackPerformed$.next({ attacker: attacker.id, target: target.id, damage: final });
+
+      if (target.hp <= 0) {
+        this.endCombat('player');
+        return;
+      }
+
+    } else {
+      console.log(`🛡 MISS!`);
+    }
+
     attacker.actionsRemaining = Math.max(0, attacker.actionsRemaining - 1);
     this.checkEndOfTurn();
   }

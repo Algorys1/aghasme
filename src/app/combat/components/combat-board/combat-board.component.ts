@@ -171,9 +171,9 @@ export class CombatBoardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const enemy = this.combatService.getEnemyEntity();
     if (enemy && enemy.position.x === tileX && enemy.position.y === tileY) {
-      this.combatService.attackEntity('player', 'enemy');
+      this.combatService.requestPlayerAttack('player', 'enemy');
       return;
-    }
+  }
 
     this.combatService.moveEntity('player', tileX, tileY);
   }
