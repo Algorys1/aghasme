@@ -297,6 +297,7 @@ export class MinimapComponent implements OnInit, AfterViewInit, OnDestroy {
     // DRAW TILES
     for (const tile of this.cachedTiles) {
       if(!tile.discovered) continue;
+
       const px = centerX + (tile.px - player.q * this.hexSize * Math.sqrt(3) - player.r * this.hexSize * Math.sqrt(3) / 2) * scale;
       const py = centerY + (tile.py - player.r * this.hexSize * 1.5) * scale;
 
