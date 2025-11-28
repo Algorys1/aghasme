@@ -40,29 +40,14 @@ export class CharacterService {
     const baseMaxHp = Math.floor((orbs.natural + orbs.mechanic) / 2);
     const baseMaxMp = Math.floor((orbs.elemental + orbs.natural) / 2);
 
-    // --- ATTACK calculation
+    // --- ATTACK / DEFENSE base stats (for display / non-combat logic)
     const baseAttack = Math.floor((orbs.bestial + orbs.elemental) / 2);
-    let attackBonus = 0;
-
-    if (baseAttack >= 5 && baseAttack <= 7) attackBonus = -1;
-    else if (baseAttack >= 8 && baseAttack <= 11) attackBonus = 0;
-    else if (baseAttack >= 12 && baseAttack <= 14) attackBonus = 1;
-    else if (baseAttack >= 15 && baseAttack <= 17) attackBonus = 2;
-    else if (baseAttack >= 18 && baseAttack <= 20) attackBonus = 3;
-
-    const finalAttack = baseAttack + attackBonus;
-
-    // --- DEFENSE calculation (palier-based)
     const baseDefense = Math.floor((orbs.mechanic + orbs.natural) / 2);
-    let defenseBonus = 0;
 
-    if (baseDefense >= 5 && baseDefense <= 7) defenseBonus = -1;
-    else if (baseDefense >= 8 && baseDefense <= 11) defenseBonus = 0;
-    else if (baseDefense >= 12 && baseDefense <= 14) defenseBonus = 1;
-    else if (baseDefense >= 15 && baseDefense <= 17) defenseBonus = 2;
-    else if (baseDefense >= 18 && baseDefense <= 20) defenseBonus = 3;
-
-    const finalDefense = defenseBonus;
+    // --- Combat bonuses (used in combat engine)
+    // At level 1, we start with 0 bonus and let levelUp handle progression.
+    const attackBonus = 0;
+    const defenseBonus = 0;
 
     // --- Create & finalize
     this.character = {
@@ -79,12 +64,12 @@ export class CharacterService {
       orbs,
       skills: data.skills ?? [],
       inventory: data.inventory ?? [],
-      attack: finalAttack,
-      defense: finalDefense,
+      attack: attackBonus,
+      defense: defenseBonus,
 
       baseStats: {
-        attack: finalAttack,
-        defense: finalDefense,
+        attack: baseAttack,
+        defense: baseDefense,
         maxHp: baseMaxHp,
         maxMp: baseMaxMp,
       },
@@ -161,15 +146,23 @@ export class CharacterService {
       this.levelUp();
     }
   }
+
   private levelUp() {
     if (!this.character) return;
     this.character.level += 1;
+
+    // HP / MP progression (tu peux ajuster si besoin)
     this.character.maxHp += 10;
     this.character.maxMp += 5;
     this.character.hp = this.character.maxHp;
     this.character.mp = this.character.maxMp;
-    this.character.attack = (this.character.attack ?? 5) + 2;
-    this.character.defense = (this.character.defense ?? 3) + 1;
+
+    // Combat bonuses now derived from level (just like enemies)
+    const atkBonus = Math.floor(this.character.level / 4);
+    const defBonus = Math.floor(this.character.level / 4);
+
+    this.character.attack = atkBonus;
+    this.character.defense = defBonus;
   }
 
   spendMP(amount: number): boolean {
@@ -217,23 +210,10 @@ export class CharacterService {
     const baseAttack = Math.floor((adjusted.bestial + adjusted.elemental) / 2);
     const baseDefense = Math.floor((adjusted.mechanic + adjusted.natural) / 2);
 
-    let attackBonus = 0;
-    if (baseAttack >= 5 && baseAttack <= 7) attackBonus = -1;
-    else if (baseAttack >= 8 && baseAttack <= 11) attackBonus = 0;
-    else if (baseAttack >= 12 && baseAttack <= 14) attackBonus = 1;
-    else if (baseAttack >= 15 && baseAttack <= 17) attackBonus = 2;
-    else if (baseAttack >= 18 && baseAttack <= 20) attackBonus = 3;
-
-    let defenseBonus = 0;
-    if (baseDefense >= 5 && baseDefense <= 7) defenseBonus = -1;
-    else if (baseDefense >= 8 && baseDefense <= 11) defenseBonus = 0;
-    else if (baseDefense >= 12 && baseDefense <= 14) defenseBonus = 1;
-    else if (baseDefense >= 15 && baseDefense <= 17) defenseBonus = 2;
-    else if (baseDefense >= 18 && baseDefense <= 20) defenseBonus = 3;
-
     return {
-      attack: baseAttack + attackBonus,
-      defense: defenseBonus,
+      // These are "raw" stats, similar to baseStats on the character
+      attack: baseAttack,
+      defense: baseDefense,
       maxHp: Math.floor((adjusted.natural + adjusted.mechanic) / 2),
       maxMp: Math.floor((adjusted.elemental + adjusted.natural) / 2),
       adjustedOrbs: adjusted,

@@ -20,6 +20,8 @@ export class CombatService {
   public combatEnded$ = new Subject<CombatResult>();
   public entityMoved$ = new Subject<{ id: string; x: number; y: number }>();
 
+  private readonly BASE_DEFENSE = 8;
+
   constructor(private characterService: CharacterService) {}
 
   startPreCombat(enemy: Enemy): void {
@@ -75,34 +77,60 @@ export class CombatService {
     const target   = Object.values(this.state.entities).find(e => e.id === targetId);
     if (!attacker || !target) return;
 
-    // adjacent check
+    // adjacency check
     const dx = Math.abs(attacker.position.x - target.position.x);
     const dy = Math.abs(attacker.position.y - target.position.y);
     if (dx + dy !== 1) {
-      console.log('❌ Pas à portée');
+      console.log('❌ Not in melee range');
       return;
     }
 
-    // Simple damage (TODO use Effects and roll)
-    const raw = Math.max(1, attacker.attackBonus - target.defenseBonus);
-    const variance = Math.floor(Math.random() * 3) - 1; // -1 / 0 / +1
-    const damage = Math.max(1, raw + variance);
+    // --- OFFICIAL MELEE ATTACK ---
+    const d20 = Math.floor(Math.random() * 20) + 1;
 
-    target.hp = Math.max(0, target.hp - damage);
-    console.log(`⚔️ ${attacker.name} inflige ${damage} dégâts à ${target.name}`);
-
-    this.attackPerformed$.next({ attacker: attacker.id, target: target.id, damage });
-
-    if (target.hp <= 0) {
-      const winner = attacker.isPlayer ? 'player' : 'enemy';
-      this.endCombat(winner);
+    // Critical fail
+    if (d20 === 1) {
+      console.log('💥 Critical FAIL!');
+      attacker.actionsRemaining = Math.max(0, attacker.actionsRemaining - 1);
+      this.checkEndOfTurn();
       return;
     }
 
+    const attackRoll = this.getMeleeAttackRoll(attacker, d20);
+    const targetDefense = this.getPhysicalDefense(target);
+
+    console.log(`🎲 d20=${d20} → AttackRoll=${attackRoll} vs Defense=${targetDefense}`);
+
+    if (d20 === 20 || attackRoll >= targetDefense) {
+      // HIT
+      let damage = this.computeMeleeDamage(attacker);
+
+      // Critical success doubles damage
+      if (d20 === 20) {
+        damage *= 2;
+        console.log('💥 Critical HIT x2');
+      }
+
+      const final = this.applyPhysicalDamage(target, damage);
+
+      console.log(`⚔️ ${attacker.name} deals ${final} damage to ${target.name}`);
+
+      this.attackPerformed$.next({ attacker: attacker.id, target: target.id, damage: final });
+
+      if (target.hp <= 0) {
+        const winner = attacker.isPlayer ? 'player' : 'enemy';
+        this.endCombat(winner);
+        return;
+      }
+
+    } else {
+      console.log(`🛡 MISS! (roll ${attackRoll} < defense ${targetDefense})`);
+    }
+
+    // consume action
     attacker.actionsRemaining = Math.max(0, attacker.actionsRemaining - 1);
     this.checkEndOfTurn();
   }
-
 
   private checkEndOfTurn(): void {
     if (!this.state) return;
@@ -208,6 +236,48 @@ export class CombatService {
 
   isInCombat(): boolean {
     return this.inCombat;
+  }
+
+  private getOrbMod(value: number): number {
+    if (value <= 6) return -2;
+    if (value <= 9) return -1;
+    if (value <= 12) return 0;
+    if (value <= 15) return +1;
+    if (value <= 19) return +2;
+    return +3;
+  }
+
+  /** Defense against melee and ranged */
+  private getPhysicalDefense(entity: CombatEntity): number {
+    const naturalMod = this.getOrbMod(entity.orbs.natural);
+    return this.BASE_DEFENSE + entity.defenseBonus + naturalMod;
+  }
+
+  /** Attack roll (MELEE — uses Bestial) */
+  private getMeleeAttackRoll(attacker: CombatEntity, d20: number): number {
+    const bestialMod = this.getOrbMod(attacker.orbs.bestial);
+    return d20 + attacker.attackBonus + bestialMod;
+  }
+
+  /** Attack roll (RANGED — uses Mechanic) */
+  private getRangedAttackRoll(attacker: CombatEntity, d20: number): number {
+    const mechanicMod = this.getOrbMod(attacker.orbs.mechanic);
+    return d20 + attacker.attackBonus + mechanicMod;
+  }
+
+  /** Computes melee physical damage (1d3 + bestial mod) */
+  private computeMeleeDamage(attacker: CombatEntity): number {
+    const base = Math.floor(Math.random() * 3) + 1; // 1d3
+    const bestialMod = this.getOrbMod(attacker.orbs.bestial);
+    return base + bestialMod;
+  }
+
+  /** Applies final damage after Natural reduction */
+  private applyPhysicalDamage(target: CombatEntity, rawDamage: number): number {
+    const naturalMod = this.getOrbMod(target.orbs.natural);
+    const final = Math.max(1, rawDamage - naturalMod);
+    target.hp = Math.max(0, target.hp - final);
+    return final;
   }
 
   getState(): CombatStateGlobal | null {
